@@ -5,6 +5,8 @@
   --gray-light: #dbdbdf; /* light gray (borders) */
   --gray: #91929c;       /* gray (borders, elements) */
   --green: #27b44f;      /* green (button) */
+  --green-hover: #1f903f; /* green hover (button) */
+  --gray-extra-light: #e7e7eb; /* extra light gray (button disabled, border hover) */
 }
 
 html,
