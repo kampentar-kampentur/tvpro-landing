@@ -1,0 +1,54 @@
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  height: 20px; /* Based on Figma text line height */
+  position: relative; /* Needed for absolute positioning of overlays */
+}
+
+.marquee::before,
+.marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 100px; /* Adjust width of the fade as needed */
+  height: 100%;
+  z-index: 1;
+}
+
+.marquee::before {
+  left: 0;
+  background: linear-gradient(to right, var(--background) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.marquee::after {
+  right: 0;
+  background: linear-gradient(to left, var(--background) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.marqueeContent {
+  display: flex; /* Use flexbox to keep items in a row */
+  align-items: center;
+  will-change: transform; /* Optimize for animation */
+}
+
+.textLine {
+  flex-shrink: 0; /* Prevent items from shrinking */
+  display: inline-block;
+  padding-right: 32px; /* Gap between repetitions of the text line */
+  font-size: 14px; /* Based on Figma font size */
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.mainText {
+  color: var(--foreground);
+}
+
+.separator {
+  color: var(--gray);
+}
+
+.subText {
+  color: var(--gray);
+} 
