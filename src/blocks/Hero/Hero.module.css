@@ -1,10 +1,95 @@
 .hero {
   width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
   /* Add other hero specific styles here, e.g. padding, background */
 }
 
 .container {
-  max-width: 1180px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 20px; /* Adjust as needed */
+  padding: 60px 20px; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  text-align: center; /* Center text */
+}
+
+.mainHeading {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 72px;
+  letter-spacing: -2px;
+  color: var(--foreground);
+}
+
+.subText {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--foreground);
+  margin-top: 20px;
+}
+
+.fireEmoji {
+  display: inline-block;
+  background-color: var(--gray-extra-light); /* Assuming a light gray background based on Figma */
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 36px; /* Pill shape */
+  margin-bottom: 40px; /* Space below the emoji text */
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 80px; /* Adjust spacing as needed */
+}
+
+.aboveImg {
+  position: absolute;
+  left: 100%; /* Position relative to the button */
+  transform: translateX(10px); /* Adjust spacing from the button */
+  /* You might need to adjust top/bottom or use translateY for vertical alignment */
+}
+
+.badgesWrapper {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .mainHeading {
+    font-size: 48px;
+    line-height: 56px;
+  }
+}
+
+@media (max-width: 600px) {
+  .mainHeading {
+    font-size: 32px;
+    line-height: 40px;
+  }
+  .subText {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .fireEmoji {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  .buttonWrapper {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .aboveImg {
+    position: static;
+    transform: none;
+  }
 } 

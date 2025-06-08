@@ -1,0 +1,13 @@
+.videoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 80vh; */
+  position: relative;
+}
+
+.video {
+  height: auto;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: width 0.05s ease-out, border-radius 0.3s ease-out;
+}

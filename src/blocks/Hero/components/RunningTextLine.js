@@ -7,14 +7,19 @@ export default function RunningTextLine({ textLines: propTextLines }) {
   const marqueeContentRef = useRef(null);
   const animationFrameRef = useRef(null);
   const currentXRef = useRef(0);
-  const firstContentSetWidthRef = useRef(0); // Stores the width of one full set of original content
+  const firstContentSetWidthRef = useRef(0);
 
   // Duplicate content enough times to ensure seamless loop
-  // For safety, let's duplicate it 3 times.
-  const duplicatedTextLines = [...propTextLines, ...propTextLines, ...propTextLines].map((line, i) => ({
-    ...line,
-    _id: `${line._id || `original-${i % propTextLines.length}`}-${i}-${Math.random()}`, // Unique key for each instance
-  }));
+  // For safety, let's duplicate it 3 times with stable keys
+  const duplicatedTextLines = [];
+  for (let copy = 0; copy < 3; copy++) {
+    propTextLines.forEach((line, originalIndex) => {
+      duplicatedTextLines.push({
+        ...line,
+        _id: `${originalIndex}-${copy}`, // Stable unique key for each instance
+      });
+    });
+  }
 
   useEffect(() => {
     const measureContentWidth = () => {
