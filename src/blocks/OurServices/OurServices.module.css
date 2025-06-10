@@ -1,0 +1,136 @@
+.ourServices {
+  background-color: #f6f6f8;
+  padding: 60px 0;
+}
+
+.ourServicesContainer {
+  background-color: #0f0e13;
+  border-radius: 20px;
+  padding: 60px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.mainHeading {
+  color: #f6f6f8;
+  font-weight: 500;
+  font-size: 44px;
+  text-align: left;
+  width: 100%;
+  max-width: 1180px; /* Aligned with Figma */
+}
+
+.categoriesWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  max-width: 1180px; /* Aligned with Figma */
+}
+
+.categoryButton {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 36px;
+  color: #ffffff;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.categoryButton.active {
+  border-color: #ffffff;
+}
+
+.categoryButton:hover {
+  border-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: -1;
+}
+
+.categoryButton.active .progress {
+    width: 100%;
+    transition: width var(--interval-time) linear;
+}
+
+.categoryButtonText {
+  position: relative;
+  z-index: 2;
+}
+
+.detailsWrapper {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  max-width: 1180px; /* Aligned with Figma */
+  margin-top: 40px;
+}
+
+.detailsContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  align-items: flex-start;
+  
+}
+
+.detailsTitle {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 32px;
+}
+
+.detailsDescription {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.detailsImage {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.detailsImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+} 
+
+
+@media (max-width: 600px) {
+    .ourServicesContainer {
+        border-radius: 0;
+        padding: 60px 20px;
+    }
+    .categoriesWrapper {
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+    }
+    .categoryButton {
+        flex-shrink: 0; 
+    }
+    .detailsWrapper {
+        flex-direction: column;
+    }
+}
