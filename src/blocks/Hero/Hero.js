@@ -25,7 +25,7 @@ export default function Hero() {
           <h1 className={styles.mainHeading}>
               Same Day Exclusive TV Mounting <br/> On Any Wall - Clean, Fast, and Hidden Wires
           </h1>
-          <p className="subText">Over 3,000 TVs professionally installed - just ask your neighbors. 5.0</p>
+          <p className="subText">Over 3,000 TVs professionally installed - just ask your neighbors.</p>
           <div className={styles.buttonWrapper}>
               <Button>Get a Free Quote</Button>
               <AboveIMG className={styles.aboveImg}/>

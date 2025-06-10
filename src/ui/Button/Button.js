@@ -9,6 +9,7 @@ export default function Button({
   href,
   children,
   icon,
+  className,
   ...props
 }) {
   const classNames = [
@@ -16,6 +17,7 @@ export default function Button({
     styles[variant],
     styles[size],
     disabled ? styles.disabled : "",
+    className
   ].join(" ");
 
   // Render as <a> if as="a" or href is provided
