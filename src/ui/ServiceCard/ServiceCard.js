@@ -4,7 +4,7 @@ import styles from "./ServiceCard.module.css";
 import SendIcon from "@/assets/icons/send.svg"
 import Button from "@/ui/Button"
 
-export default function ServiceCard({ image, title, description }) {
+export default function ServiceCard({ image, title, description, buttonText }) {
     function onButtonClick() {
         console.log(title);
         
@@ -21,7 +21,7 @@ export default function ServiceCard({ image, title, description }) {
             <span className={styles.description}>{description}</span>
         </div>
         <Button className={styles.hiddenButton} variant="primary" size="small" onClick={onButtonClick}>
-            Get The Best Quote
+            {buttonText}
         </Button>
         <button className={styles.invisibleButton} onClick={onButtonClick} />
     </div>

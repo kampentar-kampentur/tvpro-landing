@@ -56,6 +56,7 @@ export default function TVSizes() {
             image={card.image}
             title={card.title}
             description={card.description}
+            buttonText="Get The Best Quote"
           />
         ))}
       </div>

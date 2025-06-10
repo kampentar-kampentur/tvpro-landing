@@ -16,7 +16,7 @@
 
 
 .imageContainer {
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* transition: opacity 0.3s ease, visibility 0.3s ease; */
 }
 
 .title {
@@ -38,7 +38,7 @@
 .hiddenButton {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* transition: opacity 0.3s ease, visibility 0.3s ease; */
     display: none;
 }
 
@@ -47,7 +47,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* transition: opacity 0.3s ease, visibility 0.3s ease; */
 }
 
 .invisibleButton {
@@ -91,31 +91,4 @@
         display: block;
         visibility: visible;
     }
-    /* .serviceCard {
-        background-color: #0f0e13;
-    }
-
-    .serviceCard .title,
-    .serviceCard .description {
-        color: #ffffff;
-    }
-
-    .serviceCard .sendIcon {
-        opacity: 0;
-        visibility: hidden;
-        display: none;
-    }
-
-    .serviceCard .hiddenButton {
-        opacity: 1;
-        visibility: visible;
-        display: inline-block;
-    }
-
-    .serviceCard .imageContainer {
-        opacity: 0;
-        visibility: hidden;
-        height: 0;
-        display: none;
-    } */
 }
