@@ -1,46 +1,19 @@
 .hero {
-  width: 100%;
-  max-width: 1360px;
-  margin: 0 auto;
-  /* Add other hero specific styles here, e.g. padding, background */
 }
 
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 60px 20px; /* Adjust as needed */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  text-align: center; /* Center text */
+.heroContainer {
+  align-items: center;
+  text-align: center;
 }
 
 .mainHeading {
-  font-size: 64px;
+  font-size: 56px;
   font-weight: 700;
-  line-height: 72px;
-  letter-spacing: -2px;
+  line-height: 64px;
+  /* letter-spacing: -2px; */
   color: var(--foreground);
 }
 
-.subText {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 24px;
-  color: var(--foreground);
-  margin-top: 20px;
-}
-
-.fireEmoji {
-  display: inline-block;
-  background-color: var(--gray-extra-light); /* Assuming a light gray background based on Figma */
-  color: var(--foreground);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 36px; /* Pill shape */
-  margin-bottom: 40px; /* Space below the emoji text */
-}
 
 .buttonWrapper {
   display: flex;
@@ -79,10 +52,6 @@
   .subText {
     font-size: 16px;
     line-height: 20px;
-  }
-  .fireEmoji {
-    font-size: 12px;
-    padding: 6px 12px;
   }
   .buttonWrapper {
     flex-direction: column;

@@ -50,3 +50,32 @@ a {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+.blockHeading {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 60px;
+  color: var(--foreground);
+}
+
+.subText {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--foreground);
+  margin-top: 20px;
+}
+
+.blockContainer {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.block {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 60px 20px 0 20px;
+}

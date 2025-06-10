@@ -4,6 +4,9 @@
   box-sizing: border-box;
   height: 20px; /* Based on Figma text line height */
   position: relative; /* Needed for absolute positioning of overlays */
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
 }
 
 .marquee::before,

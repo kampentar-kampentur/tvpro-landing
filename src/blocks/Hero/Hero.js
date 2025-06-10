@@ -18,29 +18,31 @@ export default function Hero() {
   ];
 
   return (
-    <section className={styles.hero}>
+    <>
       <RunningTextLine textLines={heroTextLines} />
-      <div className={styles.container}>
-        <h1 className={styles.mainHeading}>
-            Same Day Exclusive TV Mounting <br/> On Any Wall - Clean, Fast, and Hidden Wires
-        </h1>
-        <p className={styles.subText}>Over 3,000 TVs professionally installed - just ask your neighbors. 5.0</p>
-        <div className={styles.buttonWrapper}>
-            <Button>Get a Free Quote</Button>
-            <AboveIMG className={styles.aboveImg}/>
+      <section className={`block ${styles.hero}`}>
+        <div className={`blockContainer ${styles.heroContainer}`}>
+          <h1 className={styles.mainHeading}>
+              Same Day Exclusive TV Mounting <br/> On Any Wall - Clean, Fast, and Hidden Wires
+          </h1>
+          <p className="subText">Over 3,000 TVs professionally installed - just ask your neighbors. 5.0</p>
+          <div className={styles.buttonWrapper}>
+              <Button>Get a Free Quote</Button>
+              <AboveIMG className={styles.aboveImg}/>
+          </div>
+          <div className={styles.badgesWrapper}>
+              <div className={styles.badge} role="img" aria-label="Rated 5.0 from 185 reviews">
+                  <FiveStarBadge aria-hidden="true" focusable="false"/>
+                  <span className="sr-only">Rated 5.0 from 185 reviews</span>
+              </div>
+              <div className={styles.badge} role="img" aria-label="Rated 5.0 from 185 reviews">
+                  <OneYearWarantyBadge aria-hidden="true" focusable="false"/>
+                  <span className="sr-only">Rated 5.0 from 185 reviews</span>
+              </div>
+          </div>
         </div>
-        <div className={styles.badgesWrapper}>
-            <div className={styles.badge} role="img" aria-label="Rated 5.0 from 185 reviews">
-                <FiveStarBadge aria-hidden="true" focusable="false"/>
-                <span className="sr-only">Rated 5.0 from 185 reviews</span>
-            </div>
-            <div className={styles.badge} role="img" aria-label="Rated 5.0 from 185 reviews">
-                <OneYearWarantyBadge aria-hidden="true" focusable="false"/>
-                <span className="sr-only">Rated 5.0 from 185 reviews</span>
-            </div>
-        </div>
-        <VideoPlayer/>
-      </div>
-    </section>
+      </section>
+      <VideoPlayer/>
+    </>
   );
 }
