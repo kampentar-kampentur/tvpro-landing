@@ -1,0 +1,22 @@
+.trustCard {
+  flex: 1;
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 40px;
+  min-width: 280px;
+}
+
+.trustCard .title {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  margin-top: 20px;
+}
+
+.trustCard .description {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--gray);
+  margin-top: 4px;
+} 

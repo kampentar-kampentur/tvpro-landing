@@ -75,7 +75,7 @@ a {
 
 .block {
   width: 100%;
-  max-width: 1360px;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 60px 20px 0 20px;
+  padding: 60px 20px;
 }

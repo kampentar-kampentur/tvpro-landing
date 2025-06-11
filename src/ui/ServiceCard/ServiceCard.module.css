@@ -32,7 +32,7 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 20px;
-    color: #91929c;
+    color: var(--gray);
 }
 
 .hiddenButton {

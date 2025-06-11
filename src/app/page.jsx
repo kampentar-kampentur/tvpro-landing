@@ -3,6 +3,7 @@ import Hero from "@/blocks/Hero";
 import TVSizes from "@/blocks/TVSizes";
 import OurServices from "@/blocks/OurServices";
 import MountingTypes from "@/blocks/MountingTypes";
+import WhyCustomersTrustUs from "@/blocks/WhyCustomersTrustUs";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <TVSizes />
       <OurServices />
       <MountingTypes />
+      <WhyCustomersTrustUs />
     </div>
   );
 }

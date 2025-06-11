@@ -1,6 +1,8 @@
 .ourServices {
   background-color: #f6f6f8;
   padding: 60px 0;
+  max-width: 1400px;
+  margin: auto;
 }
 
 .ourServicesContainer {
