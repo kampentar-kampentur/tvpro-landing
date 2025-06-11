@@ -15,7 +15,7 @@
   font-size: 20px;
   text-align: center;
   line-height: 28px;
-  color: #0e0e13;
+  color: var(--foreground);
 }
 
 .buttonsContainer {
@@ -33,7 +33,7 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 16.1px;
-  color: #0e0e13;
+  color: var(--foreground);
   cursor: pointer;
   white-space: nowrap;
 } 

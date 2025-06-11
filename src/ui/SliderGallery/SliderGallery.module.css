@@ -1,0 +1,45 @@
+.sliderContainer {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.sliderWrapper {
+  display: flex;
+  overflow-x: scroll;
+  margin: 0 -10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.sliderWrapper::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+}
+
+.sliderCard {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  padding: 10px;
+}
+
+.paginationDots {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #f6f6f8;
+  border: 1px solid #91929c;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.activeDot {
+  background-color: #0e0e13;
+} 
