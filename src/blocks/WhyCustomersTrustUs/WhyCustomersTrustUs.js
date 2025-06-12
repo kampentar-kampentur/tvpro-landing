@@ -18,7 +18,7 @@ const cardsData = [
   {
     icon: <IconShieldUser width="48" height="48"/>,
     title: "Guaranteed Quality",
-    description: "We stand behind every job with a 1-Year Warranty. Clients recommend us because we care about every finish, wire, and final result.\nIf something goes wrong — we make it right. We're not just installing. We're earning your trust.",
+    description: "We stand behind every job with a 1-Year Warranty. Clients recommend us because we care about every finish, wire, and final result.\nIf something goes wrong — we make it right. We\'re not just installing. We\'re earning your trust.",
   },
   {
     icon: <IconMoney width="48" height="48"/>,
@@ -28,7 +28,7 @@ const cardsData = [
   {
     icon: <IconLike width="48" height="48"/>,
     title: "Same-Day & Flexible Scheduling",
-    description: "Need a last-minute install? We offer same-day service, plus evenings and weekends — no extra charge.\nWe're ready when you are.\nTV mounting near me — easy, fast, done.",
+    description: "Need a last-minute install? We offer same-day service, plus evenings and weekends — no extra charge.\nWe\'re ready when you are.\nTV mounting near me — easy, fast, done.",
   },
   {
     icon: <IconFlower width="48" height="48"/>,
