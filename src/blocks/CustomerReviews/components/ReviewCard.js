@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./ReviewCard.module.css";
 import StarIcon from "@/assets/icons/Star.svg";
 

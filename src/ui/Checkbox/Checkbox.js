@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./Checkbox.module.css";
 
 export default function Checkbox({ checked, onChange, label, name, value, disabled }) {

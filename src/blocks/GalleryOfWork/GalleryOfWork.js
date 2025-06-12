@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./GalleryOfWork.module.css";
 import PhotoCard from "./components/PhotoCard";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";

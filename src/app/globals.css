@@ -4,9 +4,11 @@
   --white: #ffffff;      /* white (cards, buttons) */
   --gray-light: #dbdbdf; /* light gray (borders) */
   --gray: #91929c;       /* gray (borders, elements) */
+  --gray-medium: #6B6A73; /* new gray medium color */
   --green: #27b44f;      /* green (button) */
   --green-hover: #1f903f; /* green hover (button) */
   --gray-extra-light: #e7e7eb; /* extra light gray (button disabled, border hover) */
+  --text-secondary: var(--gray);
 }
 
 html,

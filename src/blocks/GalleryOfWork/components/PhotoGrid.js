@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./PhotoGrid.module.css";
 import PhotoCard from "./PhotoCard";
 

@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
 import Button from "@/ui/Button";

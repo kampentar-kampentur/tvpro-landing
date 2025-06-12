@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./CustomerReviews.module.css";
 import ReviewCard from "./components/ReviewCard";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";

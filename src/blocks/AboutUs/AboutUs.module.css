@@ -1,0 +1,25 @@
+.aboutUs {
+}
+
+
+.contentContainer {
+  margin-top: 40px;
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.mainText {
+  font-style: Medium;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  color: #0f0e13;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .contentContainer {
+    flex-direction: column;
+  }
+} 

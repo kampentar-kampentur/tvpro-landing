@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./TrustCard.module.css";
 
 const TrustCard = ({ icon, title, description }) => {

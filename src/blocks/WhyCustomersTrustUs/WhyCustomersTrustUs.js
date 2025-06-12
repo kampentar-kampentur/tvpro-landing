@@ -1,4 +1,4 @@
-import React from "react";
+
 import styles from "./WhyCustomersTrustUs.module.css";
 import TrustCard from "./components/TrustCard";
 

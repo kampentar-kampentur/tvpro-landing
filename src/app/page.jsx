@@ -7,6 +7,10 @@ import MountingTypes from "@/blocks/MountingTypes";
 import WhyCustomersTrustUs from "@/blocks/WhyCustomersTrustUs";
 import CustomerReviews from "@/blocks/CustomerReviews";
 import GalleryOfWork from "@/blocks/GalleryOfWork";
+import AboutUs from "@/blocks/AboutUs";
+import FAQ from "@/blocks/FAQ";
+import Contacts from "@/blocks/Contacts";
+import Footer from "@/blocks/Footer";
 
 export default function Home() {
   return (
@@ -18,6 +22,10 @@ export default function Home() {
       <WhyCustomersTrustUs />
       <CustomerReviews />
       <GalleryOfWork />
+      <AboutUs />
+      <FAQ />
+      <Contacts />
+      <Footer />
     </div>
   );
 }

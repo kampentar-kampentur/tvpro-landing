@@ -1,4 +1,4 @@
-import React from "react";
+
 import Link from "next/link";
 import Button from "@/ui/Button";
 import styles from "./Navbar.module.css";
