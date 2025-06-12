@@ -3,7 +3,7 @@ import styles from "./WhyCustomersTrustUs.module.css";
 import TrustCard from "./components/TrustCard";
 
 import IconTools from "@/assets/trustBlockIcons/Tools.svg";
-import IconShieldUser from "@/assets/trustBlockIcons/Shield-user.svg";
+import IconShieldUser from "@/assets/trustBlockIcons/ShieldUser.svg";
 import IconMoney from "@/assets/trustBlockIcons/Money.svg";
 import IconLike from "@/assets/trustBlockIcons/Like.svg";
 import IconFlower from "@/assets/trustBlockIcons/Flower.svg";

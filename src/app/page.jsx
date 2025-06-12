@@ -6,6 +6,7 @@ import OurServices from "@/blocks/OurServices";
 import MountingTypes from "@/blocks/MountingTypes";
 import WhyCustomersTrustUs from "@/blocks/WhyCustomersTrustUs";
 import CustomerReviews from "@/blocks/CustomerReviews";
+import GalleryOfWork from "@/blocks/GalleryOfWork";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <MountingTypes />
       <WhyCustomersTrustUs />
       <CustomerReviews />
+      <GalleryOfWork />
     </div>
   );
 }

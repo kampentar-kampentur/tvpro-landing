@@ -73,8 +73,8 @@ const CustomerReviews = () => {
       <div className={styles.ctaContainer}>
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
         <div className={styles.ctaButtons}>
-          <Button variant="secondary">Leave Yours Here!</Button>
-          <Button variant="primary">Get The Best Quote</Button>
+          <Button variant="secondary" size="small">Leave Yours Here!</Button>
+          <Button variant="primary" size="small">Get The Best Quote</Button>
         </div>
       </div>
     </section>

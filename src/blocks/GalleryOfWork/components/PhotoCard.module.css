@@ -1,0 +1,19 @@
+.photoCard {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 335px;
+  height: 480px;
+  box-sizing: border-box;
+  overflow: hidden; /* To ensure image corners are rounded */
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
