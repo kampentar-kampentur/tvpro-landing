@@ -3,16 +3,33 @@ import styles from "./GalleryOfWork.module.css";
 import PhotoCard from "./components/PhotoCard";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
 import Button from "@/ui/Button/Button";
+import FilterButtons from "./components/FilterButtons";
+import PhotoGrid from "./components/PhotoGrid";
 
-const cardsData = [
-  {src: "./galeryofwork.png", alt: "ahahhah"},
-  {src: "./galeryofwork.png", alt: "ahahhah"},
-  {src: "./galeryofwork.png", alt: "ahahhah"},
-  {src: "./galeryofwork.png", alt: "ahahhah"},
-  {src: "./galeryofwork.png", alt: "ahahhah"},
-  {src: "./galeryofwork.png", alt: "ahahhah"},
-  {src: "./galeryofwork.png", alt: "ahahhah"},
-]
+const sliderCardsData = [
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+];
+
+const gridImagesData = [
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.png", alt: "TV installation" },
+];
 
 const GalleryOfWork = () => {
   return (
@@ -28,15 +45,17 @@ const GalleryOfWork = () => {
       <div className={styles.sliderWrap}>
         <SliderGallery
           CardComponent={PhotoCard}
-          cardData={cardsData}
+          cardData={sliderCardsData}
           cardsPerPage={4}
         />
       </div>
       <div className="block">
+        <FilterButtons />
+        <PhotoGrid images={gridImagesData} />
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
           <div className={styles.ctaButtons}>
-            <Button variant="primary" size="small">Get The Best Quote</Button>
+            <Button variant="primary" size="small">Book Your Install Today</Button>
           </div>
         </div>
       </div>

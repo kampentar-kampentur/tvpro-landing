@@ -41,5 +41,5 @@
 }
 
 .activeDot {
-  background-color: #0e0e13;
+  background-color: var(--foreground);
 } 

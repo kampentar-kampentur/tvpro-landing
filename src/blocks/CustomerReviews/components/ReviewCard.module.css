@@ -37,7 +37,7 @@
   font-weight: 500;
   font-size: 20px;
   line-height: 28px;
-  color: #0e0e13;
+  color: var(--foreground);
 }
 
 .authorInfo {
@@ -63,7 +63,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  color: #0e0e13;
+  color: var(--foreground);
   margin: 0;
 }
 

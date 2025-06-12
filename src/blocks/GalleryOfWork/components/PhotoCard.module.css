@@ -5,8 +5,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 335px;
-  height: 480px;
+  /* width: 335px;
+  height: 480px; */
   box-sizing: border-box;
   overflow: hidden; /* To ensure image corners are rounded */
 }
