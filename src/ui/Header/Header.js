@@ -1,11 +1,13 @@
-
+"use client"
 import Link from 'next/link';
 import styles from "./Header.module.css";
 import LogoSVG  from "@/assets/logo.svg"
 import Navbar from "./components/Navbar";
 import Button from "@/ui/Button"
+import { useModal } from '@/providers/ModalProvider';
 
 export default function Header() {
+  const {openModal} = useModal()
   return (
     <header className={styles.header}>
       <div className={styles.headerWrapper}>
@@ -19,7 +21,7 @@ export default function Header() {
         <div className={styles.cta}>
           <span className={styles.hours}>8 AM – 10 PM Daily</span>
           <Button variant="secondary" size="small" href="tel:8882666660">(888) 266-6660</Button>
-          <Button size="small" as="a" href="#book">Book Now</Button>
+          <Button size="small" onClick={() => openModal("BestQuote")}>Book Now</Button>
         </div>
       </div>
     </header>

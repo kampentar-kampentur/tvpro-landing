@@ -24,12 +24,6 @@
   margin-top: 80px; /* Adjust spacing as needed */
 }
 
-.aboveImg {
-  position: absolute;
-  left: 100%; /* Position relative to the button */
-  transform: translateX(10px); /* Adjust spacing from the button */
-  /* You might need to adjust top/bottom or use translateY for vertical alignment */
-}
 
 .badgesWrapper {
   margin-top: 40px;
@@ -57,9 +51,5 @@
   .buttonWrapper {
     flex-direction: column;
     gap: 16px;
-  }
-  .aboveImg {
-    position: static;
-    transform: none;
   }
 } 

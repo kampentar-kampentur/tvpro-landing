@@ -1,0 +1,7 @@
+.formOption {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+}

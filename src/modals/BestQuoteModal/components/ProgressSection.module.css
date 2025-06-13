@@ -1,0 +1,65 @@
+.progressSection {
+  width: 100%;
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-direction: column;
+}
+
+.statusLabel {
+  font-size: 8px;
+  font-weight: 400;
+  color: #0e0e13;
+  margin-bottom: 2px;
+}
+
+.badge {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+}
+
+.progressBarBackground {
+  width: 100%;
+  height: 8px;
+  border-radius: 64px;
+  background-color: #D8D8DD; /* Default background color */
+}
+
+.progressBarFill {
+  height: 100%;
+  border-radius: 64px;
+  width: 0%; /* Initial width */
+  transition: width 0.3s ease-in-out;
+}
+
+/* Status-specific styles */
+.current .badge,
+.current .progressBarFill {
+  background-color: #27b44f; /* Green for current */
+}
+
+.completed .badge,
+.completed .progressBarFill {
+  background-color: #27b44f; /* Green for completed */
+  opacity: 0.4;
+}
+
+.current .progressBarBackground {
+    background: #27b44f1A;
+}
+
+.completed .progressBarBackground {
+    background: transparent;
+}
+
+.next .badge {
+  background-color: #D8D8DD; /* Light blue for next (or transparent if no color) */
+}
+
+.next .progressBarFill {
+    background-color: #D8D8DD; /* Light blue for next (or transparent if no color) */
+} 

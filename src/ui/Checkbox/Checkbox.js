@@ -1,7 +1,7 @@
 
 import styles from "./Checkbox.module.css";
 
-export default function Checkbox({ checked, onChange, label, name, value, disabled }) {
+export default function Checkbox({ checked, onChange, label, subLabel, name, value, disabled }) {
   return (
     <label className={styles.wrapper}>
       <input
@@ -15,6 +15,7 @@ export default function Checkbox({ checked, onChange, label, name, value, disabl
       />
       <span className={styles.checkbox} aria-checked={checked} />
       {label && <span className={styles.label}>{label}</span>}
+      {subLabel && <span className={styles.subLabel}>{subLabel}</span>}
     </label>
   );
 } 

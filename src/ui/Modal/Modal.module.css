@@ -1,0 +1,47 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(14, 14, 19, 0.6); /* --foreground with 60% opacity */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: var(--background);
+  border-radius: 40px;
+  padding: 20px;
+  position: relative;
+  max-width: 1392px; /* Based on Figma design */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 15px;
+  height: auto;
+  border-radius: 99999px;
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    border-radius: 0;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+  }
+
+  .closeButton {
+    top: 20px;
+    right: 20px;
+  }
+} 

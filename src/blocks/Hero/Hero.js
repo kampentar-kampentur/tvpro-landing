@@ -2,9 +2,9 @@
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
 import Button from "@/ui/Button";
-import AboveIMG from "@/assets/above-img.svg"
-import OneYearWarantyBadge from "@/assets/oneYearWarantyBadge.svg"
-import FiveStarBadge from "@/assets/fiveStarBadge.svg"
+import OneYearWarantyBadge from "@/assets/badges/OneYearWarantyBadge.svg"
+import FiveStarBadge from "@/assets/badges/FiveStarBadge.svg"
+import AboveBadge from "@/assets/badges/AboveBadge.svg"
 import VideoPlayer from "./components/VideoPlayer"
 
 export default function Hero() {
@@ -28,16 +28,19 @@ export default function Hero() {
           <p className="subText">Over 3,000 TVs professionally installed - just ask your neighbors.</p>
           <div className={styles.buttonWrapper}>
               <Button>Get a Free Quote</Button>
-              <AboveIMG className={styles.aboveImg}/>
           </div>
           <div className={styles.badgesWrapper}>
               <div className={styles.badge} role="img" aria-label="Rated 5.0 from 185 reviews">
                   <FiveStarBadge aria-hidden="true" focusable="false"/>
                   <span className="sr-only">Rated 5.0 from 185 reviews</span>
               </div>
-              <div className={styles.badge} role="img" aria-label="Rated 5.0 from 185 reviews">
+              <div className={styles.badge} role="img" aria-label="1 year waranty">
                   <OneYearWarantyBadge aria-hidden="true" focusable="false"/>
-                  <span className="sr-only">Rated 5.0 from 185 reviews</span>
+                  <span className="sr-only">1 year waranty</span>
+              </div>
+              <div className={styles.badge} role="img" aria-label="Above Fireplace Included">
+                  <AboveBadge aria-hidden="true" focusable="false"/>
+                  <span className="sr-only">Above Fireplace Included</span>
               </div>
           </div>
         </div>

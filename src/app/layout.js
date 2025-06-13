@@ -1,6 +1,7 @@
 import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/ui/Header";
+import { ModalProvider } from "@/providers/ModalProvider";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -65,10 +66,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={redHatDisplay.variable}>
-        <Header/>
-        <div style={{ paddingTop: 80 }}>
-          {children}
-        </div>
+        <ModalProvider>
+          <Header/>
+          <div style={{ paddingTop: 80 }}>
+            {children}
+          </div>
+        </ModalProvider>
       </body>
     </html>
   );

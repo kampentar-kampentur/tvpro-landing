@@ -3,7 +3,7 @@
   width: 100%;
   background: var(--background);
   position: fixed;
-  z-index: 99999;
+  z-index: 999;
 }
 
 .headerWrapper {

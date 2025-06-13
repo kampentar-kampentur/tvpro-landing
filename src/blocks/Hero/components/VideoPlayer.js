@@ -108,7 +108,6 @@ export default function OptimizedVideoPlayer({
       calculatedProgress = Math.max(0, Math.min(1, calculatedProgress));
       
       const currentWindowScrollY = window.scrollY;
-      const isScrollingDown = currentWindowScrollY > lastScrollY.current;
 
       let newProgress;
       newProgress = elementCenter <= screenCenter ? 1 : calculatedProgress;

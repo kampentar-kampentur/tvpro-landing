@@ -11,6 +11,8 @@ import AboutUs from "@/blocks/AboutUs";
 import FAQ from "@/blocks/FAQ";
 import Contacts from "@/blocks/Contacts";
 import Footer from "@/blocks/Footer";
+import Modal from "@/ui/Modal";
+import BestQuoteModal from "@/modals/BestQuoteModal";
 
 export default function Home() {
   return (
@@ -26,6 +28,7 @@ export default function Home() {
       <FAQ />
       <Contacts />
       <Footer />
+      <BestQuoteModal/>
     </div>
   );
 }
