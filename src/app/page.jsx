@@ -12,14 +12,8 @@ import FAQ from "@/blocks/FAQ";
 import Contacts from "@/blocks/Contacts";
 import Footer from "@/blocks/Footer";
 import BestQuoteModal from "@/modals/BestQuoteModal";
-import { useEffect } from "react";
-import { useModalState } from "@/providers/ModalProvider";
 
 export default function Home() {
-  const {open} = useModalState('BestQuote');
-  useEffect(() => {
-    open()
-  }, [])
   return (
     <div className={styles.tvproMain}>
       <Hero />

@@ -33,7 +33,7 @@ const gridImagesData = [
 
 const GalleryOfWork = () => {
   return (
-    <section className={styles.galleryOfWork}>
+    <section className={styles.galleryOfWork} id="gallery">
       <div className="block">
         <header className={styles.galleryOfWorkHeader}>
           <h3 className="blockHeading">

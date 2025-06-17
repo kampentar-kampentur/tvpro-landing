@@ -2,7 +2,7 @@ import styles from "./AboutUs.module.css";
 
 const AboutUs = () => {
   return (
-    <section className={`block ${styles.aboutUs}`}>
+    <section className={`block ${styles.aboutUs}`} id="about">
         <header className={styles.aboutUsHeader}>
           <h2 className="blockHeading">About Us</h2>
           <p className="subText">TVPro Handy Services isn&apos;t just a company.</p>

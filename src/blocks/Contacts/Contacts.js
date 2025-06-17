@@ -15,7 +15,7 @@ import ThumbtackHover from "@/assets/socialIcons/ThumbtackHover.svg";
 
 const Contacts = () => {
   return (
-    <section className={styles.contacts}>
+    <section className={styles.contacts} id="contact">
       <div className={`blockContainer ${styles.contactsContainer}`}>
         <h2 className={styles.heading}>Our Contacts</h2>
         <p className={styles.subHeading}>

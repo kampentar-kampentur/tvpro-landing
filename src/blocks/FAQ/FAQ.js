@@ -59,7 +59,7 @@ const FAQ = () => {
   };
 
   return (
-    <section className={`block ${styles.faq}`}>
+    <section className={`block ${styles.faq}`} id="faq">
       <header className={styles.faqHeader}>
         <h2 className="blockHeading">FAQs</h2>
       </header>

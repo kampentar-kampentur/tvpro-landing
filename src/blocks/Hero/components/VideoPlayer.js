@@ -27,6 +27,7 @@ export default function OptimizedVideoPlayer({
   const lastScrollY = useRef(0);
   const animationFrameId = useRef(null);
   const lastUpdateTime = useRef(0);
+  const [isClient, setIsClient] = useState(false);
 
   // Intersection Observer for performance optimization
   const [isVisible] = useIntersectionObserver(containerRef, {
@@ -180,10 +181,23 @@ export default function OptimizedVideoPlayer({
     }
   }, []);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Calculate responsive dimensions
-  const maxWidth = Math.min(viewportWidth, 1920); // Max reasonable width
-  const currentWidth = Math.max(minWidth, minWidth + (maxWidth - minWidth) * scrollYProgress);
-  const currentHeight = currentWidth / aspectRatio;
+  let currentWidth = minWidth;
+  let currentHeight = minWidth / aspectRatio;
+  if (isClient) {
+    const padding = 20;
+    const adaptiveMinWidth = viewportWidth < minWidth ? Math.max(0, viewportWidth - padding) : minWidth;
+    const maxWidth = viewportWidth;
+    currentWidth = Math.max(
+      adaptiveMinWidth,
+      adaptiveMinWidth + (maxWidth - adaptiveMinWidth) * scrollYProgress
+    );
+    currentHeight = currentWidth / aspectRatio;
+  }
 
   const videoStyle = {
     width: `${currentWidth}px`,
@@ -191,6 +205,16 @@ export default function OptimizedVideoPlayer({
     borderRadius: `${16 - scrollYProgress * 16}px`,
     transform: `translateZ(0)`, // Hardware acceleration
   };
+
+  if (!isClient) {
+    // Заглушка для SSR, чтобы не было гидрационных ошибок
+    return (
+      <div
+        className={`${styles.videoWrapper} ${className}`}
+        style={{ width: `${minWidth}px`, aspectRatio: aspectRatio }}
+      />
+    );
+  }
 
   if (hasError) {
     return (

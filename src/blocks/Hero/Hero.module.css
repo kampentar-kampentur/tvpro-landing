@@ -32,14 +32,49 @@
   gap: 24px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .mainHeading {
-    font-size: 48px;
-    line-height: 56px;
+    font-size: 28px;
+    line-height: 36px;
+  }
+  .heroContainer {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .fiveStarBadge {
+    width: 121px;
+    height: 40px;
+  }
+  .oneYearWarantyBadge {
+    width: 88px;
+    height: 32px;
+  }
+  .aboveBadge {
+    width: 48px;
+    height: 48px;
+  }
+  .badgesWrapper {
+    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
-@media (max-width: 600px) {
+
+  .fiveStarBadge {
+    width: 150px;
+    height: 40px;
+  }
+  .oneYearWarantyBadge {
+    width: 112px;
+    height: 48px;
+  }
+  .aboveBadge {
+    width: 64px;
+    height: 64px;
+  }
+
+/* @media (max-width: 600px) {
   .mainHeading {
     font-size: 32px;
     line-height: 40px;
@@ -52,4 +87,4 @@
     flex-direction: column;
     gap: 16px;
   }
-} 
+}  */

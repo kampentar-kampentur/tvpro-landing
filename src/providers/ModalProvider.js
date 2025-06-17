@@ -7,11 +7,16 @@ const ModalContext = createContext();
 // Провайдер модалки
 export const ModalProvider = ({ children }) => {
   const [modals, setModals] = useState([]);
+  const [modalIdCounter, setModalIdCounter] = useState(0); // Счетчик для id
 
   // Функция для открытия модалки
   const openModal = useCallback((name, props = {}) => {
-    setModals(prev => [...prev, { name, props, id: Date.now() }]);
-  }, []);
+    setModals(prev => [
+      ...prev,
+      { name, props, id: modalIdCounter }
+    ]);
+    setModalIdCounter(prev => prev + 1);
+  }, [modalIdCounter]);
 
   // Функция для закрытия модалки по имени
   const closeModal = useCallback((name) => {

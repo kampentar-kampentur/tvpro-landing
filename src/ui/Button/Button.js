@@ -3,7 +3,7 @@ import styles from "./Button.module.css";
 
 export default function Button({
   variant = "primary", // primary | secondary
-  size = "big", // big | small
+  size = "small", // big | small
   disabled = false,
   as,
   href,

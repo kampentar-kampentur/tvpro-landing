@@ -44,7 +44,7 @@ const cardsData = [
 
 const WhyCustomersTrustUs = () => {
   return (
-    <section className={`block ${styles.whyCustomersTrustUs}`}>
+    <section className={`block ${styles.whyCustomersTrustUs}`} id="reviews">
       <header>
         <h3 className="blockHeading">
           Why Customers Choose TVPro Handy Services?

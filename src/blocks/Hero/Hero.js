@@ -31,15 +31,15 @@ export default function Hero() {
           </div>
           <div className={styles.badgesWrapper}>
               <div className={styles.badge} role="img" aria-label="Rated 5.0 from 185 reviews">
-                  <FiveStarBadge aria-hidden="true" focusable="false"/>
+                  <FiveStarBadge aria-hidden="true" focusable="false" className={styles.fiveStarBadge}/>
                   <span className="sr-only">Rated 5.0 from 185 reviews</span>
               </div>
               <div className={styles.badge} role="img" aria-label="1 year waranty">
-                  <OneYearWarantyBadge aria-hidden="true" focusable="false"/>
+                  <OneYearWarantyBadge aria-hidden="true" focusable="false" className={styles.oneYearWarantyBadge}/>
                   <span className="sr-only">1 year waranty</span>
               </div>
               <div className={styles.badge} role="img" aria-label="Above Fireplace Included">
-                  <AboveBadge aria-hidden="true" focusable="false"/>
+                  <AboveBadge aria-hidden="true" focusable="false" className={styles.aboveBadge}/>
                   <span className="sr-only">Above Fireplace Included</span>
               </div>
           </div>

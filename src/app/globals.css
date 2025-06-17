@@ -81,3 +81,11 @@ a {
   margin: 0 auto;
   padding: 60px 20px;
 }
+
+@media (max-width: 1024px) {
+  .subText {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}

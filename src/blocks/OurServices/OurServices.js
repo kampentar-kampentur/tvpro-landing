@@ -121,7 +121,7 @@ export default function OurServices() {
   );
 
   return (
-    <section className={styles.ourServices}>
+    <section className={styles.ourServices} id="services">
       <div className={`blockContainer ${styles.ourServicesContainer}`}>
         <h2 className={styles.mainHeading}>Our Services</h2>
         <div className={styles.categoriesWrapper}>
@@ -140,20 +140,20 @@ export default function OurServices() {
           ))}
         </div>
 
-        {activeService && (
-          <div className={styles.detailsWrapper}>
-            <div className={styles.detailsImage}>
-              <img src={activeService.image} alt={activeService.title} />
+        {servicesData.map(service => (
+            <div className={`${styles.detailsWrapper} ${service.id === activeServiceId ? '' : 'sr-only'}`} key={service.id}>
+                <div className={styles.detailsImage}>
+                    <img src={service.image} alt={service.title} />
+                </div>
+                <div className={styles.detailsContent}>
+                    <h3 className={styles.detailsTitle}>{service.title}</h3>
+                <p className={styles.detailsDescription}>
+                    {service.description}
+                </p>
+                    <Button>Book Now</Button>
+                </div>
             </div>
-            <div className={styles.detailsContent}>
-              <h3 className={styles.detailsTitle}>{activeService.title}</h3>
-              <p className={styles.detailsDescription}>
-                {activeService.description}
-              </p>
-              <Button>Book Now</Button>
-            </div>
-          </div>
-        )}
+        ))}
       </div>
     </section>
   );
