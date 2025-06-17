@@ -1,0 +1,40 @@
+.formStep {
+    /* Add any specific styles for the FormStep container here */
+}
+
+.fieldLabel {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 32px;
+    letter-spacing: 0%;
+} 
+
+.subHeader {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.subHeader h3 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 32px;
+    letter-spacing: 0%;
+}
+
+.subSteps {
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+}
+
+.formStep {
+    margin-top: 40px;
+}
+
+.option {
+    margin-bottom: 20px;
+}

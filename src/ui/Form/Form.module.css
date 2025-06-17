@@ -1,0 +1,33 @@
+.fieldLabel {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 32px;
+    letter-spacing: 0%;
+}
+
+.optionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 8px; /* Adjust gap as needed */
+}
+
+.navigationButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+}
+
+.optionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 8px; /* Adjust gap as needed */
+    margin-top: 8px;
+}
+
+.bestQuoteTitle{
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 60px;
+    letter-spacing: 0%;
+    margin-bottom: 40px;
+} 

@@ -10,6 +10,7 @@ export default function Button({
   children,
   icon,
   className,
+  type="button",
   ...props
 }) {
   const classNames = [
@@ -37,7 +38,7 @@ export default function Button({
   }
 
   return (
-    <button className={classNames} disabled={disabled} {...props}>
+    <button className={classNames} disabled={disabled} type={type} {...props}>
       <span className={styles.content}>{children}</span>
       {icon && <span className={styles.icon}>{icon}</span>}
     </button>

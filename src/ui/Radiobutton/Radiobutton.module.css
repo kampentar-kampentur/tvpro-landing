@@ -52,4 +52,10 @@
   font-size: 14px;
   color: var(--foreground);
   user-select: none;
-} 
+}
+
+.subLabel {
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}

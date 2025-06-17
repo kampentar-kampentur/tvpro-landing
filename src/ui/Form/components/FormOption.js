@@ -7,9 +7,14 @@ import Counter from '@/ui/Counter';
 const FormOption = ({
     type = 'checkbox', //checkbox | radiobutton
     enableCounter = false,
+    onCounterChange,
     ...restProps // Capture all other props, including checked and onChange for the input
 }) => {
     const [counterValue, setCounterValue] = useState(1);
+    function onChangeCounter(value) {
+        setCounterValue(value)
+        onCounterChange(value)
+    }
 
     function Input() {
         switch (type) {
@@ -27,7 +32,7 @@ const FormOption = ({
         {enableCounter && restProps.checked && (
             <Counter
                 value={counterValue}
-                onChange={setCounterValue}
+                onChange={onChangeCounter}
             />
         )}
     </div>

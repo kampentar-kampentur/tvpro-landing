@@ -3,14 +3,256 @@
 import { useModalState } from "@/providers/ModalProvider";
 import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
-import ProgressSection from "./components/ProgressSection";
-import FormOption from "./components/FormOption";
+import Form from "@/ui/Form"
+import React, { useState } from "react";
+import PriceSummary from "./components/PriceSummary";
+
+
+const example = {
+    "steps": [
+      {
+        "id": "tv-size",
+        "title": "What size is your TV?",
+        "fields": [
+          {
+            "name": "tvSelection",
+            "type": "checkboxWithCounter",
+            "isRequired": true,
+            "options": [
+              { 
+                  "value": "upTo31", 
+                  "label": "Up to 31\"", 
+                  "cost": 69,
+              },
+              { 
+                "value": "32-59", 
+                "label": "32\"-59\"", 
+                "cost": 109,
+              },
+              { 
+                "value": "60-80", 
+                "label": "60\"-80\"", 
+                "cost": 129,
+              },
+              { 
+                "value": "over-81", 
+                "label": "Over 81\"", 
+                "cost": 149,
+              },
+              { 
+                "value": "frameTv", 
+                "label": "Frame TV", 
+                "cost": 169,
+              },
+              { 
+                "value": "projectorsNScreens", 
+                "label": "Projectors & Screens", 
+                "cost": 139,
+              },
+            ]
+          },
+          {
+            "name": "numberTechnicans",
+            "type": "radio",
+            "label": "Select number of technicians for Over 81″",
+            "showIf": {
+              "field": "tvSelection",
+              "condition": "hasAny",
+              "values": ["over-81"]
+            },
+            "options": [
+              { "value": "no", "label": "Over 81″ (1 tech + your help)", "cost": 0 },
+              { "value": "yes", "label": "Over 81″ (2 techs, full service)", "cost": 59 },
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mounting",
+        "type": "dynamic",
+        "title": "Mounting Type",
+        "generateFrom": "tv-size.tvSelection",
+        "template": {
+          "subTitle": "Select mount type for {size} TV",
+          "fields": [
+            {
+              "name": "mountType",
+              "type": "radio",
+              "isRequired": true,
+              "options": [
+                { 
+                  "value": "alreadyThere", 
+                  "label": "Already there", 
+                  "cost": 0,
+                  "description": "TV stays in one position"
+                },
+                { 
+                  "value": "fullMotion", 
+                  "label": "Full-Motion Mount", 
+                  "cost": 69,
+                  "description": "TV can tilt up/down"
+                },
+                { 
+                  "value": "fixed", 
+                  "label": "Fixed Mount", 
+                  "cost": 39,
+                  "description": "TV can move in all directions"
+                },
+                { 
+                  "value": "corner", 
+                  "label": "Corner Mount", 
+                  "cost": 69,
+                  "description": "TV can tilt up/down"
+                },
+                { 
+                  "value": "tilting", 
+                  "label": "Tilting Mount", 
+                  "cost": 49,
+                  "description": "TV can move in all directions"
+                },
+              ]
+            },
+            {
+              "name": "wallType",
+              "type": "radio",
+              "isRequired": true,
+              "label": "What kind of wall will this TV be mounted on?",
+              "showIf": {
+                "field": "mountType",
+                "condition": "equalsAny",
+                "values": ['alreadyThere', 'fullMotion', 'fixed', 'corner', 'tilting']
+              },
+              "options": [
+                { 
+                  "value": "drywall", 
+                  "label": "Drywall", 
+                  "cost": 0,
+                  "description": "TV stays in one position"
+                },
+                { 
+                  "value": "another", 
+                  "label": "Brick, Concrete, Tile, Stone", 
+                  "cost": 49,
+                  "description": "TV stays in one position"
+                },
+              ],
+            },
+            {
+              "name": "wires",
+              "type": "radio",
+              "isRequired": true,
+              "label": "Do you want to hide the wires?",
+              "showIf": {
+                "field": "wallType",
+                "condition": "equalsAny",
+                "values": ['drywall', 'another']
+              },
+              "options": [
+                { 
+                  "value": "cableChannel", 
+                  "label": "Cable channel", 
+                  "cost": 39,
+                  "description": "TV stays in one position"
+                },
+                { 
+                  "value": "wall", 
+                  "label": "Put it in the wall", 
+                  "cost": 199,
+                  "description": "TV stays in one position"
+                },
+                { 
+                  "value": "socket", 
+                  "label": "In-wall with socket", 
+                  "cost": 299,
+                  "description": "TV stays in one position"
+                },
+              ],
+            },
+          ]
+        }
+      },
+      {
+        "id": "additional-services",
+        "title": "Additional Services",
+        "fields": [
+          {
+            "name": "popular",
+            "type": "checkboxWithCounter",
+            "label": "The Most Popular",
+            "options": [
+                { 
+                    "value": "soundbar", 
+                    "label": "Install Soundbar", 
+                    "cost": 59,
+                },
+                { 
+                    "value": "wallShelf", 
+                    "label": "Install Wall Shelf", 
+                    "cost": 39,
+                },
+                { 
+                    "value": "gamingConsole", 
+                    "label": "Install Gaming Console", 
+                    "cost": 59,
+                },
+                { 
+                    "value": "rearSpeaker", 
+                    "label": "Install Rear Speaker (2)", 
+                    "cost": 49,
+                },
+            ]
+          },
+        ]
+      },
+      {
+        "id": "contactInfo",
+        "title": "Your contacts",
+        "fields": [
+          {
+            "name": "name",
+            "type": "text",
+            "textLabel": "Enter your name",
+            "placeholder": "Your name *",
+            "isRequired": true
+          },
+          {
+            "name": "phone",
+            "type": "tel",
+            "textLabel": "Enter your phone",
+            "placeholder": "Phone number *",
+            "isRequired": true
+          }
+        ]
+      }
+    ],
+    "priceCalculation": {
+      "baseCost": 0,
+      "dynamicCosts": [
+        "tv-size.tvSelection",
+        "tv-size.needHelper",
+        "location.wallType",
+        "mounting.*.mountType",
+        "mounting.*.cableManagement",
+        "mounting.*.powerOutlet",
+        "additional-services.soundbar",
+        "additional-services.soundbarType",
+        "additional-services.streaming",
+        "scheduling.timeSlot",
+        "scheduling.urgentInstall"
+      ]
+    }
+   }
 
 const BestQuoteModal = () => {
   const {isOpen, close} = useModalState('BestQuote');
+  const [formData, setFormData] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
 
-  // Example state for progress
-  const currentProgressStep = 2; // This would change based on user interaction
+  const handlePriceChange = (newTotalPrice, newStructuredCostBreakdown) => {
+    setTotalPrice(newTotalPrice);
+    setStructuredCostBreakdown(newStructuredCostBreakdown);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={close}>
@@ -24,40 +266,19 @@ const BestQuoteModal = () => {
                         $30
                     </p>
                 </div>
-                <div className={styles.quoteSummary}>
-                    <h3 className={styles.titleSummary}>TV Mounting</h3>
-                </div>
-                <div className={styles.footerSummary}>
-                    <p>* Free TV dismount included with orders over $200</p>
-                    <p>** Free Above-Fireplace TV Mounting</p>
-                    <p className={styles.subSummaryText}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
+                <div className={styles.tempWrapp}>
+                    <div className={styles.priceWrapper}>
+                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} />
+                    </div>
+                    <div className={styles.footerSummary}>
+                        <p>* Free TV dismount included with orders over $200</p>
+                        <p>** Free Above-Fireplace TV Mounting</p>
+                        <p className={styles.subSummaryText}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
+                    </div>
                 </div>
             </aside>
             <main className={styles.bestQuoteMain}>
-                <h2 className={styles.bestQuoteTitle}>What size is your TV?</h2>
-                <div className={styles.progressContainer}>
-                    <ProgressSection
-                        currentStep={currentProgressStep === 1 ? 1 : 0}
-                        totalSteps={1}
-                        status={currentProgressStep === 1 ? "current" : "completed"}
-                        label="What size is your TV?"
-                    />
-                    <ProgressSection
-                        currentStep={currentProgressStep >= 2 ? 1 : 0}
-                        totalSteps={2}
-                        status={currentProgressStep === 2 ? "current" : (currentProgressStep > 2 ? "completed" : "next")}
-                        label="Mounting type"
-                    />
-                    <ProgressSection
-                        currentStep={currentProgressStep === 3 ? 1 : 0}
-                        totalSteps={1}
-                        status={currentProgressStep === 3 ? "current" : (currentProgressStep > 3 ? "completed" : "next")}
-                        label="Summary"
-                    />
-                </div>
-                <div className={styles.formWrapper}>
-                    <FormOption label="Up to 31”" subLabel="$69" enableCounter={true} checked onChange={() => 1}/>
-                </div>
+                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange}></Form>
             </main>
         </div>
     </Modal>

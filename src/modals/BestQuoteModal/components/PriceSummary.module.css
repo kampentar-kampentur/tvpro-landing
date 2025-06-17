@@ -1,0 +1,106 @@
+.priceSummaryContainer {
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f8f8f8; /* Light background similar to Figma */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 100%;
+  overflow: auto;
+}
+
+.scrollableContent {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  font-style: Medium;
+  font-weight: 500;
+  font-size: 20px;
+  color: #0e0e13;
+  margin-bottom: 10px;
+}
+
+.tvSizeGroup,
+.addonsGroup,
+.discountGroup {
+}
+
+.tvSizeTitle,
+.groupTitle {
+  font-style: Bold;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0e0e13;
+  margin-bottom: 10px;
+}
+
+.breakdownList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.breakdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemLabel {
+  font-style: Regular;
+  font-weight: 400;
+  font-size: 14px;
+  color: #0e0e13;
+}
+
+.itemCost {
+  font-style: Bold;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0e0e13;
+}
+
+.discountSection {
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0; /* Separator for discount section */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.discountCost {
+  color: #27b44f; /* Green color for discount */
+}
+
+.estimatedTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-light);
+}
+
+/* Removed redundant border and padding from .discountGroup */
+.discountGroup {
+  padding-top: 15px; /* Add padding here for consistent spacing */
+  border-top: 1px solid #e0e0e0; /* Explicitly set border here */
+}
+
+.estimatedLabel {
+  font-style: Regular;
+  font-weight: 400;
+  font-size: 14px;
+  color: #0e0e13;
+}
+
+.totalAmount {
+  font-style: Bold;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0e0e13;
+} 

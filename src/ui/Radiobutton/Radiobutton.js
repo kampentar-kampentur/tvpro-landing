@@ -1,7 +1,7 @@
 
 import styles from "./Radiobutton.module.css";
 
-export default function Radiobutton({ checked, onChange, label, name, value, disabled }) {
+export default function Radiobutton({ checked, onChange, label, subLabel, name, value, disabled }) {
   return (
     <label className={styles.wrapper}>
       <input
@@ -15,6 +15,7 @@ export default function Radiobutton({ checked, onChange, label, name, value, dis
       />
       <span className={styles.radio} aria-checked={checked} />
       {label && <span className={styles.label}>{label}</span>}
+      {subLabel && <span className={styles.subLabel}>{subLabel}</span>}
     </label>
   );
 } 

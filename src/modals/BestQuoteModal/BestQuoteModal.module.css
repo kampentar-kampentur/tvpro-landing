@@ -2,6 +2,9 @@
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
+    height: calc(100vh - 80px);
+    max-height: 932px;
+    overflow: hidden;
 }
 
 .banner {
@@ -21,13 +24,6 @@
     font-weight: 500;
     font-size: 20px;
     line-height: 28px;
-    letter-spacing: 0%;
-}
-
-.bestQuoteTitle{
-    font-weight: 500;
-    font-size: 44px;
-    line-height: 60px;
     letter-spacing: 0%;
 }
 
@@ -51,6 +47,7 @@
     display: flex;
     flex-direction: column;
     max-width: 356px;
+    height: 100%;
 }
 
 .servicesHeading {
@@ -119,4 +116,17 @@
     line-height: 16px;
     letter-spacing: 0%;
     color: var(--text-secondary);
+}
+
+
+.priceWrapper {
+    flex: 1;
+    overflow: auto;
+}
+
+.tempWrapp {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
 }
