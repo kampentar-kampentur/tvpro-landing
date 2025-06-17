@@ -34,17 +34,31 @@
   display: block;
 }
 
-@media (max-width: 900px) {
-  .headerWrapper {
-    flex-direction: column;
-    height: auto;
-    padding: 16px;
-    gap: 16px;
+@media (max-width: 1024px) {
+  .hours,
+  .phoneMobileHide {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+  }
+  .cta.cta {
+    gap: 12px;
+  }
+  .cta .menuButton,
+  button.menuButton {
+    display: inline-flex;
+  }
+
+  .headerWrapper.headerWrapper {
+    padding: 20px 16px;
   }
 }
-
-@media (max-width: 600px) {
-} 
 
 .cta {
   display: flex;
@@ -57,4 +71,9 @@
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
+}
+
+button.menuButton {
+  display: none;
+  background: none;
 }
