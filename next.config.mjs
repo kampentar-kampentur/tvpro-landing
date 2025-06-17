@@ -4,6 +4,9 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
+    env: {
+        BROWSERSLIST_ENV: 'modern'
+    },
     webpack(config) {
         config.module.rules.push({
           test: /\.svg$/,

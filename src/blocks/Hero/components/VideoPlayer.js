@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
-import posterImage from "@/assets/videoplaceholder.png";
+import posterImage from "@/assets/videoplaceholder.webp";
+import Head from 'next/head'
 
 export default function OptimizedVideoPlayer({
   src = "./video.mp4",
@@ -242,6 +243,14 @@ export default function OptimizedVideoPlayer({
       role="region"
       aria-label="Interactive video player"
     >
+      <Head>
+        <link
+          rel="preload"
+          as="image"
+          href={posterImage.src}
+          type="image/webp"
+        />
+      </Head>
       {!isLoaded && (
         <div 
           className={styles.loadingState}

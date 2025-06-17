@@ -7,28 +7,28 @@ import FilterButtons from "./components/FilterButtons";
 import PhotoGrid from "./components/PhotoGrid";
 
 const sliderCardsData = [
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
 ];
 
 const gridImagesData = [
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
-  { src: "/galeryofwork.png", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
+  { src: "/galeryofwork.webp", alt: "TV installation" },
 ];
 
 const GalleryOfWork = () => {

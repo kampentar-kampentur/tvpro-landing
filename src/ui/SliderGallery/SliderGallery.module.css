@@ -31,15 +31,31 @@
 }
 
 .dot {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border: none;
+  background: none;
+  margin: 0 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot::after {
+  content: "";
+  display: block;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background-color: #f6f6f8;
   border: 1px solid #91929c;
-  margin: 0 5px;
-  cursor: pointer;
+  transition: background 0.2s;
 }
 
-.activeDot {
+.activeDot::after {
   background-color: var(--foreground);
 } 

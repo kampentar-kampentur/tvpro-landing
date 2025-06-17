@@ -1,4 +1,3 @@
-
 "use client"
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import styles from './SliderGallery.module.css';
@@ -176,6 +175,7 @@ export const SliderGallery = ({
         key={data.id || index} 
         className={styles.sliderCard} 
         style={{ minWidth: `${cardWidth}%` }}
+        role="listitem"
       >
         <CardComponent {...data} />
       </div>
@@ -193,6 +193,8 @@ export const SliderGallery = ({
         onClick={() => handleDotClick(index)}
         aria-label={`Перейти к слайду ${index + 1}`}
         aria-current={index === activeDotIndex ? 'true' : 'false'}
+        role="tab"
+        aria-selected={index === activeDotIndex}
       />
     )), 
     [totalPages, activeDotIndex, handleDotClick]

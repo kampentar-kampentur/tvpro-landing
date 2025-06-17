@@ -17,7 +17,7 @@ export default function ServiceCard({ image, title, description, buttonText }) {
         </div>
         
         <div className={styles.textWrapper}>
-            <h5 className={styles.title}>{title}</h5>
+            <h4 className={styles.title}>{title}</h4>
             <span className={styles.description}>{description}</span>
         </div>
         <Button className={styles.hiddenButton} variant="primary" size="small" onClick={onButtonClick}>
