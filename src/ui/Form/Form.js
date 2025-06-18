@@ -3,10 +3,10 @@ import { useFormNavigation } from './hooks/useFormNavigation';
 import { useDynamicSteps } from './hooks/useDynamicSteps';
 import FormStep from './components/FormStep';
 import FormNavigation from './components/FormNavigation';
-import FormProgress from '../../modals/BestQuoteModal/components/FormProgress';
+import FormProgress from './components/FormProgress';
 import styles from './Form.module.css';
 import { shouldRenderField } from './utils/formUtils';
-import { usePriceCalculation } from '../../modals/BestQuoteModal/hooks/usePriceCalculation';
+import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalculation';
 
 const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = true, onPriceChange }) => {
   const {

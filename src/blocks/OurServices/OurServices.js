@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./OurServices.module.css";
 import Button from "@/ui/Button";
+import Image from "next/image";
 
 // Placeholder for images
 // import PlaceholderImage from "@/assets/screens/32–60Light.svg"; // You'll need to replace this with actual images
@@ -143,7 +144,7 @@ export default function OurServices() {
         {servicesData.map(service => (
             <div className={`${styles.detailsWrapper} ${service.id === activeServiceId ? '' : 'sr-only'}`} key={service.id}>
                 <div className={styles.detailsImage}>
-                    <img src={service.image} alt={service.title} />
+                    <Image src={service.image} alt={service.title} />
                 </div>
                 <div className={styles.detailsContent}>
                     <h3 className={styles.detailsTitle}>{service.title}</h3>

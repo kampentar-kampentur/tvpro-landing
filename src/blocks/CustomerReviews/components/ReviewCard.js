@@ -1,6 +1,7 @@
 
 import styles from "./ReviewCard.module.css";
 import StarIcon from "@/assets/icons/Star.svg";
+import Image from "next/image";
 
 const ReviewCard = ({ rating, reviewText, authorName, reviewDate, avatar, Logo }) => {
   return (
@@ -17,7 +18,7 @@ const ReviewCard = ({ rating, reviewText, authorName, reviewDate, avatar, Logo }
         <p className={styles.reviewText}>{reviewText}</p>
       </div>
       <div className={styles.authorInfo}>
-        <img src={avatar} alt={authorName} className={styles.avatar} />
+        <Image src={avatar} alt={authorName} className={styles.avatar} />
         <div className={styles.authorDetails}>
           <h4 className={styles.authorName}>{authorName}</h4>
           <p className={styles.reviewDate}>{reviewDate}</p>
