@@ -1,7 +1,14 @@
 .photoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(335px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 32px;
   justify-items: center;
   margin-top: 40px;
 } 
+
+@media (max-width: 1024px) {
+    .photoGrid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 8px;
+    }
+}

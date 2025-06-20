@@ -75,3 +75,14 @@
   color: #91929c;
   margin: 0;
 } 
+
+@media (max-width: 1024px) {
+  .reviewCard {
+    padding: 24px;
+    height: 272px;
+  }
+  .reviewText {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}

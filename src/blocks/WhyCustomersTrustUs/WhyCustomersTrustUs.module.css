@@ -19,3 +19,9 @@
     grid-template-columns: repeat(3, 1fr);
   }
 } 
+
+@media (max-width: 1024px) {
+  .cardsContainer {
+    gap: 8px;
+  }
+}

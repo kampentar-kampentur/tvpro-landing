@@ -59,6 +59,7 @@
   font-size: 20px;
   font-weight: 500;
   color: var(--white);
+  line-height: 28px;
 }
 
 .socialIcons {
@@ -92,7 +93,7 @@
   display: block;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .contactsContainer {
     border-radius: 0;
     padding: 60px 20px;
@@ -105,5 +106,13 @@
 
   .socialNetworksSection {
     margin-top: 20px;
+  }
+
+  .detailTitle {
+      font-size: 14px;
+      line-height: 20px;
+  }
+  .contacts {
+    padding: 40px 0;
   }
 } 

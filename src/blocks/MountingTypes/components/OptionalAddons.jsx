@@ -8,8 +8,8 @@ export default function OptionalAddons() {
         <button className={styles.button}>Wire Concealment Kits</button>
         <button className={styles.button}>TV Bracket Supply</button>
         <button className={styles.button}>Soundbar Bracket Install</button>
-        <button className={styles.button}>Shelves for media devices</button>
         <button className={styles.button}>Fireplace installation</button>
+        <button className={styles.button}>Shelves for media devices</button>
       </div>
     </div>
   );

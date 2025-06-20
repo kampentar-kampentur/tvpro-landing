@@ -20,3 +20,13 @@
   color: var(--gray);
   margin-top: 4px;
 } 
+
+@media (max-width: 1024px) {
+  .trustCard {
+    padding: 24px 20px;
+  }
+  .trustCard .description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

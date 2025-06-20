@@ -37,3 +37,20 @@
   cursor: pointer;
   white-space: nowrap;
 } 
+
+@media (max-width: 1024px) {
+  .optionalAddonsContainer {
+    padding: 16px;
+  }
+  .heading {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .button {
+    padding: 8px 16px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+  }
+}

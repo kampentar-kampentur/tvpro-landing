@@ -90,3 +90,13 @@
         visibility: visible;
     }
 }
+
+@media (max-width: 1024px) {
+    .description {
+        font-size: 14px;
+    }
+    .serviceCard {
+        padding: 24px 20px;
+        min-height: auto
+    }
+}

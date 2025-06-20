@@ -8,7 +8,7 @@
 .ourServicesContainer {
   background-color: #0f0e13;
   border-radius: 20px;
-  padding: 60px 100px;
+  padding: 60px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,11 +17,8 @@
 
 .mainHeading {
   color: #f6f6f8;
-  font-weight: 500;
-  font-size: 44px;
-  text-align: left;
   width: 100%;
-  max-width: 1180px; /* Aligned with Figma */
+  max-width: 1180px; 
 }
 
 .categoriesWrapper {
@@ -29,7 +26,7 @@
   flex-wrap: wrap;
   gap: 12px;
   width: 100%;
-  max-width: 1180px; /* Aligned with Figma */
+  max-width: 1180px;
 }
 
 .categoryButton {
@@ -104,26 +101,30 @@
   color: #ffffff;
   font-weight: 400;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 24px;
 }
 
 .detailsImage {
   flex: 1;
   border-radius: 12px;
   overflow: hidden;
+  width: 528px;
+  height: 528px;
 }
 
 .detailsImage img {
   width: 100%;
   height: auto;
   display: block;
+  object-fit: cover;
 } 
 
 
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
     .ourServicesContainer {
         border-radius: 0;
         padding: 60px 20px;
+        gap: 16px;
     }
     .categoriesWrapper {
         flex-wrap: nowrap;
@@ -134,5 +135,17 @@
     }
     .detailsWrapper {
         flex-direction: column;
+        margin-top: 12px;
+    }
+    .ourServices {
+        padding: 40px 0;
+    }
+    .detailsImage {
+        width: 370px;
+        height: 350px;
+    }
+    .detailsTitle {
+        font-size: 20px;
+        line-height: 28px;
     }
 }

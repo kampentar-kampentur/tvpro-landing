@@ -88,4 +88,11 @@ a {
     font-size: 16px;
     line-height: 24px;
   }
+  .block {
+    padding: 40px 16px;
+  }
+  .blockHeading {
+    font-size: 28px;
+    line-height: 36px;
+  }
 }

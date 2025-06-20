@@ -30,7 +30,7 @@ const Footer = () => {
         
         <div className={styles.contactInfo}>
           <div className={styles.contactItem}>
-            <h4 className={styles.contactLabel}>Phone</h4>
+            <h4 className={styles.contactLabel}>Phone Number</h4>
             <p className={styles.contactText}>
               <a
                 href="tel:+18882666660" 

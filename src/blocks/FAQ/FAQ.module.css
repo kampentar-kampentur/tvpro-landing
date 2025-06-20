@@ -60,3 +60,16 @@
   max-height: 200px; /* Adjust as needed, a large enough value to show all content */
   margin-top: 8px;
 } 
+
+
+@media (max-width: 1024px) {
+    .faqQuestion {
+        font-size: 16px;
+        line-height: 24px;
+    }
+    .faqAnswer {
+          font-size: 14px;
+          line-height: 20px;
+    }
+  } 
+  

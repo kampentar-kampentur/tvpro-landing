@@ -32,7 +32,14 @@
   color: var(--green);
 }
 
-@media (max-width: 900px) {
+.navbarWrapper {
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .navbarWrapper {
+    display: none;
+  }
   .navLinks {
     flex-direction: column;
     height: auto;
@@ -46,16 +53,6 @@
   }
   .navLinks li {
     padding: 4px;
-  }
-}
-
-.navbarWrapper {
-  display: block;
-}
-
-@media (max-width: 1024px) {
-  .navbarWrapper {
-    display: none;
   }
 }
 

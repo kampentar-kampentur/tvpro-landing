@@ -1,12 +1,13 @@
 
 import styles from "./PhotoGrid.module.css";
 import PhotoCard from "./PhotoCard";
+import photoStyles from "./PhotoCard.module.css"
 
 const PhotoGrid = ({ images }) => {
   return (
     <div className={styles.photoGrid}>
       {images.map((image, index) => (
-        <PhotoCard key={index} src={image.src} alt={image.alt} width={372} height={280} />
+        <PhotoCard className={photoStyles.photoCell} key={index} src={image.src} alt={image.alt} />
       ))}
     </div>
   );

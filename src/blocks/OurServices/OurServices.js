@@ -124,7 +124,7 @@ export default function OurServices() {
   return (
     <section className={styles.ourServices} id="services">
       <div className={`blockContainer ${styles.ourServicesContainer}`}>
-        <h2 className={styles.mainHeading}>Our Services</h2>
+        <h2 className={`${styles.mainHeading} blockHeading`}>Our Services</h2>
         <div className={styles.categoriesWrapper}>
           {servicesData.map((service) => (
             <button
