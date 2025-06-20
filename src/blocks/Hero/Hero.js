@@ -8,13 +8,11 @@ import VideoPlayer from "./components/VideoPlayer";
 
 async function getHero() {
   const res = await fetch(`${process.env.SRTAPI_URL}/api/hero?populate=*`);
-  console.log(res);
-  
   const json = await res.json();
   return json.data;
 }
 async function getHeroRunningLines() {
-  const res = await fetch('http://localhost:1337/api/hero-text-lines');
+  const res = await fetch(`${process.env.SRTAPI_URL}/api/hero-text-lines`);
   const json = await res.json();
   return json.data;
 }
@@ -22,8 +20,6 @@ async function getHeroRunningLines() {
 export default async function Hero() {
   const heroData = await getHero();
   const heroLinesData = await getHeroRunningLines();
-  console.log('heroData', heroData);
-  console.log('heroLinesData',heroLinesData);
 
   return (
     <>
