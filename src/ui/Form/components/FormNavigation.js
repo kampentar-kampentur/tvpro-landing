@@ -18,10 +18,10 @@ const FormNavigation = ({
         type={isLastStep ? "submit" : "button"}
         disabled={!canGoForward}
       >
-        {isLastStep ? "Submit" : "Next Step"}
+        {isLastStep ? "Next" : "Next"}
       </Button>
       {canGoBack && (
-        <Button onClick={onPrevious} variant="secondary" size='small'>Previous Step</Button>
+        <Button onClick={onPrevious} variant="secondary" size='small'>Back</Button>
       )}
     </div>
   );

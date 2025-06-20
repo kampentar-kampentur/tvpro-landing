@@ -1,9 +1,9 @@
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 
-export default function Navbar({ showMenu }) {
+export default function Navbar() {
   return (
-    <div className={showMenu ? styles.navbarWrapper + ' ' + styles.navbarWrapperMobileOpen : styles.navbarWrapper}>
+    <div className={styles.navbarWrapper}>
       <nav className={styles.navbar} aria-label="Main Navigation">
         <ul className={styles.navLinks}>
           <li><Link href="/">Home</Link></li>

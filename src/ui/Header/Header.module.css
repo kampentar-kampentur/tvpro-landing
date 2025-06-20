@@ -64,6 +64,7 @@
   display: flex;
   align-items: center;
   gap: 24px;
+  margin-left: auto;
 }
 
 .hours {
@@ -76,4 +77,44 @@
 button.menuButton {
   display: none;
   background: none;
+}
+
+.menuButton {
+  display: none;
+}
+
+.menuToggle {
+  display: none;
+}
+
+.menuLabel {
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (min-width: 1025px) {
+  .menuButton {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .menuButton {
+    display: inline-flex;
+  }
+  .phoneMobileHide {
+    display: none;
+  }
+
+  .menuToggle:checked ~ .cta .menuLabel::before {
+    content: 'Close';
+  }
+
+  .menuToggle:not(:checked) ~ .cta .menuLabel::before {
+    content: 'Menu';
+  }
+
+  .menuToggle:checked ~ div[class*="navbarWrapper"] {
+    display: block;
+  }
 }

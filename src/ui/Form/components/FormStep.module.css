@@ -1,5 +1,6 @@
 .formStep {
     /* Add any specific styles for the FormStep container here */
+    flex-grow: 1;
 }
 
 .fieldLabel {

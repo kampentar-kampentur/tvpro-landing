@@ -11,6 +11,7 @@ import FAQ from "@/blocks/FAQ";
 import Contacts from "@/blocks/Contacts";
 import Footer from "@/blocks/Footer";
 import BestQuoteModal from "@/modals/BestQuoteModal";
+import BookNowModal from "@/modals/BookNowModal";
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
       <Contacts />
       <Footer />
       <BestQuoteModal/>
+      <BookNowModal/>
     </div>
   );
 }

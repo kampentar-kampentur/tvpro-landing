@@ -4,6 +4,7 @@ import ReviewCard from "./components/ReviewCard";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
 import Button from "@/ui/Button/Button";
 import GoogleLogo from "@/assets/socialIcons/Google.svg"
+import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 
 const reviewCardsData = [
   {
@@ -74,7 +75,7 @@ const CustomerReviews = () => {
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
         <div className={styles.ctaButtons}>
           <Button variant="secondary" size="small">Leave Yours Here!</Button>
-          <Button variant="primary" size="small">Get The Best Quote</Button>
+          <QuoteButton/>
         </div>
       </div>
     </section>

@@ -5,6 +5,7 @@ import Button from "@/ui/Button";
 // import Image from "next/image";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import VideoPlayer from "./components/VideoPlayer";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 
 async function getHero() {
   const res = await fetch(`${process.env.SRTAPI_URL}/api/hero?populate=*`);
@@ -43,7 +44,7 @@ export default async function Hero() {
             ))}
           </p>
           <div className={styles.buttonWrapper}>
-              <Button>Get a Free Quote</Button>
+            <QuoteButton/>
           </div>
           <div className={styles.badgesWrapper}>
               {heroData.badges.map(badge => (

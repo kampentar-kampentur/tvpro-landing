@@ -39,6 +39,14 @@
 @media (max-width: 1024px) {
   .navbarWrapper {
     display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    background: var(--background);
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    animation: fadeIn 0.2s;
   }
   .navLinks {
     flex-direction: column;
@@ -54,18 +62,6 @@
   .navLinks li {
     padding: 4px;
   }
-}
-
-.navbarWrapperMobileOpen {
-  display: block !important;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100vw;
-  background: var(--background);
-  z-index: 1000;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  animation: fadeIn 0.2s;
 }
 
 @keyframes fadeIn {
