@@ -139,6 +139,14 @@ export default function OptimizedVideoPlayer({
     };
   }, [handleScroll, isVisible]);
 
+  useEffect(() => {
+    if(isVisible && !isLowPerformance && videoRef.current.paused) {
+      console.log(11111);
+      
+      videoRef.current.play()
+    }
+  }, [isVisible])
+
   // Video event handlers
   const handleVideoLoad = useCallback(() => {
     setIsLoaded(true);

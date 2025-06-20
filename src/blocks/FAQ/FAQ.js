@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import styles from "./FAQ.module.css";
 import PlusIcon from "@/assets/icons/plus.svg";

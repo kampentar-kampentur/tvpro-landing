@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import styles from "./FilterButtons.module.css";
 import Button from "@/ui/Button";

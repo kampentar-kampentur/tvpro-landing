@@ -144,7 +144,7 @@ export default function OurServices() {
         {servicesData.map(service => (
             <div className={`${styles.detailsWrapper} ${service.id === activeServiceId ? '' : 'sr-only'}`} key={service.id}>
                 <div className={styles.detailsImage}>
-                    <Image src={service.image} alt={service.title} />
+                    <Image src={service.image} alt={service.title} width={400} height={300} />
                 </div>
                 <div className={styles.detailsContent}>
                     <h3 className={styles.detailsTitle}>{service.title}</h3>

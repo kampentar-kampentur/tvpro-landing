@@ -2,8 +2,8 @@
   overflow: hidden;
   white-space: nowrap;
   box-sizing: border-box;
-  height: 20px; /* Based on Figma text line height */
-  position: relative; /* Needed for absolute positioning of overlays */
+  height: 20px;
+  position: relative;
   width: 100%;
   max-width: 1360px;
   margin: 0 auto;
@@ -14,9 +14,10 @@
   content: '';
   position: absolute;
   top: 0;
-  width: 100px; /* Adjust width of the fade as needed */
+  width: 100px;
   height: 100%;
   z-index: 1;
+  pointer-events: none;
 }
 
 .marquee::before {
@@ -30,16 +31,32 @@
 }
 
 .marqueeContent {
-  display: flex; /* Use flexbox to keep items in a row */
+  display: flex;
   align-items: center;
-  will-change: transform; /* Optimize for animation */
+  will-change: transform;
+  animation: scroll-left 20s linear infinite;
+}
+
+/* CSS анимация для бегущей строки */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%); /* Сдвигаем на треть контента */
+  }
+}
+
+/* Пауза анимации при наведении */
+.marquee:hover .marqueeContent {
+  animation-play-state: paused;
 }
 
 .textLine {
-  flex-shrink: 0; /* Prevent items from shrinking */
+  flex-shrink: 0;
   display: inline-block;
-  padding-right: 32px; /* Gap between repetitions of the text line */
-  font-size: 14px; /* Based on Figma font size */
+  padding-right: 8px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 20px;
 }
@@ -54,4 +71,18 @@
 
 .subText {
   color: var(--gray);
-} 
+}
+
+/* Альтернативная версия с динамической скоростью */
+.marqueeContent.dynamic {
+  animation: scroll-left-dynamic var(--animation-duration, 60s) linear infinite;
+}
+
+@keyframes scroll-left-dynamic {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}

@@ -1,4 +1,4 @@
-
+"use client"
 import styles from "./PhotoCard.module.css";
 import Image from "next/image";
 
