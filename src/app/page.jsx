@@ -12,6 +12,7 @@ import Contacts from "@/blocks/Contacts";
 import Footer from "@/blocks/Footer";
 import BestQuoteModal from "@/modals/BestQuoteModal";
 import BookNowModal from "@/modals/BookNowModal";
+import SeeYouSoonModal from "@/modals/SeeYouSoonModal";
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
       <Footer />
       <BestQuoteModal/>
       <BookNowModal/>
+      <SeeYouSoonModal/>
     </div>
   );
 }

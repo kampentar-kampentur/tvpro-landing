@@ -8,12 +8,12 @@ import VideoPlayer from "./components/VideoPlayer";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 
 async function getHero() {
-  const res = await fetch(`${process.env.SRTAPI_URL}/api/hero?populate=*`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
   const json = await res.json();
   return json.data;
 }
 async function getHeroRunningLines() {
-  const res = await fetch(`${process.env.SRTAPI_URL}/api/hero-text-lines`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero-text-lines`);
   const json = await res.json();
   return json.data;
 }
@@ -58,7 +58,7 @@ export default async function Hero() {
           </div>
         </div>
       </section>
-      <VideoPlayer src={process.env.SRTAPI_URL + heroData.video.url}/>
+      <VideoPlayer src={process.env.NEXT_PUBLIC_SRTAPI_URL + heroData.video.url}/>
     </>
   );
 }

@@ -1,11 +1,12 @@
 "use client"
 
-import { useModalState } from "@/providers/ModalProvider";
+import { useModalState, useModal } from "@/providers/ModalProvider";
 import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form"
 import React, { useState } from "react";
 import PriceSummary from "./components/PriceSummary";
+import Button from "@/ui/Button";
 
 
 const example = {
@@ -52,7 +53,7 @@ const example = {
             ]
           },
           {
-            "name": "numberTechnicans",
+            "name": "extraTechnicans",
             "type": "radio",
             "label": "Select number of technicians for Over 81″",
             "showIf": {
@@ -245,9 +246,40 @@ const example = {
 
 const BestQuoteModal = () => {
   const {isOpen, close} = useModalState('BestQuote');
+  const { openModal } = useModal();
   const [formData, setFormData] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function onSubmit(e) {
+    e?.preventDefault?.();
+    setIsSubmitting(true);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
+      const response = await fetch(`${apiUrl}/api/best-quote`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: formData }),
+      });
+      if (response.ok) {
+        close();
+        setFormData({});
+        openModal('SeeYouSoon');
+      } else {
+        const errorData = await response.json();
+        console.error('Form submission error:', errorData);
+        alert('An error occurred. Please try again.');
+      }
+    } catch (error) {
+      console.error('Failed to send form:', error);
+      alert('Failed to send request. Please check your connection.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   const handlePriceChange = (newTotalPrice, newStructuredCostBreakdown) => {
     setTotalPrice(newTotalPrice);
@@ -278,7 +310,11 @@ const BestQuoteModal = () => {
                 </div>
             </aside>
             <main className={styles.bestQuoteMain}>
-                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange}></Form>
+                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange} onSubmit={onSubmit}>
+                  <Button type="submit" disabled={isSubmitting} className={styles.button}>
+                    {isSubmitting ? 'Sending...' : 'Send'}
+                  </Button>
+                </Form>
             </main>
         </div>
     </Modal>
