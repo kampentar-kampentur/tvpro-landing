@@ -21,6 +21,7 @@ async function getGalleryOfWork() {
   console.log("getGalleryOfWork");
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/gallery-of-work?populate=*`);
   const json = await res.json();
+  console.log("getGalleryOfWork res");
   
   return json.data;
 }
@@ -29,6 +30,8 @@ async function getGalleryPhotos() {
   console.log('getGalleryPhotos');
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*`);
   const json = await res.json();
+  console.log('getGalleryPhotos res');
+
   return json.data;
 }
 
