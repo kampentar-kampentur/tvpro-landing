@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../OurServices.module.css";
-import Image from "next/image";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 
 const INTERVAL_TIME = 5000; // 5 seconds
 
@@ -62,7 +62,7 @@ export default function OurServicesInteractive({servicesData}) {
             {servicesData.map(service => (
                 <div className={`${styles.detailsWrapper} ${service.id === activeServiceId ? '' : 'sr-only'}`} key={service.id}>
                     <div className={styles.detailsImage}>
-                        <Image src={process.env.NEXT_PUBLIC_SRTAPI_URL + service.image.url} alt={service.title} width={400} height={300} />
+                        <ImageWrapper image={service.image} />
                     </div>
                     <div className={styles.detailsContent}>
                         <h3 className={styles.detailsTitle}>{service.title}</h3>

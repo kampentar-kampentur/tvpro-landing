@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
-import Button from "@/ui/Button";
-// import Image from "next/image";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import VideoPlayer from "./components/VideoPlayer";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
@@ -55,7 +53,7 @@ export default async function Hero() {
           </div>
         </div>
       </section>
-      <VideoPlayer src={process.env.NEXT_PUBLIC_SRTAPI_URL + heroData.video.url}/>
+      <VideoPlayer src={heroData.video.url}/>
     </>
   );
 }

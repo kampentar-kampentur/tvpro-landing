@@ -1,11 +1,11 @@
 import Image from "next/image";
 
 export default function ImageWrapper({media, className, defaultAlt}) {
-    return <Image
+    return media && <Image
         className={className} 
         width={media.width}
         height={media.height}
-        src={process.env.NEXT_PUBLIC_SRTAPI_URL + media.url}
+        src={media.url}
         alt={media.alternativeText || media.caption || defaultAlt || "Some Image"}
     />
 } 

@@ -1,7 +1,7 @@
 import styles from "./OurServices.module.css";
-import Image from "next/image";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import OurServicesInteractive from "./components/OurServicesInteractive";
+import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 
 async function getOurServices() {
     console.log("getOurServices");
@@ -36,7 +36,7 @@ export default async function OurServices() {
             {servicesData.services.map(service => (
                 <div className={`${styles.detailsWrapper} sr-only`} key={service.id}>
                     <div className={styles.detailsImage}>
-                        <Image src={process.env.NEXT_PUBLIC_SRTAPI_URL + service.image.url} alt={service.title} width={400} height={300} />
+                        <ImageWrapper image={service.image}/>
                     </div>
                     <div className={styles.detailsContent}>
                         <h3 className={styles.detailsTitle}>{service.title}</h3>
