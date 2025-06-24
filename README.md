@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📥 TVPro Landing Page – Next.js + Strapi CMS
 
-## Getting Started
+A clean, modern landing page built with **Next.js**, powered by **Strapi CMS** and deployed seamlessly via **GitHub Actions** to **Cloudflare Pages**. Media assets are hosted efficiently on **Cloudinary** for performance and scalability.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📦 Repositories
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Purpose          | Repository Link                         |
+|------------------|------------------------------------------|
+| Landing Frontend | [GitHub →](https://github.com/kampentar-kampentur/tvpro-landing/tree/main) |
+| CMS (Strapi)     | [GitHub →](https://github.com/kampentar-kampentur/strapi)   |
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Frontend:** [Next.js](https://nextjs.org/) – Static optimized landing page  
+- **CMS:** [Strapi](https://strapi.io/) – Headless content management  
+- **Media Hosting:** [Cloudinary](https://cloudinary.com/) – Efficient image & video delivery  
+- **Deployment:**
+  - **Landing page:** [Cloudflare Pages](https://pages.cloudflare.com/) via GitHub Actions CI
+  - **CMS backend:** Hosted on [Railway](https://railway.app/)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Deployment Flow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🔹 Frontend (Landing)
 
-## Deploy on Vercel
+1. **Code pushed to GitHub** → triggers **GitHub Actions** workflow
+2. Next.js builds the static site
+3. Output deployed to **Cloudflare Pages**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🔹 Backend (Strapi)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Hosted on **Railway** with automatic deployment from main branch
+
+---
+
+## 🖼️ Media Handling
+
+- All media content (images, videos, etc.) is **uploaded and served via Cloudinary**
+- Cloudinary is **integrated with Strapi**, enabling seamless asset management from the CMS panel
+
+---
+
+## 📇 Content Editing
+
+- The marketing/content team can **manage all text, images, and galleries** directly from Strapi’s admin panel
+- Includes content types like:
+  - Services
+  - Gallery with filters (e.g., “Wall-mounted”, “Wireless”, etc.)
+  - SEO metadata
+
+---
+
+## 🌐 Domains
+
+- Domain purchased via **GoDaddy**
+- Connected to **Cloudflare DNS** for full control and HTTPS
+
+---
+
+## 📝 To-Do / Future Improvements
+
+- [ ] Enable preview mode via draft/published toggle from Strapi
+- [ ] Add analytics (e.g., Plausible / GA4)
+- [ ] Enable form submissions (e.g., with Netlify Forms or Strapi endpoint)
+
+---
+
+## 🧠 Notes
+
+- This repo is focused on **frontend delivery** – see the [admin repo](hhttps://github.com/kampentar-kampentur/strapi) for backend configuration and API setup.
+- The entire stack is **serverless-friendly**, allowing smooth scaling.
+
+---
+
