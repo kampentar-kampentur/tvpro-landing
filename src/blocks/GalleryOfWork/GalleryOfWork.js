@@ -3,8 +3,9 @@ import styles from "./GalleryOfWork.module.css";
 import PhotoCard from "./components/PhotoCard";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
 import Button from "@/ui/Button/Button";
-import FilterButtons from "./components/FilterButtons";
-import PhotoGrid from "./components/PhotoGrid";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import GalleryGerid from "./components/GalleryGrid";
+import Text from "@/ui/Text/Text";
 
 const sliderCardsData = [
   { src: "/galeryofwork.webp", alt: "TV installation" },
@@ -16,46 +17,48 @@ const sliderCardsData = [
   { src: "/galeryofwork.webp", alt: "TV installation" },
 ];
 
-const gridImagesData = [
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-  { src: "/galeryofwork.webp", alt: "TV installation" },
-];
+async function getGalleryOfWork() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/gallery-of-work?populate=*`);
+  const json = await res.json();
+  console.log("getGalleryOfWork", json);
+  
+  return json.data;
+}
 
-const GalleryOfWork = () => {
+async function getGalleryPhotos() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*`);
+  const json = await res.json();
+  
+  return json.data;
+}
+
+const GalleryOfWork = async () => {
+  const galleryOfWorkData = await getGalleryOfWork();
+  const galleryPhotos = await getGalleryPhotos();
+
   return (
     <section className={styles.galleryOfWork} id="gallery">
       <div className="block">
         <header className={styles.galleryOfWorkHeader}>
           <h3 className="blockHeading">
-            Gallery of Our Work
+            <Text text={galleryOfWorkData.title}/>
           </h3>
-          <p className="subText">See real installations by our team — clean, level, and built to last.</p>
+          <p className="subText"><Text text={galleryOfWorkData.title}/></p>
         </header>
       </div>
       <div className={styles.sliderWrap}>
         <SliderGallery
           CardComponent={PhotoCard}
-          cardData={sliderCardsData}
+          cardData={galleryPhotos}
           cardsPerPage={4}
         />
       </div>
       <div className="block">
-        <FilterButtons />
-        <PhotoGrid images={gridImagesData} />
+        <GalleryGerid filters={galleryOfWorkData.types}/>
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
           <div className={styles.ctaButtons}>
-            <Button variant="primary" size="small">Book Your Install Today</Button>
+            <QuoteButton variant="primary" size="small" modalName="BookNow">Book Your Install Today</QuoteButton>
           </div>
         </div>
       </div>

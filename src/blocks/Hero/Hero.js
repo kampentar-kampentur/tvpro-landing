@@ -6,6 +6,7 @@ import Button from "@/ui/Button";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import VideoPlayer from "./components/VideoPlayer";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import Text from "@/ui/Text/Text";
 
 async function getHero() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
@@ -28,20 +29,10 @@ export default async function Hero() {
       <section className={`block ${styles.hero}`}>
         <div className={`blockContainer ${styles.heroContainer}`}>
           <h1 className={styles.mainHeading}>
-            {heroData.title.split('\n').map((text, index) => (
-              <React.Fragment key={index}>
-                {text}
-                <br />
-              </React.Fragment>
-            ))}
+            <Text text={heroData.title}/>
           </h1>
           <p className="subText">
-            {heroData.subTitle.split('\n').map((text, index) => (
-              <React.Fragment key={index}>
-                {text}
-                <br />
-              </React.Fragment>
-            ))}
+            <Text text={heroData.subTitle}/>
           </p>
           <div className={styles.buttonWrapper}>
             <QuoteButton/>

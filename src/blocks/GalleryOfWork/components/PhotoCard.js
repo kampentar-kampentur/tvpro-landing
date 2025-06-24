@@ -1,11 +1,12 @@
 "use client"
 import styles from "./PhotoCard.module.css";
 import Image from "next/image";
+import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 
-const PhotoCard = ({ src, alt, className }) => {
+const PhotoCard = ({ image, className }) => {
   return (
     <div className={`${styles.photoCard} ${className}`}>
-      <Image src={src} alt={alt} width={300} height={400} className={styles.image}/>
+      {image && <ImageWrapper media={image} className={styles.image} />}
     </div>
   );
 };

@@ -42,27 +42,27 @@ const Contacts = () => {
         <div className={styles.socialNetworksSection}>
           <h3 className={styles.detailTitle}>Social Networks</h3>
           <div className={styles.socialIcons}>
-            <a href="#" className={styles.socialIconLink}>
+            <a href="https://www.facebook.com/share/1DgjVSoeN5/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className={styles.socialIconLink}>
               <FacebookDefault className={styles.defaultIcon} />
               <FacebookHover className={styles.hoverIcon} />
             </a>
-            <a href="#" className={styles.socialIconLink}>
+            <a href="https://www.instagram.com/tvprohandyservices?igsh=d3RrZ2N3bW5iOHg0" target="_blank" rel="noopener noreferrer" className={styles.socialIconLink}>
               <InstagramDefault className={styles.defaultIcon} />
               <InstagramHover className={styles.hoverIcon} />
             </a>
-            <a href="#" className={styles.socialIconLink}>
+            <a href="https://www.tiktok.com/@tvpro.handy.servi?_t=ZT-8xNfkpJVEjN&_r=1" target="_blank" rel="noopener noreferrer" className={styles.socialIconLink}>
               <TikTokDefault className={styles.defaultIcon} />
               <TikTokHover className={styles.hoverIcon} />
             </a>
-            <a href="#" className={styles.socialIconLink}>
+            {/* <a href="#" target="_blank" rel="noopener noreferrer" className={styles.socialIconLink}>
               <YouTubeDefault className={styles.defaultIcon} />
               <YouTubeHover className={styles.hoverIcon} />
-            </a>
-            <a href="#" className={styles.socialIconLink}>
+            </a> */}
+            <a href="https://yelp.to/361jlVGZ50" target="_blank" rel="noopener noreferrer" className={styles.socialIconLink}>
               <YelpDefault className={styles.defaultIcon} />
               <YelpHover className={styles.hoverIcon} />
             </a>
-            <a href="#" className={styles.socialIconLink}>
+            <a href="https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254" target="_blank" rel="noopener noreferrer" className={styles.socialIconLink}>
               <ThumbtackDefault className={styles.defaultIcon} />
               <ThumbtackHover className={styles.hoverIcon} />
             </a>
