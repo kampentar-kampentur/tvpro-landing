@@ -32,7 +32,7 @@ const GalleryOfWork = async () => {
           <h3 className="blockHeading">
             <Text text={galleryOfWorkData.title}/>
           </h3>
-          <p className="subText"><Text text={galleryOfWorkData.title}/></p>
+          <p className="subText"><Text text={galleryOfWorkData.subTitle}/></p>
         </header>
       </div>
       <div className={styles.sliderWrap}>

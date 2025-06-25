@@ -18,8 +18,9 @@ const images = [
 ];
 
 async function getTVSizes() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-size?populate=*`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-size?populate[tvsizes][populate]=*`);
   const json = await res.json();
+  console.log("getTVSizes", json);
   
   return json.data;
 }
@@ -40,7 +41,7 @@ export default async function TVSizes() {
         {tvSizesData.tvsizes && tvSizesData.tvsizes.length && tvSizesData.tvsizes.map((card, index) => (
           <ServiceCard
             key={card.id || index}
-            image={images[index] || null}
+            image={card.image}
             title={card.title}
             description={card.description}
             buttonText="Get The Best Quote"

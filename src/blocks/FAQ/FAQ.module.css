@@ -14,21 +14,17 @@
 .faqItem {
   border-bottom: 1px solid var(--gray-light);
   padding-bottom: 20px;
-  cursor: pointer;
 }
 
 .faqItem:last-child {
   border-bottom: none;
 }
 
-.faqItem.active .faqQuestion {
-  color: #0e0e13;
-}
-
 .faqQuestionContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 }
 
 .icon {
@@ -38,6 +34,19 @@
   align-items: center;
   justify-content: center;
   color: #27B44F;
+  position: relative;
+}
+
+.plusIcon {
+  display: block;
+}
+
+.minusIcon {
+  display: none;
+}
+
+.faqToggle {
+  display: none;
 }
 
 .faqQuestion {
@@ -46,28 +55,33 @@
   margin-bottom: 8px;
 }
 
-.faqAnswer {
-  font-size: 16px;
-  line-height: 24px;
-  padding-right: 24px; /* To make space for the icon */
-  margin-top: 0;
+.faqAnswerWrapper {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out, margin-top 0.3s ease-out;
+  margin-top: 0;
 }
 
-.faqItem.active .faqAnswer {
-  max-height: 200px; /* Adjust as needed, a large enough value to show all content */
+.faqToggle:checked + .faqQuestionContainer .plusIcon {
+  display: none;
+}
+.faqToggle:checked + .faqQuestionContainer .minusIcon {
+  display: block;
+}
+.faqToggle:checked + .faqQuestionContainer .faqQuestion {
+  color: #0e0e13;
+}
+.faqToggle:checked + .faqQuestionContainer + .faqAnswerWrapper {
+  max-height: 200px; /* Adjust as needed */
   margin-top: 8px;
-} 
-
+}
 
 @media (max-width: 1024px) {
     .faqQuestion {
         font-size: 16px;
         line-height: 24px;
     }
-    .faqAnswer {
+    .faqAnswerWrapper {
           font-size: 14px;
           line-height: 20px;
     }

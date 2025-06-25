@@ -1,11 +1,11 @@
-
 import styles from "./TrustCard.module.css";
+import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 
-const TrustCard = ({ icon, title, description }) => {
+const TrustCard = ({ image, title, description }) => {
   return (
     <div className={styles.trustCard}>
       <div className={styles.iconContainer}>
-        {icon}
+        <ImageWrapper media={image} />
       </div>
       <div>
         <h3 className={styles.title}>{title}</h3>

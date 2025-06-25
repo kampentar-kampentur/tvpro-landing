@@ -5,6 +5,7 @@ import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
 import Button from "@/ui/Button/Button";
 import GoogleLogo from "@/assets/socialIcons/Google.svg"
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import Text from "@/ui/Text/Text";
 
 const reviewCardsData = [
   {
@@ -57,14 +58,22 @@ const reviewCardsData = [
   },
 ];
 
-const CustomerReviews = () => {
+async function getCustomerReviews() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/customer-review?populate=*`);
+  const json = await res.json();
+  console.log("getCustomerReviews",json)
+  return json.data;
+}
+
+const CustomerReviews = async () => {
+  const customerReviewsData = await getCustomerReviews();
   return (
     <section className={`block ${styles.customerReviews}`}>
       <header className={styles.customerReviewsHeader}>
         <h3 className="blockHeading">
-          Customer Reviews
+          <Text text={customerReviewsData.title}/>
         </h3>
-        <p className="subText">Hear from real customers who&apos;ve trusted us to mount their TVs — fast, clean, and professionally.</p>
+        <p className="subText"><Text text={customerReviewsData.subTitle}/></p>
       </header>
       <SliderGallery
         CardComponent={ReviewCard}
