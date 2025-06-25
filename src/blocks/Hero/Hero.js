@@ -7,18 +7,14 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
 
 async function getHero() {
-  console.log('getHero');
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
   const json = await res.json();
-  console.log('getHero res');
   
   return json.data;
 }
 async function getHeroRunningLines() {
-  console.log('getHeroRunningLines');
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero-text-lines`);
   const json = await res.json();
-  console.log('getHeroRunningLines res');
 
   return json.data;
 }

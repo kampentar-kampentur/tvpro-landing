@@ -4,14 +4,14 @@ import Button from "@/ui/Button";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import buttonStyles from "@/ui/Button/Button.module.css";
 
-export default function HeaderActions() {
+export default function HeaderActions({cta}) {
     return (
         <>
             <input type="checkbox" id="menu-toggle" className={styles.menuToggle} />
             <Navbar />
             <div className={styles.cta}>
-                <span className={styles.hours}>8 AM – 10 PM Daily</span>
-                <Button variant="secondary" size="small" href="tel:8882666660" className={styles.phoneMobileHide}>(888) 266-6660</Button>
+                <span className={styles.hours}>{cta.workHours}</span>
+                <Button variant="secondary" size="small" href={`tel:${cta.phone}`} className={styles.phoneMobileHide}>{cta.phoneLabel}</Button>
                 <QuoteButton size="small" modalName="BookNow">Book Now</QuoteButton>
                 <label 
                     htmlFor="menu-toggle" 

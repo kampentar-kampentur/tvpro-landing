@@ -13,7 +13,15 @@ import YelpHover from "@/assets/socialIcons/YelpHover.svg";
 import ThumbtackDefault from "@/assets/socialIcons/ThumbtackDefault.svg";
 import ThumbtackHover from "@/assets/socialIcons/ThumbtackHover.svg";
 
-const Contacts = () => {
+async function getCTA() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
+    const json = await res.json();
+
+    return json.data;
+}  
+
+const Contacts = async () => {
+  const cta = await getCTA();
   return (
     <section className={styles.contacts} id="contact">
       <div className={`blockContainer ${styles.contactsContainer}`}>
@@ -24,18 +32,18 @@ const Contacts = () => {
         <div className={styles.contactDetailsSection}>
             <div className={styles.detailItem}>
                 <h3 className={styles.detailTitle}>Working Hours</h3>
-                <p className={styles.detailText}>8 AM – 10 PM Daily</p>
+                <p className={styles.detailText}>{cta.workHours}</p>
             </div>
             <div className={styles.detailItem}>
                 <h3 className={styles.detailTitle}>Phone Number</h3>
                 <p className={styles.detailText}>
-                    <a href="tel:+18882666660">(888) 266-6660</a>
+                    <a href={`tel:${cta.phone}`}>{cta.phoneLabel}</a>
                 </p>
             </div>
             <div className={styles.detailItem}>
                 <h3 className={styles.detailTitle}>Email</h3>
                 <p className={styles.detailText}>
-                    <a href="mailto:tvprohandyservices@gmail.com">tvprohandyservices@gmail.com</a>
+                    <a href={`mailto:${cta.email}`}>{cta.email}</a>
                 </p>
             </div>
         </div>

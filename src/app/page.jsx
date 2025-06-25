@@ -27,7 +27,6 @@ export default function Home() {
       <AboutUs />
       <FAQ />
       <Contacts />
-      <Footer />
       <BestQuoteModal/>
       <BookNowModal/>
       <SeeYouSoonModal/>

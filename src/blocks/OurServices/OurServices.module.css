@@ -141,7 +141,8 @@
         padding: 40px 0;
     }
     .detailsImage {
-        width: 370px;
+        max-width: 370px;
+        width: auto;
         height: 350px;
     }
     .detailsTitle {

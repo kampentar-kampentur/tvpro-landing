@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "../OurServices.module.css";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
+import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 const INTERVAL_TIME = 5000; // 5 seconds
 
@@ -62,12 +63,13 @@ export default function OurServicesInteractive({servicesData}) {
             {servicesData.map(service => (
                 <div className={`${styles.detailsWrapper} ${service.id === activeServiceId ? '' : 'sr-only'}`} key={service.id}>
                     <div className={styles.detailsImage}>
-                        <ImageWrapper image={service.image} />
+                        <ImageWrapper media={service.image} />
                     </div>
                     <div className={styles.detailsContent}>
                         <h3 className={styles.detailsTitle}>{service.title}</h3>
                     <p className={styles.detailsDescription}>
                         {service.description}
+                        {/* <ObjectRenderer data={service}/> */}
                     </p>
                         <QuoteButton modalName="BookNow">Book Now</QuoteButton>
                     </div>

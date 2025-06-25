@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
+import Footer from "@/blocks/Footer";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -86,7 +87,15 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+async function getCTA() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
+  const json = await res.json();
+
+  return json.data;
+}  
+
+export default async function RootLayout({ children }) {
+  const cta = await getCTA()
   return (
     <html lang="en">
       <Head>
@@ -98,7 +107,7 @@ export default function RootLayout({ children }) {
               "@type": "LocalBusiness",
               "name": "TVPro Handy Services",
               "image": "https://tvpro-landing.vercel.app/og-image.jpg",
-              "telephone": "(888) 266‑6660",
+              "telephone": cta.phoneLabel,
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Houston",
@@ -115,10 +124,11 @@ export default function RootLayout({ children }) {
       </Head>
       <body className={redHatDisplay.variable}>
         <ModalProvider>
-          <Header/>
+          <Header cta={cta}/>
           <div style={{ paddingTop: 80 }}>
             {children}
           </div>
+          <Footer cta={cta}/>
         </ModalProvider>
       </body>
     </html>

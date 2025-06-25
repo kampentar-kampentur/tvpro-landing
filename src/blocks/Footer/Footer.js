@@ -2,7 +2,7 @@ import styles from "./Footer.module.css";
 import Link from 'next/link';
 import LogoSVG from "@/assets/logo.svg";
 
-const Footer = () => {
+const Footer = async ({cta}) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -33,14 +33,14 @@ const Footer = () => {
             <h4 className={styles.contactLabel}>Phone Number</h4>
             <p className={styles.contactText}>
               <a
-                href="tel:+18882666660" 
+                href={`tel:${cta.phone}`} 
                 className={styles.phoneLink}
                 aria-label="Call TVPro Handy Services"
-                title="Call us at (888) 266-6660"
+                title={`Call us at ${cta.phoneLabel}`}
               >
-                (888) 266-6660
-              </a>
-              (8 AM – 10 PM Daily)
+                {cta.phoneLabel} 
+              </a> 
+              ({cta.workHours})
             </p>
           </div>
           
@@ -48,12 +48,12 @@ const Footer = () => {
             <h4 className={styles.contactLabel}>Email</h4>
             <p className={styles.contactText}>
               <a 
-                href="mailto:tvprohandyservices@gmail.com" 
+                href={`mailto:${cta.email}`} 
                 className={styles.emailLink}
                 aria-label="Email TVPro Handy Services"
                 title="Send us an email"
               >
-                tvprohandyservices@gmail.com
+                {cta.email}
               </a>
             </p>
           </div>

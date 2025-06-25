@@ -4,10 +4,8 @@ import OurServicesInteractive from "./components/OurServicesInteractive";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 
 async function getOurServices() {
-    console.log("getOurServices");
     const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/our-service?populate[services][populate]=image`);
     const json = await res.json();
-    console.log("getOurServices res");
     
     return json.data;
   }

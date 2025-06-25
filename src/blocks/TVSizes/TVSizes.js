@@ -18,10 +18,8 @@ const images = [
 ];
 
 async function getTVSizes() {
-  console.log("getTVSizes");
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-size?populate=*`);
   const json = await res.json();
-  console.log("getTVSizes res");
   
   return json.data;
 }

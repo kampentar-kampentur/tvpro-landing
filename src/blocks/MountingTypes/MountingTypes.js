@@ -46,6 +46,7 @@ export default function MountingTypes() {
             title={card.title}
             description={card.description}
             buttonText="Book Now"
+            modalName="BookNow"
           />
         ))}
       </div>
