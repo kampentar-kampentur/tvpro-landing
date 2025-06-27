@@ -4,10 +4,9 @@ import { useModalState, useModal } from "@/providers/ModalProvider";
 import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PriceSummary from "./components/PriceSummary";
 import Button from "@/ui/Button";
-import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 
 const example = {
@@ -56,15 +55,15 @@ const example = {
           {
             "name": "extraTechnicans",
             "type": "radio",
-            "label": "Select number of technicians for Over 81″",
+            "label": "Select number of technicians for Over 61″",
             "showIf": {
               "field": "tvSelection",
               "condition": "hasAny",
-              "values": ["over-81"]
+              "values": ["over-81", "60-80", "frameTv", "projectorsNScreens"]
             },
             "options": [
-              { "value": "no", "label": "Over 81″ (1 tech + your help)", "cost": 0 },
-              { "value": "yes", "label": "Over 81″ (2 techs, full service)", "cost": 59 },
+              { "value": "no", "label": "Over 61″ (1 tech + your help)", "cost": 0 },
+              { "value": "yes", "label": "Over 61″ (2 techs, full service)", "cost": 59 },
             ]
           }
         ]
@@ -94,15 +93,15 @@ const example = {
                   "description": "TV stays in one position"
                 },
                 { 
-                  "value": "fullMotion", 
-                  "label": "Full-Motion Mount", 
-                  "cost": 69,
-                  "description": "TV can tilt up/down"
-                },
-                { 
                   "value": "fixed", 
                   "label": "Fixed Mount", 
                   "cost": 39,
+                  "description": "TV can move in all directions"
+                },
+                { 
+                  "value": "tilting", 
+                  "label": "Tilting Mount", 
+                  "cost": 49,
                   "description": "TV can move in all directions"
                 },
                 { 
@@ -112,10 +111,10 @@ const example = {
                   "description": "TV can tilt up/down"
                 },
                 { 
-                  "value": "tilting", 
-                  "label": "Tilting Mount", 
-                  "cost": 49,
-                  "description": "TV can move in all directions"
+                  "value": "fullMotion", 
+                  "label": "Full-Motion Mount", 
+                  "cost": 69,
+                  "description": "TV can tilt up/down"
                 },
               ]
             },
@@ -307,6 +306,14 @@ const BestQuoteModal = () => {
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+
+  useEffect(() => {
+    console.log("openModal", isOpen);
+    
+    if(!isOpen) {
+        setFormData({})
+    }
+  }, [isOpen])
   async function onSubmit(e) {
     e?.preventDefault?.();
     setIsSubmitting(true);
