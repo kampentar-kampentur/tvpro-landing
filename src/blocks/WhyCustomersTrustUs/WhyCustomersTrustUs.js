@@ -4,7 +4,6 @@ import TrustCard from "./components/TrustCard";
 async function getWhyCustomersTrustUs() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/why-customers-choose-us?populate[cards][populate]=*`);
   const json = await res.json();
-  console.log("getWhyCustomersTrustUs",json)
   return json.data;
 }
 

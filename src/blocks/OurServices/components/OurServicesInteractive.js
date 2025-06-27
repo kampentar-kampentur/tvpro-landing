@@ -7,14 +7,27 @@ import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 const INTERVAL_TIME = 5000; // 5 seconds
+const ANIMATION_DURATION = 600; // ms
 
 export default function OurServicesInteractive({servicesData}) {
     const [activeServiceId, setActiveServiceId] = useState(null);
+    const [displayedServiceId, setDisplayedServiceId] = useState(null);
+    const [animating, setAnimating] = useState(false);
     const timeoutRef = useRef(null);
-    const resetAndStartTimer = (newServiceId) => {
-      setActiveServiceId(newServiceId);
+    const animationTimeoutRef = useRef(null);
+
+    // Смена услуги с анимацией
+    const handleChangeService = (newServiceId) => {
+      if (newServiceId === activeServiceId) return;
+      setAnimating(true);
+      animationTimeoutRef.current = setTimeout(() => {
+        setDisplayedServiceId(newServiceId);
+        setAnimating(false);
+        setActiveServiceId(newServiceId);
+      }, ANIMATION_DURATION);
     };
-  
+
+    // Автоматический переход
     const startTimer = () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -23,24 +36,32 @@ export default function OurServicesInteractive({servicesData}) {
         (service) => service.id === activeServiceId
       );
       const nextIndex = (currentIndex + 1) % servicesData.length;
-  
       timeoutRef.current = setTimeout(() => {
-        resetAndStartTimer(servicesData[nextIndex].id);
+        handleChangeService(servicesData[nextIndex].id);
       }, INTERVAL_TIME);
     };
-  
+
     useEffect(() => {
       setActiveServiceId(servicesData[0].id);
-    }, []); 
-  
+      setDisplayedServiceId(servicesData[0].id);
+    }, [servicesData]); 
+
     useEffect(() => {
-      startTimer();
+      if (!animating) startTimer();
       return () => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
       };
-    }, [activeServiceId]);
+    }, [activeServiceId, animating]);
+
+    useEffect(() => {
+      return () => {
+        if (animationTimeoutRef.current) {
+          clearTimeout(animationTimeoutRef.current);
+        }
+      };
+    }, []);
 
     return (
         <>
@@ -51,7 +72,7 @@ export default function OurServicesInteractive({servicesData}) {
                 className={`${styles.categoryButton} ${
                     activeServiceId === service.id ? styles.active : ""
                 }`}
-                onClick={() => resetAndStartTimer(service.id)}
+                onClick={() => handleChangeService(service.id)}
                 style={{ '--interval-time': `${INTERVAL_TIME / 1000}s` }}
                 >
                 <span className={styles.progress}></span>
@@ -61,7 +82,14 @@ export default function OurServicesInteractive({servicesData}) {
             </div>
 
             {servicesData.map(service => (
-                <div className={`${styles.detailsWrapper} ${service.id === activeServiceId ? '' : 'sr-only'}`} key={service.id}>
+                service.id === displayedServiceId && (
+                <div
+                  className={
+                    `${styles.detailsWrapper} ` +
+                    (animating ? styles.fadeOut : styles.fadeIn)
+                  }
+                  key={service.id}
+                >
                     <div className={styles.detailsImage}>
                         <ImageWrapper media={service.image} />
                     </div>
@@ -69,11 +97,11 @@ export default function OurServicesInteractive({servicesData}) {
                         <h3 className={styles.detailsTitle}>{service.title}</h3>
                     <p className={styles.detailsDescription}>
                         {service.description}
-                        {/* <ObjectRenderer data={service}/> */}
                     </p>
                         <QuoteButton modalName="BookNow">Book Now</QuoteButton>
                     </div>
                 </div>
+                )
             ))}
         </>
     )

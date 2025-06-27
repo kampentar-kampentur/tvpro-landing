@@ -7,8 +7,6 @@ export default function MenuAutoClose({ menuToggleId = "menu-toggle", menuWrappe
     const menuWrapper = document.querySelector(`.${menuWrapperClass}`);
 
     function closeMenu() {
-      console.log("closeMenu");
-      
       if (menuToggle) menuToggle.checked = false;
     }
 
@@ -21,8 +19,6 @@ export default function MenuAutoClose({ menuToggleId = "menu-toggle", menuWrappe
 
     // Клик вне меню
     function onDocumentClick(e) {
-      
-      console.log("onDocumentClick", menuWrapper);
       if (!menuToggle) return;
       if (
         menuToggle.checked

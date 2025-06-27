@@ -49,7 +49,7 @@ export default async function Hero() {
           </div>
         </div>
       </section>
-      <VideoPlayer src={heroData.video.url}/>
+      <VideoPlayer src="./mainVideo2.mp4"/>
     </>
   );
 }

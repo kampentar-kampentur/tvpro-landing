@@ -173,6 +173,12 @@ const example = {
               },
               "options": [
                 { 
+                  "value": "open", 
+                  "label": "Open", 
+                  "cost": 0,
+                  "description": "TV stays in one position"
+                },
+                { 
                   "value": "cableChannel", 
                   "label": "Cable channel", 
                   "cost": 39,
@@ -203,6 +209,12 @@ const example = {
                   "values": ['another']
                 },
                 "options": [
+                  { 
+                      "value": "open", 
+                      "label": "Open", 
+                      "cost": 0,
+                      "description": "TV stays in one position"
+                  },
                   { 
                     "value": "cableChannel", 
                     "label": "Cable channel", 
@@ -276,7 +288,27 @@ const example = {
             "textLabel": "Enter your phone",
             "placeholder": "Phone number *",
             "isRequired": true
+          },
+          {
+            "name": "zip",
+            "type": "text",
+            "textLabel": "Enter your zip code",
+            "placeholder": "Zip Code *",
+            "isRequired": true
+          },
+          {
+            "name": "address",
+            "type": "text",
+            "textLabel": "Enter your address",
+            "placeholder": "Address",
+          },
+          {
+            "name": "email",
+            "type": "text",
+            "textLabel": "Enter your email address ",
+            "placeholder": "Email email address",
           }
+          
         ]
       }
     ],
@@ -308,8 +340,6 @@ const BestQuoteModal = () => {
 
 
   useEffect(() => {
-    console.log("openModal", isOpen);
-    
     if(!isOpen) {
         setFormData({})
     }

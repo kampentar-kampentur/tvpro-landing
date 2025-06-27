@@ -61,7 +61,6 @@ const reviewCardsData = [
 async function getCustomerReviews() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/customer-review?populate=*`);
   const json = await res.json();
-  console.log("getCustomerReviews",json)
   return json.data;
 }
 
@@ -74,11 +73,10 @@ export async function getGoogleReviews(placeId = "ChIJuVr9LojYwQERHVjQfs1s2O8") 
       headers: {
         'Content-Type': 'application/json',
         'X-Goog-Api-Key': API_KEY,
-        'X-Goog-FieldMask': 'reviews,rating,userRatingCount,displayName'
+        'X-Goog-FieldMask': 'reviews,rating,userRatingCount,displayName,photos'
       }
     });
     const data = await response.json();
-    console.log("getGoogleReviews", data);
     
     return data?.reviews || [];
   } catch (error) {
