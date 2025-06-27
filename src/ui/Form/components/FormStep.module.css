@@ -1,6 +1,6 @@
 .formStep {
     /* Add any specific styles for the FormStep container here */
-    flex-grow: 1;
+    /* flex-grow: 1; */
 }
 
 .fieldLabel {
@@ -38,4 +38,21 @@
 
 .option {
     margin-bottom: 20px;
+}
+
+@media (min-width: 1024px) {
+  .formStep {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 32px;
+    align-items: flex-start;
+  }
+  .option {
+    width: 100%;
+  }
+  .textOption {
+    width: calc(50% - 16px);
+    min-width: 280px;
+    margin-bottom: 0;
+  }
 }

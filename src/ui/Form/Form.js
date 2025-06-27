@@ -103,7 +103,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         currentSubStep={currentSubStepIndex}
         totalSubSteps={renderedSteps.length}
       />
-      
+      <div style={{flexGrow: 1}}></div>
       <FormNavigation
         canGoBack={canGoBack}
         canGoForward={canGoForward}
