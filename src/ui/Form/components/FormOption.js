@@ -27,7 +27,7 @@ const FormOption = ({
         }
     }
   return (
-    <div className={styles.formOption}>
+    <label className={styles.formOption}>
         <Input/>
         {enableCounter && restProps.checked && (
             <Counter
@@ -35,7 +35,7 @@ const FormOption = ({
                 onChange={onChangeCounter}
             />
         )}
-    </div>
+    </label>
   );
 };
 

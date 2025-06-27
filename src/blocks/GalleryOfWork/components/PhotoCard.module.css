@@ -9,6 +9,7 @@
   height: 480px;
   box-sizing: border-box;
   overflow: hidden; /* To ensure image corners are rounded */
+  position: relative;
 }
 
 .photoCard.photoCell {
@@ -21,6 +22,37 @@
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
+}
+
+.playIconWrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.modalMediaContainer {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalImage {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 16px;
+  object-fit: contain;
+}
+
+.modalVideo {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 16px;
+  background: #000;
 }
 
 @media (max-width: 1024px) {

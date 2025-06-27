@@ -1,4 +1,3 @@
-
 import styles from "./CustomerReviews.module.css";
 import ReviewCard from "./components/ReviewCard";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
@@ -6,6 +5,7 @@ import Button from "@/ui/Button/Button";
 import GoogleLogo from "@/assets/socialIcons/Google.svg"
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
+import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 const reviewCardsData = [
   {
@@ -65,8 +65,58 @@ async function getCustomerReviews() {
   return json.data;
 }
 
+export async function getGoogleReviews(placeId = "ChIJuVr9LojYwQERHVjQfs1s2O8") {
+  const API_KEY = process.env.GOOGLE_PLACES_API_KEY || "AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME";
+  
+  try {
+    const response = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': API_KEY,
+        'X-Goog-FieldMask': 'reviews,rating,userRatingCount,displayName'
+      }
+    });
+    const data = await response.json();
+    console.log("getGoogleReviews", data);
+    
+    return data?.reviews || [];
+  } catch (error) {
+    console.error('Error fetching Google reviews:', error);
+    return [];
+  }
+}
+
+// Функция для обрезки текста
+function truncateText(text, maxLength = 180) {
+  if (!text) return '';
+  return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
+}
+
 const CustomerReviews = async () => {
-  const customerReviewsData = await getCustomerReviews();
+  const [customerReviewsData, googleReviews] = await Promise.all([
+    getCustomerReviews(),
+    getGoogleReviews()
+  ]);
+
+  // Преобразуем отзывы из Google в формат ReviewCard
+  const googleCards = (googleReviews || []).map(r => ({
+    rating: r.rating,
+    reviewText: truncateText(r.text?.text || r.originalText?.text || ''),
+    authorName: r.authorAttribution?.displayName || '',
+    reviewDate: r.relativePublishTimeDescription || '',
+    avatar: r.authorAttribution?.photoUri || '/images/avatar-esther.png',
+    Logo: <GoogleLogo width="49" height="16"/>
+  }));
+
+  // Обрезаем текст и для локальных отзывов
+  const localCards = reviewCardsData.map(r => ({
+    ...r,
+    reviewText: truncateText(r.reviewText)
+  }));
+
+  const cardsToShow = googleCards.length > 0 ? googleCards : localCards;
+
   return (
     <section className={`block ${styles.customerReviews}`}>
       <header className={styles.customerReviewsHeader}>
@@ -77,7 +127,7 @@ const CustomerReviews = async () => {
       </header>
       <SliderGallery
         CardComponent={ReviewCard}
-        cardData={reviewCardsData}
+        cardData={cardsToShow}
         cardsPerPage={3}
       />
       <div className={styles.ctaContainer}>
@@ -87,6 +137,7 @@ const CustomerReviews = async () => {
           <QuoteButton/>
         </div>
       </div>
+      {/* <ObjectRenderer data={googleReviews}/> */}
     </section>
   );
 };

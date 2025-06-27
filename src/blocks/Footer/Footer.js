@@ -40,7 +40,7 @@ const Footer = async ({cta}) => {
               >
                 {cta.phoneLabel} 
               </a> 
-              ({cta.workHours})
+              <span>({cta.workHours})</span>
             </p>
           </div>
           

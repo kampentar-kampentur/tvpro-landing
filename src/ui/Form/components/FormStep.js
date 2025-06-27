@@ -17,7 +17,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
         step.fields && step.fields.map(field => {
           const fieldCurrentValue = formData[step.id] ? formData[step.id][field.name] : undefined;
 
-          if (!shouldRenderField(field.showIf, formData, step.id)) {
+          if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
             return null; 
           }
 

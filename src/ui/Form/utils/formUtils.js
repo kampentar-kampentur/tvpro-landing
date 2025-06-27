@@ -1,4 +1,4 @@
-export const shouldRenderField = (showIfCondition, currentFormData, currentStepId) => {
+export const shouldRenderField = (showIfCondition, currentFormData, currentStepId, parentContext) => {
   if (!showIfCondition) {
     return true; 
   }
@@ -6,7 +6,9 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
   const { field, condition, value: targetValue, values: targetValues } = showIfCondition;
   
   let fieldValue;
-  if (field.includes('.')) {
+  if (field === '$parentValue' && parentContext && parentContext.parentValue !== undefined) {
+    fieldValue = parentContext.parentValue;
+  } else if (field.includes('.')) {
     const [refStepId, refFieldName] = field.split('.');
     fieldValue = currentFormData[refStepId] ? currentFormData[refStepId][refFieldName] : undefined;
   } else {
@@ -22,12 +24,12 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
       return Array.isArray(fieldValue) && Array.isArray(targetValues) && 
              fieldValue.some(item => targetValues.includes(item.value));
     case "equalsAny":
-      if (!Array.isArray(targetValues)) return false;
-      if (Array.isArray(fieldValue)) {
-        return fieldValue.some(item =>
-          targetValues.includes(item.value !== undefined ? item.value : item)
-        );
-      }
+        if (!Array.isArray(targetValues)) return false;
+        if (Array.isArray(fieldValue)) {
+            return fieldValue.some(item =>
+                targetValues.includes(item.value !== undefined ? item.value : item)
+            );
+        }
       return targetValues.includes(fieldValue);
     case "isToday":
       if (fieldValue) {
@@ -68,6 +70,7 @@ export const generateSubStepsForDynamicStep = (dynamicStepConfig, formData) => {
         title: dynamicStepConfig.title,
         id: subStepId,
         subTitle: subStepTitle,
+        parentContext: { parentValue: item.value, parentLabel: item.label },
       });
       dynamicStepIndex++;
     }

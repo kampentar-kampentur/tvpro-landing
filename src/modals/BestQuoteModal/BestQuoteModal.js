@@ -7,6 +7,7 @@ import Form from "@/ui/Form"
 import React, { useState } from "react";
 import PriceSummary from "./components/PriceSummary";
 import Button from "@/ui/Button";
+import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 
 const example = {
@@ -80,6 +81,11 @@ const example = {
               "name": "mountType",
               "type": "radio",
               "isRequired": true,
+              "showIf": {
+                    "field": "$parentValue",
+                    "condition": "equalsAny",
+                    "values": ["over-81", "32-59", "upTo31", "60-80", "frameTv"]
+                },
               "options": [
                 { 
                   "value": "alreadyThere", 
@@ -110,6 +116,24 @@ const example = {
                   "label": "Tilting Mount", 
                   "cost": 49,
                   "description": "TV can move in all directions"
+                },
+              ]
+            },
+            {
+              "name": "mountType",
+              "type": "radio",
+              "isRequired": true,
+              "showIf": {
+                    "field": "$parentValue",
+                    "condition": "equalsAny",
+                    "values": ["projectorsNScreens"]
+                },
+              "options": [
+                { 
+                  "value": "alreadyThere", 
+                  "label": "Already there", 
+                  "cost": 0,
+                  "description": "TV stays in one position"
                 },
               ]
             },
@@ -146,7 +170,7 @@ const example = {
               "showIf": {
                 "field": "wallType",
                 "condition": "equalsAny",
-                "values": ['drywall', 'another']
+                "values": ['drywall']
               },
               "options": [
                 { 
@@ -158,16 +182,47 @@ const example = {
                 { 
                   "value": "wall", 
                   "label": "Put it in the wall", 
-                  "cost": 199,
+                  "cost": 79,
                   "description": "TV stays in one position"
                 },
                 { 
                   "value": "socket", 
                   "label": "In-wall with socket", 
-                  "cost": 299,
+                  "cost": 99,
                   "description": "TV stays in one position"
                 },
               ],
+            },
+            {
+                "name": "wires",
+                "type": "radio",
+                "isRequired": true,
+                "label": "Do you want to hide the wires?",
+                "showIf": {
+                  "field": "wallType",
+                  "condition": "equalsAny",
+                  "values": ['another']
+                },
+                "options": [
+                  { 
+                    "value": "cableChannel", 
+                    "label": "Cable channel", 
+                    "cost": 39,
+                    "description": "TV stays in one position"
+                  },
+                  { 
+                    "value": "wall", 
+                    "label": "Put it in the wall", 
+                    "cost": 199,
+                    "description": "TV stays in one position"
+                  },
+                  { 
+                    "value": "socket", 
+                    "label": "In-wall with socket", 
+                    "cost": 299,
+                    "description": "TV stays in one position"
+                  },
+                ],
             },
           ]
         }

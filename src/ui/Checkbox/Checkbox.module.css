@@ -3,6 +3,8 @@
   align-items: center;
   cursor: pointer;
   gap: 8px;
+  /* width: 100%; */
+  flex-grow: 1;
 }
 
 .input {
@@ -55,6 +57,9 @@
   font-size: 14px;
   color: var(--foreground);
   user-select: none;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 } 
 
 .subLabel {

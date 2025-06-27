@@ -62,8 +62,9 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
       return true; // No fields to validate
     }
 
+    const parentContext = stepToRender.parentContext;
     return stepToRender.fields.every(field => {
-      if (field.isRequired && shouldRenderField(field.showIf, value, stepToRender.id)) {
+      if (field.isRequired && shouldRenderField(field.showIf, value, stepToRender.id, parentContext)) {
         const fieldValue = value[stepToRender.id] ? value[stepToRender.id][field.name] : undefined;
         // Check for undefined, null, empty string, or empty array for checkboxWithCounter/checkboxGroup
         if (fieldValue === undefined || fieldValue === null || fieldValue === '') {
