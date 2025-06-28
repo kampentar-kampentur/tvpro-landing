@@ -148,6 +148,19 @@
     .categoriesWrapper {
         flex-wrap: nowrap;
         overflow-x: scroll;
+        scrollbar-width: thin;
+        scrollbar-color: #bbb #222;
+    }
+    .categoriesWrapper::-webkit-scrollbar {
+        height: 4px;
+        background: #222;
+    }
+    .categoriesWrapper::-webkit-scrollbar-thumb {
+        background: #bbb;
+        border-radius: 2px;
+    }
+    .categoriesWrapper::-webkit-scrollbar-track {
+        background: #222;
     }
     .categoryButton {
         flex-shrink: 0; 
@@ -167,6 +180,7 @@
     .detailsTitle {
         font-size: 20px;
         line-height: 28px;
+        height: 56px;
     }
     .detailsDescription {
         height: 340px;

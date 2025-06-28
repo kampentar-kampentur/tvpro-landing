@@ -123,11 +123,13 @@ const CustomerReviews = async () => {
         </h3>
         <p className="subText"><Text text={customerReviewsData.subTitle}/></p>
       </header>
-      <SliderGallery
+      {/* <SliderGallery
         CardComponent={ReviewCard}
         cardData={cardsToShow}
         cardsPerPage={3}
-      />
+      /> */}
+      <script src="https://static.elfsight.com/platform/platform.js" async></script>
+      <div class="elfsight-app-47b2da89-f40a-4523-9237-e8167ae44275" data-elfsight-app-lazy></div>
       <div className={styles.ctaContainer}>
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
         <div className={styles.ctaButtons}>
@@ -135,7 +137,6 @@ const CustomerReviews = async () => {
           <QuoteButton/>
         </div>
       </div>
-      {/* <ObjectRenderer data={googleReviews}/> */}
     </section>
   );
 };

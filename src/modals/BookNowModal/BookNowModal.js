@@ -100,7 +100,7 @@ const BookNowModal = () => {
 
     return (
         <Modal isOpen={isOpen} onClose={close} className={styles.bookNow}>
-            <h3 className={styles.title}>Get a Quote</h3>
+            <h3 className={styles.title}>Let’s Talk — One Minute Callback</h3>
             <TextField
                 field={nameField}
                 value={formData.name}
