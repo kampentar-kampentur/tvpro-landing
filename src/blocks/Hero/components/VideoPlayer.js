@@ -280,10 +280,10 @@ export default function OptimizedVideoPlayer({
           ref={videoRef}
           src={src}
           poster={poster}
-          autoPlay={isVisible && !isLowPerformance}
+          autoPlay
           loop
           muted
-          preload={isLowPerformance ? "none" : preload}
+          preload={preload}
           playsInline
           className={`${styles.video} ${isLoaded ? styles.loaded : ""}`}
           style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
