@@ -144,3 +144,9 @@
     animation: none;
   }
 }
+
+.videoContainer {
+  position: relative;
+  overflow: hidden;
+  display: block;
+}

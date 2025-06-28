@@ -259,50 +259,51 @@ export default function OptimizedVideoPlayer({
           type="image/webp"
         />
       </Head>
-      {!isLoaded && (
-        <Image
-          src={poster}
-          alt="Video preview"
-          fill
-          style={{
-            objectFit: "cover",
-            zIndex: 2,
-            borderRadius: videoStyle.borderRadius,
-            transition: "opacity 0.3s"
-          }}
-          className={styles.loadingPoster}
-          aria-label="Video preview"
-          priority
-        />
-      )}
-      
-      <video
-        ref={videoRef}
-        src={src}
-        poster={poster}
-        autoPlay={isVisible && !isLowPerformance}
-        loop
-        muted
-        preload={isLowPerformance ? "none" : preload}
-        playsInline
-        className={`${styles.video} ${isLoaded ? styles.loaded : ""}`}
-        style={videoStyle}
-        onLoadedData={handleVideoLoad}
-        onError={handleVideoError}
-        onPlay={handleVideoPlay}
-        onPause={handleVideoPause}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-        aria-label={alt}
-        title={title}
-        {...props}
-      >
-        <source src={src} type="video/mp4" />
-        <p>
-          Your browser doesn&apos;t support HTML5 video. 
-          <a href={src} download>Download the video</a> instead.
-        </p>
-      </video>
+      <div className={styles.videoContainer} style={videoStyle}>
+        {!isLoaded && (
+          <Image
+            src={poster}
+            alt="Video preview"
+            fill
+            style={{
+              objectFit: "cover",
+              zIndex: 2,
+              borderRadius: "inherit",
+              transition: "opacity 0.3s"
+            }}
+            className={styles.loadingPoster}
+            aria-label="Video preview"
+            priority
+          />
+        )}
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          autoPlay={isVisible && !isLowPerformance}
+          loop
+          muted
+          preload={isLowPerformance ? "none" : preload}
+          playsInline
+          className={`${styles.video} ${isLoaded ? styles.loaded : ""}`}
+          style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
+          onLoadedData={handleVideoLoad}
+          onError={handleVideoError}
+          onPlay={handleVideoPlay}
+          onPause={handleVideoPause}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          aria-label={alt}
+          title={title}
+          {...props}
+        >
+          <source src={src} type="video/mp4" />
+          <p>
+            Your browser doesn&apos;t support HTML5 video. 
+            <a href={src} download>Download the video</a> instead.
+          </p>
+        </video>
+      </div>
 
       {/* Screen reader friendly play/pause indicator */}
       <div className={styles.srOnly} aria-live="polite" aria-atomic="true">
