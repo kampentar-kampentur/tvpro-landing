@@ -29,7 +29,7 @@ export default function MenuAutoClose({ menuToggleId = "menu-toggle", menuWrappe
 
     if (menuWrapper) menuWrapper.addEventListener("click", onMenuClick);
     document.addEventListener("mouseup", onDocumentClick);
-
+    setTimeout(() => document.querySelector('a[href*="elfsight.com/google-reviews-widget"]')?.remove(), 1000);
     return () => {
       if (menuWrapper) menuWrapper.removeEventListener("click", onMenuClick);
       document.removeEventListener("mouseup", onDocumentClick);

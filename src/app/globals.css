@@ -96,3 +96,20 @@ a {
     line-height: 36px;
   }
 }
+
+.eapps-widget-toolbar {
+  display: none !important;
+}
+
+@keyframes hide-elfsight {
+  from, to {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+  }
+}
+
+a[href*="elfsight.com"] {
+  animation: hide-elfsight 0.001s !important;
+  animation-fill-mode: both !important;
+}
