@@ -23,10 +23,32 @@ const phoneField = {
     "isRequired": true
 };
 
+const zipField = {
+    "name": "zip",
+    "type": "number",
+    "textLabel": "Enter your zip code",
+    "placeholder": "Zip Code *",
+    "isRequired": true
+};
+
+const addressField = {
+    "name": "address",
+    "type": "text",
+    "textLabel": "Enter your address",
+    "placeholder": "Address"
+};
+
+const emailField = {
+    "name": "email",
+    "type": "text",
+    "textLabel": "Enter your email address",
+    "placeholder": "Email address"
+};
+
 const BookNowModal = () => {
     const { isOpen, close } = useModalState('BookNow');
     const { openModal } = useModal();
-    const [formData, setFormData] = useState({ name: '', phone: '' });
+    const [formData, setFormData] = useState({ name: '', phone: '', zip: '', address: '', email: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (fieldName) => (value) => {
@@ -34,7 +56,7 @@ const BookNowModal = () => {
     };
 
     const handleSubmit = async () => {
-        if (!formData.name || !formData.phone) {
+        if (!formData.name || !formData.phone || !formData.zip) {
             alert("Please fill in all required fields.");
             return;
         }
@@ -50,13 +72,16 @@ const BookNowModal = () => {
                     data: {
                         name: formData.name,
                         phone: formData.phone,
+                        zip: formData.zip,
+                        address: formData.address,
+                        email: formData.email,
                     }
                 }),
             });
 
             if (response.ok) {
                 close();
-                setFormData({ name: '', phone: '' });
+                setFormData({ name: '', phone: '', zip: '', address: '', email: '' });
                 openModal('SeeYouSoon');
             } else {
                 const errorData = await response.json();
@@ -71,6 +96,8 @@ const BookNowModal = () => {
         }
     };
 
+    const isFormValid = formData.name && formData.phone && formData.zip;
+
     return (
         <Modal isOpen={isOpen} onClose={close} className={styles.bookNow}>
             <h3 className={styles.title}>Get a Quote</h3>
@@ -78,13 +105,33 @@ const BookNowModal = () => {
                 field={nameField}
                 value={formData.name}
                 onChange={handleChange('name')}
+                className={styles.bookNowInput}
             />
             <TextField
                 field={phoneField}
                 value={formData.phone}
                 onChange={handleChange('phone')}
+                className={styles.bookNowInput}
             />
-            <Button className={styles.button} onClick={handleSubmit} disabled={isSubmitting}>
+            <TextField
+                field={zipField}
+                value={formData.zip}
+                onChange={handleChange('zip')}
+                className={styles.bookNowInput}
+            />
+            <TextField
+                field={addressField}
+                value={formData.address}
+                onChange={handleChange('address')}
+                className={styles.bookNowInput}
+            />
+            <TextField
+                field={emailField}
+                value={formData.email}
+                onChange={handleChange('email')}
+                className={styles.bookNowInput}
+            />
+            <Button className={styles.button} onClick={handleSubmit} disabled={isSubmitting || !isFormValid}>
                 {isSubmitting ? 'Sending...' : 'Send'}
             </Button>
         </Modal>

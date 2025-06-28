@@ -291,7 +291,7 @@ const example = {
           },
           {
             "name": "zip",
-            "type": "text",
+            "type": "number",
             "textLabel": "Enter your zip code",
             "placeholder": "Zip Code *",
             "isRequired": true

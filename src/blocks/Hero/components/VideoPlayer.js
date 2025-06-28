@@ -5,6 +5,7 @@ import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
 import posterImage from "@/assets/videoplaceholder.webp";
 import Head from 'next/head'
+import Image from 'next/image';
 
 export default function OptimizedVideoPlayer({
   src = "./video.mp4",
@@ -259,14 +260,20 @@ export default function OptimizedVideoPlayer({
         />
       </Head>
       {!isLoaded && (
-        <div 
-          className={styles.loadingState}
-          aria-label="Loading video"
-          role="status"
-        >
-          <div className={styles.loadingSpinner} />
-          <span className={styles.srOnly}>Loading video content...</span>
-        </div>
+        <Image
+          src={poster}
+          alt="Video preview"
+          fill
+          style={{
+            objectFit: "cover",
+            zIndex: 2,
+            borderRadius: videoStyle.borderRadius,
+            transition: "opacity 0.3s"
+          }}
+          className={styles.loadingPoster}
+          aria-label="Video preview"
+          priority
+        />
       )}
       
       <video

@@ -41,4 +41,13 @@
     padding: 0;
     height: 20px;
     font-family: 'Aeonik Pro', 'Arial', sans-serif;
+}
+
+.textInput[type="number"]::-webkit-outer-spin-button,
+.textInput[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.textInput[type="number"] {
+  -moz-appearance: textfield;
 } 

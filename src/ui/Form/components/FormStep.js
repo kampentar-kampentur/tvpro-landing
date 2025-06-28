@@ -61,6 +61,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               );
             case "text":
             case "tel":
+            case "number":
               return (
                 <div key={field.name} className={`${styles.option} ${styles.textOption}`}>
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
