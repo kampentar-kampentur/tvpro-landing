@@ -8,7 +8,6 @@ import Head from 'next/head'
 import Image from 'next/image';
 
 export default function OptimizedVideoPlayer({
-  src = "./video.mp4",
   poster = posterImage.src,
   alt = "Interactive video content",
   title = "Video Player",
@@ -215,8 +214,23 @@ export default function OptimizedVideoPlayer({
     transform: `translateZ(0)`, // Hardware acceleration
   };
 
+  function getBestVideoSrc() {
+    if (typeof navigator !== 'undefined' && navigator.connection) {
+      const { effectiveType, downlink } = navigator.connection;
+      if (effectiveType === '4g' && downlink > 3) return '/optimized/mainVideo2-720p.mp4';
+      if (effectiveType === '3g' || downlink > 1.2) return '/optimized/mainVideo2-480p.mp4';
+      return '/optimized/mainVideo2-360p.mp4';
+    }
+    return '/optimized/mainVideo2-480p.mp4'; // fallback
+  }
+
+  const [videoSrc, setVideoSrc] = useState(getBestVideoSrc());
+
+  useEffect(() => {
+    setVideoSrc(getBestVideoSrc());
+  }, []);
+
   if (!isClient) {
-    // Заглушка для SSR, чтобы не было гидрационных ошибок
     return (
       <div
         className={`${styles.videoWrapper} ${className}`}
@@ -278,7 +292,7 @@ export default function OptimizedVideoPlayer({
         )}
         <video
           ref={videoRef}
-          src={src}
+          src={videoSrc}
           poster={poster}
           autoPlay
           loop
@@ -297,10 +311,10 @@ export default function OptimizedVideoPlayer({
           title={title}
           {...props}
         >
-          <source src={src} type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
           <p>
             Your browser doesn&apos;t support HTML5 video. 
-            <a href={src} download>Download the video</a> instead.
+            <a href={videoSrc} download>Download the video</a> instead.
           </p>
         </video>
       </div>
