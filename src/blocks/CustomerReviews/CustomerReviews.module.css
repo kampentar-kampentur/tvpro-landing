@@ -10,6 +10,9 @@
 }
 
 @media (max-width: 1024px) {
+  .ctaContainer {
+    padding: 0;
+  }
 }
 
 .ctaContainer {

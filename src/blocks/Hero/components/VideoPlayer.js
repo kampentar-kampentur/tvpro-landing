@@ -141,7 +141,7 @@ export default function OptimizedVideoPlayer({
   }, [handleScroll, isVisible]);
 
   useEffect(() => {
-    if(isVisible && !isLowPerformance && videoRef.current.paused) {
+    if(isVisible && videoRef.current.paused) {
       
       videoRef.current.play()
     }
