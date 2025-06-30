@@ -34,15 +34,13 @@ const GalleryOfWork = async () => {
           </h3>
           <p className="subText"><Text text={galleryOfWorkData.subTitle}/></p>
         </header>
-      </div>
-      <div className={styles.sliderWrap}>
+      {/* <div className={styles.sliderWrap}>
         <SliderGallery
           CardComponent={PhotoCard}
           cardData={galleryPhotos}
           cardsPerPage={4}
         />
-      </div>
-      <div className="block">
+      </div> */}
         <GalleryGerid filters={galleryOfWorkData.types}/>
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
