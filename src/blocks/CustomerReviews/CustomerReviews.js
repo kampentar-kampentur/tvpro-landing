@@ -94,7 +94,6 @@ function truncateText(text, maxLength = 180) {
 const CustomerReviews = async () => {
   const [customerReviewsData, googleReviews] = await Promise.all([
     getCustomerReviews(),
-    getGoogleReviews()
   ]);
 
   // Преобразуем отзывы из Google в формат ReviewCard
@@ -129,7 +128,7 @@ const CustomerReviews = async () => {
         cardsPerPage={3}
       /> */}
       <script src="https://static.elfsight.com/platform/platform.js" async></script>
-      <div class="elfsight-app-47b2da89-f40a-4523-9237-e8167ae44275" data-elfsight-app-lazy></div>
+      <div class="elfsight-app-0c8768dc-758c-4c7f-a7fe-9fcc2345d890" data-elfsight-app-lazy></div>
       <div className={styles.ctaContainer}>
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
         <div className={styles.ctaButtons}>
