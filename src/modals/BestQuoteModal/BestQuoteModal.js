@@ -31,19 +31,29 @@ const example = {
                 "cost": 109,
               },
               { 
-                "value": "60-80", 
-                "label": "60\"-80\"", 
+                "value": "60-75", 
+                "label": "60\"-75\"", 
                 "cost": 129,
               },
               { 
-                "value": "over-81", 
-                "label": "Over 81\"", 
+                "value": "76-85", 
+                "label": "76\"-85\"", 
                 "cost": 149,
               },
               { 
-                "value": "frameTv", 
-                "label": "Frame TV", 
+                "value": "over-86", 
+                "label": "Over 86\"", 
                 "cost": 169,
+              },
+              { 
+                "value": "frameTvUpTo60", 
+                "label": "Frame TV up to 60 inch", 
+                "cost": 159,
+              },
+              { 
+                "value": "frameTvOver65", 
+                "label": "Frame TV over 65 inch", 
+                "cost": 179,
               },
               { 
                 "value": "projectorsNScreens", 
@@ -56,10 +66,11 @@ const example = {
             "name": "extraTechnicans",
             "type": "radio",
             "label": "Select number of technicians for Over 61″",
+            "isRequired": true,
             "showIf": {
               "field": "tvSelection",
               "condition": "hasAny",
-              "values": ["over-81", "60-80", "frameTv", "projectorsNScreens"]
+              "values": ["over-86", "60-75", "76-85", "frameTvUpTo60", "frameTvOver65", "projectorsNScreens"]
             },
             "options": [
               { "value": "no", "label": "Over 61″ (1 tech + your help)", "cost": 0 },
@@ -83,7 +94,15 @@ const example = {
               "showIf": {
                     "field": "$parentValue",
                     "condition": "equalsAny",
-                    "values": ["over-81", "32-59", "upTo31", "60-80", "frameTv"]
+                    "values": [
+                      "over-86",
+                      "32-59",
+                      "upTo31",
+                      "60-75",
+                      "76-85",
+                      "frameTvUpTo60",
+                      "frameTvOver65",
+                    ]
                 },
               "options": [
                 { 
@@ -266,6 +285,65 @@ const example = {
                     "value": "rearSpeaker", 
                     "label": "Install Rear Speaker (2)", 
                     "cost": 49,
+                },
+            ]
+          },
+          {
+            "name": "extraInstallation",
+            "type": "checkboxWithCounter",
+            "label": "Extra Installation",
+            "options": [
+                { 
+                    "value": "installLEDLight", 
+                    "label": "Install LED Light", 
+                    "cost": 29,
+                },
+                { 
+                    "value": "installFireplace", 
+                    "label": "Install Fireplace", 
+                    "cost": 79,
+                },
+                { 
+                    "value": "dismountExistingTV", 
+                    "label": "Dismount existing TV", 
+                    "cost": 35,
+                },
+                { 
+                    "value": "installOfCurtains", 
+                    "label": "Install curtains", 
+                    "cost": 59,
+                },
+                { 
+                    "value": "installPaintingsAndDecor", 
+                    "label": "Install paintings & decor", 
+                    "cost": 35,
+                },
+            ]
+          },
+          {
+            "name": "cables",
+            "type": "checkboxWithCounter",
+            "label": "Cables",
+            "options": [
+                { 
+                    "value": "HDMI10ft", 
+                    "label": "HDMI 10ft", 
+                    "cost": 14,
+                },
+                { 
+                    "value": "HDMI15ft", 
+                    "label": "HDMI 15ft", 
+                    "cost": 18,
+                },
+                { 
+                    "value": "extensionCord6ft", 
+                    "label": "Extension Cord 6ft", 
+                    "cost": 6,
+                },
+                { 
+                    "value": "powerCordForTV", 
+                    "label": "Power Cord for TV", 
+                    "cost": 15,
                 },
             ]
           },

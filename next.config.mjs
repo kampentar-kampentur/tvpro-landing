@@ -9,7 +9,6 @@ const nextConfig = {
     env: {
       BROWSERSLIST_ENV: 'modern'
     },
-    swcMinify: true,
     compiler: {
       removeConsole: process.env.NODE_ENV === 'production',
     },
