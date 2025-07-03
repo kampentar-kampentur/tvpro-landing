@@ -8,7 +8,7 @@ import styles from './Form.module.css';
 import { shouldRenderField } from './utils/formUtils';
 import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalculation';
 
-const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = true, onPriceChange }) => {
+const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = true, onPriceChange, disableSubmitBtn }) => {
   const {
     currentStepIndex,
     currentSubStepIndex,
@@ -66,6 +66,16 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     return stepToRender.fields.every(field => {
       if (field.isRequired && shouldRenderField(field.showIf, value, stepToRender.id, parentContext)) {
         const fieldValue = value[stepToRender.id] ? value[stepToRender.id][field.name] : undefined;
+        // Универсальная валидация minLength/maxLength для text/number/tel
+        if (["text", "number", "tel"].includes(field.type) && (field.minLength || field.maxLength)) {
+          const strValue = fieldValue ? String(fieldValue) : "";
+          if (field.minLength && strValue.length < field.minLength) {
+            return false;
+          }
+          if (field.maxLength && strValue.length > field.maxLength) {
+            return false;
+          }
+        }
         // Check for undefined, null, empty string, or empty array for checkboxWithCounter/checkboxGroup
         if (fieldValue === undefined || fieldValue === null || fieldValue === '') {
           return false;
@@ -111,6 +121,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         onNext={handleNext}
         onSubmit={onSubmit}
         isLastStep={isSubmitButton}
+        disableSubmitBtn={disableSubmitBtn}
       />
     </form>
   );

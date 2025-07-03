@@ -249,7 +249,7 @@ const example = {
                   { 
                     "value": "socket", 
                     "label": "In-wall with socket", 
-                    "cost": 299,
+                    "cost": 229,
                     "description": "TV stays in one position"
                   },
                 ],
@@ -372,7 +372,9 @@ const example = {
             "type": "number",
             "textLabel": "Enter your zip code",
             "placeholder": "Zip Code *",
-            "isRequired": true
+            "isRequired": true,
+            "minLength": 5,
+            "maxLength": 5
           },
           {
             "name": "address",
@@ -395,7 +397,7 @@ const example = {
       "dynamicCosts": [
         "tv-size.tvSelection",
         "tv-size.needHelper",
-        "location.wallType",
+        "mounting.*.wallType",
         "mounting.*.mountType",
         "mounting.*.cableManagement",
         "mounting.*.powerOutlet",
@@ -425,6 +427,8 @@ const BestQuoteModal = () => {
   async function onSubmit(e) {
     e?.preventDefault?.();
     setIsSubmitting(true);
+    console.log("formData", formData);
+    
     try {
       const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
       const response = await fetch(`${apiUrl}/api/best-quote`, {
@@ -480,10 +484,7 @@ const BestQuoteModal = () => {
                 </div>
             </aside>
             <main className={styles.bestQuoteMain}>
-                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange} onSubmit={onSubmit}>
-                  <Button type="submit" disabled={isSubmitting} className={styles.button}>
-                    {isSubmitting ? 'Sending...' : 'Send'}
-                  </Button>
+                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange} onSubmit={onSubmit} disableSubmitBtn={isSubmitting}>
                 </Form>
             </main>
         </div>

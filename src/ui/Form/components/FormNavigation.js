@@ -9,6 +9,7 @@ const FormNavigation = ({
   onNext,
   onSubmit,
   isLastStep,
+  disableSubmitBtn
 }) => {
   return (
     <div className={styles.navigationButtons}>
@@ -16,7 +17,7 @@ const FormNavigation = ({
         size='small'
         onClick={isLastStep ? onSubmit : onNext}
         type={isLastStep ? "submit" : "button"}
-        disabled={!canGoForward}
+        disabled={!canGoForward || disableSubmitBtn}
       >
         {isLastStep ? "Next" : "Next"}
       </Button>
