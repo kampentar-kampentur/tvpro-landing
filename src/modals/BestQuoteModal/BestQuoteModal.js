@@ -198,19 +198,19 @@ const example = {
                   "description": "TV stays in one position"
                 },
                 { 
-                  "value": "cableChannel", 
+                  "value": "cableChannelDrywall", 
                   "label": "Cable channel", 
                   "cost": 39,
                   "description": "TV stays in one position"
                 },
                 { 
-                  "value": "wall", 
+                  "value": "wallDrywall", 
                   "label": "Put it in the wall", 
                   "cost": 79,
                   "description": "TV stays in one position"
                 },
                 { 
-                  "value": "socket", 
+                  "value": "socketDrywall", 
                   "label": "In-wall with socket", 
                   "cost": 99,
                   "description": "TV stays in one position"
@@ -235,19 +235,19 @@ const example = {
                       "description": "TV stays in one position"
                   },
                   { 
-                    "value": "cableChannel", 
+                    "value": "cableChannelBrick", 
                     "label": "Cable channel", 
                     "cost": 39,
                     "description": "TV stays in one position"
                   },
                   { 
-                    "value": "wall", 
+                    "value": "wallBrick", 
                     "label": "Put it in the wall", 
                     "cost": 199,
                     "description": "TV stays in one position"
                   },
                   { 
-                    "value": "socket", 
+                    "value": "socketBrick", 
                     "label": "In-wall with socket", 
                     "cost": 229,
                     "description": "TV stays in one position"
@@ -386,7 +386,7 @@ const example = {
             "name": "email",
             "type": "text",
             "textLabel": "Enter your email address ",
-            "placeholder": "Email email address",
+            "placeholder": "Email address",
           }
           
         ]

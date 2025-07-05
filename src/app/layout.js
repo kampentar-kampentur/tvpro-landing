@@ -4,6 +4,7 @@ import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
 import Footer from "@/blocks/Footer";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -131,6 +132,7 @@ export default async function RootLayout({ children }) {
           <Footer cta={cta}/>
         </ModalProvider>
       </body>
+      <GoogleAnalytics gaId="G-GZBG74J130" />
     </html>
   );
 }
