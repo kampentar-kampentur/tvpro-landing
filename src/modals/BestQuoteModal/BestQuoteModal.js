@@ -7,6 +7,7 @@ import Form from "@/ui/Form"
 import React, { useEffect, useState } from "react";
 import PriceSummary from "./components/PriceSummary";
 import Button from "@/ui/Button";
+import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 
 const example = {
@@ -100,8 +101,6 @@ const example = {
                       "upTo31",
                       "60-75",
                       "76-85",
-                      "frameTvUpTo60",
-                      "frameTvOver65",
                     ]
                 },
               "options": [
@@ -161,9 +160,18 @@ const example = {
               "isRequired": true,
               "label": "What kind of wall will this TV be mounted on?",
               "showIf": {
-                "field": "mountType",
-                "condition": "equalsAny",
-                "values": ['alreadyThere', 'fullMotion', 'fixed', 'corner', 'tilting']
+                "any": [
+                  {
+                    "field": "mountType",
+                    "condition": "equalsAny",
+                    "values": ['alreadyThere', 'fullMotion', 'fixed', 'corner', 'tilting']
+                  },
+                  {
+                    "field": "$parentValue",
+                    "condition": "equalsAny",
+                    "values": ["frameTvUpTo60", "frameTvOver65"]
+                  }
+                ]
               },
               "options": [
                 { 
@@ -186,9 +194,23 @@ const example = {
               "isRequired": true,
               "label": "Do you want to hide the wires?",
               "showIf": {
-                "field": "wallType",
-                "condition": "equalsAny",
-                "values": ['drywall']
+                "all": [
+                  {
+                    "field": "wallType",
+                    "condition": "equalsAny",
+                    "values": ['drywall']
+                  },
+                  {
+                    "field": "$parentValue",
+                    "condition": "notEquals",
+                    "value": "frameTvUpTo60"
+                  },
+                  {
+                    "field": "$parentValue",
+                    "condition": "notEquals",
+                    "value": "frameTvOver65"
+                  },
+                ]
               },
               "options": [
                 { 
@@ -223,9 +245,23 @@ const example = {
                 "isRequired": true,
                 "label": "Do you want to hide the wires?",
                 "showIf": {
-                  "field": "wallType",
-                  "condition": "equalsAny",
-                  "values": ['another']
+                  "all": [
+                    {
+                      "field": "wallType",
+                      "condition": "equalsAny",
+                      "values": ['another']
+                    },
+                    {
+                      "field": "$parentValue",
+                      "condition": "notEquals",
+                      "value": "frameTvUpTo60"
+                    },
+                    {
+                      "field": "$parentValue",
+                      "condition": "notEquals",
+                      "value": "frameTvOver65"
+                    },
+                  ]
                 },
                 "options": [
                   { 
@@ -249,6 +285,86 @@ const example = {
                   { 
                     "value": "socketBrick", 
                     "label": "In-wall with socket", 
+                    "cost": 229,
+                    "description": "TV stays in one position"
+                  },
+                ],
+            },
+            {
+              "name": "wires",
+              "type": "radio",
+              "isRequired": true,
+              "label": "Do you want to hide the wires?",
+              "showIf": {
+                "all": [
+                  {
+                    "field": "wallType",
+                    "condition": "equalsAny",
+                    "values": ['drywall']
+                  },
+                  {
+                    "field": "$parentValue",
+                    "condition": "equalsAny",
+                    "values": ["frameTvUpTo60", "frameTvOver65"]
+                  },
+                ]
+              },
+              "options": [
+                { 
+                  "value": "open", 
+                  "label": "Open", 
+                  "cost": 0,
+                  "description": "TV stays in one position"
+                },
+                { 
+                  "value": "wallDrywall", 
+                  "label": "Put it in the wall", 
+                  "cost": 79,
+                  "description": "TV stays in one position"
+                },
+                { 
+                  "value": "boxSocketDrywall", 
+                  "label": "Recessed box with socket", 
+                  "cost": 99,
+                  "description": "TV stays in one position"
+                },
+              ],
+            },
+            {
+                "name": "wires",
+                "type": "radio",
+                "isRequired": true,
+                "label": "Do you want to hide the wires?",
+                "showIf": {
+                  "all": [
+                    {
+                      "field": "wallType",
+                      "condition": "equalsAny",
+                      "values": ['another']
+                    },
+                    {
+                      "field": "$parentValue",
+                      "condition": "equalsAny",
+                      "values": ["frameTvUpTo60", "frameTvOver65"]
+                    },
+                  ]
+                },
+                "options": [
+                  { 
+                      "value": "open", 
+                      "label": "Open", 
+                      "cost": 0,
+                      "description": "TV stays in one position"
+                  },
+                  { 
+                    "value": "wallBrick", 
+                    "label": "Put it in the wall", 
+                    "cost": 199,
+                    "description": "TV stays in one position"
+                  },
+                  { 
+                    "value": "boxSocketBrick", 
+                    "label": "Recessed box with socket", 
                     "cost": 229,
                     "description": "TV stays in one position"
                   },

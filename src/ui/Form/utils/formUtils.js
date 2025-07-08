@@ -3,15 +3,31 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
     return true; 
   }
 
+  // --- Новая логика: массив условий (AND)
+  if (Array.isArray(showIfCondition)) {
+    return showIfCondition.every(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+  }
+
+  // --- Новая логика: объект с all/any
+  if (typeof showIfCondition === 'object' && showIfCondition !== null) {
+    if (Array.isArray(showIfCondition.all)) {
+      return showIfCondition.all.every(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+    }
+    if (Array.isArray(showIfCondition.any)) {
+      return showIfCondition.any.some(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+    }
+  }
+
+  // --- Старый формат (один объект-условие)
   const { field, condition, value: targetValue, values: targetValues } = showIfCondition;
   
   let fieldValue;
   if (field === '$parentValue' && parentContext && parentContext.parentValue !== undefined) {
     fieldValue = parentContext.parentValue;
-  } else if (field.includes('.')) {
+  } else if (field && field.includes('.')) {
     const [refStepId, refFieldName] = field.split('.');
     fieldValue = currentFormData[refStepId] ? currentFormData[refStepId][refFieldName] : undefined;
-  } else {
+  } else if (field) {
     fieldValue = currentFormData[currentStepId] ? currentFormData[currentStepId][field] : undefined;
   }
 
