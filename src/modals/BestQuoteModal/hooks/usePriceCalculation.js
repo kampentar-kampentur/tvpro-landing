@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react';
 import { shouldRenderField } from '../../../ui/Form/utils/formUtils';
 
-export const usePriceCalculation = (formData, scheme, renderedSteps) => {
+export const usePriceCalculation = (
+  formData,
+  scheme,
+  renderedSteps,
+  {
+    discountType = null, // "fixed" | "percent" | null
+    discountValue = 0,
+    discountCondition = (total) => false, // по умолчанию скидка не применяется
+    discountLabel = "Online Order"
+  } = {}
+) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
 
@@ -164,7 +174,7 @@ export const usePriceCalculation = (formData, scheme, renderedSteps) => {
                     const totalStreamingCost = initialStreamingTotal * tvCountValue;
 
                     stepItems.push({
-                        label: `Streaming Devices (${tvCountValue} devices)`,
+                        label: `Streaming Devices (${tvCountValue} devices)` ,
                         cost: totalStreamingCost,
                         details: streamingData, // Store individual items as details
                         fieldName: "streamingConsolidated"
@@ -219,18 +229,35 @@ export const usePriceCalculation = (formData, scheme, renderedSteps) => {
       }
     }
 
-    // Process Discount (always applied and has fixed placement)
-    const discountGroup = { type: "discount", label: "Discount", items: [] };
-    const onlineOrderDiscount = -30; // Static discount for now
-    currentTotal += onlineOrderDiscount;
-    discountGroup.items.push({ label: "Online Order", cost: onlineOrderDiscount });
-    tempStructuredBreakdown.push(discountGroup);
+    let discountApplied = false;
+    let discountAmount = 0;
+    const discountGroup = { type: "discount", label: discountLabel, items: [] };
 
+    if (
+      discountType &&
+      typeof discountCondition === "function" &&
+      discountCondition(currentTotal)
+    ) {
+      if (discountType === "percent") {
+        discountAmount = -Math.round(currentTotal * (discountValue / 100));
+      } else if (discountType === "fixed") {
+        discountAmount = -discountValue;
+      }
+      if (discountAmount !== 0) {
+        currentTotal += discountAmount;
+        discountApplied = true;
+      }
+    }
+
+    if (discountApplied) {
+      discountGroup.items.push({ label: discountLabel, cost: discountAmount });
+      tempStructuredBreakdown.push(discountGroup);
+    }
 
     setTotalPrice(currentTotal);
     setStructuredCostBreakdown(tempStructuredBreakdown);
 
-  }, [formData, scheme, renderedSteps]);
+  }, [formData, scheme, renderedSteps, discountType, discountValue, discountCondition, discountLabel]);
 
   return { totalPrice, structuredCostBreakdown };
 }; 

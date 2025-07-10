@@ -6,8 +6,6 @@ import Modal from "@/ui/Modal";
 import Form from "@/ui/Form"
 import React, { useEffect, useState } from "react";
 import PriceSummary from "./components/PriceSummary";
-import Button from "@/ui/Button";
-import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 
 const example = {
@@ -582,7 +580,7 @@ const BestQuoteModal = () => {
             <aside className={styles.servicesContainer}>
                 <div className={styles.banner}>
                     <p className={styles.saleText}>
-                        Get $30 off when you book your TV mounting online
+                      Get $30 off when you book your TV mounting online - on orders over $100
                     </p>
                     <p className={styles.saleSize}>
                         $30

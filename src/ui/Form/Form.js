@@ -8,6 +8,13 @@ import styles from './Form.module.css';
 import { shouldRenderField } from './utils/formUtils';
 import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalculation';
 
+const discountOptions = {
+  discountType: "fixed",
+  discountValue: 30,
+  discountCondition: (total) => total > 100,
+  discountLabel: "Online Order"
+};
+
 const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = true, onPriceChange, disableSubmitBtn }) => {
   const {
     currentStepIndex,
@@ -21,7 +28,12 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
 
   const renderedSteps = useDynamicSteps(currentStepConfig, value);
   
-  const { totalPrice, structuredCostBreakdown } = usePriceCalculation(value, scheme, renderedSteps);
+  const { totalPrice, structuredCostBreakdown } = usePriceCalculation(
+    value,
+    scheme,
+    renderedSteps,
+    discountOptions
+  );
 
   const stepToRender = currentStepConfig?.type === "dynamic" 
     ? renderedSteps[currentSubStepIndex]
