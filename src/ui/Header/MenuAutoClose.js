@@ -10,16 +10,14 @@ export default function MenuAutoClose({ menuToggleId = "menu-toggle", menuWrappe
       if (menuToggle) menuToggle.checked = false;
     }
 
-    // Клик по ссылке внутри меню
     function onMenuClick(e) {
       if (e.target.tagName === "A") {
         closeMenu();
       }
     }
 
-    // Клик вне меню
     function onDocumentClick(e) {
-      if (!menuToggle) return;
+      if (!menuToggle || e.target.getAttribute("for") === menuToggleId || e.target.getAttribute("id") === menuToggleId) return;
       if (
         menuToggle.checked
       ) {
@@ -28,11 +26,12 @@ export default function MenuAutoClose({ menuToggleId = "menu-toggle", menuWrappe
     }
 
     if (menuWrapper) menuWrapper.addEventListener("click", onMenuClick);
-    document.addEventListener("mouseup", onDocumentClick);
-    setTimeout(() => document.querySelector('a[href*="elfsight.com/google-reviews-widget"]')?.remove(), 1000);
+    document.addEventListener("click", onDocumentClick);
+    document.addEventListener("touchmove", closeMenu);
     return () => {
       if (menuWrapper) menuWrapper.removeEventListener("click", onMenuClick);
-      document.removeEventListener("mouseup", onDocumentClick);
+      document.removeEventListener("click", onDocumentClick);
+      document.removeEventListener("touchmove", closeMenu);
     };
   }, [menuToggleId, menuWrapperClass]);
 
