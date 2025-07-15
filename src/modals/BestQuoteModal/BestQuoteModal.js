@@ -432,6 +432,11 @@ const example = {
                     "label": "Install paintings & decor", 
                     "cost": 35,
                 },
+                { 
+                    "value": "installInWallSpeaker", 
+                    "label": "Install In-Wall Speaker", 
+                    "cost": 69,
+                },
             ]
           },
           {
