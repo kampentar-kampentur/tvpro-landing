@@ -107,7 +107,6 @@ export default async function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "TVPro Handy Services",
-              "image": "https://tvpro-landing.vercel.app/og-image.jpg",
               "telephone": cta.phoneLabel,
               "address": {
                 "@type": "PostalAddress",
@@ -115,15 +114,26 @@ export default async function RootLayout({ children }) {
                 "addressRegion": "TX",
                 "addressCountry": "US"
               },
-              "url": "https://tvpro-landing.vercel.app",
+              "url": "https://tvprousa.com/",
               "openingHours": "Mo-Su 08:00-22:00",
               "priceRange": "$$",
               "servesCuisine": "TV Installation"
             }),
           }}
         />
+        <!-- Google Tag Manager -->
+          <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-5QVX2Z6S');</script>
+        <!-- End Google Tag Manager -->
       </Head>
       <body className={redHatDisplay.variable}>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QVX2Z6S"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) --
         <ModalProvider>
           <Header cta={cta}/>
           <div style={{ paddingTop: 80 }}>
