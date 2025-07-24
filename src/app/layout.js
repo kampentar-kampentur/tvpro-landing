@@ -5,7 +5,7 @@ import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
 import Footer from "@/blocks/Footer";
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -62,15 +62,15 @@ export const metadata = {
     },
   ],
   alternates: {
-    canonical: 'https://tvpro-landing.vercel.app',
+    canonical: 'https://tvprousa.com',
   },
   openGraph: {
     title: 'Same-Day TV Mounting | TVPro Handy Services',
     description: 'TV mounting with hidden wires, fast install, and fireplace options. Houston and nearby areas.',
-    url: 'https://tvpro-landing.vercel.app',
+    url: 'https://tvprousa.com',
     images: [
       {
-        url: 'https://tvpro-landing.vercel.app/og-image.jpg',
+        url: 'https://tvprousa.com/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'TV mounting services in Houston',
@@ -85,7 +85,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'TVPro Handy Services',
     description: 'Fast and clean TV wall installation.',
-    images: ['https://tvpro-landing.vercel.app/og-image.jpg'],
+    images: ['https://tvprousa.com/og-image.jpg'],
   },
 };
 
@@ -123,7 +123,7 @@ export default async function RootLayout({ children }) {
           }}
         />
         {/* Google Tag Manager */}
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -133,25 +133,26 @@ export default async function RootLayout({ children }) {
               })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
             `,
           }}
-        />
+        /> */}
         {/* End Google Tag Manager */}
       </Head>
+      <GoogleTagManager gtmId="GTM-5QVX2Z6S"/>
       <body className={redHatDisplay.variable}>
         {/* Google Tag Manager (noscript) */}
-        <noscript>
+        {/* <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-5QVX2Z6S"
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
-        </noscript>
+        </noscript> */}
         {/* End Google Tag Manager (noscript) */}
         <ModalProvider>
           <Header cta={cta}/>
-          <div style={{ paddingTop: 80 }}>
+          <main style={{ paddingTop: 80, flexGrow: 1 }}>
             {children}
-          </div>
+          </main>
           <Footer cta={cta}/>
         </ModalProvider>
       </body>
