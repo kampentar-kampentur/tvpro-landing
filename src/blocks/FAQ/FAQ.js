@@ -16,7 +16,7 @@ const FAQ = async () => {
   return (
     <section className={`block ${styles.faq}`} id="faq">
       <header className={styles.faqHeader}>
-        <h2 className="blockHeading"><Text text={faqData.title} /></h2>
+        <span role="heading" aria-level="3" className="blockHeading"><Text text={faqData.title} /></span>
         {faqData.subTitle && <p className="subText"><Text text={faqData.subTitle} /></p>}
       </header>
       <div className={styles.faqContent}>

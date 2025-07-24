@@ -13,7 +13,7 @@ const redHatDisplay = Red_Hat_Display({
 });
 
 export const metadata = {
-  title: "Same‑Day TV Installation | TVPro Handy Services – Wire Concealment, Fireplace Mounts",
+  title: "TV Mounting Services | TVPro Handy Services",
   description: "Fast same‑day TV mounting on drywall, brick, tile & stone. Premium wire concealment, fireplace installations, soundbars & home theaters. Book now with TVPro!",
   icons: [
     {
@@ -65,12 +65,12 @@ export const metadata = {
     canonical: 'https://tvprousa.com',
   },
   openGraph: {
-    title: 'Same-Day TV Mounting | TVPro Handy Services',
+    title: 'TV Mounting Services | TVPro Handy Services',
     description: 'TV mounting with hidden wires, fast install, and fireplace options. Houston and nearby areas.',
     url: 'https://tvprousa.com',
     images: [
       {
-        url: 'https://tvprousa.com/og-image.jpg',
+        url: 'https://tvprousa.com/og-image.png',
         width: 1200,
         height: 630,
         alt: 'TV mounting services in Houston',
@@ -85,7 +85,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'TVPro Handy Services',
     description: 'Fast and clean TV wall installation.',
-    images: ['https://tvprousa.com/og-image.jpg'],
+    images: ['https://tvprousa.com/og-image.png'],
   },
 };
 

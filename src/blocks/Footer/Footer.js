@@ -6,7 +6,7 @@ const Footer = async ({cta}) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className={styles.footer} role="contentinfo">
+    <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <div className={styles.logoWrapper}>
           <Link 
@@ -17,8 +17,7 @@ const Footer = async ({cta}) => {
           >
             <LogoSVG 
               width="82" 
-              height="40" 
-              alt="TVPro Handy Services Logo"
+              height="40"
               role="img"
             />
           </Link>
