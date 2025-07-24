@@ -132,7 +132,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         onPrevious={handlePrevious}
         onNext={handleNext}
         onSubmit={onSubmit}
-        isLastStep={isSubmitButton}
+        isLastStep={isLastOverallStep}
         disableSubmitBtn={disableSubmitBtn}
       />
     </form>

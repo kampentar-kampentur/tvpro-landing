@@ -6,6 +6,7 @@ import Modal from "@/ui/Modal";
 import React, { useState } from "react";
 import TextField from "@/ui/Form/components/fields/TextField";
 import Button from "@/ui/Button";
+import Checkbox from "@/ui/Checkbox";
 
 const nameField = {
     "name": "name",
@@ -98,6 +99,24 @@ const BookNowModal = () => {
 
     const isFormValid = formData.name && formData.phone && formData.zip;
 
+    const TermsText = () => {
+        return(
+        <div style={{fontSize: '12px', maxWidth: "100%", textWrap: "wrap", textAlign: "left"}}>
+            I agree to receive SMS from TVPro Handy Services LLC regarding appointments and service updates.
+            <p>
+            I give consent for TVPro Handy Services LLC to collect my contact details and text or email me concerning this request and future company updates, appointment reminders, and customer service communications. Messaging frequency varies based on requested service. Message and data rates may apply. I also agree to the Privacy Policy and Terms and Conditions, which can be found at the links below. Text "STOP" to cancel at any time.
+            </p>
+            <p>
+            Message and data rates may apply. Max 4 messages/month. Text STOP to cancel. HELP for help.
+            </p>
+            <p>
+            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="sms-link">Privacy Policy</a> |
+            <a href="/terms" target="_blank" rel="noopener noreferrer" className="sms-link" style={{marginLeft: 8}}>Terms of Service</a>
+            </p>
+        </div>
+        )
+    }
+
     return (
         <Modal isOpen={isOpen} onClose={close} className={styles.bookNow}>
             <h3 className={styles.title}>Let’s Talk — One Minute Callback</h3>
@@ -131,6 +150,9 @@ const BookNowModal = () => {
                 onChange={handleChange('email')}
                 className={styles.bookNowInput}
             />
+            <div style={{maxWidth: "100%"}}>
+                <Checkbox label={<TermsText/>}/>
+            </div>  
             <Button className={styles.button} onClick={handleSubmit} disabled={isSubmitting || !isFormValid}>
                 {isSubmitting ? 'Sending...' : 'Send'}
             </Button>
