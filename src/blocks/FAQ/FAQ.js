@@ -38,7 +38,7 @@ const FAQ = async () => {
         />
       </Head>
       <header className={styles.faqHeader}>
-        <span role="heading" aria-level="3" className="blockHeading"><Text text={faqData.title} /></span>
+        <h2><Text text={faqData.title} /></h2>
         {faqData.subTitle && <p className="subText"><Text text={faqData.subTitle} /></p>}
       </header>
       <div className={styles.faqContent}>
@@ -52,7 +52,7 @@ const FAQ = async () => {
               defaultChecked={index === 0}
             />
             <label htmlFor={`faq-toggle-${index}`} className={styles.faqQuestionContainer}>
-              <h3 className={styles.faqQuestion}><Text text={item.question} /></h3>
+              <span role="heading" aria-level="3" className={styles.faqQuestion}><Text text={item.question} /></span>
               <span className={styles.icon}>
                 <PlusIcon width="24" height="24" className={styles.plusIcon} />
                 <MinusIcon width="24" height="24" className={styles.minusIcon} />
