@@ -12,6 +12,10 @@ import YelpDefault from "@/assets/socialIcons/YelpDefault.svg";
 import YelpHover from "@/assets/socialIcons/YelpHover.svg";
 import ThumbtackDefault from "@/assets/socialIcons/ThumbtackDefault.svg";
 import ThumbtackHover from "@/assets/socialIcons/ThumbtackHover.svg";
+import PinterestDefault from "@/assets/socialIcons/pinterest.svg"
+import PinterestHover from "@/assets/socialIcons/pinterestHover.svg"
+import XDefault from "@/assets/socialIcons/X.svg"
+import XHover from "@/assets/socialIcons/XHover.svg"
 import Text from "@/ui/Text/Text";
 
 async function getContactUs() {
@@ -94,6 +98,20 @@ const Contacts = async () => {
                 <ThumbtackDefault className={styles.defaultIcon} />
                 <ThumbtackHover className={styles.hoverIcon} />
                 <span className="sr-only">Thumbtack</span>
+              </a>
+            )}
+            {contact.pinterest && (
+              <a href={contact.pinterest} target="_blank" rel="noopener noreferrer" className={styles.socialIconLink} aria-label="Pinterest">
+                <PinterestDefault className={styles.defaultIcon} />
+                <PinterestHover className={styles.hoverIcon} />
+                <span className="sr-only">Pinterest</span>
+              </a>
+            )}
+            {contact.x && (
+              <a href={contact.x} target="_blank" rel="noopener noreferrer" className={styles.socialIconLink} aria-label="X">
+                <XDefault className={styles.defaultIcon} />
+                <XHover className={styles.hoverIcon} />
+                <span className="sr-only">X</span>
               </a>
             )}
           </div>
