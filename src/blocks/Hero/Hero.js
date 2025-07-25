@@ -5,6 +5,7 @@ import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import VideoPlayer from "./components/VideoPlayer";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
+import Head from "next/head";
 
 async function getHero() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
@@ -25,6 +26,22 @@ export default async function Hero() {
 
   return (
     <>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "VideoObject",
+              "name": "TV Wall Mounting Demo by TVPro Handy Services",
+              "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
+              "uploadDate": "2025-07-25",
+              "contentUrl": "https://tvprousa.com/mainVideo2.mp4",
+              "embedUrl": "https://tvprousa.com",
+            }),
+          }}
+        />
+      </Head>
       <RunningTextLine textLines={heroLinesData} />
       <section className={`block ${styles.hero}`}>
         <div className={`blockContainer ${styles.heroContainer}`}>

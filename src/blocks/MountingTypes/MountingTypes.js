@@ -14,9 +14,9 @@ export default async function MountingTypes() {
   return (
     <section className={`block ${styles.mountingTypes}`}>
       <header>
-        <h3 className="blockHeading">
+        <h2 className="blockHeading">
           <Text text={data.title} />
-        </h3>
+        </h2>
         <p className="subText">
           <Text text={data.subTitle} />
         </p>

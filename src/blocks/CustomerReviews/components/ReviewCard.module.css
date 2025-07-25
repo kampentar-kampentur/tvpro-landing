@@ -33,7 +33,6 @@
 }
 
 .reviewText {
-  font-style: Medium;
   font-weight: 500;
   font-size: 20px;
   line-height: 28px;
@@ -59,7 +58,6 @@
 }
 
 .authorName {
-  font-style: Medium;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
@@ -68,7 +66,6 @@
 }
 
 .reviewDate {
-  font-style: Regular;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;

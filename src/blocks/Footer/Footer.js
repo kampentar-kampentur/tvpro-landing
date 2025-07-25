@@ -29,7 +29,7 @@ const Footer = async ({cta}) => {
         
         <div className={styles.contactInfo}>
           <div className={styles.contactItem}>
-            <h4 className={styles.contactLabel}>Phone Number</h4>
+            <h3 className={styles.contactLabel}>Phone Number</h3>
             <p className={styles.contactText}>
               <a
                 href={`tel:${cta.phone}`} 
@@ -45,7 +45,7 @@ const Footer = async ({cta}) => {
           </div>
           
           <div className={styles.contactItem}>
-            <h4 className={styles.contactLabel}>Email</h4>
+            <h3 className={styles.contactLabel}>Email</h3>
             <p className={styles.contactText}>
               <a 
                 href={`mailto:${cta.email}`} 

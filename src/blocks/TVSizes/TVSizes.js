@@ -28,9 +28,9 @@ export default async function TVSizes() {
   return (
     <section className={`block ${styles.tvsizes}`}>
       <header>
-        <h3 className="blockHeading">
+        <h2 className="blockHeading">
         <Text text={tvSizesData.title}/>
-        </h3>
+        </h2>
         <p className="subText">
           <Text text={tvSizesData.subTitle}/>
         </p>

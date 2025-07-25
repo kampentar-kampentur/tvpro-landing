@@ -108,17 +108,22 @@ export default async function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "TVPro Handy Services",
+              "image": "https://tvprousa.com/logo.svg",
+              "description": "TV wall mounting and smart home installation services across multiple states.",
               "telephone": cta.phoneLabel,
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Houston",
-                "addressRegion": "TX",
-                "addressCountry": "US"
-              },
+              "email": "tvprohandyservices@gmail.com",
               "url": "https://tvprousa.com/",
               "openingHours": "Mo-Su 08:00-22:00",
               "priceRange": "$$",
-              "servesCuisine": "TV Installation"
+              "sameAs": [
+                "https://www.facebook.com/people/Tvpro-Handyservices/pfbid02geuoA9XMGaNpAYiEXXCXvfehx8MiTX2swXLkXvXSRwPA294XQmYXyP3yHKLFbYEkl/",
+                "https://www.instagram.com/tvprohandyservices",
+                "https://www.tiktok.com/@tvpro.handy.servi",
+                "https://www.yelp.com/biz/tv-pro-handy-services-houston-2",
+                "https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254",
+                "https://www.pinterest.com/tvprohandyservices/",
+                "https://x.com/tvprousa",
+              ]
             }),
           }}
         />

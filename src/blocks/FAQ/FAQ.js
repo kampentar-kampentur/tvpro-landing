@@ -3,6 +3,7 @@ import styles from "./FAQ.module.css";
 import PlusIcon from "@/assets/icons/plus.svg";
 import MinusIcon from "@/assets/icons/minus.svg";
 import Text from "@/ui/Text/Text";
+import Head from "next/head";
 
 async function getFAQ() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/faq?populate=*`);
@@ -13,8 +14,29 @@ async function getFAQ() {
 const FAQ = async () => {
   const faqData = await getFAQ();
 
+  const structuredFAQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.faqs.map(({ question, answer }) => ({
+      "@type": "Question",
+      "name": question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": answer,
+      },
+    })),
+  };
+
   return (
     <section className={`block ${styles.faq}`} id="faq">
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredFAQ),
+          }}
+        />
+      </Head>
       <header className={styles.faqHeader}>
         <span role="heading" aria-level="3" className="blockHeading"><Text text={faqData.title} /></span>
         {faqData.subTitle && <p className="subText"><Text text={faqData.subTitle} /></p>}

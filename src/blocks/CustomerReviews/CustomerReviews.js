@@ -117,9 +117,9 @@ const CustomerReviews = async () => {
   return (
     <section className={`block ${styles.customerReviews}`}>
       <header className={styles.customerReviewsHeader}>
-        <h3 className="blockHeading">
+        <h2 className="blockHeading">
           <Text text={customerReviewsData.title}/>
-        </h3>
+        </h2>
         <p className="subText"><Text text={customerReviewsData.subTitle}/></p>
       </header>
       <script src="https://static.elfsight.com/platform/platform.js" async></script>

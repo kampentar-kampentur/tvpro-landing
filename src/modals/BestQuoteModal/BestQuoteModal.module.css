@@ -52,7 +52,6 @@
 }
 
 .servicesHeading {
-    font-style: Medium;
     font-weight: 500;
     font-size: 20px;
     color: #0e0e13;
@@ -72,14 +71,12 @@
 }
 
 .serviceName {
-    font-style: Medium;
     font-weight: 500;
     font-size: 14px;
     color: #0e0e13;
 }
 
 .servicePrice {
-    font-style: Regular;
     font-weight: 400;
     font-size: 12px;
     color: #91929c;

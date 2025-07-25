@@ -12,9 +12,9 @@ const WhyCustomersTrustUs = async () => {
   return (
     <section className={`block ${styles.whyCustomersTrustUs}`} id="reviews">
       <header>
-        <h3 className="blockHeading">
+        <h2 className="blockHeading">
           {data.title}
-        </h3>
+        </h2>
         <p className="subText">{data.subTitle}</p>
       </header>
       <div className={styles.cardsContainer}>

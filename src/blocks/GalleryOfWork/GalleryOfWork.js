@@ -29,9 +29,9 @@ const GalleryOfWork = async () => {
     <section className={styles.galleryOfWork} id="gallery">
       <div className="block">
         <header className={styles.galleryOfWorkHeader}>
-          <h3 className="blockHeading">
+          <h2 className="blockHeading">
             <Text text={galleryOfWorkData.title}/>
-          </h3>
+          </h2>
           <p className="subText"><Text text={galleryOfWorkData.subTitle}/></p>
         </header>
       {/* <div className={styles.sliderWrap}>
