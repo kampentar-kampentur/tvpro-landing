@@ -64,55 +64,11 @@ async function getCustomerReviews() {
   return json.data;
 }
 
-export async function getGoogleReviews(placeId = "ChIJuVr9LojYwQERHVjQfs1s2O8") {
-  const API_KEY = process.env.GOOGLE_PLACES_API_KEY || "AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME";
-  
-  try {
-    const response = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': API_KEY,
-        'X-Goog-FieldMask': 'reviews,rating,userRatingCount,displayName,photos'
-      }
-    });
-    const data = await response.json();
-    
-    return data?.reviews || [];
-  } catch (error) {
-    console.error('Error fetching Google reviews:', error);
-    return [];
-  }
-}
-
-// Функция для обрезки текста
-function truncateText(text, maxLength = 180) {
-  if (!text) return '';
-  return text.length > maxLength ? text.slice(0, maxLength) + '…' : text;
-}
 
 const CustomerReviews = async () => {
-  const [customerReviewsData, googleReviews] = await Promise.all([
+  const [customerReviewsData] = await Promise.all([
     getCustomerReviews(),
   ]);
-
-  // Преобразуем отзывы из Google в формат ReviewCard
-  const googleCards = (googleReviews || []).map(r => ({
-    rating: r.rating,
-    reviewText: truncateText(r.text?.text || r.originalText?.text || ''),
-    authorName: r.authorAttribution?.displayName || '',
-    reviewDate: r.relativePublishTimeDescription || '',
-    avatar: r.authorAttribution?.photoUri || '/images/avatar-esther.png',
-    Logo: <GoogleLogo width="49" height="16"/>
-  }));
-
-  // Обрезаем текст и для локальных отзывов
-  const localCards = reviewCardsData.map(r => ({
-    ...r,
-    reviewText: truncateText(r.reviewText)
-  }));
-
-  const cardsToShow = googleCards.length > 0 ? googleCards : localCards;
 
   return (
     <section className={`block ${styles.customerReviews}`}>

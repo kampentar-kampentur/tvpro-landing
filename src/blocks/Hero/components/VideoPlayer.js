@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
 import posterImage from "@/assets/videoplaceholder.webp";
+import posterImageSmall from "@/assets/videoplaceholder590.webp";
 import Head from 'next/head'
 import Image from 'next/image';
 
@@ -275,20 +276,24 @@ export default function OptimizedVideoPlayer({
       </Head>
       <div className={styles.videoContainer} style={videoStyle}>
         {!isLoaded && (
-          <Image
-            src={poster}
-            alt="Video preview"
-            fill
-            style={{
-              objectFit: "cover",
-              zIndex: 2,
-              borderRadius: "inherit",
-              transition: "opacity 0.3s"
-            }}
-            className={styles.loadingPoster}
-            aria-label="Video preview"
-            priority
-          />
+          <picture>
+            <source srcSet={posterImageSmall.src} media="(max-width: 700px)" type="image/webp" />
+            <Image
+              src={posterImage.src}
+              alt="Video preview"
+              fill
+              style={{
+                objectFit: "cover",
+                zIndex: 2,
+                borderRadius: "inherit",
+                transition: "opacity 0.3s"
+              }}
+              className={styles.loadingPoster}
+              aria-label="Video preview"
+              priority
+              fetchpriority="high"
+            />
+          </picture>
         )}
         <video
           ref={videoRef}

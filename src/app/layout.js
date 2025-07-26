@@ -128,6 +128,9 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head>
+        <link rel="preconnect" href="https://apps.elfsightcdn.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cloudflareinsights.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
