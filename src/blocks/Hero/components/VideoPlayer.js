@@ -272,7 +272,7 @@ export default function OptimizedVideoPlayer({
         <link
           rel="preload"
           as="image"
-          href="/images/videoplaceholder-800.webp"
+          href="/images/videoplaceholder-400.webp"
           fetchPriority="high"
           type="image/webp"
         />
