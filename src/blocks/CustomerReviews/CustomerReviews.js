@@ -1,69 +1,13 @@
-import styles from "./CustomerReviews.module.css";
-import ReviewCard from "./components/ReviewCard";
-import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
-import Button from "@/ui/Button/Button";
-import GoogleLogo from "@/assets/socialIcons/Google.svg"
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
-import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
-
-const reviewCardsData = [
-  {
-    rating: 5,
-    reviewText: "Great experience, communication, follow up. 10/10 would recommend this service.",
-    authorName: "Esther Howard",
-    reviewDate: "May 14, 2025",
-    avatar: "/images/avatar-esther.png", // Placeholder for avatar image
-    Logo: <GoogleLogo width="49" height="16"/>
-  },
-  {
-    rating: 5,
-    reviewText: "Arthur came and installed a mount on my fireplace and was friendly and fast! Excellent service!",
-    authorName: "Brooklyn Simmons",
-    reviewDate: "May 4, 2025",
-    avatar: "/images/avatar-brooklyn.png", // Placeholder for avatar image
-    Logo: <GoogleLogo width="49" height="16"/>
-  },
-  {
-    rating: 5,
-    reviewText: "Arthur Ryan went far above and beyond fixing our stubborn tv issue. Definitely recommend him.",
-    authorName: "Leslie Alexander",
-    reviewDate: "May 9, 2025",
-    avatar: "/images/avatar-leslie.png", // Placeholder for avatar image
-    Logo: <GoogleLogo width="49" height="16"/>
-  },
-  {
-    rating: 5,
-    reviewText: "Artur was incredibly professional and detailed with the installation. Very glad to have picked these guys to do the work!!",
-    authorName: "Sujoy Sanyal",
-    reviewDate: "Jun 14, 2025",
-    avatar: "/images/avatar-esther.png", // Placeholder for avatar image
-    Logo: <GoogleLogo width="49" height="16"/>
-  },
-  {
-    rating: 5,
-    reviewText: "Professional, meticulous, and ensured everything was level, secure, and wires were hidden. Their problem-solving skills and attention to detail were ...",
-    authorName: "BJ Olonilua",
-    reviewDate: "Jun 6, 2025",
-    avatar: "/images/avatar-brooklyn.png", // Placeholder for avatar image
-    Logo: <GoogleLogo width="49" height="16"/>
-  },
-  {
-    rating: 5,
-    reviewText: "Artur provided excellent customer service, was on time and I appreciated the discount for doing so much work that I tipped his service",
-    authorName: "Brian Busby",
-    reviewDate: "May 29, 2025",
-    avatar: "/images/avatar-leslie.png", // Placeholder for avatar image
-    Logo: <GoogleLogo width="49" height="16"/>
-  },
-];
+import CustomerReviewsClient from "./CustomerReviewsClient";
+import styles from "./CustomerReviews.module.css";
 
 async function getCustomerReviews() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/customer-review?populate=*`);
   const json = await res.json();
   return json.data;
 }
-
 
 const CustomerReviews = async () => {
   const [customerReviewsData] = await Promise.all([
@@ -78,8 +22,7 @@ const CustomerReviews = async () => {
         </h2>
         <p className="subText"><Text text={customerReviewsData.subTitle}/></p>
       </header>
-      <script src="https://static.elfsight.com/platform/platform.js" async></script>
-      <div class="elfsight-app-0c8768dc-758c-4c7f-a7fe-9fcc2345d890" data-elfsight-app-lazy></div>
+      <CustomerReviewsClient />
       <div className={styles.ctaContainer}>
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
         <div className={styles.ctaButtons}>
