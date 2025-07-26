@@ -37,6 +37,7 @@ const Contacts = async () => {
       <div className={`blockContainer ${styles.contactsContainer}`}>
         <h2 className={styles.heading}><Text text={contact.title} /></h2>
         <p className={styles.subHeading}><Text text={contact.subTitle} /></p>
+        <div className={styles.mapWrap}>
         <div className={styles.contactDetailsSection}>
             <div className={styles.detailItem}>
                 <h3 className={styles.detailTitle}>Working Hours</h3>
@@ -55,6 +56,18 @@ const Contacts = async () => {
                 </p>
             </div>
         </div>
+
+        <iframe
+            width="300"
+            height="300"
+            style={{border:0}}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME
+              &q=place_id:ChIJuVr9LojYwQERHVjQfs1s2O8">
+          </iframe>
+          </div>
         <div className={styles.socialNetworksSection}>
           <h3 className={styles.detailTitle}>Social Networks</h3>
           <div className={styles.socialIcons}>

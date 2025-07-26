@@ -30,11 +30,11 @@
 
 .contactDetailsSection {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* grid-template-columns: repeat(3, 1fr); */
+  grid-template-columns: 1fr;
   gap: 32px;
   width: 100%;
   max-width: 1180px;
-  margin-top: 80px;
 }
 
 .socialNetworksSection {
@@ -100,7 +100,6 @@
   }
 
   .contactDetailsSection {
-    grid-template-columns: 1fr;
     gap: 20px;
   }
 
@@ -115,4 +114,16 @@
   .contacts {
     padding: 40px 0;
   }
+  .mapWrap {
+    flex-direction: column;
+  }
 } 
+
+.mapWrap {
+  display: flex;
+  margin-top: 80px;
+}
+
+.mapWrap iframe {
+  margin-top: 20px;
+}
