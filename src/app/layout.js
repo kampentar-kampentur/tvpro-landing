@@ -14,7 +14,16 @@ const redHatDisplay = Red_Hat_Display({
 
 export const metadata = {
   title: "TV Mounting Services | TVPro Handy Services",
-  description: "Fast same‑day TV mounting on drywall, brick, tile & stone. Premium wire concealment, fireplace installations, soundbars & home theaters. Book now with TVPro!",
+  description: `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
+
+Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
+
+✅ Transparent pricing, no hidden fees
+✅ Evening & weekend availability
+✅ 1-year warranty on all installations
+✅ Trusted by homeowners, businesses, and designers
+
+Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
   icons: [
     {
       rel: 'icon',
@@ -66,7 +75,16 @@ export const metadata = {
   },
   openGraph: {
     title: 'TV Mounting Services | TVPro Handy Services',
-    description: 'TV mounting with hidden wires, fast install, and fireplace options. Houston and nearby areas.',
+    description: `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
+
+Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
+
+✅ Transparent pricing, no hidden fees
+✅ Evening & weekend availability
+✅ 1-year warranty on all installations
+✅ Trusted by homeowners, businesses, and designers
+
+Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
     url: 'https://tvprousa.com',
     images: [
       {
@@ -84,7 +102,16 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'TVPro Handy Services',
-    description: 'Fast and clean TV wall installation.',
+    description: `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
+
+Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
+
+✅ Transparent pricing, no hidden fees
+✅ Evening & weekend availability
+✅ 1-year warranty on all installations
+✅ Trusted by homeowners, businesses, and designers
+
+Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
     images: ['https://tvprousa.com/og-image.png'],
   },
 };
@@ -109,7 +136,16 @@ export default async function RootLayout({ children }) {
               "@type": "LocalBusiness",
               "name": "TVPro Handy Services",
               "image": "https://tvprousa.com/logo.svg",
-              "description": "TV wall mounting and smart home installation services across multiple states.",
+              "description": `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
+
+Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
+
+✅ Transparent pricing, no hidden fees
+✅ Evening & weekend availability
+✅ 1-year warranty on all installations
+✅ Trusted by homeowners, businesses, and designers
+
+Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
               "telephone": cta.phoneLabel,
               "email": "tvprohandyservices@gmail.com",
               "url": "https://tvprousa.com/",
@@ -123,6 +159,28 @@ export default async function RootLayout({ children }) {
                 "https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254",
                 "https://www.pinterest.com/tvprohandyservices/",
                 "https://x.com/tvprousa",
+              ],
+              "serviceArea": [
+                {
+                  "@type": "Place",
+                  "name": "Houston",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Houston",
+                    "addressRegion": "TX",
+                    "addressCountry": "US"
+                  }
+                },
+                {
+                  "@type": "Place",
+                  "name": "Dallas",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Dallas",
+                    "addressRegion": "TX",
+                    "addressCountry": "US"
+                  }
+                }
               ]
             }),
           }}
