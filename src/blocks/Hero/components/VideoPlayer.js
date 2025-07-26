@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
+import Head from "next/head";
 
 export default function OptimizedVideoPlayer({
   poster = "videoplaceholder-400.webp",
@@ -47,7 +48,6 @@ export default function OptimizedVideoPlayer({
         connection.effectiveType === '2g' ||
         connection.effectiveType === '3g'
       );
-      
       setIsLowPerformance(isSlowDevice || isSlowConnection);
     };
 
@@ -151,6 +151,12 @@ export default function OptimizedVideoPlayer({
 
   const handleVideoError = useCallback((e) => {
     console.error("Video loading error:", e);
+    const source = e.target;
+    console.error("Video error:", {
+      src: source.src,
+      tag: source.tagName,
+      nativeEvent: e.nativeEvent,
+    });
     setHasError(true);
     setIsLoaded(false);
   }, []);
@@ -262,6 +268,15 @@ export default function OptimizedVideoPlayer({
       role="region"
       aria-label="Interactive video player"
     >
+      <Head>
+        <link
+          rel="preload"
+          as="image"
+          href="/images/videoplaceholder-800.webp"
+          fetchPriority="high"
+          type="image/webp"
+        />
+      </Head>
       <div className={styles.videoContainer} style={videoStyle}>
         {!isLoaded && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -282,12 +297,11 @@ export default function OptimizedVideoPlayer({
               width: "100%",
               height: "auto"
             }}
-            fetchpriority="high"
+            fetchPriority="high"
           />
         )}
         <video
           ref={videoRef}
-          src={videoSrc}
           poster={poster}
           autoPlay
           loop
@@ -304,10 +318,12 @@ export default function OptimizedVideoPlayer({
           tabIndex={0}
           aria-label={alt}
           title={title}
-          fetchpriority="high"
+          fetchPriority="high"
           {...props}
         >
-          <source src={videoSrc} type="video/mp4" />
+          <source src="/optimized/mainVideo2-360p.mp4" type="video/mp4" media="(max-width: 480px)" />
+          <source src="/optimized/mainVideo2-480p.mp4" type="video/mp4" media="(max-width: 1024px)" />
+          <source src="/optimized/mainVideo2-720p.mp4" type="video/mp4" />
           <p>
             Your browser doesn&apos;t support HTML5 video. 
             <a href={videoSrc} download>Download the video</a> instead.

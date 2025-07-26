@@ -66,7 +66,7 @@ export default async function Hero() {
           </div>
         </div>
       </section>
-      <VideoPlayer src="./mainVideo2.mp4"/>
+      <VideoPlayer/>
     </>
   );
 }
