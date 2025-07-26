@@ -1,6 +1,6 @@
 import styles from "./Footer.module.css";
 import Link from 'next/link';
-import LogoSVG from "@/assets/logo.svg";
+import LogoSVG from "@/assets/logoFooter.svg";
 
 const Footer = async ({cta}) => {
   const currentYear = new Date().getFullYear();

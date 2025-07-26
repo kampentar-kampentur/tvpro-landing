@@ -27,9 +27,8 @@ const nextConfig = {
                   {
                     name: 'prefixIds',
                     params: {
-                      prefixIds: true,
-                      prefixClassNames: false,
-                    },
+                      prefix: () => Math.random().toString(36).substr(2, 9)
+                    }
                   },
                 ],
               },
