@@ -282,6 +282,7 @@ export default function OptimizedVideoPlayer({
               width: "100%",
               height: "auto"
             }}
+            fetchpriority="high"
           />
         )}
         <video
