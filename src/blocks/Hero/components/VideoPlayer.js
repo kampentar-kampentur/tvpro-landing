@@ -3,13 +3,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
-import posterImage from "@/assets/videoplaceholder.webp";
-import posterImageSmall from "@/assets/videoplaceholder590.webp";
-import Head from 'next/head'
-import Image from 'next/image';
 
 export default function OptimizedVideoPlayer({
-  poster = posterImage.src,
+  poster = "videoplaceholder-400.webp",
   alt = "Interactive video content",
   title = "Video Player",
   minWidth = 1180,
@@ -266,34 +262,27 @@ export default function OptimizedVideoPlayer({
       role="region"
       aria-label="Interactive video player"
     >
-      <Head>
-        <link
-          rel="preload"
-          as="image"
-          href={posterImage.src}
-          type="image/webp"
-        />
-      </Head>
       <div className={styles.videoContainer} style={videoStyle}>
         {!isLoaded && (
-          <picture>
-            <source srcSet={posterImageSmall.src} media="(max-width: 700px)" type="image/webp" />
-            <Image
-              src={posterImage.src}
-              alt="Video preview"
-              fill
-              style={{
-                objectFit: "cover",
-                zIndex: 2,
-                borderRadius: "inherit",
-                transition: "opacity 0.3s"
-              }}
-              className={styles.loadingPoster}
-              aria-label="Video preview"
-              priority
-              fetchpriority="high"
-            />
-          </picture>
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src="/videoplaceholder-800.webp"
+            srcSet="
+              /videoplaceholder-400.webp 400w,
+              /videoplaceholder-800.webp 800w,
+              /videoplaceholder-1180.webp 1180w
+            "
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+            alt="Video preview"
+            style={{
+              objectFit: 'cover',
+              zIndex: 2,
+              borderRadius: "inherit",
+              transition: "opacity 0.3s",
+              width: "100%",
+              height: "auto"
+            }}
+          />
         )}
         <video
           ref={videoRef}
@@ -314,6 +303,7 @@ export default function OptimizedVideoPlayer({
           tabIndex={0}
           aria-label={alt}
           title={title}
+          fetchpriority="high"
           {...props}
         >
           <source src={videoSrc} type="video/mp4" />
