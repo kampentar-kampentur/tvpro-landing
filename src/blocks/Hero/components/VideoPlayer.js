@@ -242,24 +242,24 @@ export default function OptimizedVideoPlayer({
     );
   }
 
-  if (hasError) {
-    return (
-      <div className={`${styles.videoWrapper} ${styles.errorState} ${className}`}>
-        <div className={styles.errorMessage} role="alert">
-          <p>Unable to load video content</p>
-          <button 
-            onClick={() => {
-              setHasError(false);
-              videoRef.current?.load();
-            }}
-            className={styles.retryButton}
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // if (hasError) {
+  //   return (
+  //     <div className={`${styles.videoWrapper} ${styles.errorState} ${className}`}>
+  //       <div className={styles.errorMessage} role="alert">
+  //         <p>Unable to load video content</p>
+  //         <button 
+  //           onClick={() => {
+  //             setHasError(false);
+  //             videoRef.current?.load();
+  //           }}
+  //           className={styles.retryButton}
+  //         >
+  //           Retry
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <section
