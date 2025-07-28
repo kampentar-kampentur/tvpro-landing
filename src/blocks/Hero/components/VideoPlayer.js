@@ -282,13 +282,6 @@ export default function OptimizedVideoPlayer({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src="/videoplaceholder-392.webp"
-            srcSet="
-              /videoplaceholder-392.webp 393w,
-              /videoplaceholder-400.webp 400w,
-              /videoplaceholder-800.webp 800w,
-              /videoplaceholder-1180.webp 1180w
-            "
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
             alt="Video preview"
             style={{
               objectFit: 'cover',
