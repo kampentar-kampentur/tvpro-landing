@@ -12,6 +12,9 @@ const nextConfig = {
     compiler: {
       removeConsole: process.env.NODE_ENV === 'production',
     },
+    experimental: {
+      optimizeCss: true,
+    },
     assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
     basePath: process.env.NODE_ENV === 'production' ? '' : '',
     webpack(config) {

@@ -132,6 +132,12 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cloudflareinsights.com" crossOrigin="anonymous" />
         <script
+            data-cfasync="false"
+            dangerouslySetInnerHTML={{
+              __html: `window.dataLayer = window.dataLayer || [];`
+            }}
+          />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({

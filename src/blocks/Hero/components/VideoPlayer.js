@@ -272,7 +272,7 @@ export default function OptimizedVideoPlayer({
         <link
           rel="preload"
           as="image"
-          href="/images/videoplaceholder-400.webp"
+          href="/images/videoplaceholder-392.webp"
           fetchPriority="high"
           type="image/webp"
         />
@@ -281,8 +281,9 @@ export default function OptimizedVideoPlayer({
         {!isLoaded && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src="/videoplaceholder-800.webp"
+            src="/videoplaceholder-392.webp"
             srcSet="
+              /videoplaceholder-392.webp 393w,
               /videoplaceholder-400.webp 400w,
               /videoplaceholder-800.webp 800w,
               /videoplaceholder-1180.webp 1180w
