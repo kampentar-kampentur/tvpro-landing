@@ -10,10 +10,13 @@ const nextConfig = {
       BROWSERSLIST_ENV: 'modern'
     },
     compiler: {
+      target: 'es2020',
       removeConsole: process.env.NODE_ENV === 'production',
     },
     experimental: {
       optimizeCss: true,
+      modern: true,
+      polyfillsOptimization: true,
     },
     assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
     basePath: process.env.NODE_ENV === 'production' ? '' : '',
