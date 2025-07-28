@@ -67,7 +67,12 @@ const nextConfig = {
           ]
         }
       ]
-    }
+    },
+    experimental: {
+      legacyBrowsers: false,
+      browsersListForSwc: true,
+    },
+    swcMinify: true,
   };
   
   export default nextConfig;
