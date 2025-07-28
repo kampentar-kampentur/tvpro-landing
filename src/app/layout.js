@@ -127,10 +127,18 @@ export default async function RootLayout({ children }) {
   const cta = await getCTA()
   return (
     <html lang="en">
-      <Head>
+      <head>
         <link rel="preconnect" href="https://apps.elfsightcdn.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cloudflareinsights.com" crossOrigin="anonymous" />
+        <link
+          rel="preload"
+          as="image"
+          href="/videoplaceholder-392.webp"
+          fetchPriority="high"
+          type="image/webp"
+        />
+        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" fetchpriority="high"/>
         <script
             data-cfasync="false"
             dangerouslySetInnerHTML={{
@@ -207,7 +215,7 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
           }}
         /> */}
         {/* End Google Tag Manager */}
-      </Head>
+      </head>
       <GoogleTagManager gtmId="GTM-5QVX2Z6S"/>
       <body className={redHatDisplay.variable}>
         {/* Google Tag Manager (noscript) */}

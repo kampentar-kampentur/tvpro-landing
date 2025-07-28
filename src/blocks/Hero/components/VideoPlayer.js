@@ -268,16 +268,6 @@ export default function OptimizedVideoPlayer({
       role="region"
       aria-label="Interactive video player"
     >
-      <Head>
-        <link
-          rel="preload"
-          as="image"
-          href="/videoplaceholder-392.webp"
-          fetchPriority="high"
-          type="image/webp"
-        />
-        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" fetchpriority="high"/>
-      </Head>
       <div className={styles.videoContainer} style={videoStyle}>
         {!isLoaded && (
           // eslint-disable-next-line @next/next/no-img-element
