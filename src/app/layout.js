@@ -139,6 +139,8 @@ export default async function RootLayout({ children }) {
           type="image/webp"
         />
         <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" fetchpriority="high"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//cloudflare.com" />
         <script
             data-cfasync="false"
             dangerouslySetInnerHTML={{

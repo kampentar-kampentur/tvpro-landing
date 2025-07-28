@@ -49,6 +49,25 @@ const nextConfig = {
         }
       }
     },
+    module: {
+      rules: [
+        {
+          test: /\.module\.css$/,
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: {
+                  mode: 'local',
+                  localIdentName: '[hash:base64:5]'
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
   };
   
   export default nextConfig;
