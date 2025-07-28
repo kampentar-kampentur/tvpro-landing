@@ -6,7 +6,7 @@ import styles from "./VideoPlayer.module.css";
 import Head from "next/head";
 
 export default function OptimizedVideoPlayer({
-  poster = "videoplaceholder-400.webp",
+  poster = "videoplaceholder-392.webp",
   alt = "Interactive video content",
   title = "Video Player",
   minWidth = 1180,
@@ -272,10 +272,11 @@ export default function OptimizedVideoPlayer({
         <link
           rel="preload"
           as="image"
-          href="/images/videoplaceholder-392.webp"
+          href="/videoplaceholder-392.webp"
           fetchPriority="high"
           type="image/webp"
         />
+        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" fetchpriority="high"/>
       </Head>
       <div className={styles.videoContainer} style={videoStyle}>
         {!isLoaded && (
