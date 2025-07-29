@@ -131,6 +131,9 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://apps.elfsightcdn.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cloudflareinsights.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://strapi-production-20d6.up.railway.app" />
+        <link rel="dns-prefetch" href="https://strapi-production-20d6.up.railway.app" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
           rel="preload"
           as="image"
