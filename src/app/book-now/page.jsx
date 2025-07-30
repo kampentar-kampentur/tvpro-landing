@@ -80,8 +80,6 @@ export default function BookNowPage() {
 
             if (response.ok) {
                 router.push(`/`)
-                setFormData({ name: '', phone: '', zip: '', address: '', email: '' });
-                openModal('SeeYouSoon');
             } else {
                 const errorData = await response.json();
                 console.error("Form submission error:", errorData);
