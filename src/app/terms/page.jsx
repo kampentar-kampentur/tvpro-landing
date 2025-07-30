@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "SMS Terms and Conditions | TVPro Handy Services",
+  title: "Terms and Conditions | TVPro Handy Services",
   description:
     "Terms and conditions for SMS messaging with TVPro Handy Services.",
   robots: { index: false, follow: false },
