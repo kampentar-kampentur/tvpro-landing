@@ -67,7 +67,7 @@
     .serviceCard:hover .hiddenButton {
         opacity: 1;
         visibility: visible;
-        display: inline-block;
+        display: flex;
     }
     .serviceCard:hover .imageContainer {
         opacity: 0;
