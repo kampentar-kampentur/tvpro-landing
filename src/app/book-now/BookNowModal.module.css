@@ -1,5 +1,5 @@
 .bookNow {
-    width: 480px;
+    max-width: 480px;
     padding: 60px 40px;
     display: flex;
     flex-direction: column;

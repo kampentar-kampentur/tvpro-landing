@@ -79,6 +79,11 @@ export default function BookNowPage() {
             });
 
             if (response.ok) {
+                dataLayer.push({
+                    event: 'form_send_ok',
+                    'user_data.phone_number': formData.phone.replace(/\D/g, ''),
+                    'user_data.email': formData.email
+                });
                 router.push(`/`)
             } else {
                 const errorData = await response.json();
@@ -93,7 +98,7 @@ export default function BookNowPage() {
         }
     };
 
-    const isFormValid = formData.name && formData.phone && formData.zip && isCheked;
+    const isFormValid = formData.name && formData.phone.length === 12 && formData.zip.length === 5  && isCheked;
 
     const TermsText = () => {
         return(

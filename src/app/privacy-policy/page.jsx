@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Privacy Policy for SMS Messaging | TVPro Handy Services',
+  title: 'Privacy Policy | TVPro Handy Services',
   description: 'How TVPro Handy Services collects, uses, and protects your data for SMS messaging.',
   robots: { index: false, follow: false },
 };
