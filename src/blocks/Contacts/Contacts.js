@@ -64,8 +64,7 @@ const Contacts = async () => {
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME
-              &q=place_id:ChIJuVr9LojYwQERHVjQfs1s2O8">
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME&q=place_id:ChIJuVr9LojYwQERHVjQfs1s2O8">
           </iframe>
           </div>
         <div className={styles.socialNetworksSection}>

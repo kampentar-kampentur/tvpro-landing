@@ -24,6 +24,12 @@ Our TV dismount service is free with orders over $200. We also offer sound bar i
 ✅ Trusted by homeowners, businesses, and designers
 
 Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
+  address: {
+    "@type": "PostalAddress",
+    "addressLocality": "Houston",
+    "addressRegion": "TX",
+    "addressCountry": "US",
+  },
   icons: [
     {
       rel: 'icon',
@@ -150,6 +156,7 @@ export default async function RootLayout({ children }) {
               __html: `window.dataLayer = window.dataLayer || [];`
             }}
           />
+          
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -173,6 +180,12 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
               "url": "https://tvprousa.com/",
               "openingHours": "Mo-Su 08:00-22:00",
               "priceRange": "$$",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Houston",
+                "addressRegion": "TX",
+                "addressCountry": "US",
+              },
               "sameAs": [
                 "https://www.facebook.com/people/Tvpro-Handyservices/pfbid02geuoA9XMGaNpAYiEXXCXvfehx8MiTX2swXLkXvXSRwPA294XQmYXyP3yHKLFbYEkl/",
                 "https://www.instagram.com/tvprohandyservices",
