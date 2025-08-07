@@ -4,6 +4,7 @@ import Button from "@/ui/Button";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import buttonStyles from "@/ui/Button/Button.module.css";
 import MenuAutoClose from "./MenuAutoClose";
+import PhoneIcon from "@/assets/icons/phone.svg";
 
 export default function HeaderActions({cta}) {
     return (
@@ -22,6 +23,12 @@ export default function HeaderActions({cta}) {
                     <span className="sr-only">Menu</span>
                 </label>
             </div>
+            <Button
+              className={styles.phoneButton}
+              href={`tel:${cta.phone}`}
+            >
+                <PhoneIcon width="24" height="24s" style={{fill: "currentColor"}}/>
+            </Button>
         </>
     )
 } 

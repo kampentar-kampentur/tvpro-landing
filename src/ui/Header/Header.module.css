@@ -92,6 +92,10 @@ button.menuButton {
   user-select: none;
 }
 
+.phoneButton {
+  display: none !important;
+}
+
 @media (min-width: 1025px) {
   .menuButton {
     display: none !important;
@@ -116,5 +120,25 @@ button.menuButton {
 
   .menuToggle:checked ~ div[class*="navbarWrapper"] {
     display: block;
+  }
+
+  .phoneButton.phoneButton {
+    width: 64px;
+    height: 64px;
+    display: inline-flex !important;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    border-radius: 100000px;
+    padding: 12px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
+  }
+  .phoneButton span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
