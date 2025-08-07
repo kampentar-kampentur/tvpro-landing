@@ -58,6 +58,7 @@ const Contacts = async () => {
         </div>
 
         <iframe
+            title="Location map of TVPro Handy Services"
             width="300"
             height="300"
             style={{border:0}}
