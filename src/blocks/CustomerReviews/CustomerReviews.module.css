@@ -41,3 +41,20 @@
 .customerReviewsHeader {
   margin-bottom: 40px;
 }
+
+.eapps-widget-toolbar {
+  display: none !important;
+}
+
+@keyframes hide-elfsight {
+  from, to {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
+.elfsightLink {
+  animation: hide-elfsight 0.001s !important;
+  animation-fill-mode: both !important;
+}

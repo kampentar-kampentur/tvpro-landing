@@ -1,16 +1,20 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import ElfsightWidget from "./components/ElfsightWidget";
 
 export default function CustomerReviewsClient() {
   const ref = useRef(null);
   const [showWidget, setShowWidget] = useState(false);
+  const [ElfsightWidget, setElfsightWidget] = useState(null);
 
   useEffect(() => {
     if (!ref.current) return;
     const observer = new window.IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          // Dynamically import ElfsightWidget when it's about to be shown
+          import("./components/ElfsightWidget").then((module) => {
+            setElfsightWidget(() => module.default);
+          });
           setShowWidget(true);
           observer.disconnect();
         }
@@ -23,7 +27,7 @@ export default function CustomerReviewsClient() {
 
   return (
     <div ref={ref} style={{ minHeight: 100 }}>
-      {showWidget ? <ElfsightWidget /> : null}
+      {showWidget && ElfsightWidget ? <ElfsightWidget /> : null}
     </div>
   );
-} 
+}

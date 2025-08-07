@@ -1,18 +1,51 @@
 import styles from "./page.module.css";
-import Hero from "@/blocks/Hero";
-import TVSizes from "@/blocks/TVSizes";
-import OurServices from "@/blocks/OurServices";
-import MountingTypes from "@/blocks/MountingTypes";
-import WhyCustomersTrustUs from "@/blocks/WhyCustomersTrustUs";
-import CustomerReviews from "@/blocks/CustomerReviews";
-import GalleryOfWork from "@/blocks/GalleryOfWork";
-import AboutUs from "@/blocks/AboutUs";
-import FAQ from "@/blocks/FAQ";
-import Contacts from "@/blocks/Contacts";
-import Footer from "@/blocks/Footer";
-import BestQuoteModal from "@/modals/BestQuoteModal";
-import BookNowModal from "@/modals/BookNowModal";
-import SeeYouSoonModal from "@/modals/SeeYouSoonModal";
+import dynamic from "next/dynamic";
+
+// Dynamically import heavy components with lazy loading
+const Hero = dynamic(() => import("@/blocks/Hero"), {
+  loading: () => <div>Loading...</div>
+});
+
+const TVSizes = dynamic(() => import("@/blocks/TVSizes"), {
+  loading: () => <div>Loading...</div>
+});
+
+const OurServices = dynamic(() => import("@/blocks/OurServices"), {
+  loading: () => <div>Loading...</div>
+});
+
+const MountingTypes = dynamic(() => import("@/blocks/MountingTypes"), {
+  loading: () => <div>Loading...</div>
+});
+
+const WhyCustomersTrustUs = dynamic(() => import("@/blocks/WhyCustomersTrustUs"), {
+  loading: () => <div>Loading...</div>
+});
+
+const CustomerReviews = dynamic(() => import("@/blocks/CustomerReviews"), {
+  loading: () => <div>Loading...</div>
+});
+
+const GalleryOfWork = dynamic(() => import("@/blocks/GalleryOfWork"), {
+  loading: () => <div>Loading...</div>
+});
+
+const AboutUs = dynamic(() => import("@/blocks/AboutUs"), {
+  loading: () => <div>Loading...</div>
+});
+
+const FAQ = dynamic(() => import("@/blocks/FAQ"), {
+  loading: () => <div>Loading...</div>
+});
+
+const Contacts = dynamic(() => import("@/blocks/Contacts"), {
+  loading: () => <div>Loading...</div>
+});
+
+// Create a client component for modals
+const Modals = dynamic(() => import("@/app/components/Modals"), {
+  loading: () => <div>Loading modals...</div>
+});
 
 export default function Home() {
   return (
@@ -27,9 +60,7 @@ export default function Home() {
       <AboutUs />
       <FAQ />
       <Contacts />
-      <BestQuoteModal/>
-      <BookNowModal/>
-      <SeeYouSoonModal/>
+      <Modals />
     </div>
   );
 }

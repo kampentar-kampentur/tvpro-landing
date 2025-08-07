@@ -16,13 +16,10 @@ const nextConfig = withBundleAnalyzer({
       BROWSERSLIST_ENV: 'modern'
     },
     compiler: {
-      target: 'es2020',
       removeConsole: process.env.NODE_ENV === 'production',
     },
     experimental: {
       optimizeCss: true,
-      modern: true,
-      polyfillsOptimization: true,
     },
     assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
     basePath: process.env.NODE_ENV === 'production' ? '' : '',
@@ -58,30 +55,6 @@ const nextConfig = withBundleAnalyzer({
         }
       }
     },
-    module: {
-      rules: [
-        {
-          test: /\.module\.css$/,
-          use: [
-            'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                modules: {
-                  mode: 'local',
-                  localIdentName: '[hash:base64:5]'
-                }
-              }
-            }
-          ]
-        }
-      ]
-    },
-    experimental: {
-      legacyBrowsers: false,
-      browsersListForSwc: true,
-    },
-    swcMinify: true,
   });
   
   export default nextConfig;

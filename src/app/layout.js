@@ -5,7 +5,7 @@ import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
 import Footer from "@/blocks/Footer";
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import Script from 'next/script';
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -148,14 +148,21 @@ export default async function RootLayout({ children }) {
           type="image/webp"
         />
         <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" fetchPriority="high"/>
+        <link rel="preload" as="font" href="https://fonts.gstatic.com/s/redhatdisplay/v10/8vIQ7wUr0m80wwYf0QCXZzYzUoTQ-jSgZYDT5g.ttf" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//cloudflare.com" />
-        <script
-            data-cfasync="false"
-            dangerouslySetInnerHTML={{
-              __html: `window.dataLayer = window.dataLayer || [];`
-            }}
-          />
+        <Script
+          id="gtag-init"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-GZBG74J130');
+            `
+          }}
+        />
           
         <script
           type="application/ld+json"
@@ -228,13 +235,12 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
+              // GTM is now loaded via next/script with lazy loading
             `,
           }}
         /> */}
         {/* End Google Tag Manager */}
       </head>
-      <GoogleTagManager gtmId="GTM-5QVX2Z6S"/>
       <body className={redHatDisplay.variable}>
         {/* Google Tag Manager (noscript) */}
         {/* <noscript>
@@ -253,8 +259,15 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
           </main>
           <Footer cta={cta}/>
         </ModalProvider>
+        <Script
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-5QVX2Z6S"
+          strategy="lazyOnload"
+        />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130`}
+          strategy="lazyOnload"
+        />
       </body>
-      <GoogleAnalytics gaId="G-GZBG74J130" />
     </html>
   );
 }

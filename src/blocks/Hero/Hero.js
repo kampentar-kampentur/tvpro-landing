@@ -2,10 +2,15 @@ import React from "react";
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
-import VideoPlayer from "./components/VideoPlayer";
+import dynamic from "next/dynamic";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
 import Head from "next/head";
+
+// Dynamically import VideoPlayer with lazy loading
+const VideoPlayer = dynamic(() => import("./components/VideoPlayer"), {
+  loading: () => <div className={styles.videoPlaceholder}>Loading video...</div>
+});
 
 async function getHero() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
