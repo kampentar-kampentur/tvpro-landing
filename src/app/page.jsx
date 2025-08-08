@@ -30,6 +30,10 @@ const GalleryOfWork = dynamic(() => import("@/blocks/GalleryOfWork"), {
   loading: () => <div>Loading...</div>
 });
 
+const Certificates = dynamic(() => import("@/blocks/Certificates"), {
+  loading: () => <div>Loading...</div>
+});
+
 const AboutUs = dynamic(() => import("@/blocks/AboutUs"), {
   loading: () => <div>Loading...</div>
 });
@@ -57,6 +61,7 @@ export default function Home() {
       <WhyCustomersTrustUs />
       <CustomerReviews />
       <GalleryOfWork />
+      <Certificates />
       <AboutUs />
       <FAQ />
       <Contacts />

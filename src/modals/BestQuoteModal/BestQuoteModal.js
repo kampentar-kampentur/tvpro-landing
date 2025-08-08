@@ -536,6 +536,7 @@ const BestQuoteModal = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPriceExpanded, setIsPriceExpanded] = useState(false);
 
 
   useEffect(() => {
@@ -579,9 +580,37 @@ const BestQuoteModal = () => {
     setStructuredCostBreakdown(newStructuredCostBreakdown);
   };
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={close}>
         <div className={styles.bestQuote}>
+            {/* Mobile price summary - visible on small screens */}
+            <div className={styles.mobilePriceSummary}>
+                <div
+                  className={styles.mobilePriceHeader}
+                  onClick={() => setIsPriceExpanded(!isPriceExpanded)}
+                >
+                  <span className={styles.mobilePriceLabel}>Estimate</span>
+                  <span className={styles.mobilePriceAmount}>{formatCurrency(totalPrice)}</span>
+                  <span className={`${styles.expandIcon} ${isPriceExpanded ? styles.expanded : ''}`}>
+                    ▼
+                  </span>
+                </div>
+                {isPriceExpanded && (
+                  <div className={styles.mobilePriceDetails}>
+                    <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} />
+                  </div>
+                )}
+            </div>
+            
             <aside className={styles.servicesContainer}>
                 <div className={styles.banner}>
                     <p className={styles.saleText}>
