@@ -10,6 +10,7 @@ import Script from 'next/script';
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
   subsets: ["latin"],
+  display: "swap", // Ensure font-display: swap is used
 });
 
 export const metadata = {
@@ -135,11 +136,13 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://apps.elfsightcdn.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://static.elfsight.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cloudflareinsights.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://strapi-production-20d6.up.railway.app" />
         <link rel="dns-prefetch" href="https://strapi-production-20d6.up.railway.app" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link
           rel="preload"
           as="image"
