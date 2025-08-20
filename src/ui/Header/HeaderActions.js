@@ -27,7 +27,7 @@ export default function HeaderActions({cta}) {
               className={styles.phoneButton}
               href={`tel:${cta.phone}`}
             >
-                <PhoneIcon width="24" height="24s" style={{fill: "currentColor"}}/>
+                <PhoneIcon width="24" height="24" style={{fill: "currentColor"}}/>
                 <span className="visually-hidden">Telephones to TVPro Handy Services</span>
             </Button>
         </>
