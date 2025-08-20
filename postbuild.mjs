@@ -53,6 +53,8 @@ async function run() {
   const beasties = new Beasties({
     pruneSource: true, // удаляет инлайновый css из бандла
     preload: "media", // подгружает стили по необходимости
+    inlineFonts: true,
+    mergeStylesheets: true
   });
 
   const htmlFiles = await getHtmlFiles(outDir);
