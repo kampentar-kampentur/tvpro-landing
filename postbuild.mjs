@@ -28,7 +28,20 @@ async function processFile(file, beasties) {
   const dom = new JSDOM(optimized);
   const document = dom.window.document;
   document.querySelectorAll("link[rel=stylesheet]").forEach((link) => {
-    link.remove();
+    const href = link.getAttribute("href");
+
+    // создаём новый preload link
+    const preload = document.createElement("link");
+    preload.setAttribute("rel", "preload");
+    preload.setAttribute("as", "style");
+    preload.setAttribute("href", href);
+    preload.setAttribute("onload", "this.onload=null;this.rel='stylesheet'");
+
+    // создаём noscript fallback
+    const noscript = document.createElement("noscript");
+    noscript.innerHTML = `<link rel="stylesheet" href="${href}">`;
+
+    link.replaceWith(preload, noscript);
   });
 
   // сохраняем обратно
