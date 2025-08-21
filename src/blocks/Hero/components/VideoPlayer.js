@@ -233,14 +233,14 @@ export default function OptimizedVideoPlayer({
     setVideoSrc(getBestVideoSrc());
   }, []);
 
-  if (!isClient) {
-    return (
-      <div
-        className={`${styles.videoWrapper} ${className}`}
-        style={{ width: `${minWidth}px`, aspectRatio: aspectRatio }}
-      />
-    );
-  }
+  // if (!isClient) {
+  //   return (
+  //     <div
+  //       className={`${styles.videoWrapper} ${className}`}
+  //       style={{ width: `${minWidth}px`, aspectRatio: aspectRatio }}
+  //     />
+  //   );
+  // }
 
   // if (hasError) {
   //   return (
@@ -288,10 +288,10 @@ export default function OptimizedVideoPlayer({
         <video
           ref={videoRef}
           poster="/videoplaceholder-392.webp"
+          preload="none"
           autoPlay
           loop
           muted
-          preload={preload}
           playsInline
           className={`${styles.video} ${isLoaded ? styles.loaded : ""}`}
           style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
