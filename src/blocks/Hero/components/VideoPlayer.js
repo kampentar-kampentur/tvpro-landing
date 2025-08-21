@@ -160,10 +160,21 @@ export default function OptimizedVideoPlayer({
     setHasError(true);
     setIsLoaded(false);
   }, []);
+  const handleVideoReady = useCallback(() => {
+    if (!isLoaded) {
+      console.log('Video ready'); // для отладки
+      setIsLoaded(true);
+      setHasError(false);
+    }
+  }, [isLoaded]);
 
   const handleVideoPlay = useCallback(() => {
     setIsPlaying(true);
-  }, []);
+    // Если видео начало играть, но isLoaded false - исправляем это
+    if (!isLoaded) {
+      handleVideoReady();
+    }
+  }, [isLoaded, handleVideoReady]);
 
   const handleVideoPause = useCallback(() => {
     setIsPlaying(false);
@@ -270,7 +281,7 @@ export default function OptimizedVideoPlayer({
       aria-label="Interactive video player"
     >
       <div className={styles.videoContainer} style={videoStyle}>
-        {/* {!isLoaded && (
+        {!isLoaded && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src="/videoplaceholder-392.webp"
@@ -286,7 +297,7 @@ export default function OptimizedVideoPlayer({
             }}
             fetchPriority="high"
           />
-        )} */}
+        )}
         <video
           ref={videoRef}
           poster="/videoplaceholder-392.webp"
@@ -297,7 +308,15 @@ export default function OptimizedVideoPlayer({
           playsInline
           className={`${styles.video} ${isLoaded ? styles.loaded : ""}`}
           style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
-          onLoadedData={handleVideoLoad}
+          onLoadedData={handleVideoReady}
+          onLoadedMetadata={handleVideoReady}
+          onCanPlay={handleVideoReady}
+          onTimeUpdate={() => {
+            // Если видео обновляет время, значит точно загружено
+            if (!isLoaded && videoRef.current?.currentTime > 0) {
+              handleVideoReady();
+            }
+          }}
           onError={handleVideoError}
           onPlay={handleVideoPlay}
           onPause={handleVideoPause}
