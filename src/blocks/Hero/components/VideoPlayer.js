@@ -285,7 +285,7 @@ export default function OptimizedVideoPlayer({
       aria-label="Interactive video player"
     >
       <div className={styles.videoContainer} style={videoStyle}>
-        {!isLoaded && (
+        {/* {!isLoaded && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src="/videoplaceholder-392.webp"
@@ -301,7 +301,7 @@ export default function OptimizedVideoPlayer({
             }}
             fetchPriority="high"
           />
-        )}
+        )} */}
         <video
           ref={videoRef}
           poster="/videoplaceholder-392.webp"
@@ -310,7 +310,7 @@ export default function OptimizedVideoPlayer({
           loop
           muted
           playsInline
-          className={`${styles.video} ${isLoaded ? styles.loaded : ""}`}
+          className={`${styles.video} ${styles.loaded}`}
           style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
           onLoadedData={handleVideoReady}
           onLoadedMetadata={handleVideoReady}
