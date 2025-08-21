@@ -209,17 +209,18 @@ export default function OptimizedVideoPlayer({
 
   // Calculate responsive dimensions
   const dimensions = useMemo(() => {
-    if (!isClient) {
-      return {
-        width: minWidth,
-        height: minWidth / aspectRatio,
-        borderRadius: 16
-      };
-    }
-
+    
     const padding = 0; // больше отступы для мобильных
     const availableWidth = viewportWidth - padding;
     
+    debugger
+    if (!isClient) {
+      return {
+        width: availableWidth,
+        height: availableWidth / aspectRatio,
+        borderRadius: 16
+      };
+    }
     // Определяем базовые размеры в зависимости от экрана
     let baseWidth, maxWidth;
     
@@ -250,8 +251,8 @@ export default function OptimizedVideoPlayer({
 
   // Использование:
   const videoStyle = {
-    width: `${dimensions.width}px`,
-    height: `${dimensions.height}px`,
+    width: dimensions.width ? `${dimensions.width}px` : '100%',
+    height: dimensions.height ? `${dimensions.height}px` : '100%',
     borderRadius: `${dimensions.borderRadius}px`,
     transform: 'translateZ(0)',
     // Добавьте плавный переход
@@ -279,7 +280,7 @@ export default function OptimizedVideoPlayer({
     <section
       ref={containerRef}
       className={`${styles.videoWrapper} ${className}`}
-      style={!isClient ? { width: `${dimensions.width}px`, aspectRatio: aspectRatio } : {}}
+      style={!isClient ? { width: '100%', aspectRatio: aspectRatio } : {}}
       role="region"
       aria-label="Interactive video player"
     >
