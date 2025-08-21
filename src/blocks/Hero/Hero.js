@@ -48,7 +48,7 @@ export default async function Hero() {
         />
       </Head>
       <RunningTextLine textLines={heroLinesData} />
-      <section className={`block ${styles.hero}`}>
+      <div className={`block ${styles.hero}`}>
         <div className={`blockContainer ${styles.heroContainer}`}>
           <h1 className={styles.mainHeading}>
             <Text text={heroData.title}/>
@@ -70,7 +70,7 @@ export default async function Hero() {
               ))}
           </div>
         </div>
-      </section>
+      </div>
       <VideoPlayer/>
     </>
   );
