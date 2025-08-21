@@ -153,7 +153,7 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//cloudflare.com" />
         <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4"/>
-        <Script
+        {/* <Script
           id="gtag-init"
           strategy="lazyOnload"
           dangerouslySetInnerHTML={{
@@ -228,7 +228,7 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
               ]
             }),
           }}
-        />
+        /> */}
       </head>
       <body className={redHatDisplay.variable}>
         <ModalProvider>

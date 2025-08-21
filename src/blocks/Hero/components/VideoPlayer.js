@@ -287,7 +287,7 @@ export default function OptimizedVideoPlayer({
         )}
         <video
           ref={videoRef}
-          poster={poster}
+          poster="/videoplaceholder-392.webp"
           autoPlay
           loop
           muted
