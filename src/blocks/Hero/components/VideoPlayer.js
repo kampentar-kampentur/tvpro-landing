@@ -303,7 +303,6 @@ export default function OptimizedVideoPlayer({
           tabIndex={0}
           aria-label={alt}
           title={title}
-          fetchPriority="high"
           {...props}
         >
           <source src="/optimized/mainVideo2-360p.mp4" type="video/mp4" media="(max-width: 480px)" />

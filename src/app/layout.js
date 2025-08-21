@@ -135,6 +135,13 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/videoplaceholder-392.webp"
+          fetchPriority="high"
+          type="image/webp"
+        />
         <link rel="preconnect" href="https://apps.elfsightcdn.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://static.elfsight.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
@@ -143,17 +150,9 @@ export default async function RootLayout({ children }) {
         <link rel="dns-prefetch" href="https://strapi-production-20d6.up.railway.app" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
-        <link
-          rel="preload"
-          as="image"
-          href="/videoplaceholder-392.webp"
-          fetchPriority="high"
-          type="image/webp"
-        />
-        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" fetchPriority="high"/>
-        <link rel="preload" as="font" href="https://fonts.gstatic.com/s/redhatdisplay/v10/8vIQ7wUr0m80wwYf0QCXZzYzUoTQ-jSgZYDT5g.ttf" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//cloudflare.com" />
+        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4"/>
         <Script
           id="gtag-init"
           strategy="lazyOnload"
@@ -230,31 +229,8 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
             }),
           }}
         />
-        {/* Google Tag Manager */}
-        {/* <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              // GTM is now loaded via next/script with lazy loading
-            `,
-          }}
-        /> */}
-        {/* End Google Tag Manager */}
       </head>
       <body className={redHatDisplay.variable}>
-        {/* Google Tag Manager (noscript) */}
-        {/* <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-5QVX2Z6S"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          ></iframe>
-        </noscript> */}
-        {/* End Google Tag Manager (noscript) */}
         <ModalProvider>
           <Header cta={cta}/>
           <main style={{ paddingTop: 80, flexGrow: 1 }}>
