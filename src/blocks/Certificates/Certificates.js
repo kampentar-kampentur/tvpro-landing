@@ -35,7 +35,6 @@ async function getCertificates() {
 
 const Certificates = async () => {
   const certificatesData = await getCertificates();
-  console.log("certificatesData", certificatesData);
 
   return (
     <section className={`block ${styles.certificates}`}>

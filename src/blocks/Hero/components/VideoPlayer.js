@@ -265,6 +265,7 @@ export default function OptimizedVideoPlayer({
     <section
       ref={containerRef}
       className={`${styles.videoWrapper} ${className}`}
+      style={!isClient ? { width: `${minWidth}px`, aspectRatio: aspectRatio } : {}}
       role="region"
       aria-label="Interactive video player"
     >
@@ -280,7 +281,8 @@ export default function OptimizedVideoPlayer({
               borderRadius: "inherit",
               transition: "opacity 0.3s",
               width: "100%",
-              height: "auto"
+              height: "auto",
+              position: "absolute"
             }}
             fetchPriority="high"
           />

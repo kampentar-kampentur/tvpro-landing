@@ -20,7 +20,6 @@ const nextConfig = withBundleAnalyzer({
     },
     experimental: {
       optimizeCss: true,
-      cssMinify: true,
     },
     assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
     basePath: process.env.NODE_ENV === 'production' ? '' : '',
