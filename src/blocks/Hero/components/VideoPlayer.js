@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
 import Head from "next/head";
@@ -208,24 +208,54 @@ export default function OptimizedVideoPlayer({
   }, []);
 
   // Calculate responsive dimensions
-  let currentWidth = minWidth;
-  let currentHeight = minWidth / aspectRatio;
-  if (isClient) {
-    const padding = 20;
-    const adaptiveMinWidth = viewportWidth < minWidth ? Math.max(0, viewportWidth - padding) : minWidth;
-    const maxWidth = viewportWidth;
-    currentWidth = Math.max(
-      adaptiveMinWidth,
-      adaptiveMinWidth + (maxWidth - adaptiveMinWidth) * scrollYProgress
-    );
-    currentHeight = currentWidth / aspectRatio;
-  }
+  const dimensions = useMemo(() => {
+    if (!isClient) {
+      return {
+        width: minWidth,
+        height: minWidth / aspectRatio,
+        borderRadius: 16
+      };
+    }
 
+    const padding = 0; // больше отступы для мобильных
+    const availableWidth = viewportWidth - padding;
+    
+    // Определяем базовые размеры в зависимости от экрана
+    let baseWidth, maxWidth;
+    
+    if (viewportWidth < 768) {
+      // Мобильные устройства
+      baseWidth = Math.max(280, availableWidth);
+      maxWidth = availableWidth;
+    } else if (viewportWidth < 1200) {
+      // Планшеты
+      baseWidth = Math.min(minWidth, availableWidth);
+      maxWidth = Math.min(minWidth, availableWidth);
+    } else {
+      // Десктоп
+      baseWidth = minWidth;
+      maxWidth = Math.min(minWidth * 1.25, availableWidth);
+      
+    }
+    
+    const currentWidth = baseWidth + (maxWidth - baseWidth) * scrollYProgress;
+    const borderRadius = 16 * (1 - scrollYProgress); // плавнее
+    
+    return {
+      width: Math.round(currentWidth),
+      height: Math.round(currentWidth / aspectRatio),
+      borderRadius: Math.round(borderRadius)
+    };
+  }, [isClient, viewportWidth, minWidth, aspectRatio, scrollYProgress]);
+
+  // Использование:
   const videoStyle = {
-    width: `${currentWidth}px`,
-    height: `${currentHeight}px`,
-    borderRadius: `${16 - scrollYProgress * 16}px`,
-    transform: `translateZ(0)`, // Hardware acceleration
+    width: `${dimensions.width}px`,
+    height: `${dimensions.height}px`,
+    borderRadius: `${dimensions.borderRadius}px`,
+    transform: 'translateZ(0)',
+    // Добавьте плавный переход
+    transition: viewportWidth < 768 ? 'none' : 'all 0.1s ease-out'
   };
 
   function getBestVideoSrc() {
@@ -244,39 +274,12 @@ export default function OptimizedVideoPlayer({
     setVideoSrc(getBestVideoSrc());
   }, []);
 
-  // if (!isClient) {
-  //   return (
-  //     <div
-  //       className={`${styles.videoWrapper} ${className}`}
-  //       style={{ width: `${minWidth}px`, aspectRatio: aspectRatio }}
-  //     />
-  //   );
-  // }
-
-  // if (hasError) {
-  //   return (
-  //     <div className={`${styles.videoWrapper} ${styles.errorState} ${className}`}>
-  //       <div className={styles.errorMessage} role="alert">
-  //         <p>Unable to load video content</p>
-  //         <button 
-  //           onClick={() => {
-  //             setHasError(false);
-  //             videoRef.current?.load();
-  //           }}
-  //           className={styles.retryButton}
-  //         >
-  //           Retry
-  //         </button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <section
       ref={containerRef}
       className={`${styles.videoWrapper} ${className}`}
-      style={!isClient ? { width: `${minWidth}px`, aspectRatio: aspectRatio } : {}}
+      style={!isClient ? { width: `${dimensions.width}px`, aspectRatio: aspectRatio } : {}}
       role="region"
       aria-label="Interactive video player"
     >
