@@ -6,7 +6,6 @@ import PlusIcon from '@/assets/icons/PlusCircle.svg';
 const Counter = ({ value, onChange, className }) => {
 
   const handleIncrement = (e) => {
-    // debugger
     e.preventDefault()
     onChange(value + 1);
   };

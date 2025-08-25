@@ -162,7 +162,7 @@ export default function OptimizedVideoPlayer({
   }, []);
   const handleVideoReady = useCallback(() => {
     if (!isLoaded) {
-      console.log('Video ready'); // для отладки
+      console.log('Video ready');
       setIsLoaded(true);
       setHasError(false);
     }
@@ -170,7 +170,6 @@ export default function OptimizedVideoPlayer({
 
   const handleVideoPlay = useCallback(() => {
     setIsPlaying(true);
-    // Если видео начало играть, но isLoaded false - исправляем это
     if (!isLoaded) {
       handleVideoReady();
     }
@@ -180,7 +179,6 @@ export default function OptimizedVideoPlayer({
     setIsPlaying(false);
   }, []);
 
-  // Keyboard accessibility
   const handleKeyDown = useCallback((e) => {
     if (!videoRef.current) return;
     
@@ -207,13 +205,11 @@ export default function OptimizedVideoPlayer({
     setIsClient(true);
   }, []);
 
-  // Calculate responsive dimensions
   const dimensions = useMemo(() => {
     
-    const padding = 0; // больше отступы для мобильных
+    const padding = 0;
     const availableWidth = viewportWidth - padding;
     
-    debugger
     if (!isClient) {
       return {
         width: availableWidth,
@@ -221,26 +217,22 @@ export default function OptimizedVideoPlayer({
         borderRadius: 16
       };
     }
-    // Определяем базовые размеры в зависимости от экрана
     let baseWidth, maxWidth;
     
     if (viewportWidth < 768) {
-      // Мобильные устройства
       baseWidth = Math.max(280, availableWidth);
       maxWidth = availableWidth;
     } else if (viewportWidth < 1200) {
-      // Планшеты
-      baseWidth = Math.min(minWidth, availableWidth);
-      maxWidth = Math.min(minWidth, availableWidth);
+      baseWidth = availableWidth;
+      maxWidth = availableWidth;
     } else {
-      // Десктоп
       baseWidth = minWidth;
-      maxWidth = Math.min(minWidth * 1.25, availableWidth);
+      maxWidth = availableWidth;
       
     }
     
     const currentWidth = baseWidth + (maxWidth - baseWidth) * scrollYProgress;
-    const borderRadius = 16 * (1 - scrollYProgress); // плавнее
+    const borderRadius = 16 * (1 - scrollYProgress);
     
     return {
       width: Math.round(currentWidth),
@@ -249,13 +241,11 @@ export default function OptimizedVideoPlayer({
     };
   }, [isClient, viewportWidth, minWidth, aspectRatio, scrollYProgress]);
 
-  // Использование:
   const videoStyle = {
     width: dimensions.width ? `${dimensions.width}px` : '100%',
     height: dimensions.height ? `${dimensions.height}px` : '100%',
     borderRadius: `${dimensions.borderRadius}px`,
     transform: 'translateZ(0)',
-    // Добавьте плавный переход
     transition: viewportWidth < 768 ? 'none' : 'all 0.1s ease-out'
   };
 
@@ -285,23 +275,6 @@ export default function OptimizedVideoPlayer({
       aria-label="Interactive video player"
     >
       <div className={styles.videoContainer} style={videoStyle}>
-        {/* {!isLoaded && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src="/videoplaceholder-392.webp"
-            alt="Video preview"
-            style={{
-              objectFit: 'cover',
-              zIndex: 2,
-              borderRadius: "inherit",
-              transition: "opacity 0.3s",
-              width: "100%",
-              height: "auto",
-              position: "absolute"
-            }}
-            fetchPriority="high"
-          />
-        )} */}
         <video
           ref={videoRef}
           poster="/videoplaceholder-392.webp"

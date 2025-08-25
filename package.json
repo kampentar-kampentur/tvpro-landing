@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@next/third-parties": "^15.3.5",
-    "critters": "^0.0.23",
     "jsdom": "^26.1.0",
     "next": "15.3.3",
     "react": "^19.0.0",
@@ -20,6 +19,7 @@
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
+    "critters": "^0.0.23",
     "@eslint/eslintrc": "^3",
     "@next/bundle-analyzer": "^15.5.0",
     "@svgr/webpack": "^8.1.0",
