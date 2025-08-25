@@ -211,9 +211,10 @@ export default function OptimizedVideoPlayer({
     const availableWidth = viewportWidth - padding;
     
     if (!isClient) {
+      const w = Math.min(availableWidth, minWidth)
       return {
-        width: availableWidth,
-        height: availableWidth / aspectRatio,
+        width: w,
+        height: w / aspectRatio,
         borderRadius: 16
       };
     }
