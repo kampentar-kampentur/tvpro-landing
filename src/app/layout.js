@@ -257,6 +257,16 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
           src={`https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130`}
           strategy="lazyOnload"
         />
+        {/* Google Tag Manager (noscript) */}
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-5QVX2Z6S"
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        {/* End Google Tag Manager (noscript) */}
       </body>
     </html>
   );
