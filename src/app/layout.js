@@ -6,6 +6,7 @@ import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
 import Footer from "@/blocks/Footer";
 import Script from 'next/script';
+import { GoogleTagManager } from '@next/third-parties/google'
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -153,93 +154,7 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//cloudflare.com" />
         <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4"/>
-        {/* <Script
-          id="gtag-init"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-GZBG74J130');
-            `
-          }}
-        />
-          
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "name": "TVPro Handy Services",
-              "image": "https://tvprousa.com/logo.svg",
-              "description": `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
-
-Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
-
-✅ Transparent pricing, no hidden fees
-✅ Evening & weekend availability
-✅ 1-year warranty on all installations
-✅ Trusted by homeowners, businesses, and designers
-
-Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
-              "telephone": cta.phoneLabel,
-              "email": "tvprohandyservices@gmail.com",
-              "url": "https://tvprousa.com/",
-              "openingHours": "Mo-Su 08:00-22:00",
-              "priceRange": "$$",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Houston",
-                "addressRegion": "TX",
-                "addressCountry": "US",
-              },
-              "sameAs": [
-                "https://www.facebook.com/people/Tvpro-Handyservices/pfbid02geuoA9XMGaNpAYiEXXCXvfehx8MiTX2swXLkXvXSRwPA294XQmYXyP3yHKLFbYEkl/",
-                "https://www.instagram.com/tvprohandyservices",
-                "https://www.tiktok.com/@tvpro.handy.servi",
-                "https://www.yelp.com/biz/tv-pro-handy-services-houston-2",
-                "https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254",
-                "https://www.pinterest.com/tvprohandyservices/",
-                "https://x.com/tvprousa",
-              ],
-              "serviceArea": [
-                {
-                  "@type": "Place",
-                  "name": "Houston",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Houston",
-                    "addressRegion": "TX",
-                    "addressCountry": "US"
-                  }
-                },
-                {
-                  "@type": "Place",
-                  "name": "Dallas",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Dallas",
-                    "addressRegion": "TX",
-                    "addressCountry": "US"
-                  }
-                }
-              ]
-            }),
-          }}
-        /> */}
-        {/* Google Tag Manager */}
-        <Script id="gtm-script" strategy="afterInteractive" >
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
-          `}
-        </Script>
-        {/* End Google Tag Manager */}
+        <GoogleTagManager gtmId="GTM-5QVX2Z6S" />
       </head>
       <body className={redHatDisplay.variable}>
         <ModalProvider>
@@ -250,23 +165,9 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
           <Footer cta={cta}/>
         </ModalProvider>
         <Script
-          src="https://www.googletagmanager.com/gtm.js?id=GTM-5QVX2Z6S"
-          strategy="lazyOnload"
-        />
-        <Script
           src={`https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130`}
           strategy="lazyOnload"
         />
-        {/* Google Tag Manager (noscript) */}
-          <noscript>
-            <iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-5QVX2Z6S"
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-        {/* End Google Tag Manager (noscript) */}
       </body>
     </html>
   );
