@@ -266,12 +266,11 @@ export default function OptimizedVideoPlayer({
     setVideoSrc(getBestVideoSrc());
   }, []);
 
-
   return (
     <section
       ref={containerRef}
       className={`${styles.videoWrapper} ${className}`}
-      style={!isClient ? { width: '100%', aspectRatio: aspectRatio } : {}}
+      style={!isClient ? { width: '100%', maxWidth: '1180px', aspectRatio: aspectRatio, marginLeft: 'auto', marginRight: 'auto' } : {}}
       role="region"
       aria-label="Interactive video player"
     >
