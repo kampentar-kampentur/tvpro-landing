@@ -7,6 +7,7 @@ import FormProgress from './components/FormProgress';
 import styles from './Form.module.css';
 import { shouldRenderField } from './utils/formUtils';
 import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalculation';
+import { sendGTMEvent } from '@next/third-parties/google'
 
 const discountOptions = {
   discountType: "fixed",
@@ -61,7 +62,21 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     }));
   };
 
-  const handleNext = () => goToNextStep(renderedSteps.length);
+  const handleNext = () => {
+    if(renderedSteps.length - 1 === currentSubStepIndex) {
+      sendGTMEvent({event: `form_step_${currentStepIndex + 1}`})
+    }
+    return goToNextStep(renderedSteps.length)
+  };
+
+  const handleSubmit = async (...args) => {
+    try {
+      await onSubmit(...args)
+      sendGTMEvent({event: `form_step_${currentStepIndex + 1}_send`, phone: value.contactInfo.phone.replace(/\D/g, '')})
+    } catch (e) {
+      console.error('something went wrong', e)
+    }
+  }
   const handlePrevious = () => goToPreviousStep();
 
   const isLastOverallStep = isLastMainStep && currentSubStepIndex === renderedSteps.length - 1;
@@ -131,7 +146,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         canGoForward={canGoForward}
         onPrevious={handlePrevious}
         onNext={handleNext}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         isLastStep={isLastOverallStep}
         disableSubmitBtn={disableSubmitBtn}
       />

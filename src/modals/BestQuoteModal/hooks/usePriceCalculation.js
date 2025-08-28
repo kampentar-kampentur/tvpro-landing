@@ -97,14 +97,6 @@ export const usePriceCalculation = (
                 if (mountingStepTemplate && mountingStepTemplate.template && mountingStepTemplate.template.fields) {
                   mountingStepTemplate.template.fields.forEach(fieldConfig => {
                     if (shouldRenderField(fieldConfig.showIf, formData, dynamicStepId, parentContext)) {
-                      if (fieldConfig.name === "mountType") {
-                        console.log("[usePriceCalculation] mountType processField", {
-                          dynamicStepId,
-                          fieldConfig,
-                          value: dynamicMountingData[fieldConfig.name],
-                          parentContext
-                        });
-                      }
                       tvSizeGroupItems.push(...processField(fieldConfig, dynamicMountingData[fieldConfig.name]));
                     }
                   });
