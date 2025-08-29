@@ -90,7 +90,6 @@ export const usePriceCalculation = (
               // Process dynamic mounting step costs
               const dynamicStepId = `mounting-${tvInstanceIndex}`;
               const dynamicMountingData = formData[dynamicStepId];
-              // Вычисляем parentContext вручную
               const parentContext = { parentValue: selection.value, parentLabel: selection.label };
               if (dynamicMountingData) {
                 const mountingStepTemplate = scheme.steps.find(s => s.id === "mounting");
