@@ -47,7 +47,12 @@ const Certificates = async () => {
       <div className={styles.sliderWrap}>
         <SliderGallery
           CardComponent={CertificateCard}
-          cardData={certificatesData.certificates.map(c => ({image: c, className: styles.imgWrapper}))}
+          cardData={certificatesData.certificates.map((c, index) => ({
+            image: c,
+            className: styles.imgWrapper,
+            certificates: certificatesData.certificates,
+            currentIndex: index
+          }))}
           cardsPerPage={4}
         />
       </div>
