@@ -51,7 +51,7 @@ export default async function Hero() {
       <div className={`block ${styles.hero}`}>
         <div className={`blockContainer ${styles.heroContainer}`}>
           <h1 className={styles.mainHeading}>
-            <Text text={heroData.title}/>
+            <Text text={heroData.title}/> DEV ENV DEMO
           </h1>
           <p className="subText">
             <Text text={heroData.subTitle}/>
