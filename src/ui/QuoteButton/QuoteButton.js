@@ -4,16 +4,25 @@ import Button from "@/ui/Button";
 import { useModal } from "@/providers/ModalProvider";
 import { useRouter } from 'next/navigation'
 
-export default function QuoteButton({ children, modalName = "BestQuote", ...props }) {
+export default function QuoteButton({ children, modalName = "BestQuote", onClick: existingOnClick, ...props }) {
     const { openModal } = useModal();
 
-    function onClick() {
+    function onClick(e) {
+        if (existingOnClick) {
+            existingOnClick(e);
+        }
         openModal(modalName)
     }
 
     if("BookNow" === modalName) {
+        const handleBookNowClick = (e) => {
+            if (existingOnClick) {
+                existingOnClick(e);
+            }
+        };
+
         return (
-            <Button href="/book-now" {...props}>
+            <Button href="/book-now" onClick={handleBookNowClick} {...props}>
                 {children || "Get The Best Quote"}
             </Button>
         )
@@ -24,4 +33,4 @@ export default function QuoteButton({ children, modalName = "BestQuote", ...prop
             {children || "Get The Best Quote"}
         </Button>
     )
-} 
+}

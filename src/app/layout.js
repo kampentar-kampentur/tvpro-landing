@@ -167,7 +167,12 @@ export default async function RootLayout({ children }) {
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130`}
           strategy="lazyOnload"
-        />
+        >
+        </Script>
+        <Script>
+          {`gtag('config', 'AW-17416148778');`}
+          {`gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });`}
+        </Script>
       </body>
     </html>
   );
