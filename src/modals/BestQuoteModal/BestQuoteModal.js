@@ -615,7 +615,7 @@ const BestQuoteModal = () => {
             <aside className={styles.servicesContainer}>
                 <div className={styles.banner}>
                     <p className={styles.saleText}>
-                      Get $30 off when you book your TV mounting online - on orders over $100
+                      Get $30 off when you book your TV mounting online - on orders over $200
                     </p>
                     <p className={styles.saleSize}>
                         $30
