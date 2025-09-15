@@ -5,7 +5,6 @@ import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
 import Footer from "@/blocks/Footer";
-import Script from 'next/script';
 import { GoogleTagManager } from '@next/third-parties/google'
 
 const redHatDisplay = Red_Hat_Display({
@@ -164,15 +163,16 @@ export default async function RootLayout({ children }) {
           </main>
           <Footer cta={cta}/>
         </ModalProvider>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130`}
-          strategy="lazyOnload"
-        >
-        </Script>
-        <Script>
-          {`gtag('config', 'AW-17416148778');`}
-          {`gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });`}
-        </Script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
+              window.gtag('config', 'AW-17416148778');
+              window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
+            `,
+          }}
+        />
       </body>
     </html>
   );

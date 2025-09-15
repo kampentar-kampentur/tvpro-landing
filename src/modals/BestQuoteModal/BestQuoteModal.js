@@ -440,6 +440,28 @@ const example = {
             ]
           },
           {
+            "name": "mounts",
+            "type": "checkboxWithCounter",
+            "label": "Mounts",
+            "options": [
+                { 
+                    "value": "X-BoxMount", 
+                    "label": "X-Box Mount", 
+                    "cost": 39,
+                },
+                { 
+                    "value": "PlayStationMount", 
+                    "label": "PlayStation Mount", 
+                    "cost": 39,
+                },
+                { 
+                    "value": "soundbarMount", 
+                    "label": "Soundbar Mount", 
+                    "cost": 19,
+                },
+            ]
+          },
+          {
             "name": "cables",
             "type": "checkboxWithCounter",
             "label": "Cables",
@@ -561,7 +583,9 @@ const BestQuoteModal = () => {
       if (response.ok) {
         close();
         setFormData({});
-        gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
+        }
         openModal('SeeYouSoon');
       } else {
         const errorData = await response.json();

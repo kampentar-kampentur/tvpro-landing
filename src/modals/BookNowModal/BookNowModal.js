@@ -83,7 +83,9 @@ const BookNowModal = () => {
             if (response.ok) {
                 close();
                 setFormData({ name: '', phone: '', zip: '', address: '', email: '' });
-                gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
+                }
                 openModal('SeeYouSoon');
             } else {
                 const errorData = await response.json();

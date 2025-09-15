@@ -84,7 +84,9 @@ export default function BookNowPage() {
                     'user_data.phone_number': formData.phone.replace(/\D/g, ''),
                     'user_data.email': formData.email
                 });
-                gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
+                }
                 router.push(`/`)
             } else {
                 const errorData = await response.json();

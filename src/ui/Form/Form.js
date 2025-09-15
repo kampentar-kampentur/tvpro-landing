@@ -64,7 +64,9 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
 
   const handleNext = () => {
     if(renderedSteps.length - 1 === currentSubStepIndex) {
-      sendGTMEvent({event: `form_step_${currentStepIndex + 1}`})
+      if (typeof sendGTMEvent !== 'undefined') {
+        sendGTMEvent({event: `form_step_${currentStepIndex + 1}`})
+      }
     }
     return goToNextStep(renderedSteps.length)
   };
@@ -72,11 +74,13 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   const handleSubmit = async (...args) => {
     try {
       await onSubmit(...args)
-      sendGTMEvent({
-        event: `form_step_${currentStepIndex + 1}_send`, 
-        'user_data.phone_number': value.contactInfo.phone.replace(/\D/g, ''),
-        'user_data.email': value.contactInfo.email
-      })
+      if (typeof sendGTMEvent !== 'undefined') {
+        sendGTMEvent({
+          event: `form_step_${currentStepIndex + 1}_send`,
+          'user_data.phone_number': value.contactInfo.phone.replace(/\D/g, ''),
+          'user_data.email': value.contactInfo.email
+        })
+      }
     } catch (e) {
       console.error('something went wrong', e)
     }
