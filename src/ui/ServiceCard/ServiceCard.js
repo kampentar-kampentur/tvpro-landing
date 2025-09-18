@@ -15,10 +15,10 @@ export default function ServiceCard({ image, title, description, buttonText, mod
             <h3 className={styles.title}>{title}</h3>
             <span className={styles.description}>{description}</span>
         </div>
-        <QuoteButton className={styles.hiddenButton} variant="primary" size="small" modalName={modalName || "BestQuote"}>
+        <QuoteButton className={styles.hiddenButton} variant="primary" size="small" modalName={modalName || "BookNow"}>
             {buttonText}
         </QuoteButton>
-        <QuoteButton className={styles.invisibleButton} modalName={modalName || "BestQuote"} />
+        <QuoteButton className={styles.invisibleButton} modalName={modalName || "BookNow"} />
     </div>
   );
 } 
