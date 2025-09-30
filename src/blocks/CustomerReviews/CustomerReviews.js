@@ -22,6 +22,22 @@ const CustomerReviews = async () => {
         </h2>
         <p className="subText"><Text text={customerReviewsData.subTitle}/></p>
       </header>
+
+      <div className={"widget " + styles.tt} id="tt-review-widget-star">
+        <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" class="tt-logo" />
+        <a target="_blank" href="https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254">
+          <div>TVProHandyservices</div>
+        </a>
+        <div id="tt-dynamic">
+          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
+          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
+          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
+          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
+          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
+          <span>118 reviews</span>
+        </div>
+        <script src="https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star"></script>
+      </div>
       <CustomerReviewsClient />
       <div className={styles.ctaContainer}>
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>

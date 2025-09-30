@@ -14,14 +14,8 @@ export default function SmsConsent() {
         <label style={{display: 'block', marginBottom: 16, fontWeight: 500}}>
           <input type="checkbox" required style={{marginRight: 8}} />
           I agree to receive SMS from TVPro Handy Services LLC regarding appointments and service updates.
-          <p style={{marginBottom: 12}}>
-            I give consent for TVPro Handy Services LLC to collect my contact details and text or email me concerning this request and future company updates, appointment reminders, and customer service communications. Messaging frequency varies based on requested service. Message and data rates may apply. I also agree to the Privacy Policy and Terms and Conditions, which can be found at the links below. Text "STOP" to cancel at any time.
-          </p>
-          <p style={{marginBottom: 12}}>
-            Message and data rates may apply. Max 4 messages/month. Text STOP to cancel. HELP for help.
-          </p>
           <p>
-            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="sms-link">Privacy Policy</a> |
+            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="sms-link">Privacy Policy</a> and
             <a href="/terms" target="_blank" rel="noopener noreferrer" className="sms-link" style={{marginLeft: 8}}>Terms of Service</a>
           </p>
         </label>

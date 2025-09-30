@@ -83,6 +83,12 @@ const BookNowModal = () => {
             if (response.ok) {
                 close();
                 setFormData({ name: '', phone: '', zip: '', address: '', email: '' });
+                
+                dataLayer.push({
+                    event: 'form_send_ok',
+                    'user_data.phone_number': formData.phone.replace(/\D/g, ''),
+                    'user_data.email': formData.email
+                });
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
                 }
@@ -107,13 +113,7 @@ const BookNowModal = () => {
         <div style={{fontSize: '12px', maxWidth: "100%", textWrap: "wrap", textAlign: "left"}}>
             I agree to receive SMS from TVPro Handy Services LLC regarding appointments and service updates.
             <p>
-            I give consent for TVPro Handy Services LLC to collect my contact details and text or email me concerning this request and future company updates, appointment reminders, and customer service communications. Messaging frequency varies based on requested service. Message and data rates may apply. I also agree to the Privacy Policy and Terms and Conditions, which can be found at the links below. Text &#34;STOP&#34; to cancel at any time.
-            </p>
-            <p>
-            Message and data rates may apply. Max 4 messages/month. Text STOP to cancel. HELP for help.
-            </p>
-            <p>
-            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="sms-link">Privacy Policy</a> |
+            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="sms-link">Privacy Policy</a> and
             <a href="/terms" target="_blank" rel="noopener noreferrer" className="sms-link" style={{marginLeft: 8}}>Terms of Service</a>
             </p>
         </div>
