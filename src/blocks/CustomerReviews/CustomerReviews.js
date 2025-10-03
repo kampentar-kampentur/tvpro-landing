@@ -2,6 +2,8 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
 import CustomerReviewsClient from "./CustomerReviewsClient";
 import styles from "./CustomerReviews.module.css";
+import Image from "next/image";
+import Script from "next/script";
 
 async function getCustomerReviews() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/customer-review?populate=*`);
@@ -24,19 +26,24 @@ const CustomerReviews = async () => {
       </header>
 
       <div className={"widget " + styles.tt} id="tt-review-widget-star">
-        <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" class="tt-logo" />
+        <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" class="tt-logo" />
         <a target="_blank" href="https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254">
           <div>TVProHandyservices</div>
         </a>
         <div id="tt-dynamic">
-          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
-          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
-          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
-          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
-          <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"/>
+          <Image
+            src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg"
+            alt=""
+            width={16}
+            height={16}
+          />
+          <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="" width={16} height={16} />
+          <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="" width={16} height={16} />
+          <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="" width={16} height={16} />
+          <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="" width={16} height={16} />
           <span>118 reviews</span>
         </div>
-        <script src="https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star"></script>
+        <Script src="https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star"></Script>
       </div>
       <CustomerReviewsClient />
       <div className={styles.ctaContainer}>
