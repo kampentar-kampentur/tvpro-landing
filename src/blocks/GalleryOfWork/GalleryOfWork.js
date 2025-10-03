@@ -4,7 +4,7 @@ import PhotoCard from "./components/PhotoCard";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
 import Button from "@/ui/Button/Button";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
-import GalleryGerid from "./components/GalleryGrid";
+import GalleryGrid from "./components/GalleryGrid";
 import Text from "@/ui/Text/Text";
 
 async function getGalleryOfWork() {
@@ -41,7 +41,7 @@ const GalleryOfWork = async () => {
           cardsPerPage={4}
         />
       </div> */}
-        <GalleryGerid filters={galleryOfWorkData.types}/>
+        <GalleryGrid filters={galleryOfWorkData.types}/>
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
           <div className={styles.ctaButtons}>

@@ -122,3 +122,11 @@ a {
   overflow: hidden;
   white-space: nowrap;
 }
+
+#tt-review-widget-star.widget.tt {
+  margin-bottom: 32px;
+  color: inherit;
+  /* margin: auto; */
+  box-shadow: none;
+  background: none;
+}

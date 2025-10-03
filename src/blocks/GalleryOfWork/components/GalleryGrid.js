@@ -4,7 +4,7 @@ import FilterButtons from "./FilterButtons";
 import PhotoGrid from "./PhotoGrid";
 
 export default function GalleryGrid({ filters }) {
-  const [activeFilter, setActiveFilter] = useState(filters[0]?.type || "");
+  const [activeFilter, setActiveFilter] = useState(filters?.[0]?.type || "");
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
   const cacheRef = useRef({}); // { [filterType]: [...] }

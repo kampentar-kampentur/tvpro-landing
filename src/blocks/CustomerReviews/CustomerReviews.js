@@ -25,8 +25,8 @@ const CustomerReviews = async () => {
         <p className="subText"><Text text={customerReviewsData.subTitle}/></p>
       </header>
 
-      <div className={"widget " + styles.tt} id="tt-review-widget-star">
-        <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" class="tt-logo" />
+      <div className={"widget tt"} id="tt-review-widget-star">
+        <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" class="tt-logo" width={86} height={21}/>
         <a target="_blank" href="https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254">
           <div>TVProHandyservices</div>
         </a>
