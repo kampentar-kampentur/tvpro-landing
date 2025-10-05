@@ -9,7 +9,7 @@ export const usePriceCalculation = (
     discountType = null, // "fixed" | "percent" | null
     discountValue = 0,
     discountCondition = (total) => false, // по умолчанию скидка не применяется
-    discountLabel = "Online Order"
+    discountLabel = "Discount"
   } = {}
 ) => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -24,8 +24,6 @@ export const usePriceCalculation = (
 
     let currentTotal = scheme.priceCalculation.baseCost || 0;
     const tempStructuredBreakdown = [];
-
-    let tvInstanceIndex = 0; // Initialize a counter for individual TV instances
 
     // Helper function to process a single field config and return item(s) for breakdown
     const processField = (fieldConfig, fieldValue) => {
@@ -69,113 +67,17 @@ export const usePriceCalculation = (
       return items;
     };
 
-    // 1. Process TV Size selections and related mounting options (unique dynamic step generation)
-    const tvSizeStep = scheme.steps.find(s => s.id === "tv-size");
-    const tvSelectionField = tvSizeStep?.fields.find(f => f.name === "tvSelection");
-    const tvSelectionData = formData["tv-size"]?.tvSelection;
-
-    if (tvSelectionField && Array.isArray(tvSelectionData)) {
-      tvSelectionData.forEach((selection) => {
-        if (selection.count > 0) {
-          const option = tvSelectionField.options.find(opt => opt.value === selection.value);
-          if (option) {
-            const baseTvMountingCostPerUnit = (option.cost || 0);
-
-            for (let i = 0; i < selection.count; i++) {
-              tvInstanceIndex++;
-              const tvSizeLabel = option.label;
-
-              let tvSizeGroupItems = [{ label: "TV Mounting", cost: baseTvMountingCostPerUnit, fieldName: "tvMounting" }];
-
-              // Process dynamic mounting step costs
-              const dynamicStepId = `mounting-${tvInstanceIndex}`;
-              const dynamicMountingData = formData[dynamicStepId];
-              const parentContext = { parentValue: selection.value, parentLabel: selection.label };
-              if (dynamicMountingData) {
-                const mountingStepTemplate = scheme.steps.find(s => s.id === "mounting");
-                if (mountingStepTemplate && mountingStepTemplate.template && mountingStepTemplate.template.fields) {
-                  mountingStepTemplate.template.fields.forEach(fieldConfig => {
-                    if (shouldRenderField(fieldConfig.showIf, formData, dynamicStepId, parentContext)) {
-                      tvSizeGroupItems.push(...processField(fieldConfig, dynamicMountingData[fieldConfig.name]));
-                    }
-                  });
-                }
-              }
-
-              const tvSizeGroupTotal = tvSizeGroupItems.reduce((sum, item) => sum + item.cost, 0);
-              currentTotal += tvSizeGroupTotal; // Add to global total
-
-              tempStructuredBreakdown.push({
-                type: "tvSize",
-                label: tvSizeLabel,
-                items: tvSizeGroupItems,
-              });
-            }
-          }
-        }
-      });
-    }
-
-    // 2. Process ALL Other Static Steps (general purpose)
+    // Process all steps
     scheme.steps.forEach(stepConfig => {
-      // Skip steps already handled or template steps
-      if (stepConfig.id === "tv-size" || stepConfig.id === "mounting") {
-        return;
-      }
-
       const stepFormData = formData[stepConfig.id];
       if (stepFormData) {
-        let stepItems = []; // Collect all items for this step here
+        let stepItems = [];
 
-        // Extract special fields data first for post-processing
-        let streamingData = [];
-        let tvCountValue = 0;
-
-        if (stepConfig.id === "additional-services") {
-            const streamingFieldConfig = stepConfig.fields.find(f => f.name === "streaming");
-            const tvCountFieldConfig = stepConfig.fields.find(f => f.name === "tvCount");
-
-            if (streamingFieldConfig && shouldRenderField(streamingFieldConfig.showIf, formData, stepConfig.id)) {
-                streamingData = processField(streamingFieldConfig, stepFormData.streaming);
-            }
-            if (tvCountFieldConfig && shouldRenderField(tvCountFieldConfig.showIf, formData, stepConfig.id)) {
-                tvCountValue = stepFormData.tvCount; // Get raw value for multiplier
-            }
-        }
-
-        const fieldsToProcess = stepConfig.fields || [];
-        fieldsToProcess.forEach(fieldConfig => {
-          // Skip 'needHelper' here as it's handled specifically later for placement
-          // Skip 'streaming' and 'tvCount' as they are handled in post-processing for additional-services
-          if (fieldConfig.name === "needHelper" ||
-              (stepConfig.id === "additional-services" && (fieldConfig.name === "streaming" || fieldConfig.name === "tvCount"))) {
-            return;
-          }
-
+        stepConfig.fields.forEach(fieldConfig => {
           if (shouldRenderField(fieldConfig.showIf, formData, stepConfig.id)) {
             stepItems.push(...processField(fieldConfig, stepFormData[fieldConfig.name]));
           }
         });
-
-        // POST-PROCESSING: Handle 'streaming' and 'tvCount' consolidation for 'additional-services'
-        if (stepConfig.id === "additional-services") {
-            if (streamingData.length > 0) {
-                if (tvCountValue > 0) {
-                    const initialStreamingTotal = streamingData.reduce((sum, item) => sum + item.cost, 0);
-                    const totalStreamingCost = initialStreamingTotal * tvCountValue;
-
-                    stepItems.push({
-                        label: `Streaming Devices (${tvCountValue} devices)` ,
-                        cost: totalStreamingCost,
-                        details: streamingData, // Store individual items as details
-                        fieldName: "streamingConsolidated"
-                    });
-                } else {
-                    // If no tvCount or tvCount is 0, add individual streaming items
-                    stepItems.push(...streamingData);
-                }
-            }
-        }
 
         // Sum up costs for this group and add to structured breakdown if items exist
         if (stepItems.length > 0) {
@@ -190,35 +92,6 @@ export const usePriceCalculation = (
         }
       }
     });
-
-    // Handle 'needHelper' (specific placement logic)
-    const needHelperFieldConfig = tvSizeStep?.fields.find(f => f.name === "needHelper");
-    const needHelperData = formData["tv-size"]?.needHelper;
-
-    if (needHelperFieldConfig && needHelperData !== undefined && needHelperData !== null) {
-      if (shouldRenderField(needHelperFieldConfig.showIf, formData, "tv-size")) {
-        const selectedHelperOption = needHelperFieldConfig.options.find(opt => opt.value === needHelperData);
-        if (selectedHelperOption) {
-          let helperItem = { label: selectedHelperOption.label, cost: (selectedHelperOption.cost || 0), fieldName: "needHelper" };
-          currentTotal += helperItem.cost;
-
-          const over81TvGroup = tempStructuredBreakdown.find(group =>
-            group.type === "tvSize" && group.label.includes("Over 81")
-          );
-
-          if (over81TvGroup) {
-            over81TvGroup.items.push(helperItem);
-          } else { // If no Over 81" TV, add to existing general group or create one
-            let existingGeneralGroup = tempStructuredBreakdown.find(group => group.type === "additional-services");
-            if (!existingGeneralGroup) {
-              existingGeneralGroup = { type: "additional-services", label: "Add-ons", items: [] }; // Re-add 'Add-ons' if not present
-              tempStructuredBreakdown.push(existingGeneralGroup);
-            }
-            existingGeneralGroup.items.push(helperItem);
-          }
-        }
-      }
-    }
 
     let discountApplied = false;
     let discountAmount = 0;
@@ -251,4 +124,4 @@ export const usePriceCalculation = (
   }, [formData, scheme, renderedSteps, discountType, discountValue, discountCondition, discountLabel]);
 
   return { totalPrice, structuredCostBreakdown };
-}; 
+};

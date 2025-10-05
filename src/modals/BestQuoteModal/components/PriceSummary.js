@@ -1,7 +1,9 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from './PriceSummary.module.css';
+import Button from '@/ui/Button';
 
-const PriceSummary = ({ totalPrice, structuredCostBreakdown }) => {
+const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, isFormValid, onSubmit, darkMode = false }) => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -19,7 +21,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown }) => {
   );
 
   return (
-    <div className={styles.priceSummaryContainer}>
+    <div className={`${styles.priceSummaryContainer} ${currentStepIndex === 3 ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
       <div className={styles.scrollableContent}>
         {!structuredCostBreakdown.filter(({type}) => type !== "discount").length && 
           <div className={styles.tvSizeGroup}>
@@ -35,7 +37,6 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown }) => {
           if (group.type === "tvSize") {
             return (
               <div key={index} className={styles.tvSizeGroup}>
-                <h4 className={styles.tvSizeTitle}>{group.label}</h4>
                 <div className={styles.breakdownList}>
                   {group.items.map(item => renderBreakdownItem(item))}
                 </div>
@@ -44,7 +45,6 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown }) => {
           } else if (group.type !== "tvSize" && group.type !== "discount") {
             return (
               <div key={index} className={styles.addonsGroup}>
-                <h4 className={styles.groupTitle}>{group.label}</h4>
                 <div className={styles.breakdownList}>
                   {group.items.map(item => renderBreakdownItem(item))}
                 </div>
@@ -53,7 +53,6 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown }) => {
           } else if (group.type === "discount") {
             return (
               <div key={index} className={styles.discountGroup}>
-                <h4 className={styles.groupTitle}>{group.label}</h4>
                 <div className={styles.breakdownList}>
                   {group.items.map(item => (
                     <div key={item.label} className={styles.breakdownItem}>
@@ -70,9 +69,19 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown }) => {
       </div>
 
       <div className={styles.estimatedTotal}>
-        <span className={styles.estimatedLabel}>Estimated</span>
+        <span className={styles.estimatedLabel}>Subtotal</span>
         <span className={styles.totalAmount}>{formatCurrency(totalPrice)}</span>
       </div>
+      {currentStepIndex === 3 && (
+        <>
+          <Button disabled={!isFormValid} onClick={onSubmit} size="small">
+            Book
+          </Button>
+          <p className={styles.termsText}>
+            By booking an appointment you agree to the <br/><Link href="/terms">Terms of Service</Link> and the <Link href="/privacy-policy">Privacy Policy</Link>.
+          </p>
+        </>
+      )}
     </div>
   );
 };

@@ -1,21 +1,29 @@
 import React from 'react';
-import FormOption from '@/ui/Form/components/FormOption';
+import SelectionCard from '@/ui/SelectionCard';
 import formStyles from '../../Form.module.css'
 
 const RadioField = ({ field, value, onChange }) => {
+  const handleClick = (optionValue) => {
+    if (value === optionValue) {
+      onChange(null);
+    } else {
+      onChange(optionValue);
+    }
+  };
+
   return (
     <div className={formStyles.optionsGrid}>
-      {field.options.map(option => (
-        <FormOption
-          key={option.value}
-          type="radiobutton"
-          name={field.name}
-          label={option.label}
-          subLabel={option.cost ? `$${option.cost}` : undefined}
-          checked={value === option.value}
-          onChange={() => onChange(option.value)}
-        />
-      ))}
+      {field.options
+        .filter(option => !value || option.value === value)
+        .map(option => (
+          <SelectionCard
+            key={option.value}
+            selected={value === option.value}
+            onClick={() => handleClick(option.value)}
+            label={option.label}
+            price={option.cost !== undefined && option.cost !== null ? (option.cost === 0 ? '$0' : `$${option.cost}`) : null}
+          />
+        ))}
     </div>
   );
 };

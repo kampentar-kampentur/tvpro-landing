@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './FormStep.module.css';
-import CheckboxWithCounterField from '../components/fields/CheckboxWithCounterField';
 import RadioField from '../components/fields/RadioField';
 import CheckboxField from '../components/fields/CheckboxField';
 import TextField from '../components/fields/TextField';
@@ -8,13 +7,18 @@ import CounterField from '../components/fields/CounterField';
 import DateField from '../components/fields/DateField';
 import CheckboxGroupField from '../components/fields/CheckboxGroupField';
 import { shouldRenderField } from '../utils/formUtils';
+import ChevronIcon from '@/assets/icons/chevron.svg';
 
-const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps }) => {
+const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps, isMobile, currentStepIndex, onClose, onBack }) => {
+  if(!step) {
+    return <div>hahaha{step}</div>
+  }
   return (
     <div key={step.id} className={styles.formStep}>
-      {step.subTitle && <div className={styles.subHeader}><h3>{step.subTitle}</h3> <span className={styles.subSteps}>{currentSubStep + 1}/{totalSubSteps}</span></div>}
+      {step?.subTitle && <div className={styles.subHeader}><h3>{step?.subTitle}</h3> <span className={styles.subSteps}>{currentSubStep + 1}/{totalSubSteps}</span></div>}
+
       {
-        step.fields && step.fields.map(field => {
+        step.fields && step.fields.map((field, index) => {
           const fieldCurrentValue = formData[step.id] ? formData[step.id][field.name] : undefined;
 
           if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
@@ -29,34 +33,62 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkboxWithCounter":
               return (
                 <div key={field.name} className={styles.option}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  <CheckboxWithCounterField 
-                    field={field} 
-                    value={fieldCurrentValue} 
-                    onChange={handleFieldChange} 
+                  </span>
+                  <RadioField
+                    field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
+                    step={step}
+                    formData={formData}
                   />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
               );
             case "radio":
               return (
                 <div key={field.name} className={styles.option}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  <RadioField 
-                    field={field} 
-                    value={fieldCurrentValue} 
-                    onChange={handleFieldChange} 
+                  </span>
+                  <RadioField
+                    field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
+                    step={step}
+                    formData={formData}
                   />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
               );
             case "checkbox":
               return (
                 <div key={field.name} className={styles.option}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  <CheckboxField 
-                    field={field} 
-                    value={fieldCurrentValue} 
-                    onChange={handleFieldChange} 
+                  </span>
+                  <CheckboxField
+                    field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
                   />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
               );
             case "text":
@@ -64,45 +96,77 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "number":
               return (
                 <div key={field.name} className={`${styles.option} ${styles.textOption}`}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  <TextField 
-                    field={field} 
-                    value={fieldCurrentValue} 
-                    onChange={handleFieldChange} 
+                  </span>
+                  <TextField
+                    field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
                   />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
               );
             case "counter":
               return (
                 <div key={field.name} className={styles.option}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  <CounterField 
-                    field={field} 
-                    value={fieldCurrentValue} 
-                    onChange={handleFieldChange} 
+                  </span>
+                  <CounterField
+                    field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
                   />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
               );
             case "date":
               return (
                 <div key={field.name} className={styles.option}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  <DateField 
-                    field={field} 
-                    value={fieldCurrentValue} 
-                    onChange={handleFieldChange} 
+                  </span>
+                  <DateField
+                    field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
                   />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
               );
             case "checkboxGroup":
               return (
                 <div key={field.name} className={styles.option}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  <CheckboxGroupField 
-                    field={field} 
-                    value={fieldCurrentValue} 
-                    onChange={handleFieldChange} 
+                  </span>
+                  <CheckboxGroupField
+                    field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
                   />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
               );
             default:

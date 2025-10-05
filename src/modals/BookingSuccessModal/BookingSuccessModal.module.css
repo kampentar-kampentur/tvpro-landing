@@ -1,0 +1,38 @@
+.bookingSuccess {
+    width: 356px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.successMessage {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    margin-bottom: 16px;
+}
+
+.subtitle {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 24px;
+}
+
+.priceSummary {
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.okButton {
+    width: 100%;
+}
+
+@media (max-width: 980px) {
+    .bookingSuccess {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+}

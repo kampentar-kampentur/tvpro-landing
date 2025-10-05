@@ -5,10 +5,18 @@
 
 .fieldLabel {
     font-weight: 700;
-    font-size: 16px;
-    line-height: 32px;
+    font-size: 28px;
+    line-height: 40px;
     letter-spacing: 0%;
-} 
+}
+
+.fieldDescription {
+    margin-top: 24px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+}
 
 .subHeader {
     display: flex;
@@ -34,11 +42,32 @@
 }
 
 .formStep {
-    margin-top: 40px;
+    /* margin-top: 40px; */
+}
+
+.mobileBackButton {
+  display: none;
 }
 
 .option {
     margin-bottom: 20px;
+}
+
+@media (max-width: 980px) {
+  .mobileBackButton {
+    display: block;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  .mobileBackButton svg {
+    transform: rotate(180deg);
+    width: 24px;
+    height: 24px;
+  }
 }
 
 @media (min-width: 1024px) {

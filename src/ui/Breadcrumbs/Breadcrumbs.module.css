@@ -1,0 +1,52 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.step {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.step.step.current {
+  color: var(--foreground);
+}
+
+.step.clickable {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.step.clickable:hover {
+  color: var(--foreground);
+}
+
+.chevron {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .step {
+    font-size: 12px;
+  }
+
+  .chevron {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 980px) {
+.breadcrumbs {
+display: none;
+}
+}
