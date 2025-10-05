@@ -100,6 +100,9 @@ a {
     line-height: 36px;
     text-align: center;
   }
+  #tt-review-widget-star.widget.tt {
+    margin: auto;
+  }
 }
 
 
