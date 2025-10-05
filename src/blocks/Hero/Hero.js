@@ -57,7 +57,7 @@ export default async function Hero() {
             <Text text={heroData.subTitle}/>
           </p>
           <div className={styles.buttonWrapper}>
-            <QuoteButton/>
+            <QuoteButton>Book With Discount</QuoteButton>
           </div>
           <div className={styles.badgesWrapper}>
               {heroData.badges.map(badge => (
