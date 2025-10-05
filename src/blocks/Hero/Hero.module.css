@@ -38,8 +38,8 @@
     line-height: 36px;
   }
   .heroContainer {
-    align-items: flex-start;
-    text-align: left;
+    /* align-items: flex-start;
+    text-align: left; */
   }
   .fiveStarBadge {
     width: 121px;

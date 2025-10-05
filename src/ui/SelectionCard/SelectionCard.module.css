@@ -1,0 +1,50 @@
+.card {
+  height: 120px;
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--gray-light);
+  position: relative;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  max-width: 177px;
+}
+
+.selected {
+  background-color: var(--foreground);
+  color: var(--white);
+  border: none;
+}
+
+.label {
+  font-size: 14px;
+  line-height: 20px;
+  color: inherit;
+}
+
+.description {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.price {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  background-color: #E7E7EB;
+  color: #000;
+  border-radius: 4px 0 0 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.selected .price {
+  background-color: #353535;
+  color: #fff;
+}

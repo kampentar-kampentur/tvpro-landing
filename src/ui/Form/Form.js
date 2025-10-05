@@ -3,20 +3,20 @@ import { useFormNavigation } from './hooks/useFormNavigation';
 import { useDynamicSteps } from './hooks/useDynamicSteps';
 import FormStep from './components/FormStep';
 import FormNavigation from './components/FormNavigation';
-import FormProgress from './components/FormProgress';
+import Breadcrumbs from '@/ui/Breadcrumbs';
 import styles from './Form.module.css';
-import { shouldRenderField } from './utils/formUtils';
+import { shouldRenderField, isStepComplete, hasConditionalFields } from './utils/formUtils';
 import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalculation';
 import { sendGTMEvent } from '@next/third-parties/google'
 
 const discountOptions = {
   discountType: "fixed",
   discountValue: 30,
-  discountCondition: (total) => total > 100,
-  discountLabel: "Online Order"
+  discountCondition: (total) => total > 200,
+  discountLabel: "Discount"
 };
 
-const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = true, onPriceChange, disableSubmitBtn }) => {
+const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = true, onPriceChange, disableSubmitBtn, isMobile, initialStepIndex, onClose, onBack }) => {
   const {
     currentStepIndex,
     currentSubStepIndex,
@@ -24,7 +24,8 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     isFirstStep,
     isLastMainStep,
     goToNextStep,
-    goToPreviousStep
+    goToPreviousStep,
+    goToStep
   } = useFormNavigation(scheme, onStepChange, value);
 
   const renderedSteps = useDynamicSteps(currentStepConfig, value);
@@ -60,6 +61,17 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         [fieldName]: fieldValue
       }
     }));
+    console.log("--------------------------");
+    const fd = {
+      ...value,
+      [stepId]: {
+        ...(value[stepId] || {}),
+        [fieldName]: fieldValue
+      }
+    } 
+    if(isStepComplete(stepToRender, fd)) {
+      handleNext()
+    }
   };
 
   const handleNext = () => {
@@ -86,6 +98,8 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     }
   }
   const handlePrevious = () => goToPreviousStep();
+
+  const handleBack = () => goToStep(currentStepIndex - 1);
 
   const isLastOverallStep = isLastMainStep && currentSubStepIndex === renderedSteps.length - 1;
 
@@ -130,15 +144,44 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   const canGoForward = isCurrentStepValid();
   const isSubmitButton = isLastOverallStep && isCurrentStepValid();
 
+  // Check if current step is completed
+  const isCurrentStepComplete = (() => {
+    if (currentStepConfig.type === "dynamic") {
+      return currentSubStepIndex >= renderedSteps.length - 1 && isStepComplete(stepToRender, value);
+    } else {
+      return isStepComplete(currentStepConfig, value);
+    }
+  })();
+
+  // Determine which steps are accessible for navigation
+  const getCompletedSteps = () => {
+    const completed = [];
+    // All steps up to current are accessible
+    for (let i = 0; i <= currentStepIndex; i++) {
+      completed.push(i);
+    }
+    // If current is complete, allow next step
+    if (currentStepIndex < scheme.steps.length - 1 && isCurrentStepComplete) {
+      completed.push(currentStepIndex + 1);
+    }
+    return completed;
+  };
+
+  const handleStepClick = (stepIndex) => {
+    if (getCompletedSteps().includes(stepIndex)) {
+      goToStep(stepIndex);
+    }
+  };
+
   return (
     <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-      <h2 className={styles.bestQuoteTitle}>{stepToRender?.title}</h2>
+      {/* <h2 className={styles.bestQuoteTitle}>{stepToRender?.title}</h2> */}
       {showProgress && (
-        <FormProgress
+        <Breadcrumbs
           steps={scheme.steps}
           currentMainStep={currentStepIndex}
-          currentSubStep={currentSubStepIndex}
-          totalSubSteps={renderedSteps.length}
+          onStepClick={handleStepClick}
+          completedSteps={getCompletedSteps()}
         />
       )}
       <FormStep
@@ -147,9 +190,13 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         onFieldChange={handleFieldChange}
         currentSubStep={currentSubStepIndex}
         totalSubSteps={renderedSteps.length}
+        isMobile={isMobile}
+        currentStepIndex={currentStepIndex}
+        onClose={onClose}
+        onBack={onBack || handleBack}
       />
-      <div style={{flexGrow: 1}}></div>
-      <FormNavigation
+      {/* <div style={{flexGrow: 1}}></div> */}
+      {/* <FormNavigation
         canGoBack={canGoBack}
         canGoForward={canGoForward}
         onPrevious={handlePrevious}
@@ -157,7 +204,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         onSubmit={handleSubmit}
         isLastStep={isLastOverallStep}
         disableSubmitBtn={disableSubmitBtn}
-      />
+      /> */}
     </form>
   );
 };

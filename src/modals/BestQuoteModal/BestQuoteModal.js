@@ -6,18 +6,22 @@ import Modal from "@/ui/Modal";
 import Form from "@/ui/Form"
 import React, { useEffect, useState } from "react";
 import PriceSummary from "./components/PriceSummary";
-
+import LogoSVG  from "@/assets/logo.svg"
+import CloseIcon from "@/assets/icons/close.svg"
+import ChevronIcon from "@/assets/icons/chevron.svg"
+import Button from "@/ui/Button"
 
 const example = {
     "steps": [
       {
         "id": "tv-size",
-        "title": "What size is your TV?",
+        "title": "TV Size",
         "fields": [
           {
             "name": "tvSelection",
-            "type": "checkboxWithCounter",
+            "type": "radio",
             "isRequired": true,
+            "label": "Choose TV size",
             "options": [
               { 
                   "value": "upTo31", 
@@ -29,7 +33,7 @@ const example = {
                 "label": "32\"-59\"", 
                 "cost": 109,
               },
-              { 
+              {
                 "value": "60-75", 
                 "label": "60\"-75\"", 
                 "cost": 129,
@@ -54,9 +58,9 @@ const example = {
                 "label": "Frame TV over 65 inch", 
                 "cost": 179,
               },
-              { 
-                "value": "projectorsNScreens", 
-                "label": "Projectors & Screens", 
+              {
+                "value": "projectorsNScreens",
+                "label": "Projectors & Screens",
                 "cost": 139,
               },
             ]
@@ -68,7 +72,7 @@ const example = {
             "isRequired": true,
             "showIf": {
               "field": "tvSelection",
-              "condition": "hasAny",
+              "condition": "equalsAny",
               "values": ["over-86", "60-75", "76-85", "frameTvUpTo60", "frameTvOver65", "projectorsNScreens"]
             },
             "options": [
@@ -80,131 +84,403 @@ const example = {
       },
       {
         "id": "mounting",
-        "type": "dynamic",
-        "title": "Mounting Type",
-        "generateFrom": "tv-size.tvSelection",
-        "template": {
-          "subTitle": "Select mount type for {size} TV",
-          "fields": [
-            {
-              "name": "mountType",
-              "type": "radio",
-              "isRequired": true,
-              "showIf": {
-                    "field": "$parentValue",
-                    "condition": "equalsAny",
-                    "values": [
-                      "over-86",
-                      "32-59",
-                      "upTo31",
-                      "60-75",
-                      "76-85",
-                    ]
-                },
-              "options": [
-                { 
-                  "value": "alreadyThere", 
-                  "label": "Already there", 
-                  "cost": 0,
-                  "description": "TV stays in one position"
-                },
-                { 
-                  "value": "fixed", 
-                  "label": "Fixed Mount", 
-                  "cost": 39,
-                  "description": "TV can move in all directions"
-                },
-                { 
-                  "value": "tilting", 
-                  "label": "Tilting Mount", 
-                  "cost": 49,
-                  "description": "TV can move in all directions"
-                },
-                { 
-                  "value": "corner", 
-                  "label": "Corner Mount", 
-                  "cost": 69,
-                  "description": "TV can tilt up/down"
-                },
-                { 
-                  "value": "fullMotion", 
-                  "label": "Full-Motion Mount", 
-                  "cost": 69,
-                  "description": "TV can tilt up/down"
-                },
-              ]
-            },
-            {
-              "name": "mountType",
-              "type": "radio",
-              "isRequired": true,
-              "showIf": {
-                    "field": "$parentValue",
-                    "condition": "equalsAny",
-                    "values": ["projectorsNScreens"]
-                },
-              "options": [
-                { 
-                  "value": "alreadyThere", 
-                  "label": "Already there", 
-                  "cost": 0,
-                  "description": "TV stays in one position"
-                },
-              ]
-            },
-            {
-              "name": "wallType",
-              "type": "radio",
-              "isRequired": true,
-              "label": "What kind of wall will this TV be mounted on?",
-              "showIf": {
-                "any": [
-                  {
-                    "field": "mountType",
-                    "condition": "equalsAny",
-                    "values": ['alreadyThere', 'fullMotion', 'fixed', 'corner', 'tilting']
-                  },
-                  {
-                    "field": "$parentValue",
-                    "condition": "equalsAny",
-                    "values": ["frameTvUpTo60", "frameTvOver65"]
-                  }
-                ]
+        "title": "Mount Type",
+        "fields": [
+          {
+            "name": "mountType",
+            "type": "radio",
+            "isRequired": true,
+            "label": "Choose mount type",
+            // "showIf": {
+            //       "field": "$parentValue",
+            //       "condition": "equalsAny",
+            //       "values": [
+            //           "over-86",
+            //           "32-59",
+            //           "upTo31",
+            //           "60-75",
+            //           "76-85",
+            //       ]
+            //   },
+            "options": [
+              { 
+                "value": "alreadyThere", 
+                "label": "Already there", 
+                "cost": 0,
+                "description": "TV stays in one position"
               },
-              "options": [
-                { 
-                  "value": "drywall", 
-                  "label": "Drywall", 
-                  "cost": 0,
-                  "description": "TV stays in one position"
+              { 
+                "value": "fixed", 
+                "label": "Fixed Mount", 
+                "cost": 39,
+                "description": "TV can move in all directions"
+              },
+              { 
+                "value": "tilting", 
+                "label": "Tilting Mount", 
+                "cost": 49,
+                "description": "TV can move in all directions"
+              },
+              { 
+                "value": "corner", 
+                "label": "Corner Mount", 
+                "cost": 69,
+                "description": "TV can tilt up/down"
+              },
+              { 
+                "value": "fullMotion", 
+                "label": "Full-Motion Mount", 
+                "cost": 69,
+                "description": "TV can tilt up/down"
+              },
+            ]
+          },
+          // {
+          //   "name": "mountType",
+          //   "type": "radio",
+          //   "isRequired": true,
+          //   "showIf": {
+          //         "field": "$parentValue",
+          //         "condition": "equalsAny",
+          //         "values": ["projectorsNScreens"]
+          //     },
+          //   "options": [
+          //     { 
+          //       "value": "alreadyThere", 
+          //       "label": "Already there", 
+          //       "cost": 0,
+          //       "description": "TV stays in one position"
+          //     },
+          //   ]
+          // },
+          // {
+          //   "name": "wallType",
+          //   "type": "radio",
+          //   "isRequired": true,
+          //   "label": "What kind of wall will this TV be mounted on?",
+          //   "showIf": {
+          //     "any": [
+          //       {
+          //         "field": "mountType",
+          //         "condition": "equalsAny",
+          //         "values": ['alreadyThere', 'fullMotion', 'fixed', 'corner', 'tilting']
+          //       },
+          //       {
+          //         "field": "$parentValue",
+          //         "condition": "equalsAny",
+          //         "values": ["frameTvUpTo60", "frameTvOver65"]
+          //       }
+          //     ]
+          //   },
+          //   "options": [
+          //     { 
+          //       "value": "drywall", 
+          //       "label": "Drywall", 
+          //       "cost": 0,
+          //       "description": "TV stays in one position"
+          //     },
+          //     { 
+          //       "value": "another", 
+          //       "label": "Brick, Concrete, Tile, Stone", 
+          //       "cost": 49,
+          //       "description": "TV stays in one position"
+          //     },
+          //   ],
+          // },
+          // {
+          //   "name": "wires",
+          //   "type": "radio",
+          //   "isRequired": true,
+          //   "label": "Do you want to hide the wires?",
+          //   "showIf": {
+          //     "all": [
+          //       {
+          //         "field": "wallType",
+          //         "condition": "equalsAny",
+          //         "values": ['drywall']
+          //       },
+          //       {
+          //         "field": "$parentValue",
+          //         "condition": "notEquals",
+          //         "value": "frameTvUpTo60"
+          //         },
+          //         {
+          //           "field": "$parentValue",
+          //           "condition": "notEquals",
+          //           "value": "frameTvOver65"
+          //         },
+          //     ]
+          //   },
+          //   "options": [
+          //     { 
+          //       "value": "open", 
+          //       "label": "Open", 
+          //       "cost": 0,
+          //       "description": "TV stays in one position"
+          //     },
+          //     { 
+          //       "value": "cableChannelDrywall", 
+          //       "label": "Cable channel", 
+          //       "cost": 39,
+          //       "description": "TV stays in one position"
+          //     },
+          //     { 
+          //       "value": "wallDrywall", 
+          //       "label": "Put it in the wall", 
+          //       "cost": 79,
+          //       "description": "TV stays in one position"
+          //     },
+          //     { 
+          //       "value": "socketDrywall", 
+          //       "label": "In-wall with socket", 
+          //       "cost": 99,
+          //       "description": "TV stays in one position"
+          //     },
+          //   ],
+          // },
+          // {
+          //     "name": "wires",
+          //     "type": "radio",
+          //     "isRequired": true,
+          //     "label": "Do you want to hide the wires?",
+          //     "showIf": {
+          //       "all": [
+          //         {
+          //           "field": "wallType",
+          //           "condition": "equalsAny",
+          //           "values": ['another']
+          //         },
+          //         {
+          //           "field": "$parentValue",
+          //           "condition": "notEquals",
+          //           "value": "frameTvUpTo60"
+          //         },
+          //         {
+          //           "field": "$parentValue",
+          //           "condition": "notEquals",
+          //           "value": "frameTvOver65"
+          //         },
+          //       ]
+          //     },
+          //     "options": [
+          //       { 
+          //           "value": "open", 
+          //           "label": "Open", 
+          //           "cost": 0,
+          //           "description": "TV stays in one position"
+          //       },
+          //       { 
+          //         "value": "cableChannelBrick", 
+          //         "label": "Cable channel", 
+          //         "cost": 39,
+          //         "description": "TV stays in one position"
+          //       },
+          //       { 
+          //         "value": "wallBrick", 
+          //         "label": "Put it in the wall", 
+          //         "cost": 199,
+          //         "description": "TV stays in one position"
+          //       },
+          //       { 
+          //         "value": "socketBrick", 
+          //         "label": "In-wall with socket", 
+          //         "cost": 229,
+          //         "description": "TV stays in one position"
+          //       },
+          //     ],
+          // },
+          // {
+          //   "name": "wires",
+          //   "type": "radio",
+          //   "isRequired": true,
+          //   "label": "Do you want to hide the wires?",
+          //   "showIf": {
+          //     "all": [
+          //       {
+          //         "field": "wallType",
+          //         "condition": "equalsAny",
+          //         "values": ['drywall']
+          //       },
+          //       {
+          //         "field": "$parentValue",
+          //         "condition": "equalsAny",
+          //         "values": ["frameTvUpTo60", "frameTvOver65"]
+          //       },
+          //     ]
+          //   },
+          //   "options": [
+          //     { 
+          //       "value": "open", 
+          //       "label": "Open", 
+          //       "cost": 0,
+          //       "description": "TV stays in one position"
+          //     },
+          //     { 
+          //       "value": "wallDrywall", 
+          //       "label": "Put it in the wall", 
+          //       "cost": 79,
+          //       "description": "TV stays in one position"
+          //     },
+          //     { 
+          //       "value": "boxSocketDrywall", 
+          //       "label": "Recessed box with socket", 
+          //       "cost": 99,
+          //       "description": "TV stays in one position"
+          //     },
+          //   ],
+          // },
+          // {
+          //     "name": "wires",
+          //     "type": "radio",
+          //     "isRequired": true,
+          //     "label": "Do you want to hide the wires?",
+          //     "showIf": {
+          //       "all": [
+          //         {
+          //           "field": "wallType",
+          //           "condition": "equalsAny",
+          //           "values": ['another']
+          //         },
+          //         {
+          //           "field": "$parentValue",
+          //           "condition": "equalsAny",
+          //           "values": ["frameTvUpTo60", "frameTvOver65"]
+          //         },
+          //       ]
+          //     },
+          //     "options": [
+          //       { 
+          //           "value": "open", 
+          //           "label": "Open", 
+          //           "cost": 0,
+          //           "description": "TV stays in one position"
+          //       },
+          //       { 
+          //         "value": "wallBrick", 
+          //         "label": "Put it in the wall", 
+          //         "cost": 199,
+          //         "description": "TV stays in one position"
+          //       },
+          //       { 
+          //         "value": "boxSocketBrick", 
+          //         "label": "Recessed box with socket", 
+          //         "cost": 229,
+          //         "description": "TV stays in one position"
+          //       },
+          //     ],
+          // },
+        ]
+      },
+      {
+        "id": "wall",
+        "title": "Wall Type",
+        "fields": [
+          {
+            "name": "wallType",
+            "type": "radio",
+            "isRequired": true,
+            "label": "Choose wall type",
+            "showIf": {
+              "any": [
+                {
+                  "field": "mounting.mountType",
+                  "condition": "equalsAny",
+                  "values": ['alreadyThere', 'fullMotion', 'fixed', 'corner', 'tilting']
                 },
-                { 
-                  "value": "another", 
-                  "label": "Brick, Concrete, Tile, Stone", 
-                  "cost": 49,
-                  "description": "TV stays in one position"
-                },
-              ],
+                {
+                  "field": "tv-size.tvSelection",
+                  "condition": "equalsAny",
+                  "values": ["frameTvUpTo60", "frameTvOver65"]
+                }
+              ]
             },
-            {
+            "options": [
+              {
+                "value": "drywall",
+                "label": "Drywall",
+                "cost": 0,
+                "description": "TV stays in one position"
+              },
+              {
+                "value": "another",
+                "label": "Brick, Concrete, Tile, Stone",
+                "cost": 49,
+                "description": "TV stays in one position"
+              },
+            ],
+          },
+          {
+            "name": "wires",
+            "type": "radio",
+            "isRequired": true,
+            "label": "Do you want to hide the wires?",
+            "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+            "showIf": {
+              "all": [
+                {
+                  "field": "wallType",
+                  "condition": "equalsAny",
+                  "values": ['drywall']
+                },
+                {
+                  "field": "tv-size.tvSelection",
+                  "condition": "notEquals",
+                  "value": "frameTvUpTo60"
+                  },
+                {
+                  "field": "tv-size.tvSelection",
+                  "condition": "notEquals",
+                  "value": "frameTvOver65"
+                },
+              ]
+            },
+            "options": [
+              { 
+                "value": "open", 
+                "label": "Open", 
+                "cost": 0,
+                "description": "TV stays in one position"
+              },
+              { 
+                "value": "cableChannelDrywall", 
+                "label": "Cable channel", 
+                "cost": 39,
+                "description": "TV stays in one position"
+              },
+              { 
+                "value": "wallDrywall", 
+                "label": "Put it in the wall", 
+                "cost": 79,
+                "description": "TV stays in one position"
+              },
+              { 
+                "value": "socketDrywall", 
+                "label": "In-wall with socket", 
+                "cost": 99,
+                "description": "TV stays in one position"
+              },
+            ],
+          },
+          {
               "name": "wires",
               "type": "radio",
               "isRequired": true,
               "label": "Do you want to hide the wires?",
+              "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
               "showIf": {
                 "all": [
                   {
                     "field": "wallType",
                     "condition": "equalsAny",
-                    "values": ['drywall']
+                    "values": ['another']
                   },
                   {
-                    "field": "$parentValue",
+                    "field": "tv-size.tvSelection",
                     "condition": "notEquals",
                     "value": "frameTvUpTo60"
                   },
                   {
-                    "field": "$parentValue",
+                    "field": "tv-size.tvSelection",
                     "condition": "notEquals",
                     "value": "frameTvOver65"
                   },
@@ -212,96 +488,87 @@ const example = {
               },
               "options": [
                 { 
-                  "value": "open", 
-                  "label": "Open", 
-                  "cost": 0,
-                  "description": "TV stays in one position"
+                    "value": "open", 
+                    "label": "Open", 
+                    "cost": 0,
+                    "description": "TV stays in one position"
                 },
                 { 
-                  "value": "cableChannelDrywall", 
+                  "value": "cableChannelBrick", 
                   "label": "Cable channel", 
                   "cost": 39,
                   "description": "TV stays in one position"
                 },
                 { 
-                  "value": "wallDrywall", 
+                  "value": "wallBrick", 
                   "label": "Put it in the wall", 
-                  "cost": 79,
+                  "cost": 199,
                   "description": "TV stays in one position"
                 },
                 { 
-                  "value": "socketDrywall", 
+                  "value": "socketBrick", 
                   "label": "In-wall with socket", 
-                  "cost": 99,
+                  "cost": 229,
                   "description": "TV stays in one position"
                 },
               ],
-            },
-            {
-                "name": "wires",
-                "type": "radio",
-                "isRequired": true,
-                "label": "Do you want to hide the wires?",
-                "showIf": {
-                  "all": [
-                    {
-                      "field": "wallType",
-                      "condition": "equalsAny",
-                      "values": ['another']
-                    },
-                    {
-                      "field": "$parentValue",
-                      "condition": "notEquals",
-                      "value": "frameTvUpTo60"
-                    },
-                    {
-                      "field": "$parentValue",
-                      "condition": "notEquals",
-                      "value": "frameTvOver65"
-                    },
-                  ]
+          },
+          {
+            "name": "wires",
+            "type": "radio",
+            "isRequired": true,
+            "label": "Do you want to hide the wires?",
+            "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+            "showIf": {
+              "all": [
+                {
+                  "field": "wallType",
+                  "condition": "equalsAny",
+                  "values": ['drywall']
                 },
-                "options": [
-                  { 
-                      "value": "open", 
-                      "label": "Open", 
-                      "cost": 0,
-                      "description": "TV stays in one position"
-                  },
-                  { 
-                    "value": "cableChannelBrick", 
-                    "label": "Cable channel", 
-                    "cost": 39,
-                    "description": "TV stays in one position"
-                  },
-                  { 
-                    "value": "wallBrick", 
-                    "label": "Put it in the wall", 
-                    "cost": 199,
-                    "description": "TV stays in one position"
-                  },
-                  { 
-                    "value": "socketBrick", 
-                    "label": "In-wall with socket", 
-                    "cost": 229,
-                    "description": "TV stays in one position"
-                  },
-                ],
+                {
+                  "field": "tv-size.tvSelection",
+                  "condition": "equalsAny",
+                  "values": ["frameTvUpTo60", "frameTvOver65"]
+                },
+              ]
             },
-            {
+            "options": [
+              { 
+                "value": "open", 
+                "label": "Open", 
+                "cost": 0,
+                "description": "TV stays in one position"
+              },
+              { 
+                "value": "wallDrywall", 
+                "label": "Put it in the wall", 
+                "cost": 79,
+                "description": "TV stays in one position"
+              },
+              { 
+                "value": "boxSocketDrywall", 
+                "label": "Recessed box with socket", 
+                "cost": 99,
+                "description": "TV stays in one position"
+              },
+            ],
+          },
+          {
               "name": "wires",
               "type": "radio",
               "isRequired": true,
               "label": "Do you want to hide the wires?",
+              "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
               "showIf": {
                 "all": [
                   {
                     "field": "wallType",
                     "condition": "equalsAny",
-                    "values": ['drywall']
+                    "values": ['another']
                   },
                   {
-                    "field": "$parentValue",
+                    "field": "tv-size.tvSelection",
                     "condition": "equalsAny",
                     "values": ["frameTvUpTo60", "frameTvOver65"]
                   },
@@ -309,191 +576,157 @@ const example = {
               },
               "options": [
                 { 
-                  "value": "open", 
-                  "label": "Open", 
-                  "cost": 0,
-                  "description": "TV stays in one position"
+                    "value": "open", 
+                    "label": "Open", 
+                    "cost": 0,
+                    "description": "TV stays in one position"
                 },
                 { 
-                  "value": "wallDrywall", 
+                  "value": "wallBrick", 
                   "label": "Put it in the wall", 
-                  "cost": 79,
+                  "cost": 199,
                   "description": "TV stays in one position"
                 },
                 { 
-                  "value": "boxSocketDrywall", 
+                  "value": "boxSocketBrick", 
                   "label": "Recessed box with socket", 
-                  "cost": 99,
+                  "cost": 229,
                   "description": "TV stays in one position"
                 },
               ],
-            },
-            {
-                "name": "wires",
-                "type": "radio",
-                "isRequired": true,
-                "label": "Do you want to hide the wires?",
-                "showIf": {
-                  "all": [
-                    {
-                      "field": "wallType",
-                      "condition": "equalsAny",
-                      "values": ['another']
-                    },
-                    {
-                      "field": "$parentValue",
-                      "condition": "equalsAny",
-                      "values": ["frameTvUpTo60", "frameTvOver65"]
-                    },
-                  ]
-                },
-                "options": [
-                  { 
-                      "value": "open", 
-                      "label": "Open", 
-                      "cost": 0,
-                      "description": "TV stays in one position"
-                  },
-                  { 
-                    "value": "wallBrick", 
-                    "label": "Put it in the wall", 
-                    "cost": 199,
-                    "description": "TV stays in one position"
-                  },
-                  { 
-                    "value": "boxSocketBrick", 
-                    "label": "Recessed box with socket", 
-                    "cost": 229,
-                    "description": "TV stays in one position"
-                  },
-                ],
-            },
-          ]
-        }
-      },
-      {
-        "id": "additional-services",
-        "title": "Additional Services",
-        "fields": [
-          {
-            "name": "popular",
-            "type": "checkboxWithCounter",
-            "label": "The Most Popular",
-            "options": [
-                { 
-                    "value": "soundbar", 
-                    "label": "Install Soundbar", 
-                    "cost": 59,
-                },
-                { 
-                    "value": "wallShelf", 
-                    "label": "Install Wall Shelf", 
-                    "cost": 39,
-                },
-                { 
-                    "value": "gamingConsole", 
-                    "label": "Install Gaming Console", 
-                    "cost": 59,
-                },
-                { 
-                    "value": "rearSpeaker", 
-                    "label": "Install Rear Speaker (2)", 
-                    "cost": 49,
-                },
-            ]
-          },
-          {
-            "name": "extraInstallation",
-            "type": "checkboxWithCounter",
-            "label": "Extra Installation",
-            "options": [
-                { 
-                    "value": "installLEDLight", 
-                    "label": "Install LED Light", 
-                    "cost": 29,
-                },
-                { 
-                    "value": "installFireplace", 
-                    "label": "Install Fireplace", 
-                    "cost": 79,
-                },
-                { 
-                    "value": "dismountExistingTV", 
-                    "label": "Dismount existing TV", 
-                    "cost": 35,
-                },
-                { 
-                    "value": "installOfCurtains", 
-                    "label": "Install curtains", 
-                    "cost": 59,
-                },
-                { 
-                    "value": "installPaintingsAndDecor", 
-                    "label": "Install paintings & decor", 
-                    "cost": 35,
-                },
-                { 
-                    "value": "installInWallSpeaker", 
-                    "label": "Install In-Wall Speaker", 
-                    "cost": 69,
-                },
-            ]
-          },
-          {
-            "name": "mounts",
-            "type": "checkboxWithCounter",
-            "label": "Mounts",
-            "options": [
-                { 
-                    "value": "X-BoxMount", 
-                    "label": "X-Box Mount", 
-                    "cost": 39,
-                },
-                { 
-                    "value": "PlayStationMount", 
-                    "label": "PlayStation Mount", 
-                    "cost": 39,
-                },
-                { 
-                    "value": "soundbarMount", 
-                    "label": "Soundbar Mount", 
-                    "cost": 19,
-                },
-            ]
-          },
-          {
-            "name": "cables",
-            "type": "checkboxWithCounter",
-            "label": "Cables",
-            "options": [
-                { 
-                    "value": "HDMI10ft", 
-                    "label": "HDMI 10ft", 
-                    "cost": 14,
-                },
-                { 
-                    "value": "HDMI15ft", 
-                    "label": "HDMI 15ft", 
-                    "cost": 18,
-                },
-                { 
-                    "value": "extensionCord6ft", 
-                    "label": "Extension Cord 6ft", 
-                    "cost": 6,
-                },
-                { 
-                    "value": "powerCordForTV", 
-                    "label": "Power Cord for TV", 
-                    "cost": 15,
-                },
-            ]
           },
         ]
       },
+      // {
+      //   "id": "additional-services",
+      //   "title": "Additional Services",
+      //   "fields": [
+      //     {
+      //       "name": "popular",
+      //       "type": "radio",
+      //       "label": "The Most Popular",
+      //       "options": [
+      //           {
+      //               "value": "soundbar",
+      //               "label": "Install Soundbar",
+      //               "cost": 59,
+      //           },
+      //           {
+      //               "value": "wallShelf",
+      //               "label": "Install Wall Shelf",
+      //               "cost": 39,
+      //           },
+      //           {
+      //               "value": "gamingConsole",
+      //               "label": "Install Gaming Console",
+      //               "cost": 59,
+      //           },
+      //           { 
+      //               "value": "rearSpeaker", 
+      //               "label": "Install Rear Speaker (2)", 
+      //               "cost": 49,
+      //           },
+      //       ]
+      //     },
+      //     {
+      //       "name": "extraInstallation",
+      //       "type": "radio",
+      //       "label": "Extra Installation",
+      //       "options": [
+      //           {
+      //               "value": "installLEDLight",
+      //               "label": "Install LED Light",
+      //               "cost": 29,
+      //           },
+      //           { 
+      //               "value": "installFireplace", 
+      //               "label": "Install Fireplace", 
+      //               "cost": 79,
+      //           },
+      //           {
+      //               "value": "dismountExistingTV",
+      //               "label": "Dismount existing TV",
+      //               "cost": 35,
+      //           },
+      //           { 
+      //               "value": "installOfCurtains", 
+      //               "label": "Install curtains", 
+      //               "cost": 59,
+      //           },
+      //           {
+      //               "value": "installPaintingsAndDecor",
+      //               "label": "Install paintings & decor",
+      //               "cost": 35,
+      //           },
+      //           { 
+      //               "value": "installInWallSpeaker", 
+      //               "label": "Install In-Wall Speaker", 
+      //               "cost": 69,
+      //           },
+      //       ]
+      //     },
+      //     {
+      //       "name": "mounts",
+      //       "type": "radio",
+      //       "label": "Mounts",
+      //       "options": [
+      //           {
+      //               "value": "X-BoxMount",
+      //               "label": "X-Box Mount",
+      //               "cost": 39,
+      //           },
+      //           {
+      //               "value": "PlayStationMount",
+      //               "label": "PlayStation Mount",
+      //               "cost": 39,
+      //           },
+      //           { 
+      //               "value": "soundbarMount", 
+      //               "label": "Soundbar Mount", 
+      //               "cost": 19,
+      //           },
+      //       ]
+      //     },
+      //     {
+      //       "name": "cables",
+      //       "type": "radio",
+      //       "label": "Cables",
+      //       "options": [
+      //           {
+      //               "value": "HDMI10ft",
+      //               "label": "HDMI 10ft",
+      //               "cost": 14,
+      //           },
+      //           {
+      //               "value": "HDMI15ft",
+      //               "label": "HDMI 15ft",
+      //               "cost": 18,
+      //           },
+      //           { 
+      //               "value": "extensionCord6ft", 
+      //               "label": "Extension Cord 6ft", 
+      //               "cost": 6,
+      //           },
+      //           {
+      //               "value": "powerCordForTV",
+      //               "label": "Power Cord for TV",
+      //               "cost": 15,
+      //           },
+      //       ]
+      //     },
+      //   ]
+      // },
       {
         "id": "contactInfo",
-        "title": "Your contacts",
+        "title": "Address",
         "fields": [
+
+          {
+            "name": "temp",
+            "type": "radio",
+            "label": "Service Address",
+            "options": []
+          },
           {
             "name": "name",
             "type": "text",
@@ -559,7 +792,17 @@ const BestQuoteModal = () => {
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPriceExpanded, setIsPriceExpanded] = useState(false);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 980);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const isFormValid = !!(formData.contactInfo?.name && formData.contactInfo?.phone && formData.contactInfo?.zip);
 
   useEffect(() => {
     if(!isOpen) {
@@ -586,7 +829,7 @@ const BestQuoteModal = () => {
         if (typeof gtag !== 'undefined') {
           gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
         }
-        openModal('SeeYouSoon');
+        openModal('BookingSuccess', { totalPrice, structuredCostBreakdown });
       } else {
         const errorData = await response.json();
         console.error('Form submission error:', errorData);
@@ -615,51 +858,81 @@ const BestQuoteModal = () => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={close}>
+    <Modal className={styles.bestQuoteModalcontent} isOpen={isOpen} onClose={close}>
+      <header className={styles.bestQuoteHeader}>
+        <LogoSVG
+          width="82" 
+          height="40"
+          role="img"
+        />
+      </header>
         <div className={styles.bestQuote}>
             {/* Mobile price summary - visible on small screens */}
             <div className={styles.mobilePriceSummary}>
                 <div
-                  className={styles.mobilePriceHeader}
+                  className={styles.mobilePriceHeader + (currentStepIndex === 3 ? ' ' + styles.center : '')}
                   onClick={() => setIsPriceExpanded(!isPriceExpanded)}
                 >
-                  <span className={styles.mobilePriceLabel}>Estimate</span>
+                  <span className={styles.mobilePriceLabel}>{currentStepIndex === 3 ? "Go to Book" : "View Order"}</span>
                   <span className={styles.mobilePriceAmount}>{formatCurrency(totalPrice)}</span>
-                  <span className={`${styles.expandIcon} ${isPriceExpanded ? styles.expanded : ''}`}>
-                    ▼
-                  </span>
                 </div>
                 {isPriceExpanded && (
-                  <div className={styles.mobilePriceDetails}>
-                    <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} />
+                  <div className={styles.mobilePriceExpanded}>
+                    <div className={styles.expandedHeader}>
+                      <Button variant="secondary" size="small" className={styles.closeButton} onClick={() => setIsPriceExpanded(false)}>
+                        <CloseIcon width="10" heigth="10"/>
+                      </Button>
+                    </div>
+                    <div className={styles.orderInfo}>
+                      <p className={styles.orderTitle}>Your order</p>
+                      <p className={styles.orderItem}>FREE Above-Fireplace TV Installation</p>
+                      <p className={styles.orderDisclaimer}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
+                      <hr className={styles.orderDivider} />
+                    </div>
+                    <div className={styles.priceWrapper}>
+                      <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} onSubmit={onSubmit} darkMode={true} />
+                    </div>
                   </div>
                 )}
             </div>
-            
+            <main className={styles.bestQuoteMain}>
+                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange} onSubmit={onSubmit} onStepChange={setCurrentStepIndex} disableSubmitBtn={isSubmitting} isMobile={isMobile} currentStepIndex={currentStepIndex} onClose={close}>
+                </Form>
+                <div style={{flexGrow: 1}}></div>
+                <div className={styles.discountBanner}>
+                    <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
+                    <p className={styles.discountText}>Let the manager know to receive a multi-TVs <span className={styles.discountPercent}>DISCOUNT</span>: <span className={styles.discountPercent}>10% OFF</span> for 2 TVs, <span className={styles.discountPercent}>15% OFF</span> for 3, <span className={styles.discountPercent}>20% OFF</span> for 4 or more.</p>
+                </div>
+            </main>
             <aside className={styles.servicesContainer}>
                 <div className={styles.banner}>
                     <p className={styles.saleText}>
-                      Get $30 off when you book your TV mounting online - on orders over $200
+                      Enjoy an instant $30 OFF
+                    </p>
+                    <p className={styles.saleText}>
+                      when you place your online order over $200
                     </p>
                     <p className={styles.saleSize}>
-                        $30
+                        $30 OFF
                     </p>
+                </div>
+                <div className={styles.orderInfo}>
+                    <p className={styles.orderTitle}>Your order</p>
+                    <p className={styles.orderItem}>FREE Above-Fireplace TV Installation</p>
+                    <p className={styles.orderDisclaimer}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
+                    <hr className={styles.orderDivider} />
                 </div>
                 <div className={styles.tempWrapp}>
                     <div className={styles.priceWrapper}>
-                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} />
+                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} onSubmit={onSubmit} />
                     </div>
-                    <div className={styles.footerSummary}>
+                    {/* <div className={styles.footerSummary}>
                         <p>* Free TV dismount included with orders over $200</p>
                         <p>** Free Above-Fireplace TV Mounting</p>
                         <p className={styles.subSummaryText}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
-                    </div>
+                    </div> */}
                 </div>
             </aside>
-            <main className={styles.bestQuoteMain}>
-                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange} onSubmit={onSubmit} disableSubmitBtn={isSubmitting}>
-                </Form>
-            </main>
         </div>
     </Modal>
   );

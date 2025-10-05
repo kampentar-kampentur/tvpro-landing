@@ -1,7 +1,6 @@
 .priceSummaryContainer {
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   border-radius: 8px;
-  background-color: #f8f8f8; /* Light background similar to Figma */
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -88,13 +87,54 @@
 }
 
 .estimatedLabel {
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
   color: #0e0e13;
 }
 
 .totalAmount {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 20px;
+  line-height: 28px;
   color: #0e0e13;
-} 
+}
+
+.termsText {
+  margin-top: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.darkMode .title,
+.darkMode .tvSizeTitle,
+.darkMode .groupTitle,
+.darkMode .itemLabel,
+.darkMode .itemCost,
+.darkMode .estimatedLabel,
+.darkMode .totalAmount {
+  color: white;
+}
+
+.darkMode .termsText {
+  color: #ccc; /* lighter secondary */
+}
+
+.darkMode .estimatedTotal {
+  border-top-color: #333;
+}
+
+.darkMode .discountGroup {
+  border-top-color: #333;
+}
+
+@media (max-width: 980px) {
+  .lastStep .estimatedTotal {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+}

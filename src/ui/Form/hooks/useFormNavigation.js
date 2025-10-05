@@ -35,7 +35,7 @@ export const useFormNavigation = (scheme, onStepChange, formData) => {
     } else if (currentStepIndex > 0) {
       const previousStepIndex = currentStepIndex - 1;
       const previousStepConfig = scheme.steps[previousStepIndex];
-      
+
       if (previousStepConfig && previousStepConfig.type === "dynamic") {
         const totalSubStepsInPreviousDynamicStep = generateSubStepsForDynamicStep(previousStepConfig, formData).length;
         setCurrentStepIndex(previousStepIndex);
@@ -47,6 +47,13 @@ export const useFormNavigation = (scheme, onStepChange, formData) => {
     }
   };
 
+  const goToStep = (stepIndex) => {
+    if (stepIndex >= 0 && stepIndex < scheme.steps.length) {
+      setCurrentStepIndex(stepIndex);
+      setCurrentSubStepIndex(0);
+    }
+  };
+
   return {
     currentStepIndex,
     currentSubStepIndex,
@@ -55,5 +62,6 @@ export const useFormNavigation = (scheme, onStepChange, formData) => {
     isLastMainStep, // Renamed to clearly indicate it's about the main step
     goToNextStep,
     goToPreviousStep,
+    goToStep,
   };
 };

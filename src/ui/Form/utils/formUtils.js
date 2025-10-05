@@ -20,7 +20,7 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
 
   // --- Старый формат (один объект-условие)
   const { field, condition, value: targetValue, values: targetValues } = showIfCondition;
-  
+
   let fieldValue;
   if (field === '$parentValue' && parentContext && parentContext.parentValue !== undefined) {
     fieldValue = parentContext.parentValue;
@@ -31,22 +31,55 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
     fieldValue = currentFormData[currentStepId] ? currentFormData[currentStepId][field] : undefined;
   }
 
+  // Resolve field references in targetValue
+  let resolvedTargetValue = targetValue;
+  if (typeof targetValue === 'object' && targetValue !== null && targetValue.field) {
+    const refField = targetValue.field;
+    if (refField === '$parentValue' && parentContext && parentContext.parentValue !== undefined) {
+      resolvedTargetValue = parentContext.parentValue;
+    } else if (refField && refField.includes('.')) {
+      const [refStepId, refFieldName] = refField.split('.');
+      resolvedTargetValue = currentFormData[refStepId] ? currentFormData[refStepId][refFieldName] : undefined;
+    } else if (refField) {
+      resolvedTargetValue = currentFormData[currentStepId] ? currentFormData[currentStepId][refField] : undefined;
+    }
+  }
+
+  // Resolve field references in targetValues array
+  let resolvedTargetValues = targetValues;
+  if (Array.isArray(targetValues)) {
+    resolvedTargetValues = targetValues.map(val => {
+      if (typeof val === 'object' && val !== null && val.field) {
+        const refField = val.field;
+        if (refField === '$parentValue' && parentContext && parentContext.parentValue !== undefined) {
+          return parentContext.parentValue;
+        } else if (refField && refField.includes('.')) {
+          const [refStepId, refFieldName] = refField.split('.');
+          return currentFormData[refStepId] ? currentFormData[refStepId][refFieldName] : undefined;
+        } else if (refField) {
+          return currentFormData[currentStepId] ? currentFormData[currentStepId][refField] : undefined;
+        }
+      }
+      return val;
+    });
+  }
+
   switch (condition) {
     case "equals":
-      return fieldValue === targetValue;
+      return fieldValue === resolvedTargetValue;
     case "notEquals":
-      return fieldValue !== targetValue;
+      return fieldValue !== resolvedTargetValue;
     case "hasAny":
-      return Array.isArray(fieldValue) && Array.isArray(targetValues) && 
-             fieldValue.some(item => targetValues.includes(item.value));
+      return Array.isArray(fieldValue) && Array.isArray(resolvedTargetValues) &&
+             fieldValue.some(item => resolvedTargetValues.includes(item.value));
     case "equalsAny":
-        if (!Array.isArray(targetValues)) return false;
+        if (!Array.isArray(resolvedTargetValues)) return false;
         if (Array.isArray(fieldValue)) {
             return fieldValue.some(item =>
-                targetValues.includes(item.value !== undefined ? item.value : item)
+                resolvedTargetValues.includes(item.value !== undefined ? item.value : item)
             );
         }
-      return targetValues.includes(fieldValue);
+      return resolvedTargetValues.includes(fieldValue);
     case "isToday":
       if (fieldValue) {
         const today = new Date();
@@ -55,8 +88,55 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
       }
       return false;
     default:
-      return true; 
+      return true;
   }
+};
+
+export const isStepComplete = (step, formData) => {
+  if (!step || !step.fields) return true;
+  console.log("formData", formData);
+  // debugger
+  
+  console.log(step.fields.filter(field => {
+    if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
+      return true; // not visible, so "complete"
+    }
+
+    const fieldValue = formData[step.id] ? formData[step.id][field.name] : undefined;
+
+    // Check if has value
+    if (fieldValue === undefined || fieldValue === null || fieldValue === '') return false;
+    if (Array.isArray(fieldValue) && fieldValue.length === 0) return false;
+    // For checkboxWithCounter, check if any item has count > 0
+    if (field.type === "checkboxWithCounter" && Array.isArray(fieldValue)) {
+      return fieldValue.some(item => item.count && item.count > 0);
+    }
+
+    return true;
+  }));
+  
+  return step.fields.every(field => {
+    if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
+      return true; // not visible, so "complete"
+    }
+
+    const fieldValue = formData[step.id] ? formData[step.id][field.name] : undefined;
+
+    // Check if has value
+    if (fieldValue === undefined || fieldValue === null || fieldValue === '') return false;
+    if (Array.isArray(fieldValue) && fieldValue.length === 0) return false;
+    // For checkboxWithCounter, check if any item has count > 0
+    if (field.type === "checkboxWithCounter" && Array.isArray(fieldValue)) {
+      return fieldValue.some(item => item.count && item.count > 0);
+    }
+
+    return true;
+  });
+};
+
+export const hasConditionalFields = (step) => {
+  if (!step || !step.fields) return false;
+  return step.fields.some(field => field.showIf);
 };
 
 export const generateSubStepsForDynamicStep = (dynamicStepConfig, formData) => {
@@ -66,7 +146,7 @@ export const generateSubStepsForDynamicStep = (dynamicStepConfig, formData) => {
 
   const [sourceStepId, sourceFieldName] = dynamicStepConfig.generateFrom.split('.');
   const sourceData = formData[sourceStepId] ? formData[sourceStepId][sourceFieldName] : [];
-  
+
   if (!Array.isArray(sourceData)) {
     return [];
   }
@@ -92,4 +172,4 @@ export const generateSubStepsForDynamicStep = (dynamicStepConfig, formData) => {
     }
     return subSteps;
   });
-}; 
+};

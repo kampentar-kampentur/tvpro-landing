@@ -19,12 +19,18 @@ const SeeYouSoonModal = dynamic(() => import("@/modals/SeeYouSoonModal"), {
   loading: () => <div>Loading modal...</div>
 });
 
+const BookingSuccessModal = dynamic(() => import("@/modals/BookingSuccessModal"), {
+  ssr: false,
+  loading: () => <div>Loading modal...</div>
+});
+
 export default function Modals() {
   return (
     <>
       <BestQuoteModal/>
       <BookNowModal/>
       <SeeYouSoonModal/>
+      <BookingSuccessModal/>
     </>
   );
 }

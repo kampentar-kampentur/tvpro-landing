@@ -5,8 +5,8 @@
   --gray-light: #dbdbdf; /* light gray (borders) */
   --gray: #91929c;       /* gray (borders, elements) */
   --gray-medium: #6B6A73; /* new gray medium color */
-  --green: #27b44f;      /* green (button) */
-  --green-hover: #1f903f; /* green hover (button) */
+  --green: #157DC1;      /* green (button) */
+  --green-hover: #14679E; /* green hover (button) */
   --gray-extra-light: #e7e7eb; /* extra light gray (button disabled, border hover) */
   --text-secondary: var(--gray);
 }
@@ -90,6 +90,7 @@ a {
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
+    text-align: center;
   }
   .block {
     padding: 40px 16px;
@@ -97,6 +98,7 @@ a {
   .blockHeading {
     font-size: 28px;
     line-height: 36px;
+    text-align: center;
   }
 }
 

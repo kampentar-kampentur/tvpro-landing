@@ -4,7 +4,7 @@ import Button from "@/ui/Button";
 import { useModal } from "@/providers/ModalProvider";
 import { useRouter } from 'next/navigation'
 
-export default function QuoteButton({ children, modalName = "BookNow", onClick: existingOnClick, ...props }) {
+export default function QuoteButton({ children, modalName = "BestQuote", onClick: existingOnClick, ...props }) {
     const { openModal } = useModal();
 
     function onClick(e) {
