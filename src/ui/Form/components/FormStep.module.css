@@ -86,3 +86,33 @@
     margin-bottom: 0;
   }
 }
+
+
+.banner {
+    border-radius: 16px;
+    padding: 22px 20px;
+    color: var(--white);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url("/modalBanerBg.webp");
+    flex-direction: column;
+    text-align: center;
+    width: 348px;
+    margin: auto;
+}
+
+.saleText {
+    text-wrap: wrap;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+}
+
+.saleSize {
+    font-size: 52px;
+    line-height: 52px;
+    font-weight: 700;
+}
