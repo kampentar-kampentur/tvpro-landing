@@ -45,7 +45,7 @@ const GalleryOfWork = async () => {
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
           <div className={styles.ctaButtons}>
-            <QuoteButton variant="primary" size="small" modalName="BookNow">Book Your Install Today</QuoteButton>
+            <QuoteButton variant="primary" size="small" modalName="BookNow">Book With Discount</QuoteButton>
           </div>
         </div>
       </div>
