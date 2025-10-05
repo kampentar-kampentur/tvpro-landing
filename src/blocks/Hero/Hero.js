@@ -6,6 +6,11 @@ import dynamic from "next/dynamic";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
 import Head from "next/head";
+import Image from "next/image";
+import OneYearWarantyImg from "@/assets/badges/1yearwaranty.webp"
+import FiveStarImg from "@/assets/badges/5star.webp"
+import SevenDaysImg from "@/assets/badges/7days.webp"
+import AboveFireplaceImg from "@/assets/badges/abovefireplace.webp"
 
 // Dynamically import VideoPlayer with lazy loading
 const VideoPlayer = dynamic(() => import("./components/VideoPlayer"), {
@@ -60,14 +65,18 @@ export default async function Hero() {
             <QuoteButton>Book With Discount</QuoteButton>
           </div>
           <div className={styles.badgesWrapper}>
-              {heroData.badges.map(badge => (
+              {/* {heroData.badges.map(badge => (
                 <ImageWrapper
                   className={styles.badge}
                   key={badge.id}
                   media={badge}
                   defaultAlt="badge"
                 />
-              ))}
+              ))} */}
+              <Image src={OneYearWarantyImg} width={94} height={64}/>
+              <Image src={FiveStarImg} width={72} height={72}/>
+              <Image src={SevenDaysImg} width={158} height={56}/>
+              <Image src={AboveFireplaceImg} width={72} height={72}/>
           </div>
         </div>
       </div>
