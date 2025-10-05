@@ -62,6 +62,19 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
                   )}
                   {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
                   </span>
+                  {isMobile && currentStepIndex === 0 && index === 0 && (
+                    <div className={styles.banner + " " + styles.showMobile}>
+                      <p className={styles.saleText}>
+                        Enjoy an instant $30 OFF
+                      </p>
+                      <p className={styles.saleText}>
+                        when you place your online order over $200
+                      </p>
+                      <p className={styles.saleSize}>
+                          $30 OFF
+                      </p>
+                    </div>
+                  )}
                   <RadioField
                     field={field}
                     value={fieldCurrentValue}
