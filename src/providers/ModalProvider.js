@@ -11,6 +11,8 @@ export const ModalProvider = ({ children }) => {
 
   // Функция для открытия модалки
   const openModal = useCallback((name, props = {}) => {
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; 
     setModals(prev => [
       ...prev,
       { name, props, id: modalIdCounter }
@@ -20,6 +22,8 @@ export const ModalProvider = ({ children }) => {
 
   // Функция для закрытия модалки по имени
   const closeModal = useCallback((name) => {
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; 
     setModals(prev => prev.filter(modal => modal.name !== name));
   }, []);
 
