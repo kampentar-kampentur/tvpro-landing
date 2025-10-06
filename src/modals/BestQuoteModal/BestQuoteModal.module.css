@@ -340,7 +340,7 @@ padding: 0;
   border-top-color: #333;
 }
 
-.closeButton {
+button.closeButton {
   position: absolute;
   top: 20px;
   right: 20px;

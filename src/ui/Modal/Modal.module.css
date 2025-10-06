@@ -23,7 +23,7 @@
   align-items: center;
 }
 
-.closeButton {
+button.closeButton {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -43,7 +43,7 @@
     overflow: auto;
   }
 
-  .closeButton {
+  button.closeButton {
     top: 20px;
     right: 20px;
   }
