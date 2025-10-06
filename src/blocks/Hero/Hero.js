@@ -73,10 +73,10 @@ export default async function Hero() {
                   defaultAlt="badge"
                 />
               ))} */}
-              <Image src={OneYearWarantyImg} width={94} height={64}/>
-              <Image src={FiveStarImg} width={72} height={72}/>
-              <Image src={SevenDaysImg} width={158} height={56}/>
-              <Image src={AboveFireplaceImg} width={72} height={72}/>
+              <Image className={styles.oneYearWarantyImg} src={OneYearWarantyImg} width={94} height={64}/>
+              <Image className={styles.fiveStarImg} src={FiveStarImg} width={72} height={72}/>
+              <Image className={styles.sevenDaysImg} src={SevenDaysImg} width={158} height={56}/>
+              <Image className={styles.aboveFireplaceImg} src={AboveFireplaceImg} width={72} height={72}/>
           </div>
         </div>
       </div>

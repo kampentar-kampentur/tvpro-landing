@@ -59,33 +59,24 @@
     max-width: 400px;
     width: 100%;
   }
-}
 
-
-  .fiveStarBadge {
-    width: 150px;
-    height: 40px;
-  }
-  .oneYearWarantyBadge {
-    width: 112px;
+  .oneYearWarantyImg {
+    width: 70px;
     height: 48px;
   }
-  .aboveBadge {
-    width: 64px;
-    height: 64px;
+
+  .fiveStarImg {
+    width: 52px;
+    height: 52px;
   }
 
-/* @media (max-width: 600px) {
-  .mainHeading {
-    font-size: 32px;
-    line-height: 40px;
+  .sevenDaysImg {
+    width: 105px;
+    height: 40px;
   }
-  .subText {
-    font-size: 16px;
-    line-height: 20px;
+  
+  .aboveFireplaceImg {
+    width: 52px;
+    height: 52px;
   }
-  .buttonWrapper {
-    flex-direction: column;
-    gap: 16px;
-  }
-}  */
+}
