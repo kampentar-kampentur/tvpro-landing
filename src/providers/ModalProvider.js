@@ -22,8 +22,8 @@ export const ModalProvider = ({ children }) => {
 
   // Функция для закрытия модалки по имени
   const closeModal = useCallback((name) => {
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden'; 
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = ''; 
     setModals(prev => prev.filter(modal => modal.name !== name));
   }, []);
 
