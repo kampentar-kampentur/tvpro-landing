@@ -257,7 +257,6 @@ display: none;
 flex-direction: column;
 height: 100%;
 max-height: 100%;
-padding-bottom: 64px;
 }
 
 .bestQuoteMain {
@@ -373,5 +372,13 @@ button.closeButton {
     transform: rotate(180deg);
     width: 24px;
     height: 24px;
+  }
+
+  .discountBanner {
+    border: 1px solid #e7e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 20px;
+    margin-bottom: 64px;
   }
 }
