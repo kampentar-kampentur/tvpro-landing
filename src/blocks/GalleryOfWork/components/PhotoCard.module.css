@@ -54,7 +54,7 @@
   max-width: 90vw;
   max-height: 80vh;
   border-radius: 16px;
-  background: #000;
+  background: var(--foreground);
 }
 
 .modalContainer {

@@ -870,41 +870,45 @@ const BestQuoteModal = () => {
       </header>
         <div className={styles.bestQuote}>
             {/* Mobile price summary - visible on small screens */}
-            <div className={styles.mobilePriceSummary}>
-                <div
-                  className={styles.mobilePriceHeader + (currentStepIndex === 3 ? ' ' + styles.center : '')}
-                  onClick={() => setIsPriceExpanded(!isPriceExpanded)}
-                >
-                  <span className={styles.mobilePriceLabel}>{currentStepIndex === 3 ? "Go to Book" : "View Order"}</span>
-                  <span className={styles.mobilePriceAmount}>{formatCurrency(totalPrice)}</span>
-                </div>
-                {isPriceExpanded && (
-                  <div className={styles.mobilePriceExpanded}>
-                    <div className={styles.expandedHeader}>
-                      <Button variant="secondary" size="small" className={styles.closeButton} onClick={() => setIsPriceExpanded(false)}>
-                        <CloseIcon width="10" heigth="10"/>
-                      </Button>
-                    </div>
-                    <div className={styles.orderInfo}>
-                      <p className={styles.orderTitle}>Your order</p>
-                      <p className={styles.orderItem}>FREE Above-Fireplace TV Installation</p>
-                      <p className={styles.orderDisclaimer}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
-                      <hr className={styles.orderDivider} />
-                    </div>
-                    <div className={styles.priceWrapper}>
-                      <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} onSubmit={onSubmit} darkMode={true} />
-                    </div>
+            {currentStepIndex > 0 &&
+              <div className={styles.mobilePriceSummary}>
+                  <div
+                    className={styles.mobilePriceHeader + (currentStepIndex === 3 ? ' ' + styles.center : '')}
+                    onClick={() => setIsPriceExpanded(!isPriceExpanded)}
+                  >
+                    <span className={styles.mobilePriceLabel}>{currentStepIndex === 3 ? "Go to Book" : "View Order"}</span>
+                    <span className={styles.mobilePriceAmount}>{formatCurrency(totalPrice)}</span>
                   </div>
-                )}
-            </div>
+                  {isPriceExpanded && (
+                    <div className={styles.mobilePriceExpanded}>
+                      <div className={styles.expandedHeader}>
+                        <Button variant="secondary" size="small" className={styles.closeButton} onClick={() => setIsPriceExpanded(false)}>
+                          <CloseIcon width="10" heigth="10"/>
+                        </Button>
+                      </div>
+                      <div className={styles.orderInfo}>
+                        <p className={styles.orderTitle}>Your order</p>
+                        <p className={styles.orderItem}>FREE Above-Fireplace TV Installation</p>
+                        <p className={styles.orderDisclaimer}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
+                        <hr className={styles.orderDivider} />
+                      </div>
+                      <div className={styles.priceWrapper}>
+                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} onSubmit={onSubmit} darkMode={true} />
+                      </div>
+                    </div>
+                  )}
+              </div>
+            }
             <main className={styles.bestQuoteMain}>
                 <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange} onSubmit={onSubmit} onStepChange={setCurrentStepIndex} disableSubmitBtn={isSubmitting} isMobile={isMobile} currentStepIndex={currentStepIndex} onClose={close}>
                 </Form>
                 <div style={{flexGrow: 1}}></div>
-                <div className={styles.discountBanner}>
-                    <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
-                    <p className={styles.discountText}>Let the manager know to receive a multi-TVs <span className={styles.discountPercent}>DISCOUNT</span>: <span className={styles.discountPercent}>10% OFF</span> for 2 TVs, <span className={styles.discountPercent}>15% OFF</span> for 3, <span className={styles.discountPercent}>20% OFF</span> for 4 or more.</p>
-                </div>
+                {(isMobile && currentStepIndex === 0) ||
+                  <div className={styles.discountBanner}>
+                      <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
+                      <p className={styles.discountText}>Let the manager know to receive a multi-TVs <span className={styles.discountPercent}>DISCOUNT</span>: <span className={styles.discountPercent}>10% OFF</span> for 2 TVs, <span className={styles.discountPercent}>15% OFF</span> for 3, <span className={styles.discountPercent}>20% OFF</span> for 4 or more.</p>
+                  </div>
+                }
             </main>
             <aside className={styles.servicesContainer}>
                 <div className={styles.banner}>
