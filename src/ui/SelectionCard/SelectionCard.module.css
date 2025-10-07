@@ -10,7 +10,7 @@
   position: relative;
   box-sizing: border-box;
   flex-shrink: 0;
-  max-width: 177px;
+  /* max-width: 177px; */
 }
 
 .selected {
@@ -37,7 +37,7 @@
   top: 80px;
   right: 0;
   background-color: #E7E7EB;
-  color: #000;
+  color: var(--foreground);
   border-radius: 4px 0 0 4px;
   padding: 4px 8px;
   font-size: 12px;

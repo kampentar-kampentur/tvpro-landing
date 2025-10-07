@@ -18,7 +18,7 @@
   transform: translateZ(0);
   opacity: 0;
   object-fit: cover;
-  background-color: #000;
+  background-color: var(--foreground);
   contain: layout style paint;
 }
 
