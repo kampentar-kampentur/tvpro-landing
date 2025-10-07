@@ -18,6 +18,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  /* overflow: hidden; */
 }
 
 body {
@@ -134,4 +135,14 @@ a {
   /* margin: auto; */
   box-shadow: none;
   background: none;
+}
+
+
+.rec {
+  width: 100px;
+  height: 100px;
+  background: red;
+  position: fixed;
+  bottom: 0px;
+  z-index: 100000;
 }

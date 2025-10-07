@@ -40,6 +40,7 @@ button.closeButton {
     border-radius: 0;
     padding: 20px;
     height: 100% !important;
+    width: 100% !important;
     overflow: auto;
   }
 

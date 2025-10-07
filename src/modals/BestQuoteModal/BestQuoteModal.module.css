@@ -103,7 +103,7 @@
 
 .bestQuoteMain {
     flex: 1;
-    max-width: 844px;
+    /* max-width: 844px; */
     margin: 0 auto;
     padding: 20px;
     max-width: 736px;
@@ -158,7 +158,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: black;
+  background: var(--foreground);
   border-radius: 12px;
   padding: 16px;
   color: white;
@@ -208,11 +208,11 @@ padding: 0 20px 20px;
 
 .mobilePriceExpanded {
   position: fixed;
-  top: 0;
+  top: 20px;
   left: 0;
   right: 0;
   bottom: 0;
-  background: black;
+  background: var(--foreground);
   color: white;
   padding: 20px;
   overflow: auto;
@@ -264,6 +264,7 @@ padding-bottom: 64px;
 order: 2;
 position: relative;
 max-width: 100%;
+width: 100%;
 padding: 0;
 }
 
