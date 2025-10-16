@@ -11,6 +11,7 @@
 
 @media (max-width: 600px) {
     .cardsGrid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 0.5fr));
+        grid-auto-rows: 120px;
     }
 }
