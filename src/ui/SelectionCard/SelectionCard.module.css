@@ -11,6 +11,7 @@
   box-sizing: border-box;
   flex-shrink: 0;
   /* max-width: 177px; */
+  position: relative;
 }
 
 .selected {
@@ -23,6 +24,7 @@
   font-size: 14px;
   line-height: 20px;
   color: inherit;
+  font-weight: 500;
 }
 
 .description {
@@ -30,11 +32,12 @@
   line-height: 16px;
   color: var(--text-secondary);
   margin-top: 4px;
+  margin-bottom: 36px;
 }
 
 .price {
   position: absolute;
-  top: 80px;
+  bottom: 17px;
   right: 0;
   background-color: #E7E7EB;
   color: var(--foreground);
@@ -47,4 +50,45 @@
 .selected .price {
   background-color: #353535;
   color: #fff;
+}
+
+.checkMark {
+  position: absolute;
+  right: -17px;
+  top: -12px;
+  z-index: 9;
+  display: none;
+}
+
+.selected .checkMark {
+  display: inline-block;
+}
+
+.subtitle {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.info {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 9;
+  color: white;
+}
+
+.card.showInfo {
+  height: fit-content;
+  min-height: 120px;
+  z-index: 9;
+  background: white;
+}
+
+.card.showInfo.selected {
+  background: var(--foreground);
+}
+
+.selected .info {
+  color: var(--foreground);
 }

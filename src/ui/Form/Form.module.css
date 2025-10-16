@@ -18,6 +18,7 @@
     gap: 8px;
     margin-top: 8px;
     max-width: 736px;
+    grid-auto-rows: 120px;
 }
 
 .navigationButtons {

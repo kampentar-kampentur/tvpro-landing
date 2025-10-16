@@ -69,12 +69,6 @@
         visibility: visible;
         display: flex;
     }
-    .serviceCard:hover .description {
-        opacity: 0;
-        visibility: hidden;
-        height: 0;
-        display: none;
-    }
     .serviceCard:hover {
         background-color: white;
         /* This will be handled by specific text classes */
@@ -85,6 +79,9 @@
             0px 78px 31px 0px #0000000a,
             0px 121px 34px 0px #00000005;
         border: white;
+    }
+    .serviceCard:hover .description {
+        display: none;
     }
 }
 
@@ -98,9 +95,66 @@
 @media (max-width: 1024px) {
     .description {
         font-size: 14px;
+        display: none;
     }
     .serviceCard {
-        padding: 24px 20px;
-        min-height: auto
+        padding: 16px;
+        min-height: auto;
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: left;
+        height: 120px;
     }
+    .info.info {
+        display: inline-block;
+    }
+    .imageContainer {
+        display: none;
+        visibility: hidden;
+    }
+    .title {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+    .isShowInfo .description {
+        display: inline;
+    }
+    .isShowInfo {
+        background-color: white;
+        height: fit-content;
+        padding-bottom: 52px;
+        z-index: 10;
+        box-shadow:
+            0px 5px 11px 0px #0000001f,
+            0px 19px 19px 0px #00000017,
+            0px 44px 26px 0px #00000014,
+            0px 78px 31px 0px #0000000a,
+            0px 121px 34px 0px #00000005;
+    }
+    .price {
+        bottom: 17px;
+        right: 0;
+    }
+}
+
+.info {
+    display: none;
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 100;
+    color: white;
+}
+
+.price {
+  position: absolute;
+  bottom: 17px;
+  right: 0;
+  background-color: #E7E7EB;
+  color: var(--foreground);
+  border-radius: 4px 0 0 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
 }

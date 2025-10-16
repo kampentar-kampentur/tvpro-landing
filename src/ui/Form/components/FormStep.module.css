@@ -53,6 +53,10 @@
     margin-bottom: 20px;
 }
 
+.option:last-child {
+    margin-bottom: 0;
+}
+
 @media (max-width: 980px) {
   .mobileBackButton {
     display: block;
@@ -119,4 +123,8 @@
     font-size: 52px;
     line-height: 52px;
     font-weight: 700;
+}
+
+.selectedField {
+  color: var(--text-secondary);
 }

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SelectionCard from '@/ui/SelectionCard';
 import formStyles from '../../Form.module.css'
 
 const RadioField = ({ field, value, onChange }) => {
+  const [isInfoShow, setIsInfoShow] = useState(null);
+
   const handleClick = (optionValue) => {
     if (value === optionValue) {
       onChange(null);
@@ -10,6 +12,13 @@ const RadioField = ({ field, value, onChange }) => {
       onChange(optionValue);
     }
   };
+
+  const handleInfoClick = (optionValue) => {
+    setIsInfoShow(isInfoShow === optionValue ? null : optionValue);
+  };
+  if (!field.options.length) {
+    return
+  }
 
   return (
     <div className={formStyles.optionsGrid}>
@@ -22,6 +31,10 @@ const RadioField = ({ field, value, onChange }) => {
             onClick={() => handleClick(option.value)}
             label={option.label}
             price={option.cost !== undefined && option.cost !== null ? (option.cost === 0 ? '$0' : `$${option.cost}`) : null}
+            subtitle={option.subtitle}
+            description={option.description}
+            isInfoShow={isInfoShow === option.value}
+            onInfoClick={() => handleInfoClick(option.value)}
           />
         ))}
     </div>

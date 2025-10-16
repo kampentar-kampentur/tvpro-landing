@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose, children, className }) => {
         <Button variant="secondary" size="small" className={styles.closeButton} onClick={onClose}>
           <CloseIcon width="10" heigth="10"/>
         </Button>
-        <div style={{width: '100%', height: '100%'}} ref={modalRef}>
+        <div className={styles.modalWrapper} ref={modalRef}>
           {children}
         </div>
       </div>
