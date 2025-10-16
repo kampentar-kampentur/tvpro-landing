@@ -39,7 +39,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
                       <ChevronIcon />
                     </button>
                   )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  {field.label && <h3 className={`${styles.fieldLabel}`}>{field.label}</h3>}
                   </span>
                   <RadioField
                     field={field}
@@ -60,9 +60,9 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
                       <ChevronIcon />
                     </button>
                   )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  {field.label && <h3 className={`${styles.fieldLabel} ${fieldCurrentValue ? styles.selectedField : ''}`}>{field.label}</h3>}
                   </span>
-                  {isMobile && currentStepIndex === 0 && index === 0 && (
+                  {isMobile && currentStepIndex === 0 && index === 0 && !fieldCurrentValue && (
                     <div className={styles.banner + " " + styles.showMobile}>
                       <p className={styles.saleText}>
                         Enjoy an instant $30 OFF

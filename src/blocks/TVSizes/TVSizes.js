@@ -1,4 +1,4 @@
-import ServiceCard from "@/ui/ServiceCard/ServiceCard";
+import ServiceCard from "@/ui/ServiceCardWithMobile/ServiceCard";
 import styles from "./TVSizes.module.css";
 import UpTo31Light from '@/assets/screens/UpTo31Light.svg';
 import QLEDLight from '@/assets/screens/QLEDLight.svg';
@@ -43,6 +43,7 @@ export default async function TVSizes() {
             title={card.title}
             description={card.description}
             buttonText="Get The Best Quote"
+            price={card.price}
           />
         ))}
       </div>

@@ -12,6 +12,9 @@ const CheckboxGroupField = ({ field, value = [], onChange }) => {
     }
     onChange(newSelection);
   };
+  if (!field.options.length) {
+    return
+  }
 
   return (
     <div className={formStyles.optionsGrid}>

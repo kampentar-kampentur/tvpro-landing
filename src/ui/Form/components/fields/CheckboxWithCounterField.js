@@ -21,7 +21,9 @@ const CheckboxWithCounterField = ({ field, value = [], onChange }) => {
     );
     onChange(updatedSelection);
   };
-
+  if (!field.options.length) {
+    return
+  }
   return (
     <div className={formStyles.optionsGrid}>
       {field.options.map(option => {

@@ -36,6 +36,10 @@ button.closeButton {
   background: var(--background);
 }
 
+button.closeButton:hover {
+  border-color: var(--foreground) !important;
+}
+
 @media (max-width: 980px) {
   .modalContent {
     border-radius: 0;
@@ -49,4 +53,14 @@ button.closeButton {
     top: 20px;
     right: 20px;
   }
+  .modalWrapper {
+    display: block;
+  }
 } 
+
+.modalWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
