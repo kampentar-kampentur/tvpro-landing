@@ -132,9 +132,13 @@
             0px 78px 31px 0px #0000000a,
             0px 121px 34px 0px #00000005;
     }
-    .price {
+    .price.price {
         bottom: 17px;
         right: 0;
+        padding: 4px 8px;
+        border-radius: 4px 0 0 4px;
+        top: auto;
+        left: auto;
     }
 }
 
@@ -149,12 +153,12 @@
 
 .price {
   position: absolute;
-  bottom: 17px;
-  right: 0;
+  top: 36px;
+  left: 0;
   background-color: #E7E7EB;
   color: var(--foreground);
-  border-radius: 4px 0 0 4px;
-  padding: 4px 8px;
+  border-radius: 0 4px 4px 0;
+  padding: 4px 20px;
   font-size: 12px;
   font-weight: 500;
 }
