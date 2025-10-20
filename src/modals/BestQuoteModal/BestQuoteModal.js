@@ -279,24 +279,15 @@ const example = {
             "name": "name",
             "type": "text",
             "textLabel": "Enter your name",
-            "placeholder": "Your name *",
+            "placeholder": "Enter your name *",
             "isRequired": true
           },
           {
             "name": "phone",
             "type": "tel",
             "textLabel": "Enter your phone",
-            "placeholder": "Phone number *",
+            "placeholder": "Enter your number *",
             "isRequired": true
-          },
-          {
-            "name": "zip",
-            "type": "number",
-            "textLabel": "Enter your zip code",
-            "placeholder": "Zip Code *",
-            "isRequired": true,
-            "minLength": 5,
-            "maxLength": 5
           },
           {
             "name": "address",
@@ -305,12 +296,26 @@ const example = {
             "placeholder": "Address",
           },
           {
-            "name": "email",
-            "type": "text",
-            "textLabel": "Enter your email address ",
-            "placeholder": "Email address",
-          }
-          
+            "name": "zipApt",
+            "type": "splited",
+            "textLabel": "Enter your zip code and apartment/unit",
+            "fields": [
+              {
+                "name": "zip",
+                "type": "text",
+                "placeholder": "Zip Code *",
+                "isRequired": true,
+                "minLength": 5,
+                "maxLength": 5
+              },
+              {
+                "name": "apt",
+                "type": "text",
+                "placeholder": "Apt/Unit",
+                "isRequired": false
+              }
+            ]
+          },
         ]
       }
     ],
@@ -351,7 +356,7 @@ const BestQuoteModal = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const isFormValid = !!(formData.contactInfo?.name && formData.contactInfo?.phone && formData.contactInfo?.zip);
+  const isFormValid = !!(formData.contactInfo?.name && formData.contactInfo?.phone && formData.contactInfo?.zipApt?.zip);
 
   useEffect(() => {
     if(!isOpen) {
@@ -365,12 +370,22 @@ const BestQuoteModal = () => {
     
     try {
       const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
+      debugger
       const response = await fetch(`${apiUrl}/api/best-quote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ data: formData }),
+        body: JSON.stringify({ 
+          data: {
+            ...formData,
+            contactInfo: {
+              ...formData.contactInfo,
+              zip: formData.contactInfo.zipApt.zip,
+              apt: formData.contactInfo.zipApt.apt
+            }
+          }
+        }),
       });
       if (response.ok) {
         close();
