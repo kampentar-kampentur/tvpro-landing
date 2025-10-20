@@ -1,0 +1,19 @@
+.splitFieldContainer {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  max-width: calc(50% - 8px);
+}
+
+.splitFieldItem {
+  flex: 1;
+  min-width: 0; /* Allow flex items to shrink below their content width */
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 1024px) {
+  .splitFieldContainer {
+    max-width: 100%;
+    gap: 8px;
+  }
+}

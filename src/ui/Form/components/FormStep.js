@@ -6,6 +6,7 @@ import TextField from '../components/fields/TextField';
 import CounterField from '../components/fields/CounterField';
 import DateField from '../components/fields/DateField';
 import CheckboxGroupField from '../components/fields/CheckboxGroupField';
+import SplitField from '../components/fields/SplitField';
 import { shouldRenderField } from '../utils/formUtils';
 import ChevronIcon from '@/assets/icons/chevron.svg';
 
@@ -176,6 +177,25 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
                   </span>
                   <CheckboxGroupField
                     field={field}
+                    value={fieldCurrentValue}
+                    onChange={handleFieldChange}
+                  />
+                  {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
+                </div>
+              );
+            case "splited":
+              return (
+                <div key={field.name} className={`${styles.option} ${styles.splitOption}`}>
+                  <span style={{display: "flex"}}>
+                  {isMobile && currentStepIndex > 0 && index === 0 && (
+                    <button className={styles.mobileBackButton} onClick={onBack}>
+                      <ChevronIcon />
+                    </button>
+                  )}
+                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  </span>
+                  <SplitField
+                    fields={field.fields}
                     value={fieldCurrentValue}
                     onChange={handleFieldChange}
                   />

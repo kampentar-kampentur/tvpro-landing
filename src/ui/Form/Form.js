@@ -68,7 +68,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         ...(value[stepId] || {}),
         [fieldName]: fieldValue
       }
-    } 
+    }
     if(isStepComplete(stepToRender, fd)) {
       handleNext()
     }
@@ -122,6 +122,30 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
             return false;
           }
           if (field.maxLength && strValue.length > field.maxLength) {
+            return false;
+          }
+        }
+        // Специальная валидация для splited полей
+        if (field.type === "splited") {
+          if (field.fields && Array.isArray(field.fields)) {
+            // Validate each field in the fields array
+            for (const subField of field.fields) {
+              const subFieldValue = fieldValue && typeof fieldValue === 'object' ? fieldValue[subField.name] : undefined;
+              if (subField.isRequired && (!subFieldValue || String(subFieldValue).trim() === '')) {
+                return false;
+              }
+              // Универсальная валидация minLength/maxLength для text/number/tel
+              if (["text", "number", "tel"].includes(subField.type) && (subField.minLength || subField.maxLength)) {
+                const strValue = subFieldValue ? String(subFieldValue) : "";
+                if (subField.minLength && strValue.length < subField.minLength) {
+                  return false;
+                }
+                if (subField.maxLength && strValue.length > subField.maxLength) {
+                  return false;
+                }
+              }
+            }
+          } else if (field.isRequired) {
             return false;
           }
         }
