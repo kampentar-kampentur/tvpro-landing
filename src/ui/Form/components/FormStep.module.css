@@ -89,6 +89,11 @@
     min-width: 280px;
     margin-bottom: 0;
   }
+  .splitOption {
+    width: calc(50% - 16px);
+    min-width: 280px;
+    margin-bottom: 0;
+  }
 }
 
 
