@@ -154,6 +154,12 @@ export default async function RootLayout({ children }) {
         <link rel="dns-prefetch" href="//cloudflare.com" />
         <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4"/>
         <GoogleTagManager gtmId="GTM-5QVX2Z6S" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `var $wc_load=function(a){return  JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};`,
+          }}
+        />
+        <script src="//s.ksrndkehqnwntyxlhgto.com/154265.js" />
       </head>
       <body className={redHatDisplay.variable}>
         <ModalProvider>
