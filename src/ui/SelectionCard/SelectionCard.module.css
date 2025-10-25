@@ -24,7 +24,7 @@
   font-size: 14px;
   line-height: 20px;
   color: inherit;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .description {
@@ -44,7 +44,7 @@
   border-radius: 4px 0 0 4px;
   padding: 4px 8px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .selected .price {

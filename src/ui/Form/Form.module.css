@@ -6,7 +6,7 @@
 }
 
 .fieldLabel {
-    font-weight: 700;
+    font-weight: 800;
     font-size: 28px;
     line-height: 40px;
     letter-spacing: 0%;
@@ -15,7 +15,7 @@
 .optionsGrid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    gap: 16px;
     margin-top: 8px;
     max-width: 736px;
     grid-auto-rows: 120px;

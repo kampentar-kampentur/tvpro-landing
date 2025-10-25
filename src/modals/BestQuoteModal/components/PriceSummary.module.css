@@ -54,6 +54,11 @@
   color: #0e0e13;
 }
 
+.itemLabel1x {
+  color: #91929C;
+  margin-right: 4px;
+}
+
 .itemCost {
   font-weight: 700;
   font-size: 14px;
@@ -69,7 +74,7 @@
 }
 
 .discountCost {
-  color: #27b44f; /* Green color for discount */
+  color: #27b44f !important; /* Green color for discount */
 }
 
 .estimatedTotal {
@@ -78,6 +83,7 @@
   align-items: center;
   padding-top: 12px;
   border-top: 1px solid var(--gray-light);
+  padding-top: 40px;
 }
 
 /* Removed redundant border and padding from .discountGroup */
@@ -108,6 +114,10 @@
   line-height: 16px;
 }
 
+.termsText a {
+  text-decoration: underline;
+}
+
 .darkMode .title,
 .darkMode .tvSizeTitle,
 .darkMode .groupTitle,
@@ -130,11 +140,6 @@
   border-top-color: #333;
 }
 
-@media (max-width: 980px) {
-  .lastStep .estimatedTotal {
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
+.bookBtn {
+  margin-top: 40px;
 }

@@ -30,7 +30,7 @@ const RadioField = ({ field, value, onChange }) => {
             selected={value === option.value}
             onClick={() => handleClick(option.value)}
             label={option.label}
-            price={option.cost !== undefined && option.cost !== null ? (option.cost === 0 ? '$0' : `$${option.cost}`) : null}
+            price={option.cost !== undefined && option.cost !== null ? (option.costLabel ? option.costLabel : `$${option.cost}`) : null}
             subtitle={option.subtitle}
             description={option.description}
             isInfoShow={isInfoShow === option.value}

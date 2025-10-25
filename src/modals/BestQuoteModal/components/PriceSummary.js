@@ -15,7 +15,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
 
   const renderBreakdownItem = (item) => (
     <div key={item.label} className={styles.breakdownItem}>
-      <span className={styles.itemLabel}>{item.label}</span>
+      <span className={styles.itemLabel}><span className={styles.itemLabel1x}>1x</span>{item.label}</span>
       <span className={styles.itemCost}>{item.cost === 0 ? "Free" : formatCurrency(item.cost)}</span>
     </div>
   );
@@ -74,7 +74,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
       </div>
       {currentStepIndex === 3 && (
         <>
-          <Button disabled={!isFormValid} onClick={onSubmit} size="small">
+          <Button className={styles.bookBtn} disabled={!isFormValid} onClick={onSubmit} size="small">
             Book
           </Button>
           <p className={styles.termsText}>
