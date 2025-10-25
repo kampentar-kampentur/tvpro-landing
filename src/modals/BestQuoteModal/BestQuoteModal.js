@@ -65,6 +65,7 @@ const example = {
                 "value": "projectorsNScreens",
                 "label": "Projectors & Screens",
                 "cost": 139,
+                "costLabel": "From $139"
               },
             ]
           },
@@ -79,8 +80,8 @@ const example = {
               "values": ["over-86", "60-75", "76-85", "frameTvUpTo60", "frameTvOver65", "projectorsNScreens"]
             },
             "options": [
-              { "value": "no", "label": "1 Tech", "cost": 0, "subtitle": "+ your help" },
-              { "value": "yes", "label": "2 Tech", "cost": 59, "subtitle": "Full service" },
+              { "value": "no", "label": "1 Tech", "cost": 0, "costLabel": "+$0", "subtitle": "+ your help", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit consectetur magna sed fringilla. Duis eleifend sollicitudin dolor. In vestibulum." },
+              { "value": "yes", "label": "2 Tech", "cost": 59, "costLabel": "+$59", "subtitle": "Full service", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit consectetur magna sed fringilla. Duis eleifend sollicitudin dolor. In vestibulum." },
             ]
           }
         ]
@@ -99,6 +100,7 @@ const example = {
                 "value": "alreadyThere", 
                 "label": "Already there", 
                 "cost": 0,
+                "costLabel": "+$0",
                 "description": "Already have your own mount? Perfect! We’ll safely install your TV on your existing bracket at no extra cost."
               },
               { 
@@ -106,6 +108,7 @@ const example = {
                 "label": "Fixed Mount",
                 "subtitle": "1.5” from wall",
                 "cost": 39,
+                "costLabel": "+$39",
                 "description": "Clean and reliable: keeps your TV close to the wall for a sleek, modern look"
               },
               { 
@@ -113,6 +116,7 @@ const example = {
                 "label": "Tilt Mount", 
                 "subtitle": "up to 15° tilt",
                 "cost": 49,
+                "costLabel": "+$49",
                 "description": "Adjust the vertical angle to reduce glare and get the perfect view from any seating position."
               },
               { 
@@ -120,6 +124,7 @@ const example = {
                 "label": "Corner Mount", 
                 "subtitle": "fits TVs up to 75”",
                 "cost": 69,
+                "costLabel": "+$69",
                 "description": "the ideal solution for corner setups: saves space while keeping your room stylish and functional."
               },
               { 
@@ -127,6 +132,7 @@ const example = {
                 "label": "Full-Motion Mount", 
                 "subtitle": "extends up to 15”",
                 "cost": 69,
+                "costLabel": "+$69",
                 "description": "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room."
               },
               { 
@@ -134,6 +140,7 @@ const example = {
                 "label": "Ceiling Mount", 
                 "subtitle": "",
                 "cost": 69,
+                "costLabel": "+$69",
                 "description": "a unique option when walls are occupied or for a bold interior design: mount your TV directly to the ceiling."
               },
             ]
@@ -154,24 +161,28 @@ const example = {
                 "value": "drywall",
                 "label": "Drywall",
                 "cost": 0,
+                "costLabel": "+$0",
                 "description": "standard wall type, quick and simple installation."
               },
               {
                 "value": "brick",
                 "label": "Brick",
                 "cost": 49,
+                "costLabel": "+$49",
                 "description": "strong and durable surface, requires special tools and anchors for a secure mount."
               },
               {
                 "value": "concrete",
                 "label": "Concrete",
                 "cost": 49,
+                "costLabel": "+$49",
                 "description": "heavy-duty material that ensures a solid and lasting installation."
               },
               {
                 "value": "tile",
                 "label": "Other",
                 "cost": 49,
+                "costLabel": "+$49",
                 "description": "perfect for kitchens, bathrooms, or decorative walls. We use diamond drill bits to carefully protect your tiles while ensuring a safe and reliable mount."
               },
             ],
@@ -197,24 +208,28 @@ const example = {
                 "label": "Exposed", 
                 "subtitle": "no extra charge",
                 "cost": 0,
+                "costLabel": "+$0",
                 "description": "standard setup with visible wires, quick and simple."
               },
               { 
                 "value": "cableChannelDrywall", 
                 "label": "Cable Channel", 
                 "cost": 39,
+                "costLabel": "+$39",
                 "description": "a sleek plastic channel to neatly hide and organize wires along the wall."
               },
               { 
                 "value": "wallDrywall", 
                 "label": "Put it in the Wall", 
                 "cost": 79,
+                "costLabel": "+$79",
                 "description": "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look."
               },
               { 
                 "value": "socketDrywall", 
                 "label": "In-Wall with Socket", 
                 "cost": 99,
+                "costLabel": "+$99",
                 "description": "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish."
               },
             ],
@@ -240,24 +255,28 @@ const example = {
                     "label": "Exposed",
                     "subtitle": "no extra charge",
                     "cost": 0,
+                    "costLabel": "+$0",
                     "description": "visible wires, fast and simple setup."
                 },
                 { 
                   "value": "cableChannelBrick", 
                   "label": "Cable channel", 
                   "cost": 39,
+                  "costLabel": "+$39",
                   "description": "neat surface channel to keep cables organized on brick, concrete, or tile."
                 },
                 { 
                   "value": "wallBrick", 
                   "label": "In-Wall Concealment", 
                   "cost": 199,
+                  "costLabel": "+$199",
                   "description": "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish."
                 },
                 { 
                   "value": "socketBrick", 
                   "label": "In-Wall with Socket", 
                   "cost": 229,
+                  "costLabel": "+$229",
                   "description": "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing."
                 },
               ],

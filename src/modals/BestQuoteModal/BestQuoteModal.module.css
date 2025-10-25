@@ -363,7 +363,7 @@ button.closeButton {
   display: none;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1024px) {
   .mobileBackButton {
     display: block;
     background: none;
@@ -383,7 +383,7 @@ button.closeButton {
     border: 1px solid var(--gray-extra-light);
     background-color: var(--gray-extra-light);
     border-radius: 12px;
-    padding: 24px;
+    padding: 16px;
     margin-top: 20px;
     margin-bottom: 64px;
   }
