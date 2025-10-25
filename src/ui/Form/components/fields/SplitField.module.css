@@ -2,7 +2,6 @@
   display: flex;
   gap: 16px;
   width: 100%;
-  max-width: calc(50% - 8px);
 }
 
 .splitFieldItem {

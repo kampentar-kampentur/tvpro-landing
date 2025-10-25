@@ -34,7 +34,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkboxWithCounter":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex"}}>
+                  <span style={{display: "flex", marginBottom: "24px"}}>
                   {isMobile && currentStepIndex > 0 && index === 0 && (
                     <button className={styles.mobileBackButton} onClick={onBack}>
                       <ChevronIcon />
@@ -55,7 +55,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "radio":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex"}}>
+                  <span style={{display: "flex", marginBottom: "24px"}}>
                   {isMobile && currentStepIndex > 0 && index === 0 && (
                     <button className={styles.mobileBackButton} onClick={onBack}>
                       <ChevronIcon />
@@ -89,7 +89,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkbox":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex"}}>
+                  <span style={{display: "flex", marginBottom: "24px"}}>
                   {isMobile && currentStepIndex > 0 && index === 0 && (
                     <button className={styles.mobileBackButton} onClick={onBack}>
                       <ChevronIcon />
@@ -129,7 +129,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "counter":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex"}}>
+                  <span style={{display: "flex", marginBottom: "24px"}}>
                   {isMobile && currentStepIndex > 0 && index === 0 && (
                     <button className={styles.mobileBackButton} onClick={onBack}>
                       <ChevronIcon />
@@ -148,7 +148,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "date":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex"}}>
+                  <span style={{display: "flex", marginBottom: "24px"}}>
                   {isMobile && currentStepIndex > 0 && index === 0 && (
                     <button className={styles.mobileBackButton} onClick={onBack}>
                       <ChevronIcon />
@@ -167,7 +167,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkboxGroup":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex"}}>
+                  <span style={{display: "flex", marginBottom: "24px"}}>
                   {isMobile && currentStepIndex > 0 && index === 0 && (
                     <button className={styles.mobileBackButton} onClick={onBack}>
                       <ChevronIcon />
