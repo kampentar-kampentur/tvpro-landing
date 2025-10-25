@@ -35,7 +35,7 @@ export default function ServiceCard({ image, title, description, buttonText, mod
             <InfoCircleActive onClick={handleInfoClick} className={styles.info}/> :
             <InfoCircle onClick={handleInfoClick} className={styles.info}/>
         )}
-        {price && <span className={styles.price}>$59</span>}
+        {price && <span className={styles.price}>${price}</span>}
     </div>
   );
 } 
