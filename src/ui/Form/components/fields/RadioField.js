@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SelectionCard from '@/ui/SelectionCard';
 import formStyles from '../../Form.module.css'
 
-const RadioField = ({ field, value, onChange }) => {
+const RadioField = ({ field, value, onChange, isMobile }) => {
   const [isInfoShow, setIsInfoShow] = useState(null);
 
   const handleClick = (optionValue) => {

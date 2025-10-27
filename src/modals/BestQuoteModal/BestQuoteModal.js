@@ -369,7 +369,7 @@ const BestQuoteModal = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 980);
+    const checkMobile = () => setIsMobile(window.innerWidth <= 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -481,8 +481,18 @@ const BestQuoteModal = () => {
               </div>
             }
             <main className={styles.bestQuoteMain}>
-                <Form scheme={example} value={formData} onChange={setFormData} onPriceChange={handlePriceChange} onSubmit={onSubmit} onStepChange={setCurrentStepIndex} disableSubmitBtn={isSubmitting} isMobile={isMobile} currentStepIndex={currentStepIndex} onClose={close}>
-                </Form>
+                <Form
+                  scheme={example}
+                  value={formData}
+                  onChange={setFormData}
+                  onPriceChange={handlePriceChange}
+                  onSubmit={onSubmit}
+                  onStepChange={setCurrentStepIndex}
+                  disableSubmitBtn={isSubmitting}
+                  isMobile={isMobile}
+                  currentStepIndex={currentStepIndex}
+                  onClose={close}
+                />
                 <div className={styles.space}></div>
                 {(isMobile && currentStepIndex === 0) ||
                   <div className={styles.discountBanner}>
