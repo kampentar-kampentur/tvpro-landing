@@ -48,6 +48,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
                     onChange={handleFieldChange}
                     step={step}
                     formData={formData}
+                    isMobile={isMobile}
                   />
                   {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
