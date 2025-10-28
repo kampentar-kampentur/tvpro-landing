@@ -139,6 +139,40 @@ export const hasConditionalFields = (step) => {
   return step.fields.some(field => field.showIf);
 };
 
+export const clearHiddenFields = (scheme, formData) => {
+  const cleanedFormData = { ...formData };
+  console.log('🔄 clearHiddenFields called with formData:', JSON.stringify(formData, null, 2));
+
+  scheme.forEach(step => {
+    if (!step.fields) return;
+
+    step.fields.forEach(field => {
+      if (field.type === 'split' && field.fields) {
+        // Handle split field sub-fields
+        field.fields.forEach(subField => {
+          if (!shouldRenderField(subField.showIf, cleanedFormData, step.id, step.parentContext)) {
+            if (cleanedFormData[step.id] && cleanedFormData[step.id][field.name]) {
+              console.log(`🗑️ Clearing hidden sub-field: ${step.id}.${field.name}.${subField.name}`);
+              delete cleanedFormData[step.id][field.name][subField.name];
+            }
+          }
+        });
+      } else {
+        // Handle regular fields
+        if (!shouldRenderField(field.showIf, cleanedFormData, step.id, step.parentContext)) {
+          if (cleanedFormData[step.id]) {
+            console.log(`🗑️ Clearing hidden field: ${step.id}.${field.name}`);
+            delete cleanedFormData[step.id][field.name];
+          }
+        }
+      }
+    });
+  });
+
+  console.log('✅ clearHiddenFields result:', JSON.stringify(cleanedFormData, null, 2));
+  return cleanedFormData;
+};
+
 export const generateSubStepsForDynamicStep = (dynamicStepConfig, formData) => {
   if (!dynamicStepConfig || dynamicStepConfig.type !== "dynamic") {
     return [];

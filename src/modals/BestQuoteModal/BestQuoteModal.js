@@ -497,14 +497,14 @@ const BestQuoteModal = () => {
                 {(isMobile && currentStepIndex === 0) ||
                   <div className={styles.discountBanner}>
                       <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
-                      <p className={styles.discountText}>Let the manager know to receive a multi-TVs <span className={styles.discountPercent}>DISCOUNT</span>: <span className={styles.discountPercent}>10% OFF</span> for 2 TVs, <span className={styles.discountPercent}>15% OFF</span> for 3, <span className={styles.discountPercent}>20% OFF</span> for 4 or more.</p>
+                      <p className={styles.discountText}>Let the manager know to receive a multi-TVs <span className={styles.discountWord}>DISCOUNT</span>: <span className={styles.discountPercent}>10% OFF</span> for 2 TVs, <span className={styles.discountPercent}>15% OFF</span> for 3, <span className={styles.discountPercent}>20% OFF</span> for 4 or more.</p>
                   </div>
                 }
             </main>
             <aside className={styles.servicesContainer}>
                 <div className={styles.banner}>
                     <p className={styles.saleText}>
-                      Enjoy an instant $30 OFF
+                      Enjoy an instant <b>$30 OFF</b>
                     </p>
                     <p className={styles.saleText}>
                       when you place your online order over $200

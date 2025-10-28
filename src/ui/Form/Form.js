@@ -5,7 +5,7 @@ import FormStep from './components/FormStep';
 import FormNavigation from './components/FormNavigation';
 import Breadcrumbs from '@/ui/Breadcrumbs';
 import styles from './Form.module.css';
-import { shouldRenderField, isStepComplete, hasConditionalFields } from './utils/formUtils';
+import { shouldRenderField, isStepComplete, hasConditionalFields, clearHiddenFields } from './utils/formUtils';
 import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalculation';
 import { sendGTMEvent } from '@next/third-parties/google'
 
@@ -54,13 +54,19 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   }, [currentStepIndex, currentSubStepIndex, renderedSteps.length, onStepChange]);
 
   const handleFieldChange = (stepId, fieldName, fieldValue) => {
-    onChange(prevData => ({
-      ...prevData,
-      [stepId]: {
-        ...(prevData[stepId] || {}),
-        [fieldName]: fieldValue
-      }
-    }));
+    console.log(`📝 Field change: ${stepId}.${fieldName} = ${JSON.stringify(fieldValue)}`);
+    onChange(prevData => {
+      const updatedData = {
+        ...prevData,
+        [stepId]: {
+          ...(prevData[stepId] || {}),
+          [fieldName]: fieldValue
+        }
+      };
+      const cleanedData = clearHiddenFields(scheme.steps, updatedData);
+      console.log(`🔄 Form data after clearing:`, JSON.stringify(cleanedData, null, 2));
+      return cleanedData;
+    });
     console.log("--------------------------");
     const fd = {
       ...value,

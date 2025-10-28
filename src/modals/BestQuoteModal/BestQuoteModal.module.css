@@ -59,6 +59,10 @@
     font-weight: 600;
 }
 
+.saleText b {
+  font-weight: 700;
+}
+
 .servicesContainer {
     padding: 4px;
     /* border: 1px solid #e7e7eb; */
@@ -296,6 +300,10 @@ padding: 0;
   line-height: 20px;
 }
 
+.discountWord {
+  font-weight: bold;
+}
+
 .discountPercent {
   font-weight: bold;
   color: #FA0004;
@@ -361,6 +369,12 @@ button.closeButton {
 
 .mobileBackButton {
   display: none;
+}
+
+@media (min-width: 1024px) {
+  .discountText {
+    max-width: 365px;
+  }
 }
 
 @media (max-width: 1024px) {

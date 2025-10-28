@@ -74,7 +74,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
       </div>
       {currentStepIndex === 3 && (
         <>
-          <Button className={styles.bookBtn} disabled={!isFormValid} onClick={onSubmit} size="small">
+          <Button className={styles.bookBtn} disabled={!isFormValid} onClick={onSubmit} size="big">
             Book
           </Button>
           <p className={styles.termsText}>
