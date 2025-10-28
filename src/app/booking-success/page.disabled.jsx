@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect } from 'react'
-import styles from "./BookingSuccessModal.module.css";
+import styles from "@/modals/BookingSuccessModal/BookingSuccessModal.module.css";
 import Modal from "@/ui/Modal";
 import Button from "@/ui/Button";
-import PriceSummary from "../../modals/BestQuoteModal/components/PriceSummary";
+import PriceSummary from "@/modals/BestQuoteModal/components/PriceSummary";
 
 export default function BookingSuccessPage() {
   // Extract data from URL params or localStorage if needed
