@@ -5,6 +5,7 @@ import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form"
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 import PriceSummary from "./components/PriceSummary";
 import LogoSVG  from "@/assets/logo.svg"
 import CloseIcon from "@/assets/icons/close.svg"
@@ -787,6 +788,7 @@ const example = {
 const BestQuoteModal = () => {
   const {isOpen, close} = useModalState('BestQuote');
   const { openModal } = useModal();
+  const router = useRouter();
   const [formData, setFormData] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
@@ -829,7 +831,7 @@ const BestQuoteModal = () => {
         if (typeof gtag !== 'undefined') {
           gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
         }
-        openModal('BookingSuccess', { totalPrice, structuredCostBreakdown });
+        router.push('/booking-success');
       } else {
         const errorData = await response.json();
         console.error('Form submission error:', errorData);

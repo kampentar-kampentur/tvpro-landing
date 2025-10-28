@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from 'next/navigation';
 import { useModalState, useModal } from "@/providers/ModalProvider";
 import styles from "./BookNowModal.module.css";
 import Modal from "@/ui/Modal";
@@ -49,6 +50,7 @@ const emailField = {
 const BookNowModal = () => {
     const { isOpen, close } = useModalState('BookNow');
     const { openModal } = useModal();
+    const router = useRouter();
     const [formData, setFormData] = useState({ name: '', phone: '', zip: '', address: '', email: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -79,7 +81,7 @@ const BookNowModal = () => {
                     }
                 }),
             });
-
+            
             if (response.ok) {
                 close();
                 setFormData({ name: '', phone: '', zip: '', address: '', email: '' });
@@ -92,7 +94,7 @@ const BookNowModal = () => {
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
                 }
-                openModal('SeeYouSoon');
+                router.push('/see-you-soon');
             } else {
                 const errorData = await response.json();
                 console.error("Form submission error:", errorData);
