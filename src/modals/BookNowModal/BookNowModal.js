@@ -120,6 +120,7 @@ const BookNowModal = () => {
 
     return (
         <Modal isOpen={isOpen} onClose={close} className={styles.bookNow}>
+            <form>
             <h3 className={styles.title}>Get a Quick Quote</h3>
             <p className={styles.subtitle}>Leave your number — we’ll call and give you the exact price</p>
             <TextField
@@ -145,6 +146,7 @@ const BookNowModal = () => {
                     {isSubmitting ? 'Sending...' : 'Send'}
                 </Button>
             </div>  
+            </form>
         </Modal>
     );
 };
