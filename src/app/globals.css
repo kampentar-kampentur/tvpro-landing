@@ -104,6 +104,9 @@ a {
   #tt-review-widget-star.widget.tt {
     margin: auto;
   }
+  .modalOverlay .wc_track {
+    height: 100vh;
+  }
 }
 
 
