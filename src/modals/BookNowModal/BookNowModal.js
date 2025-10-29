@@ -51,7 +51,7 @@ const BookNowModal = () => {
     const { isOpen, close } = useModalState('BookNow');
     const { openModal } = useModal();
     const router = useRouter();
-    const [formData, setFormData] = useState({ name: '', phone: '', zip: '', address: '', email: '' });
+    const [formData, setFormData] = useState({ name: '', phone: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (fieldName) => (value) => {
@@ -59,7 +59,7 @@ const BookNowModal = () => {
     };
 
     const handleSubmit = async () => {
-        if (!formData.name || !formData.phone || !formData.zip) {
+        if (!formData.name || !formData.phone) {
             alert("Please fill in all required fields.");
             return;
         }
@@ -75,21 +75,17 @@ const BookNowModal = () => {
                     data: {
                         name: formData.name,
                         phone: formData.phone,
-                        zip: formData.zip,
-                        address: formData.address,
-                        email: formData.email,
                     }
                 }),
             });
             
             if (response.ok) {
                 close();
-                setFormData({ name: '', phone: '', zip: '', address: '', email: '' });
+                setFormData({ name: '', phone: '' });
                 
                 dataLayer.push({
                     event: 'form_send_ok',
                     'user_data.phone_number': formData.phone.replace(/\D/g, ''),
-                    'user_data.email': formData.email
                 });
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
@@ -108,7 +104,7 @@ const BookNowModal = () => {
         }
     };
 
-    const isFormValid = formData.name && formData.phone && formData.zip;
+    const isFormValid = formData.name && formData.phone;
 
     const TermsText = () => {
         return(
@@ -124,7 +120,8 @@ const BookNowModal = () => {
 
     return (
         <Modal isOpen={isOpen} onClose={close} className={styles.bookNow}>
-            <h3 className={styles.title}>Let’s Talk — One Minute Callback</h3>
+            <h3 className={styles.title}>Get a Quick Quote</h3>
+            <p className={styles.subtitle}>Leave your number — we’ll call and give you the exact price</p>
             <TextField
                 field={nameField}
                 value={formData.name}
@@ -137,30 +134,17 @@ const BookNowModal = () => {
                 onChange={handleChange('phone')}
                 className={styles.bookNowInput}
             />
-            <TextField
-                field={zipField}
-                value={formData.zip}
-                onChange={handleChange('zip')}
-                className={styles.bookNowInput}
-            />
-            <TextField
-                field={addressField}
-                value={formData.address}
-                onChange={handleChange('address')}
-                className={styles.bookNowInput}
-            />
-            <TextField
-                field={emailField}
-                value={formData.email}
-                onChange={handleChange('email')}
-                className={styles.bookNowInput}
-            />
-            <div style={{maxWidth: "100%"}}>
+            <div className={styles.discountBanner}>
+                <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
+                <p className={styles.discountText}>Let the manager know to receive a multi-TVs <span className={styles.discountWord}>DISCOUNT</span>: <span className={styles.discountPercent}>10% OFF</span> for 2 TVs, <span className={styles.discountPercent}>15% OFF</span> for 3, <span className={styles.discountPercent}>20% OFF</span> for 4 or more.</p>
+            </div>
+
+            <div className={styles.btnWrap}>
                 <Checkbox label={<TermsText/>}/>
+                <Button className={styles.button} onClick={handleSubmit} disabled={isSubmitting || !isFormValid}>
+                    {isSubmitting ? 'Sending...' : 'Send'}
+                </Button>
             </div>  
-            <Button className={styles.button} onClick={handleSubmit} disabled={isSubmitting || !isFormValid}>
-                {isSubmitting ? 'Sending...' : 'Send'}
-            </Button>
         </Modal>
     );
 };
