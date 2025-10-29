@@ -7,6 +7,14 @@
     text-align: start;
 }
 
+.bookNow form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: start;
+}
+
 .title {
     font-weight: 600;
     font-size: 44px;
