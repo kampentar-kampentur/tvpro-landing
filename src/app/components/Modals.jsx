@@ -4,10 +4,10 @@ import dynamic from "next/dynamic";
 
 // Dynamically import modals with lazy loading
 // Defer CSS for BestQuoteModal by using a separate deferred component
-// const BestQuoteModal = dynamic(() => import("@/modals/BestQuoteModal/BestQuoteModalDeferred"), {
-//   ssr: false,
-//   loading: () => <div>Loading modal...</div>
-// });
+const BestQuoteModal = dynamic(() => import("@/modals/BestQuoteModal/BestQuoteModalDeferred"), {
+  ssr: false,
+  loading: () => <div>Loading modal...</div>
+});
 
 const BookNowModal = dynamic(() => import("@/modals/BookNowModal"), {
   ssr: false,
@@ -27,7 +27,7 @@ const BookNowModal = dynamic(() => import("@/modals/BookNowModal"), {
 export default function Modals() {
   return (
     <>
-      {/* <BestQuoteModal/> */}
+      <BestQuoteModal/>
       <BookNowModal/>
       {/* <SeeYouSoonModal/>
       <BookingSuccessModal/> */}
