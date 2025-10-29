@@ -10,7 +10,6 @@ import Image from "next/image";
 import OneYearWarantyImg from "@/assets/badges/1yearwaranty.webp"
 import FiveStarImg from "@/assets/badges/5star.webp"
 import SevenDaysImg from "@/assets/badges/7days.webp"
-import AboveFireplaceImg from "@/assets/badges/abovefireplace.webp"
 
 // Dynamically import VideoPlayer with lazy loading
 const VideoPlayer = dynamic(() => import("./components/VideoPlayer"), {
@@ -76,7 +75,6 @@ export default async function Hero() {
               <Image className={styles.oneYearWarantyImg} src={OneYearWarantyImg} width={94} height={64}/>
               <Image className={styles.fiveStarImg} src={FiveStarImg} width={72} height={72}/>
               <Image className={styles.sevenDaysImg} src={SevenDaysImg} width={158} height={56}/>
-              <Image className={styles.aboveFireplaceImg} src={AboveFireplaceImg} width={72} height={72}/>
           </div>
         </div>
       </div>
