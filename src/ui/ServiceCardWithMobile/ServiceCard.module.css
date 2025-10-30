@@ -12,6 +12,7 @@
     justify-content: center;
     align-items: center;
     min-height: 280px;
+    font-weight: 600;
 }
 
 
@@ -104,6 +105,7 @@
         justify-content: flex-start;
         text-align: left;
         height: 120px;
+        border-radius: 12px;
     }
     .info.info {
         display: inline-block;
@@ -115,7 +117,7 @@
     .title {
         font-size: 14px;
         line-height: 20px;
-        font-weight: 500;
+        font-weight: 600;
     }
     .isShowInfo .description {
         display: inline;
