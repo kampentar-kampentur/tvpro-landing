@@ -117,7 +117,7 @@ a {
 }
 .sms-link:hover,
 .sms-link:focus {
-  color: #009B4D;
+  color: var(--green);
 }
 
 .visually-hidden {

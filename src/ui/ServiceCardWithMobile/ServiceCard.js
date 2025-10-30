@@ -23,7 +23,7 @@ export default function ServiceCard({ image, title, description, buttonText, mod
         </div>
         
         <div className={styles.textWrapper}>
-          <h3 className={styles.title}>{title}</h3>
+          <h3 className={styles.title}>{title.split(" - ")[0]}</h3>
           <span className={styles.description}>{description}</span>
         </div>
         <QuoteButton className={styles.hiddenButton} variant="primary" size="small" modalName={modalName || "BestQuote"}>
