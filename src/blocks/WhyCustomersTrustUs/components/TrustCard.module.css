@@ -3,13 +3,13 @@
   background-color: var(--white);
   border-radius: 20px;
   padding: 40px;
-  min-width: 280px;
+  /* min-width: 280px; */
 }
 
 .trustCard .title {
   font-weight: 500;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 20px;
   margin-top: 20px;
 }
 
@@ -19,14 +19,49 @@
   line-height: 20px;
   color: var(--gray);
   margin-top: 4px;
-} 
+}
+
+.info {
+  display: none;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 9;
+  color: white;
+}
 
 @media (max-width: 1024px) {
   .trustCard {
     padding: 24px 20px;
+    position: relative;
   }
   .trustCard .description {
     font-size: 14px;
     line-height: 20px;
+    display: none;
+  }
+  .info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+  .isShowInfo .description {
+    display: inline;
+  }
+  .isShowInfo {
+    background-color: white;
+    height: fit-content;
+    padding-bottom: 52px;
+    z-index: 10;
+    box-shadow:
+      0px 5px 11px 0px #0000001f,
+      0px 19px 19px 0px #00000017,
+      0px 44px 26px 0px #00000014,
+      0px 78px 31px 0px #0000000a,
+      0px 121px 34px 0px #00000005;
   }
 }
