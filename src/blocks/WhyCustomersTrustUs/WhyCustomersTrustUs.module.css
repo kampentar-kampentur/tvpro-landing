@@ -3,7 +3,7 @@
 
 .cardsContainer {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 32px;
   margin-top: 40px;
 }
@@ -23,5 +23,6 @@
 @media (max-width: 1024px) {
   .cardsContainer {
     gap: 8px;
+    grid-auto-rows: 160px;
   }
 }
