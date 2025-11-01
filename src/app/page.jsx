@@ -56,11 +56,11 @@ export default function Home() {
     <div className={styles.tvproMain}>
       <Hero />
       <TVSizes />
-      <OurServices />
+      <GalleryOfWork />
       <MountingTypes />
       <WhyCustomersTrustUs />
       <CustomerReviews />
-      <GalleryOfWork />
+      <OurServices />
       <Certificates />
       <AboutUs />
       <FAQ />
