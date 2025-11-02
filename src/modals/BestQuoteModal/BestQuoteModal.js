@@ -80,8 +80,8 @@ const example = {
               "values": ["over-86", "60-75", "76-85", "frameTvUpTo60", "frameTvOver65", "projectorsNScreens"]
             },
             "options": [
-              { "value": "no", "label": "1 Tech", "cost": 0, "costLabel": "+$0", "subtitle": "+ your help", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit consectetur magna sed fringilla. Duis eleifend sollicitudin dolor. In vestibulum." },
-              { "value": "yes", "label": "2 Tech", "cost": 59, "costLabel": "+$59", "subtitle": "Full service", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit consectetur magna sed fringilla. Duis eleifend sollicitudin dolor. In vestibulum." },
+              { "value": "no", "label": "1 Tech", "cost": 0, "costLabel": "+$0", "subtitle": "+ your help", "description": "One technician will handle the entire installation. Your assistance will be needed only at the very end — for a couple of minutes — to help lift and hang the TV onto the mount." },
+              { "value": "yes", "label": "2 Tech", "cost": 59, "costLabel": "+$59", "subtitle": "Full service", "description": "Two professional technicians will complete the entire installation from start to finish — no help required. Sit back and enjoy a fully managed, hassle-free service." },
             ]
           }
         ]

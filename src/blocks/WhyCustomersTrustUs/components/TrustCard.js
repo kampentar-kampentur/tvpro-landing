@@ -2,19 +2,38 @@
 
 import styles from "./TrustCard.module.css";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import InfoCircle from '@/assets/icons/InfoCircle.svg'
 import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg'
 
 const TrustCard = ({ image, title, description }) => {
   const [isInfoShow, setIsInfoShow] = useState(false)
+  const cardRef = useRef(null)
+
   function handleInfoClick(e) {
     e.preventDefault()
     e.stopPropagation()
     setIsInfoShow(!isInfoShow)
   }
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (cardRef.current && !cardRef.current.contains(event.target) && isInfoShow) {
+        setIsInfoShow(false)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [isInfoShow])
+  
   return (
-    <div className={`${styles.trustCard} ${isInfoShow ? styles.isShowInfo : ''}`}>
+    <div ref={cardRef} className={`${styles.trustCard} ${isInfoShow ? styles.isShowInfo : ''}`}>
       <div className={styles.iconContainer}>
         <ImageWrapper media={image} />
       </div>

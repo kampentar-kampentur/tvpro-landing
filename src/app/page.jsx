@@ -57,11 +57,11 @@ export default function Home() {
       <Hero />
       <TVSizes />
       <GalleryOfWork />
+      <Certificates />
       <MountingTypes />
       <WhyCustomersTrustUs />
       <CustomerReviews />
       <OurServices />
-      <Certificates />
       <AboutUs />
       <FAQ />
       <Contacts />

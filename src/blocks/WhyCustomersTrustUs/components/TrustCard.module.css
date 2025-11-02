@@ -15,8 +15,8 @@
 
 .trustCard .description {
   font-weight: 400;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 20px;
+  line-height: 28px;
   color: var(--gray);
   margin-top: 4px;
 }
@@ -34,6 +34,14 @@
   .trustCard {
     padding: 24px 20px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .trustCard .title {
+    font-size: 16px;
+    line-height: 20px;
+    margin: 0;
   }
   .trustCard .description {
     font-size: 14px;
@@ -55,7 +63,6 @@
   .isShowInfo {
     background-color: white;
     height: fit-content;
-    padding-bottom: 52px;
     z-index: 10;
     box-shadow:
       0px 5px 11px 0px #0000001f,
