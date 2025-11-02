@@ -57,7 +57,7 @@ const Contacts = async () => {
             </div>
         </div>
 
-        <iframe
+        {/* <iframe
             title="Location map of TVPro Handy Services"
             width="300"
             height="300"
@@ -66,7 +66,7 @@ const Contacts = async () => {
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
             src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME&q=place_id:ChIJuVr9LojYwQERHVjQfs1s2O8">
-          </iframe>
+          </iframe> */}
           </div>
         <div className={styles.socialNetworksSection}>
           <h3 className={styles.detailTitle}>Social Networks</h3>
