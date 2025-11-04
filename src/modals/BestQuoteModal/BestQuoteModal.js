@@ -390,23 +390,22 @@ const BestQuoteModal = () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
       debugger
-      // const response = await fetch(`${apiUrl}/api/best-quote`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ 
-      //     data: {
-      //       ...formData,
-      //       contactInfo: {
-      //         ...formData.contactInfo,
-      //         zip: formData.contactInfo.zipApt.zip,
-      //         apt: formData.contactInfo.zipApt.apt
-      //       }
-      //     }
-      //   }),
-      // });
-      const response = {ok: true}
+      const response = await fetch(`${apiUrl}/api/best-quote`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          data: {
+            ...formData,
+            contactInfo: {
+              ...formData.contactInfo,
+              zip: formData.contactInfo.zipApt.zip,
+              apt: formData.contactInfo.zipApt.apt
+            }
+          }
+        }),
+      });
       if (response.ok) {
         // Store pricing data in localStorage with timestamp
         const pricingData = {
