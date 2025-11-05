@@ -8,15 +8,15 @@
 
 .trustCard .title {
   font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 20px;
+  line-height: 28px;
   margin-top: 20px;
 }
 
 .trustCard .description {
   font-weight: 400;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 20px;
   color: var(--gray);
   margin-top: 4px;
 }
