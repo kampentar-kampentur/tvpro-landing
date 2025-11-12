@@ -15,7 +15,7 @@ export default function HeaderActions({cta}) {
             <div className={styles.cta}>
                 <span className={styles.hours}>{cta.workHours}</span>
                 <Button variant="secondary" size="small" href={`tel:${cta.phone}`} className={styles.phoneMobileHide}>{cta.phoneLabel}</Button>
-                <QuoteButton size="small" modalName="BookNow">Book Now</QuoteButton>
+                <QuoteButton size="small" modalName="BookNow">Call Me Back</QuoteButton>
                 <label 
                     htmlFor="menu-toggle" 
                     className={`${styles.menuButton} ${styles.menuLabel} ${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}
