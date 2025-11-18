@@ -72,9 +72,9 @@ export default async function Hero() {
                   defaultAlt="badge"
                 />
               ))} */}
-              <Image className={styles.oneYearWarantyImg} src={OneYearWarantyImg} width={94} height={64}/>
-              <Image className={styles.fiveStarImg} src={FiveStarImg} width={72} height={72}/>
-              <Image className={styles.sevenDaysImg} src={SevenDaysImg} width={158} height={56}/>
+              <Image className={styles.oneYearWarantyImg} src={OneYearWarantyImg} width={94} height={64} alt="One Year Warranty Badge"/>
+              <Image className={styles.fiveStarImg} src={FiveStarImg} width={72} height={72} alt="Five Star Rating Badge"/>
+              <Image className={styles.sevenDaysImg} src={SevenDaysImg} width={158} height={56} alt="Seven Days Service Badge"/>
           </div>
         </div>
       </div>

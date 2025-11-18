@@ -169,18 +169,18 @@ export const SliderGallery = ({
   }, [stopAutoplay]);
 
   // Мемоизируем рендер карточек
-  const renderCards = useMemo(() => 
+  const renderCards = useMemo(() =>
     cardData.map((data, index) => (
-      <div 
-        key={data.id || index} 
-        className={styles.sliderCard} 
+      <div
+        key={data.id || index}
+        className={styles.sliderCard}
         style={{ minWidth: `${cardWidth}%` }}
         role="listitem"
       >
         <CardComponent {...data} />
       </div>
-    )), 
-    [cardData, CardComponent, cardWidth]
+    )),
+    [cardData, cardWidth]
   );
 
   // Мемоизируем рендер точек

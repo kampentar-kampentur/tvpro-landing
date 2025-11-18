@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "../OurServices.module.css";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
@@ -17,7 +17,7 @@ export default function OurServicesInteractive({servicesData}) {
     const animationTimeoutRef = useRef(null);
 
     // Смена услуги с анимацией
-    const handleChangeService = (newServiceId) => {
+    const handleChangeService = useCallback((newServiceId) => {
       if (newServiceId === activeServiceId) return;
       setAnimating(true);
       animationTimeoutRef.current = setTimeout(() => {
@@ -25,10 +25,10 @@ export default function OurServicesInteractive({servicesData}) {
         setAnimating(false);
         setActiveServiceId(newServiceId);
       }, ANIMATION_DURATION);
-    };
+    }, [activeServiceId]);
 
     // Автоматический переход
-    const startTimer = () => {
+    const startTimer = useCallback(() => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -39,7 +39,7 @@ export default function OurServicesInteractive({servicesData}) {
       timeoutRef.current = setTimeout(() => {
         handleChangeService(servicesData[nextIndex].id);
       }, INTERVAL_TIME);
-    };
+    }, [servicesData, activeServiceId, handleChangeService]);
 
     useEffect(() => {
       setActiveServiceId(servicesData[0].id);
@@ -53,7 +53,7 @@ export default function OurServicesInteractive({servicesData}) {
           clearTimeout(timeoutRef.current);
         }
       };
-    }, [activeServiceId, animating]);
+    }, [startTimer, animating]);
 
     useEffect(() => {
       return () => {

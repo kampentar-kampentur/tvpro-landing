@@ -32,28 +32,28 @@ const Footer = async ({cta}) => {
             <h3 className={styles.contactLabel}>Phone Number</h3>
             <p className={styles.contactText}>
               <a
-                href={`tel:${cta.phone}`} 
+                href={`tel:${cta?.phone || '(877) 455-5535'}`}
                 className={styles.phoneLink}
                 aria-label="Call TVPro Handy Services"
-                title={`Call us at ${cta.phoneLabel}`}
+                title={`Call us at ${cta?.phoneLabel || 'Call Us'}`}
               >
-                {cta.phoneLabel} 
-              </a> 
+                {cta?.phoneLabel || 'Call Us'}
+              </a>
               <span> </span>
-              <span>({cta.workHours})</span>
+              <span>({cta?.workHours || 'Mon-Sun 8:00 AM - 8:00 PM'})</span>
             </p>
           </div>
           
           <div className={styles.contactItem}>
             <h3 className={styles.contactLabel}>Email</h3>
             <p className={styles.contactText}>
-              <a 
-                href={`mailto:${cta.email}`} 
+              <a
+                href={`mailto:${cta?.email || 'tvprohandyservices@gmail.com'}`}
                 className={styles.emailLink}
                 aria-label="Email TVPro Handy Services"
                 title="Send us an email"
               >
-                {cta.email}
+                {cta?.email || 'tvprohandyservices@gmail.com'}
               </a>
             </p>
           </div>

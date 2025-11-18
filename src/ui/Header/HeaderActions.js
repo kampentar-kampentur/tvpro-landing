@@ -13,8 +13,8 @@ export default function HeaderActions({cta}) {
             <Navbar />
             <MenuAutoClose menuToggleId="menu-toggle" menuWrapperClass="navbarWrapper" />
             <div className={styles.cta}>
-                <span className={styles.hours}>{cta.workHours}</span>
-                <Button variant="secondary" size="small" href={`tel:${cta.phone}`} className={styles.phoneMobileHide}>{cta.phoneLabel}</Button>
+                <span className={styles.hours}>{cta?.workHours || 'Mon-Sun 7:00 AM - 10:00 PM'}</span>
+                <Button variant="secondary" size="small" href={`tel:${cta?.phone || '(877) 455-5535'}`} className={styles.phoneMobileHide}>{cta?.phoneLabel || 'Call Us'}</Button>
                 <QuoteButton size="small" modalName="BookNow">Call Me Back</QuoteButton>
                 <label 
                     htmlFor="menu-toggle" 
@@ -25,7 +25,7 @@ export default function HeaderActions({cta}) {
             </div>
             <Button
               className={styles.phoneButton}
-              href={`tel:${cta.phone}`}
+              href={`tel:${cta?.phone || '(877) 455-5535'}`}
             >
                 <PhoneIcon width="24" height="24" style={{fill: "currentColor"}}/>
                 <span className="visually-hidden">Telephones to TVPro Handy Services</span>

@@ -27,7 +27,7 @@ export function useIntersectionObserver(
     return () => {
       observer.disconnect();
     };
-  }, [elementRef.current, options.threshold, options.rootMargin]);
+  }, [elementRef, options]);
 
   return [isIntersecting];
 }
