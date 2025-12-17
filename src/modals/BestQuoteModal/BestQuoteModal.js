@@ -482,7 +482,7 @@ const BestQuoteModal = () => {
                         <hr className={styles.orderDivider} />
                       </div>
                       <div className={styles.priceWrapper}>
-                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} onSubmit={onSubmit} darkMode={true} />
+                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} isSubmitting={isSubmitting} onSubmit={onSubmit} darkMode={true} />
                       </div>
                     </div>
                   )}
@@ -529,7 +529,7 @@ const BestQuoteModal = () => {
                 </div>
                 <div className={styles.tempWrapp}>
                     <div className={styles.priceWrapper}>
-                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} onSubmit={onSubmit} />
+                        <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} isSubmitting={isSubmitting} onSubmit={onSubmit} />
                     </div>
                     {/* <div className={styles.footerSummary}>
                         <p>* Free TV dismount included with orders over $200</p>
