@@ -32,12 +32,12 @@ const example = {
               { 
                 "value": "32-59", 
                 "label": "32\"-59\"", 
-                "cost": 109,
+                "cost": 119,
               },
               {
                 "value": "60-75", 
                 "label": "60\"-75\"", 
-                "cost": 129,
+                "cost": 139,
               },
               { 
                 "value": "76-85", 
@@ -47,7 +47,7 @@ const example = {
               { 
                 "value": "over-86", 
                 "label": "Over 86\"", 
-                "cost": 169,
+                "cost": 179,
               },
               { 
                 "value": "frameTvUpTo60", 
@@ -64,8 +64,8 @@ const example = {
               {
                 "value": "projectorsNScreens",
                 "label": "Projectors & Screens",
-                "cost": 139,
-                "costLabel": "From $139"
+                "cost": 169,
+                "costLabel": "From $169"
               },
             ]
           },
