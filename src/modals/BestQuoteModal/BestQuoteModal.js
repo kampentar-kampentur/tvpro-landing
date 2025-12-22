@@ -221,15 +221,15 @@ const example = {
               { 
                 "value": "wallDrywall", 
                 "label": "Put it in the Wall", 
-                "cost": 79,
-                "costLabel": "+$79",
+                "cost": 89,
+                "costLabel": "+$89",
                 "description": "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look."
               },
               { 
                 "value": "socketDrywall", 
                 "label": "In-Wall with Socket", 
-                "cost": 99,
-                "costLabel": "+$99",
+                "cost": 119,
+                "costLabel": "+$119",
                 "description": "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish."
               },
             ],
