@@ -1,25 +1,34 @@
 export const shouldRenderField = (showIfCondition, currentFormData, currentStepId, parentContext) => {
+  console.log('🔍 shouldRenderField called with:', { showIfCondition, currentStepId, wallType: currentFormData[currentStepId]?.wallType });
   if (!showIfCondition) {
-    return true; 
+    console.log('🔍 No showIfCondition, returning true');
+    return true;
   }
 
   // --- Новая логика: массив условий (AND)
   if (Array.isArray(showIfCondition)) {
-    return showIfCondition.every(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+    const result = showIfCondition.every(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+    console.log('🔍 Array condition result:', result);
+    return result;
   }
 
   // --- Новая логика: объект с all/any
   if (typeof showIfCondition === 'object' && showIfCondition !== null) {
     if (Array.isArray(showIfCondition.all)) {
-      return showIfCondition.all.every(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+      const result = showIfCondition.all.every(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+      console.log('🔍 All condition result:', result, 'for conditions:', showIfCondition.all);
+      return result;
     }
     if (Array.isArray(showIfCondition.any)) {
-      return showIfCondition.any.some(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+      const result = showIfCondition.any.some(cond => shouldRenderField(cond, currentFormData, currentStepId, parentContext));
+      console.log('🔍 Any condition result:', result, 'for conditions:', showIfCondition.any);
+      return result;
     }
   }
 
   // --- Старый формат (один объект-условие)
   const { field, condition, value: targetValue, values: targetValues } = showIfCondition;
+  console.log('🔍 Single condition:', { field, condition, targetValue, targetValues });
 
   let fieldValue;
   if (field === '$parentValue' && parentContext && parentContext.parentValue !== undefined) {
@@ -30,6 +39,7 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
   } else if (field) {
     fieldValue = currentFormData[currentStepId] ? currentFormData[currentStepId][field] : undefined;
   }
+  console.log('🔍 fieldValue:', fieldValue);
 
   // Resolve field references in targetValue
   let resolvedTargetValue = targetValue;
@@ -63,31 +73,49 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
       return val;
     });
   }
+  console.log('🔍 resolvedTargetValues:', resolvedTargetValues);
 
   switch (condition) {
     case "equals":
-      return fieldValue === resolvedTargetValue;
+      const equalsResult = fieldValue === resolvedTargetValue;
+      console.log('🔍 equals condition result:', equalsResult, '(', fieldValue, '===', resolvedTargetValue, ')');
+      return equalsResult;
     case "notEquals":
-      return fieldValue !== resolvedTargetValue;
+      const notEqualsResult = fieldValue !== resolvedTargetValue;
+      console.log('🔍 notEquals condition result:', notEqualsResult, '(', fieldValue, '!==', resolvedTargetValue, ')');
+      return notEqualsResult;
     case "hasAny":
-      return Array.isArray(fieldValue) && Array.isArray(resolvedTargetValues) &&
+      const hasAnyResult = Array.isArray(fieldValue) && Array.isArray(resolvedTargetValues) &&
              fieldValue.some(item => resolvedTargetValues.includes(item.value));
+      console.log('🔍 hasAny condition result:', hasAnyResult);
+      return hasAnyResult;
     case "equalsAny":
-        if (!Array.isArray(resolvedTargetValues)) return false;
+        if (!Array.isArray(resolvedTargetValues)) {
+          console.log('🔍 equalsAny: resolvedTargetValues is not an array');
+          return false;
+        }
         if (Array.isArray(fieldValue)) {
-            return fieldValue.some(item =>
+            const result = fieldValue.some(item =>
                 resolvedTargetValues.includes(item.value !== undefined ? item.value : item)
             );
+            console.log('🔍 equalsAny (array fieldValue) result:', result);
+            return result;
         }
-      return resolvedTargetValues.includes(fieldValue);
+      const equalsAnyResult = resolvedTargetValues.includes(fieldValue);
+      console.log('🔍 equalsAny result:', equalsAnyResult, '(', fieldValue, 'in', resolvedTargetValues, ')');
+      return equalsAnyResult;
     case "isToday":
       if (fieldValue) {
         const today = new Date();
         const selectedDate = new Date(fieldValue);
-        return today.toDateString() === selectedDate.toDateString();
+        const result = today.toDateString() === selectedDate.toDateString();
+        console.log('🔍 isToday result:', result);
+        return result;
       }
+      console.log('🔍 isToday: no fieldValue');
       return false;
     default:
+      console.log('🔍 Unknown condition, returning true');
       return true;
   }
 };
@@ -95,7 +123,6 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
 export const isStepComplete = (step, formData) => {
   if (!step || !step.fields) return true;
   console.log("formData", formData);
-  // debugger
   
   console.log(step.fields.filter(field => {
     if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
@@ -150,7 +177,9 @@ export const clearHiddenFields = (scheme, formData) => {
       if (field.type === 'split' && field.fields) {
         // Handle split field sub-fields
         field.fields.forEach(subField => {
-          if (!shouldRenderField(subField.showIf, cleanedFormData, step.id, step.parentContext)) {
+          const shouldRender = shouldRenderField(subField.showIf, cleanedFormData, step.id, step.parentContext);
+          console.log(`🔍 Checking sub-field ${step.id}.${field.name}.${subField.name}: shouldRender=${shouldRender}, showIf=`, subField.showIf);
+          if (!shouldRender) {
             if (cleanedFormData[step.id] && cleanedFormData[step.id][field.name]) {
               console.log(`🗑️ Clearing hidden sub-field: ${step.id}.${field.name}.${subField.name}`);
               delete cleanedFormData[step.id][field.name][subField.name];
@@ -159,10 +188,33 @@ export const clearHiddenFields = (scheme, formData) => {
         });
       } else {
         // Handle regular fields
-        if (!shouldRenderField(field.showIf, cleanedFormData, step.id, step.parentContext)) {
-          if (cleanedFormData[step.id]) {
-            console.log(`🗑️ Clearing hidden field: ${step.id}.${field.name}`);
-            delete cleanedFormData[step.id][field.name];
+        const shouldRender = shouldRenderField(field.showIf, cleanedFormData, step.id, step.parentContext);
+        console.log(`🔍 Checking field ${step.id}.${field.name}: shouldRender=${shouldRender}, showIf=`, field.showIf, `, wallType=`, cleanedFormData[step.id]?.wallType);
+        
+        // Check if there are multiple fields with the same name
+        const fieldsWithSameName = step.fields.filter(f => f.name === field.name);
+        
+        if (fieldsWithSameName.length > 1) {
+          // If multiple fields have the same name, only delete if ALL of them should be hidden
+          const allHidden = fieldsWithSameName.every(f =>
+            !shouldRenderField(f.showIf, cleanedFormData, step.id, step.parentContext)
+          );
+          
+          if (allHidden) {
+            if (cleanedFormData[step.id]) {
+              console.log(`🗑️ Clearing hidden field (all variants hidden): ${step.id}.${field.name}`);
+              delete cleanedFormData[step.id][field.name];
+            }
+          } else {
+            console.log(`🔍 Keeping field ${step.id}.${field.name} because at least one variant should be visible`);
+          }
+        } else {
+          // Single field case - use original logic
+          if (!shouldRender) {
+            if (cleanedFormData[step.id]) {
+              console.log(`🗑️ Clearing hidden field: ${step.id}.${field.name}`);
+              delete cleanedFormData[step.id][field.name];
+            }
           }
         }
       }

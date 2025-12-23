@@ -389,7 +389,6 @@ const BestQuoteModal = () => {
     
     try {
       const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
-      debugger
       const response = await fetch(`${apiUrl}/api/best-quote`, {
         method: 'POST',
         headers: {
