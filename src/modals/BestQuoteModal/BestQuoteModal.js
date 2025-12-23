@@ -53,7 +53,7 @@ const example = {
                 "value": "frameTvUpTo60", 
                 "label": "Frame TV", 
                 "subtitle": "Up to 60″",
-                "cost": 159,
+                "cost": 169,
               },
               { 
                 "value": "frameTvOver65", 
