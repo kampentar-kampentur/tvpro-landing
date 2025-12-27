@@ -3,14 +3,15 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
-import Head from "next/head";
+import Image from "next/image";
+import MainPhoto from "@/assets/main_photo2.jpg"
 
 export default function OptimizedVideoPlayer({
   poster = "videoplaceholder-392.webp",
   alt = "Interactive video content",
   title = "Video Player",
   minWidth = 1180,
-  aspectRatio = 16 / 9,
+  aspectRatio = 3 / 4,
   preload = "metadata",
   className = "",
   ...props
@@ -27,6 +28,7 @@ export default function OptimizedVideoPlayer({
   const animationFrameId = useRef(null);
   const lastUpdateTime = useRef(0);
   const [isClient, setIsClient] = useState(false);
+  const [currentAspectRatio, setCurrentAspectRatio] = useState(16 / 9);
 
   // Intersection Observer for performance optimization
   const [isVisible] = useIntersectionObserver(containerRef, {
@@ -54,6 +56,14 @@ export default function OptimizedVideoPlayer({
     checkPerformance();
   }, []);
 
+  // Calculate aspect ratio based on screen width
+  const calculateAspectRatio = useCallback(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 1024 ? 16 / 9 : 3 / 4;
+    }
+    return 16 / 9; // Default value
+  }, []);
+
   // Optimized resize handler with debouncing
   const handleResize = useCallback(() => {
     if (typeof window !== "undefined") {
@@ -64,12 +74,16 @@ export default function OptimizedVideoPlayer({
   useEffect(() => {
     if (typeof window !== "undefined") {
       setViewportWidth(window.innerWidth);
+      setCurrentAspectRatio(calculateAspectRatio());
     }
 
     let resizeTimeout;
     const debouncedResize = () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(handleResize, 100);
+      resizeTimeout = setTimeout(() => {
+        handleResize();
+        setCurrentAspectRatio(calculateAspectRatio());
+      }, 100);
     };
 
     window.addEventListener("resize", debouncedResize, { passive: true });
@@ -77,7 +91,7 @@ export default function OptimizedVideoPlayer({
       window.removeEventListener("resize", debouncedResize);
       clearTimeout(resizeTimeout);
     };
-  }, [handleResize]);
+  }, [handleResize, calculateAspectRatio]);
 
   // Smart scroll handler with adaptive performance
   const handleScroll = useCallback(() => {
@@ -206,20 +220,21 @@ export default function OptimizedVideoPlayer({
   }, []);
 
   const dimensions = useMemo(() => {
-    
+     
     const padding = 0;
     const availableWidth = viewportWidth - padding;
-    
+    const effectiveAspectRatio = currentAspectRatio;
+     
     if (!isClient) {
       const w = Math.min(availableWidth, minWidth)
       return {
         width: w,
-        height: w / aspectRatio,
+        height: w / effectiveAspectRatio,
         borderRadius: 16
       };
     }
     let baseWidth, maxWidth;
-    
+     
     if (viewportWidth < 768) {
       baseWidth = Math.max(280, availableWidth);
       maxWidth = availableWidth;
@@ -229,18 +244,18 @@ export default function OptimizedVideoPlayer({
     } else {
       baseWidth = minWidth;
       maxWidth = availableWidth;
-      
+       
     }
-    
+     
     const currentWidth = baseWidth + (maxWidth - baseWidth) * scrollYProgress;
     const borderRadius = 16 * (1 - scrollYProgress);
-    
+     
     return {
       width: Math.round(currentWidth),
-      height: Math.round(currentWidth / aspectRatio),
+      height: Math.round(currentWidth / effectiveAspectRatio),
       borderRadius: Math.round(borderRadius)
     };
-  }, [isClient, viewportWidth, minWidth, aspectRatio, scrollYProgress]);
+  }, [isClient, viewportWidth, minWidth, currentAspectRatio, scrollYProgress]);
 
   const videoStyle = {
     width: dimensions.width ? `${dimensions.width}px` : '100%',
@@ -270,7 +285,7 @@ export default function OptimizedVideoPlayer({
     <section
       ref={containerRef}
       className={`${styles.videoWrapper} ${className}`}
-      style={!isClient ? { width: '100%', maxWidth: '1180px', aspectRatio: aspectRatio, marginLeft: 'auto', marginRight: 'auto' } : {}}
+      style={!isClient ? { width: '100%', maxWidth: '1180px', aspectRatio: currentAspectRatio, marginLeft: 'auto', marginRight: 'auto' } : {}}
       role="region"
       aria-label="Interactive video player"
     >
@@ -284,7 +299,7 @@ export default function OptimizedVideoPlayer({
           muted
           playsInline
           className={`${styles.video} ${styles.loaded}`}
-          style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
+          style={{ width: "100%", height: "100%", borderRadius: "inherit", display: 'none' }}
           onLoadedData={handleVideoReady}
           onLoadedMetadata={handleVideoReady}
           onCanPlay={handleVideoReady}
@@ -311,6 +326,12 @@ export default function OptimizedVideoPlayer({
             <a href={videoSrc} download>Download the video</a> instead.
           </p>
         </video>
+        <Image
+          src={MainPhoto}
+          fill
+          style={{ objectFit: 'cover' }} //
+          alt="Picture of the author"
+        />
       </div>
 
       {/* Screen reader friendly play/pause indicator */}

@@ -14,6 +14,10 @@ const OurServices = dynamic(() => import("@/blocks/OurServices"), {
   loading: () => <div>Loading...</div>
 });
 
+const OurTeam = dynamic(() => import("@/blocks/OurTeam"), {
+  loading: () => <div>Loading...</div>
+});
+
 const MountingTypes = dynamic(() => import("@/blocks/MountingTypes"), {
   loading: () => <div>Loading...</div>
 });
@@ -62,6 +66,7 @@ export default function Home() {
       <WhyCustomersTrustUs />
       <CustomerReviews />
       <OurServices />
+      <OurTeam />
       <AboutUs />
       <FAQ />
       <Contacts />
