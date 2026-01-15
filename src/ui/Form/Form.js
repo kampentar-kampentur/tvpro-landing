@@ -10,9 +10,9 @@ import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalcu
 import { sendGTMEvent } from '@next/third-parties/google'
 
 const discountOptions = {
-  discountType: "fixed",
-  discountValue: 30,
-  discountCondition: (total) => total > 200,
+  discountType: null,
+  discountValue: 0,
+  discountCondition: (total) => false,
   discountLabel: "Discount"
 };
 

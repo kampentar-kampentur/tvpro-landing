@@ -513,17 +513,6 @@ const BestQuoteModal = () => {
                 }
             </main>
             <aside className={styles.servicesContainer}>
-                <div className={styles.banner}>
-                    <p className={styles.saleText}>
-                      Enjoy an instant <b>$30 OFF</b>
-                    </p>
-                    <p className={styles.saleText}>
-                      when you place your online order over $200
-                    </p>
-                    <p className={styles.saleSize}>
-                        $30 OFF
-                    </p>
-                </div>
                 <div className={styles.orderInfo}>
                     <p className={styles.orderTitle}>Your order</p>
                     <p className={styles.orderItem}>FREE Above-Fireplace TV Installation</p>
@@ -534,11 +523,6 @@ const BestQuoteModal = () => {
                     <div className={styles.priceWrapper}>
                         <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} isSubmitting={isSubmitting} onSubmit={onSubmit} />
                     </div>
-                    {/* <div className={styles.footerSummary}>
-                        <p>* Free TV dismount included with orders over $200</p>
-                        <p>** Free Above-Fireplace TV Mounting</p>
-                        <p className={styles.subSummaryText}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
-                    </div> */}
                 </div>
             </aside>
         </div>
