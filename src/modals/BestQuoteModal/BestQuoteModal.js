@@ -270,6 +270,8 @@ const example = {
                   "label": "In-Wall Concealment", 
                   "cost": 199,
                   "costLabel": "+$199",
+                  "cost": 249,
+                  "costLabel": "+$249",
                   "description": "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish."
                 },
                 { 
@@ -277,6 +279,8 @@ const example = {
                   "label": "In-Wall with Socket", 
                   "cost": 229,
                   "costLabel": "+$229",
+                  "cost": 289,
+                  "costLabel": "+$289",
                   "description": "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing."
                 },
               ],
