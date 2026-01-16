@@ -87,6 +87,9 @@
   }
 
 @media (max-width: 1024px) {
+  .banner2Text {
+    max-width: 56%;
+  }
   .mainHeading {
     font-size: 28px;
     line-height: 36px;
@@ -213,3 +216,6 @@
 
 }
 
+.bannerListWrapper b {
+  font-weight: 700;
+}

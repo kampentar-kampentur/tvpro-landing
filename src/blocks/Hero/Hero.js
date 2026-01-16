@@ -87,7 +87,7 @@ export default async function Hero() {
           <p className={styles.bxlt}>FREE</p>
           <p className={styles.blt}>External Cable Concealment</p>
           <p className={styles.blt}>with TV Installation</p>
-          <p className={styles.bmt}>Limited-Time Offer</p>
+          <p className={styles.bmt}><b>Limited-Time Offer</b></p>
           <p className={styles.bmt}>Included with standard drywall installations.</p>
           <p className={styles.bmt}>One TV per order.</p>
         </div>
@@ -100,21 +100,21 @@ export default async function Hero() {
           <p className={styles.bmt}>Don&#8217;t let a bad TV setup ruin your night.</p>
 
           <ul className={styles.bannerListWrapper}>
-            <li className={styles.bmt}>Same-Day TV Installation</li>
-            <li className={styles.bmt}>Pro Install in ~20 Minutes*</li>
+            <li className={styles.bmt}><b>Same-Day</b> TV Installation</li>
+            {/* <li className={styles.bmt}>Pro Install in <b>~20 Minutes*</b></li> */}
             <li className={styles.bmt}>Fully Insured</li>
             <li className={styles.bmt}>Fully Certified</li>
-            <li className={styles.bmt}>Installation From $69</li>
+            <li className={styles.bmt}>Installation <b>From $69</b></li>
           </ul>
-          <p className={styles.bmt}>Limited Super Bowl slots — almost booked.</p>
+          {/* <p className={styles.bmt}>Limited Super Bowl slots — almost booked.</p>
 
-          <p className={styles.bst}>*Details vary by setup.</p> <p className={styles.bst}> Confirm with our operator.</p>
+          <p className={styles.bst}>*Details vary by setup.</p> <p className={styles.bst}> Confirm with our operator.</p> */}
 
         </div>
         <QuoteButton modalName="BookNow">CALL NOW</QuoteButton>
         <Image className={styles.banner1Img + " " + styles.banner2Img} src={Banner2Img} width={1280} height={853} alt="Banner"/>
       </div>
-      <VideoPlayer/>
+      {/* <VideoPlayer/> */}
     </>
   );
 }
