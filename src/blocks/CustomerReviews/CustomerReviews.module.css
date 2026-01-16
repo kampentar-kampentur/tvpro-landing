@@ -9,12 +9,6 @@
   margin-top: 40px;
 }
 
-@media (max-width: 1024px) {
-  .ctaContainer {
-    padding: 0;
-  }
-}
-
 .ctaContainer {
   display: flex;
   flex-wrap: wrap;
@@ -24,6 +18,13 @@
   justify-content: center;
   gap: 20px;
 }
+
+@media (max-width: 1024px) {
+  .ctaContainer.ctaContainer {
+    padding: 0;
+  }
+}
+
 
 .ctaText {
   font-weight: 500;

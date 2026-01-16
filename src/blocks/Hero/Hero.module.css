@@ -32,6 +32,60 @@
   gap: 24px;
 }
 
+.banner1 {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1180px;
+  margin: auto;
+  padding: 120px 100px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.banner1Img {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.banner2 {
+  color: #fff;
+}
+
+
+  .bxlt {
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .bltb {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .blt {
+    font-size: 22px;
+  }
+
+  .bmt {
+    font-size: 18px;
+  }
+
+  .bst {
+    font-size: 14px;
+  }
+
+  .bannerListWrapper {
+    padding-left: 20px;
+  }
+
 @media (max-width: 1024px) {
   .mainHeading {
     font-size: 28px;
@@ -58,6 +112,7 @@
     justify-content: center;
     max-width: 400px;
     width: 100%;
+    margin-top: 30px;
   }
 
   .twoYearsWarantyImg {
@@ -79,4 +134,82 @@
     width: 52px;
     height: 52px;
   }
+
+  .buttonWrapper {
+    margin-top: 30px;
+  }
+
+  .bxlt {
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .bltb {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .blt {
+    font-size: 22px;
+  }
+
+  .bmt {
+    font-size: 18px;
+  }
+
+  .bst {
+    font-size: 14px;
+  }
+
+  .banner1 {
+    width: 100%;
+    padding: 88px 44px;
+  }
+
+  .banner2 {
+    padding: 60px 44px;
+  }
+
+  
+  .bannerListWrapper {
+    padding-left: 20px;
+  }
 }
+
+@media (max-width: 767px) {
+  .banner1 {
+    width: 120%;
+    padding: 12px 8px;
+  }
+
+  .banner1Text {
+    max-width: 53%;
+  }
+
+  .bxlt {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .bltb {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .blt {
+    font-size: 16px;
+  }
+
+  .bmt {
+    font-size: 14px;
+  }
+
+  .bst {
+    font-size: 12px;
+  }
+  .bannerListWrapper {
+    padding-left: 15px;
+  }
+
+}
+
