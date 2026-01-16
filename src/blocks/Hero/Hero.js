@@ -11,6 +11,8 @@ import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
 import FiveStarImg from "@/assets/badges/5star.webp"
 import SevenDaysImg from "@/assets/badges/7days.webp"
 import InsuredImg from "@/assets/badges/insured.webp"
+import Banner1Img from "@/assets/banners/banner116.png"
+import Banner2Img from "@/assets/banners/banner216.png"
 
 // Dynamically import VideoPlayer with lazy loading
 const VideoPlayer = dynamic(() => import("./components/VideoPlayer"), {
@@ -62,7 +64,7 @@ export default async function Hero() {
             <Text text={heroData.subTitle}/>
           </p>
           <div className={styles.buttonWrapper}>
-            <QuoteButton>Book With Discount</QuoteButton>
+            <QuoteButton>Get Your Price in 30 Seconds</QuoteButton>
           </div>
           <div className={styles.badgesWrapper}>
               {/* {heroData.badges.map(badge => (
@@ -79,6 +81,38 @@ export default async function Hero() {
               <Image className={styles.insuredImg} src={InsuredImg} width={72} height={72} alt="Insured Protection Guaranteed Badge"/>
           </div>
         </div>
+      </div>
+      <div className={styles.banner1}>
+        <div className={styles.banner1Text}>
+          <p className={styles.bxlt}>FREE</p>
+          <p className={styles.blt}>External Cable Concealment</p>
+          <p className={styles.blt}>with TV Installation</p>
+          <p className={styles.bmt}>Limited-Time Offer</p>
+          <p className={styles.bmt}>Included with standard drywall installations.</p>
+          <p className={styles.bmt}>One TV per order.</p>
+        </div>
+        <QuoteButton  modalName="BookNow">BOOK IN 1 MIN</QuoteButton>
+        <Image className={styles.banner1Img} src={Banner1Img} width={1280} height={853} alt="Banner"/>
+      </div>
+      <div className={styles.banner1 + " " + styles.banner2}>
+        <div className={styles.banner2Text}>
+          <p className={styles.bltb}>Super Bowl Game Day deserves a PERFECT view.</p>
+          <p className={styles.bmt}>Don&#8217;t let a bad TV setup ruin your night.</p>
+
+          <ul className={styles.bannerListWrapper}>
+            <li className={styles.bmt}>Same-Day TV Installation</li>
+            <li className={styles.bmt}>Pro Install in ~20 Minutes*</li>
+            <li className={styles.bmt}>Fully Insured</li>
+            <li className={styles.bmt}>Fully Certified</li>
+            <li className={styles.bmt}>Installation From $69</li>
+          </ul>
+          <p className={styles.bmt}>Limited Super Bowl slots — almost booked.</p>
+
+          <p className={styles.bst}>*Details vary by setup.</p> <p className={styles.bst}> Confirm with our operator.</p>
+
+        </div>
+        <QuoteButton modalName="BookNow">CALL NOW</QuoteButton>
+        <Image className={styles.banner1Img + " " + styles.banner2Img} src={Banner2Img} width={1280} height={853} alt="Banner"/>
       </div>
       <VideoPlayer/>
     </>
