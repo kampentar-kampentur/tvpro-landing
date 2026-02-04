@@ -86,24 +86,39 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
       return notEqualsResult;
     case "hasAny":
       const hasAnyResult = Array.isArray(fieldValue) && Array.isArray(resolvedTargetValues) &&
-             fieldValue.some(item => resolvedTargetValues.includes(item.value));
+        fieldValue.some(item => resolvedTargetValues.includes(item.value));
       console.log('🔍 hasAny condition result:', hasAnyResult);
       return hasAnyResult;
     case "equalsAny":
-        if (!Array.isArray(resolvedTargetValues)) {
-          console.log('🔍 equalsAny: resolvedTargetValues is not an array');
-          return false;
-        }
-        if (Array.isArray(fieldValue)) {
-            const result = fieldValue.some(item =>
-                resolvedTargetValues.includes(item.value !== undefined ? item.value : item)
-            );
-            console.log('🔍 equalsAny (array fieldValue) result:', result);
-            return result;
-        }
+      if (!Array.isArray(resolvedTargetValues)) {
+        console.log('🔍 equalsAny: resolvedTargetValues is not an array');
+        return false;
+      }
+      if (Array.isArray(fieldValue)) {
+        const result = fieldValue.some(item =>
+          resolvedTargetValues.includes(item.value !== undefined ? item.value : item)
+        );
+        console.log('🔍 equalsAny (array fieldValue) result:', result);
+        return result;
+      }
       const equalsAnyResult = resolvedTargetValues.includes(fieldValue);
       console.log('🔍 equalsAny result:', equalsAnyResult, '(', fieldValue, 'in', resolvedTargetValues, ')');
       return equalsAnyResult;
+    case "notEqualsAny":
+      if (!Array.isArray(resolvedTargetValues)) {
+        console.log('🔍 notEqualsAny: resolvedTargetValues is not an array');
+        return true;
+      }
+      if (Array.isArray(fieldValue)) {
+        const result = !fieldValue.some(item =>
+          resolvedTargetValues.includes(item.value !== undefined ? item.value : item)
+        );
+        console.log('🔍 notEqualsAny (array fieldValue) result:', result);
+        return result;
+      }
+      const notEqualsAnyResult = !resolvedTargetValues.includes(fieldValue);
+      console.log('🔍 notEqualsAny result:', notEqualsAnyResult, '(', fieldValue, 'not in', resolvedTargetValues, ')');
+      return notEqualsAnyResult;
     case "isToday":
       if (fieldValue) {
         const today = new Date();
@@ -123,7 +138,7 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
 export const isStepComplete = (step, formData) => {
   if (!step || !step.fields) return true;
   console.log("formData", formData);
-  
+
   console.log(step.fields.filter(field => {
     if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
       return true; // not visible, so "complete"
@@ -141,7 +156,7 @@ export const isStepComplete = (step, formData) => {
 
     return true;
   }));
-  
+
   return step.fields.every(field => {
     if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
       return true; // not visible, so "complete"
@@ -190,16 +205,16 @@ export const clearHiddenFields = (scheme, formData) => {
         // Handle regular fields
         const shouldRender = shouldRenderField(field.showIf, cleanedFormData, step.id, step.parentContext);
         console.log(`🔍 Checking field ${step.id}.${field.name}: shouldRender=${shouldRender}, showIf=`, field.showIf, `, wallType=`, cleanedFormData[step.id]?.wallType);
-        
+
         // Check if there are multiple fields with the same name
         const fieldsWithSameName = step.fields.filter(f => f.name === field.name);
-        
+
         if (fieldsWithSameName.length > 1) {
           // If multiple fields have the same name, only delete if ALL of them should be hidden
           const allHidden = fieldsWithSameName.every(f =>
             !shouldRenderField(f.showIf, cleanedFormData, step.id, step.parentContext)
           );
-          
+
           if (allHidden) {
             if (cleanedFormData[step.id]) {
               console.log(`🗑️ Clearing hidden field (all variants hidden): ${step.id}.${field.name}`);

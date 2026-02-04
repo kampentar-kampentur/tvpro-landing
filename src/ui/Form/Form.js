@@ -29,7 +29,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   } = useFormNavigation(scheme, onStepChange, value);
 
   const renderedSteps = useDynamicSteps(currentStepConfig, value);
-  
+
   const { totalPrice, structuredCostBreakdown } = usePriceCalculation(
     value,
     scheme,
@@ -37,7 +37,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     discountOptions
   );
 
-  const stepToRender = currentStepConfig?.type === "dynamic" 
+  const stepToRender = currentStepConfig?.type === "dynamic"
     ? renderedSteps[currentSubStepIndex]
     : currentStepConfig;
 
@@ -75,18 +75,18 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         [fieldName]: fieldValue
       }
     }
-    if(isStepComplete(stepToRender, fd)) {
-      handleNext()
+    if (isStepComplete(stepToRender, fd)) {
+      handleNext(fd)
     }
   };
 
-  const handleNext = () => {
-    if(renderedSteps.length - 1 === currentSubStepIndex) {
+  const handleNext = (updatedFormData) => {
+    if (renderedSteps.length - 1 === currentSubStepIndex) {
       if (typeof sendGTMEvent !== 'undefined') {
-        sendGTMEvent({event: `form_step_${currentStepIndex + 1}`})
+        sendGTMEvent({ event: `form_step_${currentStepIndex + 1}` })
       }
     }
-    return goToNextStep(renderedSteps.length)
+    return goToNextStep(renderedSteps.length, updatedFormData)
   };
 
   const handleSubmit = async (...args) => {
@@ -110,7 +110,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   const isLastOverallStep = isLastMainStep && currentSubStepIndex === renderedSteps.length - 1;
 
   const canGoBack = !isFirstStep;
-  
+
   // Validation logic
   const isCurrentStepValid = () => {
     if (!stepToRender || !stepToRender.fields) {
