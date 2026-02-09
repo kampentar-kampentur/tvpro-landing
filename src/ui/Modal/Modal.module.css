@@ -4,11 +4,23 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(14, 14, 19, 0.6); /* --foreground with 60% opacity */
+  background-color: rgba(14, 14, 19, 0.6);
+  /* --foreground with 60% opacity */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  animation: modalOverlayFadeIn 0.3s ease-out;
+}
+
+@keyframes modalOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modalContent {
@@ -16,7 +28,8 @@
   border-radius: 40px;
   padding: 20px;
   position: relative;
-  max-width: 1392px; /* Based on Figma design */
+  max-width: 1392px;
+  /* Based on Figma design */
   max-width: 100%;
   display: flex;
   flex-direction: column;
@@ -53,10 +66,11 @@ button.closeButton:hover {
     top: 20px;
     right: 20px;
   }
+
   .modalWrapper {
     display: block;
   }
-} 
+}
 
 .modalWrapper {
   display: flex;
