@@ -49,8 +49,11 @@
 
 @media (max-width: 768px) {
   .videoModalContent {
-    width: 100% !important;
+    width: 95% !important;
     height: auto !important;
-    margin: 0;
+    min-height: auto !important;
+    margin: auto !important;
+    border-radius: 12px !important;
+    padding: 0 !important;
   }
 }

@@ -37,7 +37,7 @@ const VideoModal = () => {
                 <video
                     className={styles.video}
                     controls
-                    controlsList="nodownload noplaybackrate nofullscreen"
+                    controlsList="nodownload noplaybackrate"
                     disablePictureInPicture
                     autoPlay
                     playsInline
