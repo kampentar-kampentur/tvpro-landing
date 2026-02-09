@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import styles from "./VideoPlayer.module.css";
 import Head from "next/head";
+import { useModal } from "@/providers/ModalProvider";
 
 export default function OptimizedVideoPlayer({
   poster = "videoplaceholder-392.webp",
@@ -17,6 +18,7 @@ export default function OptimizedVideoPlayer({
 }) {
   const containerRef = useRef(null);
   const videoRef = useRef(null);
+  const { openModal } = useModal();
   const [scrollYProgress, setScrollYProgress] = useState(0);
   const [viewportWidth, setViewportWidth] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -40,11 +42,11 @@ export default function OptimizedVideoPlayer({
       const hardwareConcurrency = navigator.hardwareConcurrency || 1;
       const memory = navigator.deviceMemory || 1;
       const connection = navigator.connection;
-      
+
       // Low performance indicators
       const isSlowDevice = hardwareConcurrency <= 2 || memory <= 2;
       const isSlowConnection = connection && (
-        connection.effectiveType === 'slow-2g' || 
+        connection.effectiveType === 'slow-2g' ||
         connection.effectiveType === '2g' ||
         connection.effectiveType === '3g'
       );
@@ -85,10 +87,10 @@ export default function OptimizedVideoPlayer({
 
     const now = performance.now();
     const timeSinceLastUpdate = now - lastUpdateTime.current;
-    
+
     // Adaptive throttling based on device performance
     const throttleTime = isLowPerformance ? 32 : 16; // 30fps vs 60fps
-    
+
     if (timeSinceLastUpdate < throttleTime) return;
 
     if (animationFrameId.current) {
@@ -105,17 +107,17 @@ export default function OptimizedVideoPlayer({
 
       let calculatedProgress = 1 - Math.min(distanceFromCenter / maxDistance, 1);
       calculatedProgress = Math.max(0, Math.min(1, calculatedProgress));
-      
+
       const currentWindowScrollY = window.scrollY;
 
       let newProgress;
       newProgress = elementCenter <= screenCenter ? 1 : calculatedProgress;
 
       // Apply easing only on high-performance devices
-      const finalProgress = isLowPerformance ? 
-        newProgress : 
+      const finalProgress = isLowPerformance ?
+        newProgress :
         newProgress * newProgress * (3 - 2 * newProgress);
-      
+
       setScrollYProgress(finalProgress);
       lastScrollY.current = currentWindowScrollY;
       lastUpdateTime.current = now;
@@ -137,8 +139,8 @@ export default function OptimizedVideoPlayer({
   }, [handleScroll, isVisible]);
 
   useEffect(() => {
-    if(isVisible && videoRef.current.paused) {
-      
+    if (isVisible && videoRef.current.paused) {
+
       videoRef.current.play()
     }
   }, [isVisible])
@@ -181,7 +183,7 @@ export default function OptimizedVideoPlayer({
 
   const handleKeyDown = useCallback((e) => {
     if (!videoRef.current) return;
-    
+
     switch (e.key) {
       case " ":
       case "k":
@@ -206,10 +208,10 @@ export default function OptimizedVideoPlayer({
   }, []);
 
   const dimensions = useMemo(() => {
-    
+
     const padding = 0;
     const availableWidth = viewportWidth - padding;
-    
+
     if (!isClient) {
       const w = Math.min(availableWidth, minWidth)
       return {
@@ -219,7 +221,7 @@ export default function OptimizedVideoPlayer({
       };
     }
     let baseWidth, maxWidth;
-    
+
     if (viewportWidth < 768) {
       baseWidth = Math.max(280, availableWidth);
       maxWidth = availableWidth;
@@ -229,12 +231,12 @@ export default function OptimizedVideoPlayer({
     } else {
       baseWidth = minWidth;
       maxWidth = availableWidth;
-      
+
     }
-    
+
     const currentWidth = baseWidth + (maxWidth - baseWidth) * scrollYProgress;
     const borderRadius = 16 * (1 - scrollYProgress);
-    
+
     return {
       width: Math.round(currentWidth),
       height: Math.round(currentWidth / aspectRatio),
@@ -265,7 +267,6 @@ export default function OptimizedVideoPlayer({
   useEffect(() => {
     setVideoSrc(getBestVideoSrc());
   }, []);
-
   return (
     <section
       ref={containerRef}
@@ -273,6 +274,7 @@ export default function OptimizedVideoPlayer({
       style={!isClient ? { width: '100%', maxWidth: '1180px', aspectRatio: aspectRatio, marginLeft: 'auto', marginRight: 'auto' } : {}}
       role="region"
       aria-label="Interactive video player"
+      onClick={() => openModal("VideoModal")}
     >
       <div className={styles.videoContainer} style={videoStyle}>
         <video
@@ -307,8 +309,7 @@ export default function OptimizedVideoPlayer({
           <source src="/optimized/mainVideo2-480p.mp4" type="video/mp4" media="(max-width: 1024px)" />
           <source src="/optimized/mainVideo2-720p.mp4" type="video/mp4" />
           <p>
-            Your browser doesn&apos;t support HTML5 video. 
-            <a href={videoSrc} download>Download the video</a> instead.
+            Your browser doesn&apos;t support HTML5 video.
           </p>
         </video>
       </div>

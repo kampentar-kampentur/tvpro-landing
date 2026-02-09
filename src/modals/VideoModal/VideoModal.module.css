@@ -1,0 +1,56 @@
+.videoModalContent {
+  max-width: 1000px !important;
+  width: 95% !important;
+  background: black !important;
+  padding: 0 !important;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modalHeader {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: white;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.videoContainer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .videoModalContent {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0;
+  }
+}

@@ -59,8 +59,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error state */
@@ -114,11 +119,9 @@
 }
 
 /* Responsive design */
-@media (max-width: 1200px) {
-}
+@media (max-width: 1200px) {}
 
-@media (max-width: 768px) {
-}
+@media (max-width: 768px) {}
 
 @media (max-width: 1024px) {
   .videoWrapper.videoWrapper {
@@ -127,7 +130,8 @@
 }
 
 /* Low performance devices */
-@media (max-width: 480px), (pointer: coarse) {
+@media (max-width: 480px),
+(pointer: coarse) {
   .video {
     will-change: auto;
     contain: layout;
@@ -138,7 +142,7 @@
   .video.loaded {
     transition: opacity 0.3s ease-in-out;
   }
-  
+
   .loadingSpinner {
     animation: none;
   }
@@ -148,4 +152,5 @@
   position: relative;
   overflow: hidden;
   display: block;
+  cursor: pointer;
 }
