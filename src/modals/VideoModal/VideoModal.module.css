@@ -1,4 +1,4 @@
-.videoModalContent {
+.videoModalContent.videoModalContent {
   max-width: 1000px !important;
   width: 95% !important;
   background: black !important;
@@ -61,7 +61,7 @@
 }
 
 @media (max-width: 768px) {
-  .videoModalContent {
+  .videoModalContent.videoModalContent {
     width: 95% !important;
     height: auto !important;
     min-height: auto !important;
