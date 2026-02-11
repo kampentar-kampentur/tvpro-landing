@@ -11,13 +11,23 @@ async function getFAQ() {
   return json.data;
 }
 
-const FAQ = async () => {
-  const faqData = await getFAQ();
+// Default export with data prop
+export default async function FAQ({ data = {} }) {
+  const defaultFaqData = await getFAQ();
+
+  // Merge: Use prop data if available, otherwise fallback to default
+  const faqData = {
+    ...defaultFaqData,
+    ...data,
+    title: data?.title || defaultFaqData.title,
+    subTitle: data?.subTitle || defaultFaqData.subTitle,
+    faqs: (data?.faqs && data.faqs.length > 0) ? data.faqs : defaultFaqData.faqs,
+  };
 
   const structuredFAQ = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqData.faqs.map(({ question, answer }) => ({
+    "mainEntity": (faqData.faqs || []).map(({ question, answer }) => ({
       "@type": "Question",
       "name": question,
       "acceptedAnswer": {
@@ -68,4 +78,3 @@ const FAQ = async () => {
   );
 };
 
-export default FAQ; 

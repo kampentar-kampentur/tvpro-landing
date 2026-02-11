@@ -8,16 +8,27 @@ async function getTVSizes() {
   return json.data;
 }
 
-export default async function TVSizes() {
-  const tvSizesData = await getTVSizes();
+export default async function TVSizes({ data = {} }) {
+  // Always fetch default data (fallback)
+  const defaultTvSizesData = await getTVSizes();
+
+  // Merge: Use prop data if available, otherwise fallback to default
+  const tvSizesData = {
+    ...defaultTvSizesData,
+    ...data,
+    title: data?.title || defaultTvSizesData.title,
+    subTitle: data?.subTitle || defaultTvSizesData.subTitle,
+    // Start with default, override with prop if present
+    tvsizes: (data?.tvsizes && data.tvsizes.length > 0) ? data.tvsizes : defaultTvSizesData.tvsizes
+  };
   return (
     <section className={`block ${styles.tvsizes}`}>
       <header>
         <h2 className="blockHeading">
-        <Text text={tvSizesData.title}/>
+          <Text text={tvSizesData.title} />
         </h2>
         <p className="subText">
-          <Text text={tvSizesData.subTitle}/>
+          <Text text={tvSizesData.subTitle} />
         </p>
       </header>
       <div className={styles.cardsGrid}>

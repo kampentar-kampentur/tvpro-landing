@@ -7,18 +7,28 @@ async function getWhyCustomersTrustUs() {
   return json.data;
 }
 
-const WhyCustomersTrustUs = async () => {
-  const data = await getWhyCustomersTrustUs();
+// Default export with data prop
+export default async function WhyCustomersTrustUs({ data = {} }) {
+  const defaultTrustData = await getWhyCustomersTrustUs();
+
+  // Merge: Use prop data if available, otherwise fallback to default
+  const trustData = {
+    ...defaultTrustData,
+    ...data,
+    title: data?.title || defaultTrustData.title,
+    subTitle: data?.subTitle || defaultTrustData.subTitle,
+    cards: (data?.cards && data.cards.length > 0) ? data.cards : defaultTrustData.cards
+  };
   return (
     <section className={`block ${styles.whyCustomersTrustUs}`} id="reviews">
       <header>
         <h2 className="blockHeading">
-          {data.title}
+          {trustData.title}
         </h2>
-        <p className="subText">{data.subTitle}</p>
+        <p className="subText">{trustData.subTitle}</p>
       </header>
       <div className={styles.cardsContainer}>
-        {data.cards && data.cards.length && data.cards.map((card, index) => (
+        {trustData.cards && trustData.cards.length && trustData.cards.map((card, index) => (
           <TrustCard
             key={card.id || index}
             image={card.image}
@@ -31,4 +41,3 @@ const WhyCustomersTrustUs = async () => {
   );
 };
 
-export default WhyCustomersTrustUs; 
