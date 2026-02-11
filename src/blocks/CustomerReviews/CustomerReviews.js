@@ -11,22 +11,29 @@ async function getCustomerReviews() {
   return json.data;
 }
 
-const CustomerReviews = async () => {
-  const [customerReviewsData] = await Promise.all([
-    getCustomerReviews(),
-  ]);
+// Default export with data prop
+export default async function CustomerReviews({ data = {} }) {
+  const defaultReviewsData = await getCustomerReviews();
+
+  // Merge: Use prop data if available, otherwise fallback to default
+  const customerReviewsData = {
+    ...defaultReviewsData,
+    ...data,
+    title: data?.title || defaultReviewsData.title,
+    subTitle: data?.subTitle || defaultReviewsData.subTitle,
+  };
 
   return (
     <section className={`block ${styles.customerReviews}`}>
       <header className={styles.customerReviewsHeader}>
         <h2 className="blockHeading">
-          <Text text={customerReviewsData.title}/>
+          <Text text={customerReviewsData.title} />
         </h2>
-        <p className="subText"><Text text={customerReviewsData.subTitle}/></p>
+        <p className="subText"><Text text={customerReviewsData.subTitle} /></p>
       </header>
 
       <div className={"widget tt"} id="tt-review-widget-star">
-        <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" className="tt-logo" width={86} height={21}/>
+        <Image src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" className="tt-logo" width={86} height={21} />
         <a target="_blank" href="https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254">
           <div>TVProHandyservices</div>
         </a>
@@ -50,11 +57,10 @@ const CustomerReviews = async () => {
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
         <div className={styles.ctaButtons}>
           <QuoteButton variant="secondary" modalName="BookNow">Leave Yours Here!</QuoteButton>
-          <QuoteButton/>
+          <QuoteButton />
         </div>
       </div>
     </section>
   );
 };
 
-export default CustomerReviews; 

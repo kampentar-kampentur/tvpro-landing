@@ -10,7 +10,7 @@ import Text from "@/ui/Text/Text";
 async function getGalleryOfWork() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/gallery-of-work?populate=*`);
   const json = await res.json();
-  
+
   return json.data;
 }
 
@@ -21,27 +21,37 @@ async function getGalleryPhotos() {
   return json.data;
 }
 
-const GalleryOfWork = async () => {
-  const galleryOfWorkData = await getGalleryOfWork();
+// Default export with data prop
+export default async function GalleryOfWork({ data = {} }) {
+  const defaultGalleryOfWorkData = await getGalleryOfWork();
   const galleryPhotos = await getGalleryPhotos();
+
+  // Merge: Use prop data if available, otherwise fallback to default
+  const galleryOfWorkData = {
+    ...defaultGalleryOfWorkData,
+    ...data,
+    title: data?.title || defaultGalleryOfWorkData.title,
+    subTitle: data?.subTitle || defaultGalleryOfWorkData.subTitle,
+    types: (data?.types && data.types.length > 0) ? data.types : defaultGalleryOfWorkData.types
+  };
 
   return (
     <section className={styles.galleryOfWork} id="gallery">
       <div className="block">
         <header className={styles.galleryOfWorkHeader}>
           <h2 className="blockHeading">
-            <Text text={galleryOfWorkData.title}/>
+            <Text text={galleryOfWorkData.title} />
           </h2>
-          <p className="subText"><Text text={galleryOfWorkData.subTitle}/></p>
+          <p className="subText"><Text text={galleryOfWorkData.subTitle} /></p>
         </header>
-      {/* <div className={styles.sliderWrap}>
+        {/* <div className={styles.sliderWrap}>
         <SliderGallery
           CardComponent={PhotoCard}
           cardData={galleryPhotos}
           cardsPerPage={4}
         />
       </div> */}
-        <GalleryGrid filters={galleryOfWorkData.types}/>
+        <GalleryGrid filters={galleryOfWorkData.types} />
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
           <div className={styles.ctaButtons}>
@@ -53,4 +63,3 @@ const GalleryOfWork = async () => {
   );
 };
 
-export default GalleryOfWork; 

@@ -11,9 +11,6 @@ import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
 import FiveStarImg from "@/assets/badges/5star.webp"
 import SevenDaysImg from "@/assets/badges/7days.webp"
 import InsuredImg from "@/assets/badges/insured.webp"
-import Banner1Img from "@/assets/banners/banner116.png"
-import Banner2Img from "@/assets/banners/banner216.png"
-
 // Dynamically import VideoPlayer with lazy loading
 const VideoPlayer = dynamic(() => import("./components/VideoPlayer"), {
   loading: () => <div className={styles.videoPlaceholder}>Loading video...</div>
@@ -32,9 +29,29 @@ async function getHeroRunningLines() {
   return json.data;
 }
 
-export default async function Hero() {
-  const heroData = await getHero();
-  const heroLinesData = await getHeroRunningLines();
+// Default data to empty object to prevent crash when used without props (e.g. in Home page)
+export default async function Hero({ data = {}, cityContext }) {
+  // Always fetch default data
+  const defaultHeroData = await getHero();
+  const defaultLinesData = await getHeroRunningLines();
+
+  const displayName = cityContext?.city_name
+    ? `${cityContext.city_name}${cityContext.state_code ? `, ${cityContext.state_code}` : ''}`
+    : '';
+
+  // Merge: Use prop data if available, otherwise fallback to default
+  const heroData = {
+    ...defaultHeroData,
+    ...data,
+    // Explicitly handle nested or specific fields if needed
+    title: data?.title || defaultHeroData.title,
+    subTitle: data?.subTitle || defaultHeroData.subTitle,
+  };
+
+  // For running lines, we might just replace the array entirely if provided
+  const heroLinesData = data?.runningLines && data.runningLines.length > 0
+    ? data.runningLines
+    : defaultLinesData;
 
   return (
     <>

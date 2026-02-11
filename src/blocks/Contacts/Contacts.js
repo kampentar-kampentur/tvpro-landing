@@ -25,39 +25,57 @@ async function getContactUs() {
 }
 
 async function getCTA() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
-    const json = await res.json();
-    return json.data;
-}  
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
+  const json = await res.json();
+  return json.data;
+}
 
-const Contacts = async () => {
-  const [contact, cta] = await Promise.all([getContactUs(), getCTA()]);
+// Default export with data prop
+export default async function Contacts({ data = {} }) {
+  const [defaultContact, cta] = await Promise.all([getContactUs(), getCTA()]);
+
+  // Merge: Use prop data if available, otherwise fallback to default
+  const contact = {
+    ...defaultContact,
+    ...data,
+    title: data?.title || defaultContact.title,
+    subTitle: data?.subTitle || defaultContact.subTitle,
+    // Social links - priority to prop data if present
+    facebook: data?.facebook || defaultContact.facebook,
+    instagram: data?.instagram || defaultContact.instagram,
+    tiktok: data?.tiktok || defaultContact.tiktok,
+    youtube: data?.youtube || defaultContact.youtube,
+    yelp: data?.yelp || defaultContact.yelp,
+    thumbtack: data?.thumbtack || defaultContact.thumbtack,
+    pinterest: data?.pinterest || defaultContact.pinterest,
+    x: data?.x || defaultContact.x,
+  };
   return (
     <section className={styles.contacts} id="contact">
       <div className={`blockContainer ${styles.contactsContainer}`}>
         <h2 className={styles.heading}><Text text={contact.title} /></h2>
         <p className={styles.subHeading}><Text text={contact.subTitle} /></p>
         <div className={styles.mapWrap}>
-        <div className={styles.contactDetailsSection}>
+          <div className={styles.contactDetailsSection}>
             <div className={styles.detailItem}>
-                <h3 className={styles.detailTitle}>Working Hours</h3>
-                <p className={styles.detailText}>{cta?.workHours || 'Mon-Sun 8:00 AM - 8:00 PM'}</p>
+              <h3 className={styles.detailTitle}>Working Hours</h3>
+              <p className={styles.detailText}>{cta?.workHours || 'Mon-Sun 8:00 AM - 8:00 PM'}</p>
             </div>
             <div className={styles.detailItem}>
-                <h3 className={styles.detailTitle}>Phone Number</h3>
-                <p className={styles.detailText}>
-                    <a href={`tel:${cta?.phone || '(877) 455-5535'}`}>{cta?.phoneLabel || 'Call Us'}</a>
-                </p>
+              <h3 className={styles.detailTitle}>Phone Number</h3>
+              <p className={styles.detailText}>
+                <a href={`tel:${cta?.phone || '(877) 455-5535'}`}>{cta?.phoneLabel || 'Call Us'}</a>
+              </p>
             </div>
             <div className={styles.detailItem}>
-                <h3 className={styles.detailTitle}>Email</h3>
-                <p className={styles.detailText}>
-                    <a href={`mailto:${cta?.email || 'tvprohandyservices@gmail.com'}`}>{cta?.email || 'info@tvprousa.com'}</a>
-                </p>
+              <h3 className={styles.detailTitle}>Email</h3>
+              <p className={styles.detailText}>
+                <a href={`mailto:${cta?.email || 'tvprohandyservices@gmail.com'}`}>{cta?.email || 'info@tvprousa.com'}</a>
+              </p>
             </div>
-        </div>
+          </div>
 
-        {/* <iframe
+          {/* <iframe
             title="Location map of TVPro Handy Services"
             width="300"
             height="300"
@@ -67,7 +85,7 @@ const Contacts = async () => {
             referrerPolicy="no-referrer-when-downgrade"
             src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME&q=place_id:ChIJuVr9LojYwQERHVjQfs1s2O8">
           </iframe> */}
-          </div>
+        </div>
         <div className={styles.socialNetworksSection}>
           <h3 className={styles.detailTitle}>Social Networks</h3>
           <div className={styles.socialIcons}>
@@ -134,4 +152,3 @@ const Contacts = async () => {
   );
 };
 
-export default Contacts; 
