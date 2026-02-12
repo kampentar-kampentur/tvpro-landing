@@ -1,0 +1,24 @@
+.videoSlide {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background: var(--foreground);
+}
+
+.video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.video.loaded {
+    opacity: 1;
+}
+
+.video::cue {
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    font-size: 1.1em;
+}
