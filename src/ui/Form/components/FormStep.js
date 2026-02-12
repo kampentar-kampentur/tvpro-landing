@@ -11,7 +11,7 @@ import { shouldRenderField } from '../utils/formUtils';
 import ChevronIcon from '@/assets/icons/chevron.svg';
 
 const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps, isMobile, currentStepIndex, onClose, onBack }) => {
-  if(!step) {
+  if (!step) {
     return <div>hahaha{step}</div>
   }
   return (
@@ -23,7 +23,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
           const fieldCurrentValue = formData[step.id] ? formData[step.id][field.name] : undefined;
 
           if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
-            return null; 
+            return null;
           }
 
           const handleFieldChange = (fieldValue) => {
@@ -34,13 +34,13 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkboxWithCounter":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex", marginBottom: "24px"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={`${styles.fieldLabel}`}>{field.label}</h3>}
+                  <span style={{ display: "flex", marginBottom: "24px" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={`${styles.fieldLabel}`}>{field.label}</h3>}
                   </span>
                   <RadioField
                     field={field}
@@ -56,15 +56,15 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "radio":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex", marginBottom: "24px"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={`${styles.fieldLabel} ${fieldCurrentValue ? styles.selectedField : ''}`}>{field.label}</h3>}
+                  <span style={{ display: "flex", marginBottom: "24px" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={`${styles.fieldLabel} ${fieldCurrentValue ? styles.selectedField : ''}`}>{field.label}</h3>}
                   </span>
-                  
+
                   <RadioField
                     field={field}
                     value={fieldCurrentValue}
@@ -79,13 +79,13 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkbox":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex", marginBottom: "24px"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  <span style={{ display: "flex", marginBottom: "24px" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
                   </span>
                   <CheckboxField
                     field={field}
@@ -100,13 +100,13 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "number":
               return (
                 <div key={field.name} className={`${styles.option} ${styles.textOption}`}>
-                  <span style={{display: "flex"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  <span style={{ display: "flex" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
                   </span>
                   <TextField
                     field={field}
@@ -119,13 +119,13 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "counter":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex", marginBottom: "24px"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  <span style={{ display: "flex", marginBottom: "24px" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
                   </span>
                   <CounterField
                     field={field}
@@ -138,13 +138,13 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "date":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex", marginBottom: "24px"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  <span style={{ display: "flex", marginBottom: "24px" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
                   </span>
                   <DateField
                     field={field}
@@ -157,13 +157,13 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkboxGroup":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{display: "flex", marginBottom: "24px"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  <span style={{ display: "flex", marginBottom: "24px" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
                   </span>
                   <CheckboxGroupField
                     field={field}
@@ -176,13 +176,13 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "splited":
               return (
                 <div key={field.name} className={`${styles.option} ${styles.splitOption}`}>
-                  <span style={{display: "flex"}}>
-                  {isMobile && currentStepIndex > 0 && index === 0 && (
-                    <button className={styles.mobileBackButton} onClick={onBack}>
-                      <ChevronIcon />
-                    </button>
-                  )}
-                  {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                  <span style={{ display: "flex" }}>
+                    {currentStepIndex > 0 && index === 0 && (
+                      <button className={styles.backButton} onClick={onBack}>
+                        <ChevronIcon />
+                      </button>
+                    )}
+                    {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
                   </span>
                   <SplitField
                     fields={field.fields}

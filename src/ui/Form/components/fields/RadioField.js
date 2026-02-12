@@ -23,7 +23,7 @@ const RadioField = ({ field, value, onChange, isMobile }) => {
   return (
     <div className={formStyles.optionsGrid}>
       {field.options
-        .filter(option => !isMobile || !value || option.value === value)
+        // .filter(option => !isMobile || !value || option.value === value)
         .map(option => (
           <SelectionCard
             key={option.value}
