@@ -11,22 +11,28 @@ import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
 import FiveStarImg from "@/assets/badges/5star.webp"
 import SevenDaysImg from "@/assets/badges/7days.webp"
 import InsuredImg from "@/assets/badges/insured.webp"
-// Dynamically import VideoPlayer with lazy loading
-const VideoPlayer = dynamic(() => import("./components/VideoPlayer"), {
-  loading: () => <div className={styles.videoPlaceholder}>Loading video...</div>
-});
-
+import ExpandingSection from "./components/ExpandingSection";
+import HeroCarousel from "./components/HeroCarousel";
+import HeroClientContainer from "./components/HeroClientContainer";
 async function getHero() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
-  const json = await res.json();
-
-  return json.data;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error("Hero fetch failed:", error);
+    return null;
+  }
 }
 async function getHeroRunningLines() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero-text-lines`);
-  const json = await res.json();
-
-  return json.data;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero-text-lines`);
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error("Hero lines fetch failed:", error);
+    return [];
+  }
 }
 
 // Default data to empty object to prevent crash when used without props (e.g. in Home page)
@@ -44,14 +50,27 @@ export default async function Hero({ data = {}, cityContext }) {
     ...defaultHeroData,
     ...data,
     // Explicitly handle nested or specific fields if needed
-    title: data?.title || defaultHeroData.title,
-    subTitle: data?.subTitle || defaultHeroData.subTitle,
+    title: data?.title || defaultHeroData?.title || '',
+    subTitle: data?.subTitle || defaultHeroData?.subTitle || '',
   };
 
   // For running lines, we might just replace the array entirely if provided
   const heroLinesData = data?.runningLines && data.runningLines.length > 0
     ? data.runningLines
     : defaultLinesData;
+
+  const carouselSlides = [
+    { type: 'video', data: { src720: '/optimized/mainVideo2-720p.mp4' } },
+    {
+      type: 'banner',
+      data: {
+        title: "Special Offer: $30 Off Today!",
+        text: "Book your TV mounting service now and save big on professional installation.",
+        buttonText: "Claim Discount",
+        background: 'linear-gradient(135deg, #444 0%, #111 100%)'
+      }
+    }
+  ];
 
   return (
     <>
@@ -99,7 +118,7 @@ export default async function Hero({ data = {}, cityContext }) {
           {/* </div> */}
         </div>
       </div>
-      <VideoPlayer />
+      <HeroClientContainer />
     </>
   );
 }
