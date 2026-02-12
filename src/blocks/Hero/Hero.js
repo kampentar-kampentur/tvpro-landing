@@ -81,10 +81,10 @@ export default async function Hero({ data = {}, cityContext }) {
             <Text text={heroData.subTitle} />
           </p>
           <div className={styles.buttonWrapper}>
-            <QuoteButton>Get Your Price in 30 Seconds</QuoteButton>
+            <QuoteButton size="big" className={styles.heroButton}>Unlock $30 Off</QuoteButton>
           </div>
-          <div className={styles.badgesWrapper}>
-            {/* {heroData.badges.map(badge => (
+          {/* <div className={styles.badgesWrapper}> */}
+          {/* {heroData.badges.map(badge => (
                 <ImageWrapper
                   className={styles.badge}
                   key={badge.id}
@@ -92,11 +92,11 @@ export default async function Hero({ data = {}, cityContext }) {
                   defaultAlt="badge"
                 />
               ))} */}
-            <Image className={styles.twoYearsWarantyImg} src={TwoYearsWarantyImg} width={94} height={64} alt="One Year Warranty Badge" />
+          {/* <Image className={styles.twoYearsWarantyImg} src={TwoYearsWarantyImg} width={94} height={64} alt="One Year Warranty Badge" />
             <Image className={styles.fiveStarImg} src={FiveStarImg} width={72} height={72} alt="Five Star Rating Badge" />
             <Image className={styles.sevenDaysImg} src={SevenDaysImg} width={158} height={56} alt="Seven Days Service Badge" />
-            <Image className={styles.insuredImg} src={InsuredImg} width={72} height={72} alt="Insured Protection Guaranteed Badge" />
-          </div>
+            <Image className={styles.insuredImg} src={InsuredImg} width={72} height={72} alt="Insured Protection Guaranteed Badge" /> */}
+          {/* </div> */}
         </div>
       </div>
       <VideoPlayer />

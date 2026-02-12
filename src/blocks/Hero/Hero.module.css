@@ -21,7 +21,25 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-top: 80px; /* Adjust spacing as needed */
+  margin-top: 80px;
+  /* Adjust spacing as needed */
+}
+
+.heroButton {
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 1024px) {
+  .heroButton {
+    height: 52px !important;
+    font-size: 18px !important;
+    padding: 0 32px !important;
+    width: auto;
+    max-width: 100%;
+    border-radius: 12px !important;
+  }
 }
 
 
@@ -60,56 +78,62 @@
 }
 
 
-  .bxlt {
-    font-size: 26px;
-    font-weight: 700;
-  }
+.bxlt {
+  font-size: 26px;
+  font-weight: 700;
+}
 
-  .bltb {
-    font-size: 22px;
-    font-weight: 700;
-  }
+.bltb {
+  font-size: 22px;
+  font-weight: 700;
+}
 
-  .blt {
-    font-size: 22px;
-  }
+.blt {
+  font-size: 22px;
+}
 
-  .bmt {
-    font-size: 18px;
-  }
+.bmt {
+  font-size: 18px;
+}
 
-  .bst {
-    font-size: 14px;
-  }
+.bst {
+  font-size: 14px;
+}
 
-  .bannerListWrapper {
-    padding-left: 20px;
-  }
+.bannerListWrapper {
+  padding-left: 20px;
+}
 
 @media (max-width: 1024px) {
   .banner2Text {
     max-width: 56%;
   }
+
   .mainHeading {
     font-size: 28px;
     line-height: 36px;
   }
+
   .heroContainer {
     /* align-items: flex-start;
     text-align: left; */
   }
+
   .fiveStarBadge {
     width: 121px;
     height: 40px;
   }
+
   .oneYearWarantyBadge {
     width: 88px;
     height: 32px;
   }
+
   .aboveBadge {
     width: 48px;
     height: 48px;
   }
+
   .badgesWrapper {
     gap: 8px;
     justify-content: center;
@@ -132,7 +156,7 @@
     width: 105px;
     height: 40px;
   }
-  
+
   .aboveFireplaceImg {
     width: 52px;
     height: 52px;
@@ -173,7 +197,7 @@
     padding: 60px 44px;
   }
 
-  
+
   .bannerListWrapper {
     padding-left: 20px;
   }
@@ -210,6 +234,7 @@
   .bst {
     font-size: 12px;
   }
+
   .bannerListWrapper {
     padding-left: 15px;
   }
