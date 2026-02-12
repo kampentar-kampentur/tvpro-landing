@@ -1,14 +1,27 @@
 :root {
-  --background: #f6f6f8; /* main light background from Figma */
-  --foreground: #0e0e13; /* main dark color (text, icons) */
-  --white: #ffffff;      /* white (cards, buttons) */
-  --gray-light: #dbdbdf; /* light gray (borders) */
-  --gray: #91929c;       /* gray (borders, elements) */
-  --gray-medium: #6B6A73; /* new gray medium color */
-  --green: #157DC1;      /* green (button) */
-  --green-hover: #14679E; /* green hover (button) */
-  --gray-extra-light: #e7e7eb; /* extra light gray (button disabled, border hover) */
+  --background: #f6f6f8;
+  /* main light background from Figma */
+  --foreground: #0e0e13;
+  /* main dark color (text, icons) */
+  --white: #ffffff;
+  /* white (cards, buttons) */
+  --gray-light: #dbdbdf;
+  /* light gray (borders) */
+  --gray: #91929c;
+  /* gray (borders, elements) */
+  --gray-medium: #6B6A73;
+  /* new gray medium color */
+  --green: #157DC1;
+  /* green (button) */
+  --green-hover: #14679E;
+  /* green hover (button) */
+  --gray-extra-light: #e7e7eb;
+  /* extra light gray (button disabled, border hover) */
   --text-secondary: var(--gray);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -93,17 +106,21 @@ a {
     line-height: 24px;
     text-align: center;
   }
+
   .block {
     padding: 40px 16px;
   }
+
   .blockHeading {
     font-size: 28px;
     line-height: 36px;
     text-align: center;
   }
+
   #tt-review-widget-star.widget.tt {
     margin: auto;
   }
+
   .modalOverlay .wc_track {
     height: 100vh;
   }
@@ -115,6 +132,7 @@ a {
   text-decoration: underline;
   transition: color 0.2s;
 }
+
 .sms-link:hover,
 .sms-link:focus {
   color: var(--green);

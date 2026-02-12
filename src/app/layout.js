@@ -7,6 +7,7 @@ import Head from "next/head";
 import Footer from "@/blocks/Footer";
 import { GoogleTagManager } from '@next/third-parties/google'
 import Script from "next/script";
+import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -192,6 +193,7 @@ export default async function RootLayout({ children }) {
           </main>
           <Footer cta={cta} />
         </ModalProvider>
+        <ScrollToTop />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130"></script>
         <script
           dangerouslySetInnerHTML={{
