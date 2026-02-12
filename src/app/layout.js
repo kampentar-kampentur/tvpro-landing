@@ -130,7 +130,7 @@ async function getCTA() {
   const json = await res.json();
 
   return json.data;
-}  
+}
 
 export default async function RootLayout({ children }) {
   const cta = await getCTA()
@@ -154,7 +154,7 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//cloudflare.com" />
-        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4"/>
+        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" />
         <GoogleTagManager gtmId="GTM-5QVX2Z6S" />
         <script
           dangerouslySetInnerHTML={{
@@ -178,19 +178,19 @@ export default async function RootLayout({ children }) {
           `,
         }} />
         <noscript>
-          <img height="1" width="1" style={{display: 'none'}}
-          src="https://www.facebook.com/tr?id=809936758465245&ev=PageView&noscript=1"
+          <img height="1" width="1" style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=809936758465245&ev=PageView&noscript=1"
           />
         </noscript>
         {/* End Meta Pixel Code */}
       </head>
       <body className={redHatDisplay.variable}>
         <ModalProvider>
-          <Header cta={cta}/>
+          <Header cta={cta} />
           <main style={{ paddingTop: 80, flexGrow: 1 }}>
             {children}
           </main>
-          <Footer cta={cta}/>
+          <Footer cta={cta} />
         </ModalProvider>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130"></script>
         <script

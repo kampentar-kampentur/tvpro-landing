@@ -2,8 +2,9 @@ const fs = require('fs');
 const path = require('path');
 // Use native fetch (Node 18+) instead of node-fetch
 async function fetchAllCities() {
-    const strapUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
-    const res = await fetch(`${strapUrl}/api/cities?pagination[pageSize]=100`);
+    const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
+    console.log(`Using Strapi URL: ${strapiUrl}`);
+    const res = await fetch(`${strapiUrl}/api/cities?pagination[pageSize]=100`);
     const json = await res.json();
     return json.data;
 }
