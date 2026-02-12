@@ -1,78 +1,63 @@
-.formStep {
-    /* Add any specific styles for the FormStep container here */
-    /* flex-grow: 1; */
-}
-
 .fieldLabel {
-    font-weight: 700;
-    font-size: 28px;
-    line-height: 40px;
-    letter-spacing: 0%;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 40px;
+  letter-spacing: 0%;
 }
 
 .fieldDescription {
-    margin-top: 24px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0%;
+  margin-top: 24px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
 }
 
 .subHeader {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .subHeader h3 {
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 32px;
-    letter-spacing: 0%;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 32px;
+  letter-spacing: 0%;
 }
 
 .subSteps {
-    color: var(--text-secondary);
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0%;
+  color: var(--text-secondary);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0%;
 }
 
-.formStep {
-    /* margin-top: 40px; */
+.backButton {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 0;
+  margin-right: 8px;
+  display: block;
 }
 
-.mobileBackButton {
-  display: none;
+.backButton svg {
+  transform: rotate(180deg);
+  width: 24px;
+  height: 24px;
 }
 
 .option {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .option:last-child {
-    margin-bottom: 0;
-}
-
-@media (max-width: 1024px) {
-  .mobileBackButton {
-    display: block;
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    line-height: 0;
-    margin-right: 8px;
-  }
-
-  .mobileBackButton svg {
-    transform: rotate(180deg);
-    width: 24px;
-    height: 24px;
-  }
+  margin-bottom: 0;
 }
 
 @media (min-width: 1024px) {
@@ -82,14 +67,17 @@
     gap: 20px 32px;
     align-items: flex-start;
   }
+
   .option {
     width: 100%;
   }
+
   .textOption {
     width: calc(50% - 16px);
     min-width: 280px;
     margin-bottom: 0;
   }
+
   .splitOption {
     width: calc(50% - 16px);
     min-width: 280px;
@@ -99,36 +87,36 @@
 
 
 .banner {
-    border-radius: 16px;
-    padding: 12px 20px;
-    color: var(--white);
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-image: url("/modalBanerBg.webp");
-    flex-direction: column;
-    text-align: center;
-    width: 100%;
-    margin: auto;
-    background-size: cover;
-    background-position-y: center;
-    margin-top: 28px;
-    margin-bottom: 18px;
+  border-radius: 16px;
+  padding: 12px 20px;
+  color: var(--white);
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-image: url("/modalBanerBg.webp");
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  margin: auto;
+  background-size: cover;
+  background-position-y: center;
+  margin-top: 28px;
+  margin-bottom: 18px;
 }
 
 .saleText {
-    text-wrap: wrap;
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 600;
+  text-wrap: wrap;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
 }
 
 .saleSize {
-    font-size: 52px;
-    line-height: 52px;
-    font-weight: 700;
+  font-size: 52px;
+  line-height: 52px;
+  font-weight: 700;
 }
 
 .selectedField {

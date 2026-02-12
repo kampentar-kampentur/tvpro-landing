@@ -56,6 +56,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   const handleFieldChange = (stepId, fieldName, fieldValue) => {
     console.log(`📝 Field change: ${stepId}.${fieldName} = ${JSON.stringify(fieldValue)}`);
     onChange(prevData => {
+      const stepIndex = scheme.steps.findIndex(s => s.id === stepId);
       const updatedData = {
         ...prevData,
         [stepId]: {
@@ -63,6 +64,14 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
           [fieldName]: fieldValue
         }
       };
+
+      // Clear subsequent steps except contactInfo
+      scheme.steps.forEach((step, index) => {
+        if (index > stepIndex && step.id !== 'contactInfo') {
+          delete updatedData[step.id];
+        }
+      });
+
       const cleanedData = clearHiddenFields(scheme.steps, updatedData);
       console.log(`🔄 Form data after clearing:`, JSON.stringify(cleanedData, null, 2));
       return cleanedData;

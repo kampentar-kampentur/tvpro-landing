@@ -75,6 +75,13 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
   }
   console.log('🔍 resolvedTargetValues:', resolvedTargetValues);
 
+  // If the field is missing/empty, most conditions should fail
+  if (fieldValue === undefined || fieldValue === null) {
+    if (condition === "equals" && resolvedTargetValue === null) return true;
+    if (condition === "notEquals" && resolvedTargetValue === null) return false;
+    return false;
+  }
+
   switch (condition) {
     case "equals":
       const equalsResult = fieldValue === resolvedTargetValue;
