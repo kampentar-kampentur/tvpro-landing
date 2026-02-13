@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./VideoModal.module.css";
 import Modal from "@/ui/Modal";
 import { useModalState } from "@/providers/ModalProvider";
@@ -12,7 +12,7 @@ const VideoModal = () => {
     const mutedInModal = data?.props?.mutedInModal !== false; // Default to muted if not explicit
     const tracks = videoData?.tracks || [];
 
-    const getBestVideoSrc = () => {
+    const getBestVideoSrc = useCallback(() => {
         // Use provided data if available
         if (videoData) {
             if (typeof navigator !== 'undefined' && navigator.connection) {
@@ -32,7 +32,7 @@ const VideoModal = () => {
             return '/optimized/mainVideo1-360p.mp4';
         }
         return '/optimized/mainVideo2-720p.mp4';
-    };
+    }, [videoData]);
 
     const [videoSrc, setVideoSrc] = useState(getBestVideoSrc());
 
@@ -40,7 +40,7 @@ const VideoModal = () => {
         if (isOpen) {
             setVideoSrc(getBestVideoSrc());
         }
-    }, [isOpen, videoData]);
+    }, [isOpen, getBestVideoSrc]);
 
     return (
         <Modal

@@ -1,26 +1,22 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useModal } from "@/providers/ModalProvider";
 
 const EngagementTracker = () => {
-    const { openModal, isModalOpen } = useModal();
+    const { openModal } = useModal();
     const hasTriggered = useRef(false);
     const idleTimer = useRef(null);
     const lastScrollPos = useRef(0);
 
-    const triggerPopup = () => {
+    const triggerPopup = useCallback(() => {
         // Capping: One per session
         if (hasTriggered.current || sessionStorage.getItem('exit_popup_triggered')) return;
-
-        // Don't trigger if any other modal is already open
-        // (Optional check: we might want to override, but usually better not to interrupt)
-        // if (activeModalName) return;
 
         openModal('ExitIntentModal');
         hasTriggered.current = true;
         sessionStorage.setItem('exit_popup_triggered', 'true');
-    };
+    }, [openModal]);
 
     useEffect(() => {
         // --- 1. Exit Intent (Desktop) ---
@@ -81,7 +77,7 @@ const EngagementTracker = () => {
                 document.removeEventListener(event, resetIdleTimer);
             });
         };
-    }, [openModal]);
+    }, [triggerPopup]);
 
     return null; // Side-effect only component
 };

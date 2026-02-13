@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./WorkVideoGallery.module.css";
 import Text from "@/ui/Text/Text";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import { useModal } from "@/providers/ModalProvider";
+import Image from "next/image";
 
 const VideoCard = ({ video }) => {
     const { openModal } = useModal();
@@ -15,10 +16,13 @@ const VideoCard = ({ video }) => {
             onClick={() => openModal("YouTubeModal", { videoId: video.youtubeId })}
         >
             <div className={styles.thumbnailWrapper}>
-                <img
+                <Image
                     src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
                     alt={video.title}
                     className={styles.thumbnail}
+                    width={560}
+                    height={315}
+                    unoptimized={true}
                 />
                 <div className={styles.playOverlay}>
                     <div className={styles.playButton}>
@@ -47,8 +51,12 @@ async function getWorkVideoGallery() {
     }
 }
 
-export default async function WorkVideoGallery({ data = {} }) {
-    const defaultData = await getWorkVideoGallery();
+export default function WorkVideoGallery({ data = {} }) {
+    const [defaultData, setDefaultData] = useState(null);
+
+    useEffect(() => {
+        getWorkVideoGallery().then(setDefaultData);
+    }, []);
 
     const titleSize = data.titleSize || defaultData?.titleSize || "h2";
     const title = data.title || defaultData?.title || "See Our Work in Action";

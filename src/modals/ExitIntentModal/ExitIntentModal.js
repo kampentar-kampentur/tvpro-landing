@@ -80,7 +80,7 @@ const ExitIntentModal = () => {
             <div className={styles.container}>
                 <h2 className={styles.title}>Wait! Get $30 OFF</h2>
                 <p className={styles.subtitle}>
-                    Don't leave yet! Claim your discount for your first professional TV installation.
+                    Don&apos;t leave yet! Claim your discount for your first professional TV installation.
                 </p>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
@@ -111,7 +111,7 @@ const ExitIntentModal = () => {
                 </form>
 
                 <button type="button" className={styles.noThanks} onClick={close}>
-                    No thanks, I'll pay full price
+                    No thanks, I&apos;ll pay full price
                 </button>
             </div>
         </Modal>
