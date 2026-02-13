@@ -3,11 +3,12 @@ import { useState } from "react";
 import styles from "./PhotoCard.module.css";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import Modal from "@/ui/Modal/Modal";
+import { useInView } from "@/hooks/useInView";
 
 // SVG Play иконка
 const PlayIcon = (props) => (
   <svg viewBox="0 0 48 48" width={48} height={48} fill="none" {...props}>
-    <circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.5)"/>
+    <circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.5)" />
     <polygon points="19,16 36,24 19,32" fill="#fff" />
   </svg>
 );
@@ -15,18 +16,19 @@ console.log("RERENDE PHOTOCARD");
 // SVG Arrow Left иконка
 const ArrowLeftIcon = (props) => (
   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
-    <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 // SVG Arrow Right иконка
 const ArrowRightIcon = (props) => (
   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
-    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const PhotoCard = ({ image, videoUrl, video, className, images, currentIndex }) => {
+  const [ref, isInView] = useInView();
   const [open, setOpen] = useState(false);
   const [modalIndex, setModalIndex] = useState(currentIndex);
   const [touchStart, setTouchStart] = useState(null);
@@ -90,7 +92,9 @@ const PhotoCard = ({ image, videoUrl, video, className, images, currentIndex }) 
   return (
     <>
       <div
-        className={`${styles.photoCard} ${className}`}
+        ref={ref}
+        className={`${styles.photoCard} ${className} ${isInView ? styles.reveal : ""}`}
+        style={{ transitionDelay: `${(currentIndex % 4) * 0.1}s` }}
         tabIndex={0}
         role="button"
         onClick={handleOpen}

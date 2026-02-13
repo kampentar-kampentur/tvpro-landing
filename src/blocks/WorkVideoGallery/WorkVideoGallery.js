@@ -6,13 +6,17 @@ import Text from "@/ui/Text/Text";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import { useModal } from "@/providers/ModalProvider";
 import Image from "next/image";
+import { useInView } from "@/hooks/useInView";
 
-const VideoCard = ({ video }) => {
+const VideoCard = ({ video, index = 0 }) => {
     const { openModal } = useModal();
+    const [ref, isInView] = useInView();
 
     return (
         <div
-            className={styles.videoCard}
+            ref={ref}
+            className={`${styles.videoCard} ${isInView ? styles.reveal : ""}`}
+            style={{ transitionDelay: `${index * 0.1}s` }}
             onClick={() => openModal("YouTubeModal", { videoId: video.youtubeId })}
         >
             <div className={styles.thumbnailWrapper}>
@@ -91,8 +95,8 @@ export default function WorkVideoGallery({ data = {} }) {
                 </header>
 
                 <div className={styles.grid}>
-                    {videos.map((video) => (
-                        <VideoCard key={video.id} video={video} />
+                    {videos.map((video, idx) => (
+                        <VideoCard key={video.id} video={video} index={idx} />
                     ))}
                 </div>
 
