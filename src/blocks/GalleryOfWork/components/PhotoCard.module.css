@@ -11,6 +11,16 @@
   overflow: hidden;
   /* To ensure image corners are rounded */
   position: relative;
+
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.photoCard.reveal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .photoCard.photoCell {

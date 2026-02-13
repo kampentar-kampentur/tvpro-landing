@@ -167,3 +167,7 @@ a {
   bottom: 0px;
   z-index: 100000;
 }
+
+#tt-review-widget-star.widget.tt {
+  margin-bottom: 0px !important;
+}
