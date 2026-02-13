@@ -28,20 +28,18 @@ export async function onRequest(context) {
     }
 
     const cookieHeader = context.request.headers.get('Cookie') || '';
-    const hasGeoAssigned = cookieHeader.includes('geo_assigned=true');
     const disableGeo = context.env.DISABLE_GEO_IP === 'true';
 
     // 3. Determine working path (Actual path or Geo-mapped path)
     let workingPath = (path === 'index' ? '' : path);
-    let isGeoRedirect = false;
 
-    if (isRoot && !disableGeo && !hasGeoAssigned) {
+    if (isRoot && !disableGeo) {
+        // Always try Geo-IP detection on every root request
         const userCity = context.request.cf?.city?.toLowerCase();
         const matchedSlug = userCity ? config.geo[userCity] : null;
 
         if (matchedSlug) {
             workingPath = matchedSlug;
-            isGeoRedirect = true;
         }
     }
 
@@ -65,15 +63,17 @@ export async function onRequest(context) {
 
     // 5. Build Final Response
     let response;
+    const isSpecialRoute = version !== 'default' || (isRoot && workingPath !== '');
 
-    if (version !== 'default' || isGeoRedirect) {
+    if (isSpecialRoute) {
         const fetchUrl = new URL(url);
 
         if (version !== 'default') {
-            // participating in A/B test
-            fetchUrl.pathname = `/variants/${workingPath}/${version}`;
+            // participating in A/B test (either on root or city-assigned root)
+            const basePath = workingPath || 'index';
+            fetchUrl.pathname = `/variants/${basePath}/${version}`;
         } else {
-            // just geo-redirected to city root
+            // just showing city-specific content on root
             fetchUrl.pathname = `/${workingPath}`;
         }
 
@@ -90,16 +90,13 @@ export async function onRequest(context) {
     // 6. Apply Cookies & Debug Headers
     const newRes = new Response(response.body, response);
 
-    if (isGeoRedirect) {
-        newRes.headers.append('Set-Cookie', `geo_assigned=true; Path=/; Max-Age=604800`);
-    }
-
     if (variants && variants.length > 0) {
         newRes.headers.append('Set-Cookie', `test_version=${version}; Path=/; Max-Age=2592000; SameSite=Lax`);
     }
 
     newRes.headers.set('x-debug-cf-city', context.request.cf?.city || 'not-found');
     newRes.headers.set('x-debug-matched-slug', workingPath || 'root');
+    newRes.headers.set('x-debug-version', version);
 
     return newRes;
 }
