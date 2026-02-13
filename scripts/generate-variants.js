@@ -13,20 +13,29 @@ async function generateVariants() {
     console.log('Fetching cities for variant generation...');
     const cities = await fetchAllCities();
 
-    const middlewareConfig = {};
+    const middlewareConfig = {
+        variants: {},
+        geo: {}
+    };
 
     cities.forEach(city => {
         // Handle both flattened and non-flattened structure for safety
         const attrs = city.attributes || city;
         const slug = attrs.path;
         const version = attrs.test_version;
+        const cityName = attrs.city_name;
 
         if (slug) {
-            if (!middlewareConfig[slug]) {
-                middlewareConfig[slug] = [];
+            if (!middlewareConfig.variants[slug]) {
+                middlewareConfig.variants[slug] = [];
             }
             if (version) {
-                middlewareConfig[slug].push(version);
+                middlewareConfig.variants[slug].push(version);
+            }
+
+            // Map city_name to slug for Geo-IP matching
+            if (cityName && !version) {
+                middlewareConfig.geo[cityName.toLowerCase()] = slug;
             }
         }
     });

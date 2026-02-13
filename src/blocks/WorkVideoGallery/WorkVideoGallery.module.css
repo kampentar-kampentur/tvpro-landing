@@ -130,26 +130,44 @@
 }
 
 @media (max-width: 768px) {
-    .workVideoGallery {
-        /* padding: 60px 0; */
+    .header {
+        margin-bottom: 32px;
     }
 
     .grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
 
-    .videoTitle {
-        font-size: 18px;
+    .videoCard {
+        border-radius: 12px;
+        padding: 4px;
+    }
+
+    .thumbnailWrapper {
+        border-radius: 8px;
+    }
+
+    /* Span full width if odd and last */
+    .videoCard:last-child:nth-child(odd) {
+        grid-column: span 2;
+    }
+
+    .videoInfo {
+        display: none;
     }
 
     .playButton {
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
     }
 
     .playButton svg {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .footer {
+        margin-top: 40px;
     }
 }
