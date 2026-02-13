@@ -1,4 +1,4 @@
-.youtubeModalContent {
+.youtubeModalContent.youtubeModalContent {
     max-width: 1000px !important;
     width: 95vw !important;
     padding: 0 !important;
@@ -26,7 +26,7 @@
 }
 
 @media (max-width: 768px) {
-    .youtubeModalContent {
+    .youtubeModalContent.youtubeModalContent {
         width: 100vw !important;
         height: auto !important;
     }
