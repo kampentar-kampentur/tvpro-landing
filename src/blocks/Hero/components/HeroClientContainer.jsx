@@ -33,7 +33,7 @@ const PromoSlide = ({ data }) => (
 );
 
 export default function HeroClientContainer({ videoSrc = '/optimized/mainVideo2-720p.mp4' }) {
-    // Теперь мы можем прокидывать сами компоненты в массив slides
+
     const carouselSlides = [
         {
             type: 'video',
@@ -41,9 +41,9 @@ export default function HeroClientContainer({ videoSrc = '/optimized/mainVideo2-
                 src360: '/optimized/IMG_3107-360p.mp4',
                 src480: '/optimized/IMG_3107-480p.mp4',
                 src720: '/optimized/IMG_3107-720p.mp4',
-                mutedInModal: false, // Громко при открытии
+                mutedInModal: false,
                 tracks: [
-                    { src: '/subs/IMG_3107.vtt', srcLang: 'en', label: 'English', default: true }
+                    { src: '/subs/IMG_3107.vtt', srcLang: 'en', label: 'English', default: false }
                 ]
             }
         },
@@ -51,7 +51,7 @@ export default function HeroClientContainer({ videoSrc = '/optimized/mainVideo2-
             type: 'video',
             data: {
                 src720: videoSrc,
-                mutedInModal: true // Без звука при открытии
+                mutedInModal: true
             }
         }
     ];

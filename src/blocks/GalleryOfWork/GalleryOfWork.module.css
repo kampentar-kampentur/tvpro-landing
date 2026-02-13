@@ -1,4 +1,5 @@
 .galleryOfWork {
+  /* section styles if needed */
 }
 
 .sliderWrap {
@@ -10,18 +11,34 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 60px; /* Adjust spacing as needed */
+  margin-top: 40px;
+  /* Reduced from 60px */
   padding: 0 20px;
   justify-content: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .ctaText {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
   color: var(--foreground);
   text-align: center;
+}
+
+.ctaButton {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  padding: 12px 32px !important;
+  /* Reduced from 16px */
+  letter-spacing: -0.01em;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .ctaButtons {
@@ -31,4 +48,19 @@
 
 .galleryOfWorkHeader {
   margin-bottom: 40px;
+}
+
+.gridContainer {
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-out;
+  will-change: opacity, transform;
+}
+
+.fadeIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fadeOut {
+  opacity: 0;
+  transform: translateY(10px);
 }

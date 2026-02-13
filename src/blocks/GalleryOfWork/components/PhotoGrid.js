@@ -9,7 +9,7 @@ const PhotoGrid = ({ images }) => {
       {images && images.map((image, index) => (
         <PhotoCard
           className={photoStyles.photoCell}
-          key={index}
+          key={image.id || index}
           image={image.image}
           videoUrl={image.videoUrl}
           video={image.video}
