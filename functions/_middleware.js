@@ -87,7 +87,7 @@ export async function onRequest(context) {
         response = await context.next();
     }
 
-    // 6. Apply Cookies
+    // 6. Apply Cookies & Debug Headers
     const newRes = new Response(response.body, response);
 
     if (isGeoRedirect) {
@@ -97,6 +97,9 @@ export async function onRequest(context) {
     if (variants && variants.length > 0) {
         newRes.headers.append('Set-Cookie', `test_version=${version}; Path=/; Max-Age=2592000; SameSite=Lax`);
     }
+
+    newRes.headers.set('x-debug-cf-city', context.request.cf?.city || 'not-found');
+    newRes.headers.set('x-debug-matched-slug', workingPath || 'root');
 
     return newRes;
 }
