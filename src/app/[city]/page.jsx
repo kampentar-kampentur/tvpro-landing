@@ -6,13 +6,24 @@ import { notFound } from 'next/navigation';
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-    const cities = await getAllCities() || [];
-    // Filter for only "default" versions (where test_version is null/empty)
-    return cities
-        .filter(city => !city.test_version && city.path)
-        .map((city) => ({
-            city: city.path,
-        }));
+    try {
+        const cities = await getAllCities() || [];
+        const params = cities
+            .filter(city => !city.test_version && city.path)
+            .map((city) => ({
+                city: city.path,
+            }));
+
+        if (params.length === 0) {
+            console.log("[Build Info] No cities found for static generation. Providing placeholder.");
+            return [{ city: 'houston' }]; // Houston is almost always there, safe fallback
+        }
+
+        return params;
+    } catch (error) {
+        console.error("[Build Error] Failed to generate city static params:", error);
+        return [{ city: 'houston' }];
+    }
 }
 
 export async function generateMetadata({ params }) {

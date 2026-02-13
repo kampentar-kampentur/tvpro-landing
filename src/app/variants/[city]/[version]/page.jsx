@@ -5,19 +5,28 @@ import { notFound } from 'next/navigation';
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-    const cities = await getAllCities() || [];
-    const params = cities
-        .filter(city => city.test_version && city.path)
-        .map((city) => ({
-            city: city.path,
-            version: city.test_version,
-        }));
+    try {
+        const cities = await getAllCities() || [];
+        const params = cities
+            .filter(city => city.test_version && city.path)
+            .map((city) => ({
+                city: city.path,
+                version: city.test_version,
+            }));
 
-    // Next.js 15 + output: export can fail if a dynamic route returns an empty array.
-    // However, with dynamicParams = false it SHOULD be okay. 
-    // We log to help with debugging if it still fails.
-    console.log(`[Build] Generating ${params.length} variant static params`);
-    return params;
+        if (params.length === 0) {
+            console.log("[Build Info] No variants found in Strapi. Providing placeholder to prevent build failure.");
+            // Return a safe placeholder that will just 404/NotFoundError in the page
+            return [{ city: 'build-placeholder', version: 'none' }];
+        }
+
+        console.log(`[Build Success] Generating ${params.length} variant static params`);
+        return params;
+    } catch (error) {
+        console.error("[Build Error] Failed to generate variant static params:", error);
+        // Fallback to placeholder to at least allow the build to finish
+        return [{ city: 'build-error', version: 'error' }];
+    }
 }
 
 export async function generateMetadata({ params }) {
