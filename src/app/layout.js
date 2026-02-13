@@ -8,6 +8,7 @@ import Footer from "@/blocks/Footer";
 import { GoogleTagManager } from '@next/third-parties/google'
 import Script from "next/script";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
+import EngagementTracker from "@/components/EngagementTracker/EngagementTracker";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -187,6 +188,7 @@ export default async function RootLayout({ children }) {
       </head>
       <body className={redHatDisplay.variable}>
         <ModalProvider>
+          <EngagementTracker />
           <Header cta={cta} />
           <main style={{ paddingTop: 80, flexGrow: 1 }}>
             {children}
