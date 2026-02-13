@@ -55,7 +55,7 @@ export default async function GalleryOfWork({ data = {} }) {
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
           <div className={styles.ctaButtons}>
-            <QuoteButton variant="primary" size="small" modalName="BookNow">Get Your Price in 30 Seconds</QuoteButton>
+            <QuoteButton variant="primary" size="large" modalName="BookNow" className={styles.ctaButton}>Get Your Price in 30 Seconds</QuoteButton>
           </div>
         </div>
       </div>

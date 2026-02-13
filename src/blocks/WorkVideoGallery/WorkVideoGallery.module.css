@@ -20,10 +20,11 @@
     border-radius: 20px;
     padding: 8px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background-color 0.3s ease;
+    transition-delay: var(--reveal-delay, 0s), var(--reveal-delay, 0s), 0s, 0s;
     /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
     border: 1px solid #e7e7eb;
-    background: var(--card-bg, #fff);
+    /* background: var(--card-bg, #fff); */
     position: relative;
 
     /* Initial state for animation */
@@ -37,10 +38,10 @@
 }
 
 .videoCard:hover {
-    /* transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    transition-delay: 0s;
     background-color: #fff;
-    border: #fff;
+    border: 1px solid #fff;
     box-shadow: 0 5px 11px #0000001f, 0 19px 19px #00000017, 0 44px 26px #00000014, 0 78px 31px #0000000a, 0 121px 34px #00000005;
 }
 
@@ -126,18 +127,34 @@
 }
 
 .footer {
-    margin-top: 56px;
+    margin-top: 40px;
+    /* Reduced from 56px */
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
+    /* Reduced from 24px */
 }
 
 .ctaText {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     color: #333;
+}
+
+.ctaButton {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    padding: 12px 32px !important;
+    letter-spacing: -0.01em;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.ctaButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {

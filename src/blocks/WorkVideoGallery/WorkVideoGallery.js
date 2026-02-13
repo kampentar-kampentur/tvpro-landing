@@ -16,7 +16,7 @@ const VideoCard = ({ video, index = 0 }) => {
         <div
             ref={ref}
             className={`${styles.videoCard} ${isInView ? styles.reveal : ""}`}
-            style={{ transitionDelay: `${index * 0.1}s` }}
+            style={{ "--reveal-delay": `${index * 0.1}s` }}
             onClick={() => openModal("YouTubeModal", { videoId: video.youtubeId })}
         >
             <div className={styles.thumbnailWrapper}>
@@ -102,7 +102,7 @@ export default function WorkVideoGallery({ data = {} }) {
 
                 <div className={styles.footer}>
                     <p className={styles.ctaText}>Ready to start your project?</p>
-                    <QuoteButton variant="primary" size="small">
+                    <QuoteButton variant="primary" size="large" className={styles.ctaButton}>
                         Get Your Price in 30 Seconds
                     </QuoteButton>
                 </div>

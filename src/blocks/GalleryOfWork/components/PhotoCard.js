@@ -94,7 +94,7 @@ const PhotoCard = ({ image, videoUrl, video, className, images, currentIndex }) 
       <div
         ref={ref}
         className={`${styles.photoCard} ${className} ${isInView ? styles.reveal : ""}`}
-        style={{ transitionDelay: `${(currentIndex % 4) * 0.1}s` }}
+        style={{ "--reveal-delay": `${(currentIndex % 4) * 0.1}s` }}
         tabIndex={0}
         role="button"
         onClick={handleOpen}
