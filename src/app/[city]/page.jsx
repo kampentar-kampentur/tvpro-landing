@@ -3,13 +3,13 @@ import BlockRenderer from '@/components/BlockRenderer';
 import { notFound } from 'next/navigation';
 
 // 1. Generate Static Params for SSG
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
-    const cities = await getAllCities();
+    const cities = await getAllCities() || [];
     // Filter for only "default" versions (where test_version is null/empty)
-    // Variants are handled via separate build process or manual paths if needed,
-    // but standard Next.js SSG usually builds the main paths here.
     return cities
-        .filter(city => !city.test_version)
+        .filter(city => !city.test_version && city.path)
         .map((city) => ({
             city: city.path,
         }));

@@ -2,14 +2,22 @@ import { fetchAPI, getAllCities, getGlobalConfig, getCity } from '@/lib/strapi';
 import BlockRenderer from '@/components/BlockRenderer';
 import { notFound } from 'next/navigation';
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
-    const cities = await getAllCities();
-    return cities
-        .filter(city => city.test_version)
+    const cities = await getAllCities() || [];
+    const params = cities
+        .filter(city => city.test_version && city.path)
         .map((city) => ({
             city: city.path,
             version: city.test_version,
         }));
+
+    // Next.js 15 + output: export can fail if a dynamic route returns an empty array.
+    // However, with dynamicParams = false it SHOULD be okay. 
+    // We log to help with debugging if it still fails.
+    console.log(`[Build] Generating ${params.length} variant static params`);
+    return params;
 }
 
 export async function generateMetadata({ params }) {
