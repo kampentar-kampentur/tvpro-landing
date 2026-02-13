@@ -63,7 +63,11 @@ export default function WorkVideoGallery({ data = {} }) {
     const subTitle = data.subTitle || defaultData?.subTitle || "Documentation of our high-quality professional installations.";
 
     // Support both 'videos' (local prop) and 'videoItem' (Strapi)
-    const rawVideos = data.videos || data.videoItem || defaultData?.videoItem || [];
+    // Fix: If city-specific array is empty, fallback to global defaultData
+    const cityVideos = data.videos || data.videoItem;
+    const rawVideos = (cityVideos && cityVideos.length > 0)
+        ? cityVideos
+        : (defaultData?.videoItem || []);
 
     const videos = rawVideos.map((v, idx) => ({
         id: v.id || idx,
