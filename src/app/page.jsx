@@ -30,6 +30,10 @@ const GalleryOfWork = dynamic(() => import("@/blocks/GalleryOfWork"), {
   loading: () => <div>Loading...</div>
 });
 
+const WorkVideoGallery = dynamic(() => import("@/blocks/WorkVideoGallery/WorkVideoGallery"), {
+  loading: () => <div>Loading...</div>
+});
+
 const Certificates = dynamic(() => import("@/blocks/Certificates"), {
   loading: () => <div>Loading...</div>
 });
@@ -55,12 +59,13 @@ export default function Home() {
   return (
     <div className={styles.tvproMain}>
       <Hero />
-      <TVSizes />
-      <GalleryOfWork />
+      <CustomerReviews />
       <Certificates />
+      {/* <TVSizes /> */}
+      <GalleryOfWork />
+      <WorkVideoGallery />
       <MountingTypes />
       <WhyCustomersTrustUs />
-      <CustomerReviews />
       <OurServices />
       <AboutUs />
       <FAQ />

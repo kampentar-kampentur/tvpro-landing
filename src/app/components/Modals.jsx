@@ -19,6 +19,11 @@ const VideoModal = dynamic(() => import("@/modals/VideoModal/VideoModal"), {
   loading: () => <div>Loading video...</div>
 });
 
+const YouTubeModal = dynamic(() => import("@/modals/YouTubeModal/YouTubeModal"), {
+  ssr: false,
+  loading: () => <div>Loading video...</div>
+});
+
 // const SeeYouSoonModal = dynamic(() => import("@/modals/SeeYouSoonModal"), {
 //   ssr: false,
 //   loading: () => <div>Loading modal...</div>
@@ -35,6 +40,7 @@ export default function Modals() {
       <BestQuoteModal />
       <BookNowModal />
       <VideoModal />
+      <YouTubeModal />
       {/* <SeeYouSoonModal/>
       <BookingSuccessModal/> */}
     </>
