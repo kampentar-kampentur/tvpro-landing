@@ -11,10 +11,10 @@
   /* gray (borders, elements) */
   --gray-medium: #6B6A73;
   /* new gray medium color */
-  --green: #157DC1;
-  /* green (button) */
-  --green-hover: #14679E;
-  /* green hover (button) */
+  --green: #0d64a0;
+  /* authoritative deep blue */
+  --green-hover: #0a4d7d;
+  /* deeper hover */
   --gray-extra-light: #e7e7eb;
   /* extra light gray (button disabled, border hover) */
   --text-secondary: var(--gray);

@@ -53,7 +53,16 @@ export default function HeroClientContainer({ videoSrc = '/optimized/mainVideo2-
                 src720: videoSrc,
                 mutedInModal: true
             }
-        }
+        },
+        {
+            type: 'video',
+            data: {
+                src360: '/optimized/IMG_3057-360p.mp4',
+                src480: '/optimized/IMG_3057-480p.mp4',
+                src720: '/optimized/IMG_3057-720p.mp4',
+                mutedInModal: false,
+            }
+        },
     ];
 
     return (
