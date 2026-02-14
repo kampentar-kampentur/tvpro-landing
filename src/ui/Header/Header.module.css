@@ -158,11 +158,19 @@ button.menuButton {
     bottom: 20px;
     right: 20px;
     z-index: 999;
-    border-radius: 100000px;
-    padding: 12px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    background-color: var(--green);
+    color: var(--white);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+  }
+
+  .phoneButton:hover {
+    background-color: var(--green-hover);
+    transform: scale(1.1);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
   }
 
   .phoneButton span {
