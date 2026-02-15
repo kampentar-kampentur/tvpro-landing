@@ -61,9 +61,9 @@ export default function Home() {
       <Hero />
       <WorkVideoGallery />
       <CustomerReviews />
+      <GalleryOfWork />
       <Certificates />
       {/* <TVSizes /> */}
-      <GalleryOfWork />
       <MountingTypes />
       <WhyCustomersTrustUs />
       <OurServices />
