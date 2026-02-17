@@ -3,30 +3,30 @@
 import dynamic from "next/dynamic";
 
 // Dynamically import modals with lazy loading
-// Defer CSS for BestQuoteModal by using a separate deferred component
+// No loading placeholder needed — modals are hidden by default until opened
 const BestQuoteModal = dynamic(() => import("@/modals/BestQuoteModal/BestQuoteModalDeferred"), {
   ssr: false,
-  loading: () => <div>Loading modal...</div>
+  loading: () => null
 });
 
 const BookNowModal = dynamic(() => import("@/modals/BookNowModal"), {
   ssr: false,
-  loading: () => <div>Loading modal...</div>
+  loading: () => null
 });
 
 const VideoModal = dynamic(() => import("@/modals/VideoModal/VideoModal"), {
   ssr: false,
-  loading: () => <div>Loading video...</div>
+  loading: () => null
 });
 
 const YouTubeModal = dynamic(() => import("@/modals/YouTubeModal/YouTubeModal"), {
   ssr: false,
-  loading: () => <div>Loading video...</div>
+  loading: () => null
 });
 
 const ExitIntentModal = dynamic(() => import("@/modals/ExitIntentModal/ExitIntentModal"), {
   ssr: false,
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 // const SeeYouSoonModal = dynamic(() => import("@/modals/SeeYouSoonModal"), {
