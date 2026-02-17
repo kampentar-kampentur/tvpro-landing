@@ -8,6 +8,7 @@ import { useModalState } from "@/providers/ModalProvider";
 const YouTubeModal = () => {
     const { isOpen, close, data } = useModalState("YouTubeModal");
     const videoId = data?.props?.videoId;
+    const isVertical = data?.props?.isVertical;
 
     if (!videoId && isOpen) {
         console.error("YouTubeModal: videoId is missing");
@@ -17,9 +18,9 @@ const YouTubeModal = () => {
         <Modal
             isOpen={isOpen}
             onClose={close}
-            className={styles.youtubeModalContent}
+            className={`${styles.youtubeModalContent} ${isVertical ? styles.isVerticalModal : ""}`}
         >
-            <div className={styles.videoWrapper}>
+            <div className={`${styles.videoWrapper} ${isVertical ? styles.isVertical : ""}`}>
                 {isOpen && (
                     <iframe
                         src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}

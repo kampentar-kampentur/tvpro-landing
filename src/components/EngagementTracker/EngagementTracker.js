@@ -4,14 +4,23 @@ import { useEffect, useRef, useCallback } from 'react';
 import { useModal } from "@/providers/ModalProvider";
 
 const EngagementTracker = () => {
-    const { openModal } = useModal();
+    const { openModal, modals } = useModal();
     const hasTriggered = useRef(false);
     const idleTimer = useRef(null);
     const lastScrollPos = useRef(0);
+    const isAnyModalOpen = useRef(false);
+
+    // Update ref when modals change
+    useEffect(() => {
+        isAnyModalOpen.current = modals && modals.length > 0;
+    }, [modals]);
 
     const triggerPopup = useCallback(() => {
         // Capping: One per session
         if (hasTriggered.current || sessionStorage.getItem('exit_popup_triggered')) return;
+
+        // Don't trigger if any modal is already open
+        if (isAnyModalOpen.current) return;
 
         openModal('ExitIntentModal');
         hasTriggered.current = true;

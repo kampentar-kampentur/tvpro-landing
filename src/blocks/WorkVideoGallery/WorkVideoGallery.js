@@ -17,7 +17,10 @@ const VideoCard = ({ video, index = 0 }) => {
             ref={ref}
             className={`${styles.videoCard} ${isInView ? styles.reveal : ""}`}
             style={{ "--reveal-delay": `${index * 0.1}s` }}
-            onClick={() => openModal("YouTubeModal", { videoId: video.youtubeId })}
+            onClick={() => openModal("YouTubeModal", {
+                videoId: video.youtubeId,
+                isVertical: video.isVertical
+            })}
         >
             <div className={styles.thumbnailWrapper}>
                 <Image
@@ -76,6 +79,7 @@ export default function WorkVideoGallery({ data = {} }) {
     const videos = rawVideos.map((v, idx) => ({
         id: v.id || idx,
         youtubeId: v.youtubeId || "dQw4w9WgXcQ",
+        isVertical: v.isVertical || false,
         title: v.title || "Video Title",
         description: v.description || "Description placeholder"
     }));
