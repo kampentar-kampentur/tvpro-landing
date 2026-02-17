@@ -109,7 +109,6 @@
   flex: 1;
   /* max-width: 844px; */
   margin: 0 auto;
-  padding: 20px;
   max-width: 736px;
   overflow: auto;
   align-self: stretch;
@@ -284,7 +283,6 @@
     max-width: 100%;
     max-height: calc(100vh - 100px);
     width: 100%;
-    padding: 20px;
   }
 
   .bestQuoteHeader {
