@@ -5,10 +5,12 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Image from "next/image";
 import VideoCardClient from "./VideoCardClient";
 
-const VideoCard = ({ video, index = 0, isLastOdd = false }) => {
-    const thumbType = isLastOdd ? 'maxresdefault' : 'hqdefault';
-    const thumbWidth = isLastOdd ? 1280 : 480;
-    const thumbHeight = isLastOdd ? 720 : 360;
+const VideoCard = ({ video, index = 0, length }) => {
+    // Optimization: Use mqdefault (320x180) for all grid thumbnails to save data.
+    // Heavy maxresdefault is only needed for the full-width view in modal.
+    const thumbType = length % 2 !== 0 && index !== length - 1 ? 'hqdefault' : 'sddefault';
+    const thumbWidth = length % 2 !== 0 && index !== length - 1 ? 480 : 640;
+    const thumbHeight = length % 2 !== 0 && index !== length - 1 ? 360 : 480;
     return (
         <VideoCardClient videoId={video.youtubeId} isVertical={video.isVertical}>
             <div
@@ -23,7 +25,8 @@ const VideoCard = ({ video, index = 0, isLastOdd = false }) => {
                         width={thumbWidth}
                         height={thumbHeight}
                         loading="lazy"
-                        unoptimized={true}
+                        fetchPriority="low"
+                    // unoptimized={true}
                     />
                     <div className={styles.playOverlay}>
                         <div className={styles.playButton}>
@@ -42,18 +45,36 @@ const VideoCard = ({ video, index = 0, isLastOdd = false }) => {
     );
 };
 
-export default function WorkVideoGallery({ data = {} }) {
-    const title = data.title || "See Our Work in Action";
-    const subTitle = data.subTitle || "Documentation of our high-quality professional installations.";
+async function getWorkVideoGalleryData() {
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/see-our-work-in-action?populate=*`,
+            { cache: 'force-cache' }
+        );
+        const json = await res.json();
+        return json.data;
+    } catch (error) {
+        console.error("Error fetching WorkVideoGallery data:", error);
+        return null;
+    }
+}
 
-    const rawVideos = data.videoItem || data.videos || [];
+export default async function WorkVideoGallery({ data = {} }) {
+    const videoGalleryData = await getWorkVideoGalleryData();
+    const displayData = {
+        ...videoGalleryData,
+        ...data,
+        videoItem: data.videoItem?.length > 0 ? data.videoItem : videoGalleryData.videoItem
+    }
+    const title = displayData.title || "See Our Work in Action";
+    const subTitle = displayData.subTitle || "Documentation of our high-quality professional installations.";
 
-    const videos = rawVideos.map((v, idx) => ({
+    const videos = displayData.videoItem.map((v, idx) => ({
         id: v.id || idx,
         youtubeId: v.youtubeId || "dQw4w9WgXcQ",
-        isVertical: v.isVertical || false,
-        title: v.title || "Video Title",
-        description: v.description || "Description placeholder"
+        isVertical: v.isVertical ?? false,
+        title: v.title || "Installation Project",
+        description: v.description || "Professional TV mounting by TVPro team"
     }));
 
     return (
@@ -72,7 +93,7 @@ export default function WorkVideoGallery({ data = {} }) {
 
                 <div className={styles.grid}>
                     {videos.map((video, idx) => (
-                        <VideoCard key={video.id} video={video} index={idx} isLastOdd={videos.length % 2 === 1 && idx === videos.length - 1} />
+                        <VideoCard key={video.id} video={video} index={idx} length={videos.length} />
                     ))}
                 </div>
 

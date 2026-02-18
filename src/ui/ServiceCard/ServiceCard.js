@@ -6,19 +6,19 @@ import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 export default function ServiceCard({ image, title, description, buttonText, modalName }) {
   return (
     <div className={styles.serviceCard}>
-        <SendIcon className={styles.sendIcon} width="16" height="16"/>
-        <div className={styles.imageContainer}>
-            <ImageWrapper media={image}/>
-        </div>
-        
-        <div className={styles.textWrapper}>
-            <h3 className={styles.title}>{title}</h3>
-            <span className={styles.description}>{description}</span>
-        </div>
-        <QuoteButton className={styles.hiddenButton} variant="primary" size="small" modalName={modalName || "BookNow"}>
-            {buttonText}
-        </QuoteButton>
-        <QuoteButton className={styles.invisibleButton} modalName={modalName || "BookNow"} />
+      <SendIcon className={styles.sendIcon} width="16" height="16" />
+      <div className={styles.imageContainer}>
+        <ImageWrapper media={image} defaultAlt={title} />
+      </div>
+
+      <div className={styles.textWrapper}>
+        <h3 className={styles.title}>{title}</h3>
+        <span className={styles.description}>{description}</span>
+      </div>
+      <QuoteButton className={styles.hiddenButton} variant="primary" size="small" modalName={modalName || "BookNow"}>
+        {buttonText}
+      </QuoteButton>
+      <QuoteButton className={styles.invisibleButton} modalName={modalName || "BookNow"} />
     </div>
   );
 } 

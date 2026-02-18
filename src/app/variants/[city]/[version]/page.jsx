@@ -57,6 +57,12 @@ export async function generateMetadata({ params }) {
     return {
         title,
         description,
+        address: {
+            "@type": "PostalAddress",
+            "addressLocality": city_name || "Houston",
+            "addressRegion": state_code || "TX",
+            "addressCountry": "US",
+        },
         openGraph: {
             title,
             description,
