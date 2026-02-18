@@ -140,34 +140,21 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/videoplaceholder-392.webp"
-          fetchPriority="high"
-          type="image/webp"
-        />
-        <link rel="preconnect" href="https://apps.elfsightcdn.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://static.elfsight.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cloudflareinsights.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://strapi-production-20d6.up.railway.app" />
-        <link rel="dns-prefetch" href="https://strapi-production-20d6.up.railway.app" />
+        {/* Only critical preconnects (max 4) */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//cloudflare.com" />
-        <link rel="preload" as="video" href="/optimized/mainVideo2-360p.mp4" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://strapi-production-20d6.up.railway.app" />
+        <link rel="dns-prefetch" href="https://img.youtube.com" />
         <GoogleTagManager gtmId="GTM-5QVX2Z6S" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `var $wc_load=function(a){return  JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};`,
-          }}
-        />
-        <script src="//s.ksrndkehqnwntyxlhgto.com/154265.js" />
-        {/* Meta Pixel Code */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
+        {/* Workiz tracking — deferred to not block rendering */}
+        <Script id="workiz-tracking" strategy="lazyOnload">
+          {`var $wc_load=function(a){return JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};`}
+        </Script>
+        <Script src="//s.ksrndkehqnwntyxlhgto.com/154265.js" strategy="lazyOnload" />
+        {/* Meta Pixel — deferred to afterInteractive */}
+        <Script id="facebook-pixel" strategy="afterInteractive">
+          {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -178,8 +165,8 @@ export default async function RootLayout({ children }) {
             'https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', '809936758465245');
             fbq('track', 'PageView');
-          `,
-        }} />
+          `}
+        </Script>
         <noscript>
           <img height="1" width="1" style={{ display: 'none' }}
             src="https://www.facebook.com/tr?id=809936758465245&ev=PageView&noscript=1"
@@ -198,16 +185,14 @@ export default async function RootLayout({ children }) {
           <Footer cta={cta} />
         </ModalProvider>
         <ScrollToTop />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
-              window.gtag('config', 'AW-17416148778');
-              window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
-            `,
-          }}
-        />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130" strategy="afterInteractive" />
+        <Script id="google-ads-config" strategy="afterInteractive">
+          {`
+            window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
+            window.gtag('config', 'AW-17416148778');
+            window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
+          `}
+        </Script>
         <Script id="clarity-script" strategy="afterInteractive">
           {`
             (function(c,l,a,r,i,t,y){

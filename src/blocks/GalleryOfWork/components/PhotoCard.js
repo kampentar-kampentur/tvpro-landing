@@ -12,7 +12,6 @@ const PlayIcon = (props) => (
     <polygon points="19,16 36,24 19,32" fill="#fff" />
   </svg>
 );
-console.log("RERENDE PHOTOCARD");
 // SVG Arrow Left иконка
 const ArrowLeftIcon = (props) => (
   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>

@@ -96,15 +96,15 @@ export default function ExpandingSection({
     }, [handleScroll, isVisible]);
 
     const dimensions = useMemo(() => {
-        if (!isClient) return { width: minWidth, height: minWidth / aspectRatio, borderRadius: 16 };
+        // Before hydration: use CSS defaults (width: 100%, aspect-ratio: 16/9)
+        if (!isClient) return { width: null, borderRadius: 16 };
 
-        const padding = 0;
-        const availableWidth = viewportWidth - padding;
+        const availableWidth = viewportWidth;
 
         let baseWidth, maxWidth;
         if (viewportWidth < 768) {
-            baseWidth = Math.max(280, availableWidth);
-            maxWidth = availableWidth;
+            // On mobile: always full width, no expanding animation
+            return { width: null, borderRadius: 0 };
         } else if (viewportWidth < 1200) {
             baseWidth = availableWidth;
             maxWidth = availableWidth;
@@ -118,16 +118,14 @@ export default function ExpandingSection({
 
         return {
             width: Math.round(currentWidth),
-            height: Math.round(currentWidth / aspectRatio),
             borderRadius: Math.round(borderRadius)
         };
-    }, [isClient, viewportWidth, minWidth, aspectRatio, scrollYProgress]);
+    }, [isClient, viewportWidth, minWidth, scrollYProgress]);
 
     const containerStyle = {
-        width: dimensions.width ? `${dimensions.width}px` : '100%',
-        height: dimensions.height ? `${dimensions.height}px` : 'auto',
-        borderRadius: `${dimensions.borderRadius}px`,
-        transition: viewportWidth < 768 ? 'none' : 'width 0.1s ease-out, height 0.1s ease-out, border-radius 0.1s ease-out'
+        width: dimensions.width ? `${dimensions.width}px` : undefined,
+        borderRadius: dimensions.borderRadius != null ? `${dimensions.borderRadius}px` : undefined,
+        transition: viewportWidth < 768 ? 'none' : 'width 0.1s ease-out, border-radius 0.1s ease-out'
     };
 
     return (
