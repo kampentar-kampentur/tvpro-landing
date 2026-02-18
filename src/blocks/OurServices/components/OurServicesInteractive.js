@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "../OurServices.module.css";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
-import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
 
 const INTERVAL_TIME = 5000; // 5 seconds

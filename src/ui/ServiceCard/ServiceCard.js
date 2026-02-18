@@ -1,7 +1,7 @@
 import styles from "./ServiceCard.module.css";
 import SendIcon from "@/assets/icons/send.svg"
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
-import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 
 export default function ServiceCard({ image, title, description, buttonText, modalName }) {
   return (

@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
 import styles from "./CertificateCard.module.css";
-import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import Modal from "@/ui/Modal/Modal";
 
 // SVG Arrow Left иконка

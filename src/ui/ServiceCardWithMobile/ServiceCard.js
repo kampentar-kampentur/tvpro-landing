@@ -3,7 +3,7 @@
 import styles from "./ServiceCard.module.css";
 import SendIcon from "@/assets/icons/send.svg"
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
-import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import { useState } from "react";
 import InfoCircle from '@/assets/icons/InfoCircle.svg'
 import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg'

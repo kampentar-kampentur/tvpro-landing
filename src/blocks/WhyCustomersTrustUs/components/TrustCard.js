@@ -1,7 +1,7 @@
 'use client'
 
 import styles from "./TrustCard.module.css";
-import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import { useState, useRef, useEffect } from "react";
 import InfoCircle from '@/assets/icons/InfoCircle.svg'
 import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg'

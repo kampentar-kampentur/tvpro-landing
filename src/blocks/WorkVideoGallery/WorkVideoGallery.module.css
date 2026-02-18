@@ -178,7 +178,7 @@
 
     /* Vertical videos: portrait aspect ratio on mobile - restricted height */
     .verticalCard .thumbnailWrapper {
-        padding-bottom: 111%;
+        padding-bottom: 150%;
     }
 
     /* Span full width if odd and last */
