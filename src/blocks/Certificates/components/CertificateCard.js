@@ -7,14 +7,14 @@ import Modal from "@/ui/Modal/Modal";
 // SVG Arrow Left иконка
 const ArrowLeftIcon = (props) => (
   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
-    <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 // SVG Arrow Right иконка
 const ArrowRightIcon = (props) => (
   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
-    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -74,7 +74,7 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
         role="button"
         onClick={handleOpen}
       >
-        {image && <ImageWrapper media={image} className={styles.image} />}
+        {image && <ImageWrapper media={image} className={styles.image} defaultAlt="Professional Certification" />}
       </div>
       <Modal isOpen={open} onClose={() => setOpen(false)}>
         <div className={styles.modalContainer}>
@@ -87,7 +87,7 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            {currentCertificate && <ImageWrapper media={currentCertificate} className={styles.modalImage} />}
+            {currentCertificate && <ImageWrapper media={currentCertificate} className={styles.modalImage} defaultAlt="Enlarged Certificate View" />}
           </div>
           <button className={styles.arrowRight} onClick={handleNext}>
             <ArrowRightIcon />

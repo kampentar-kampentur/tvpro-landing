@@ -5,7 +5,6 @@ import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import dynamic from "next/dynamic";
 import Button from "@/ui/Button/Button";
 import Text from "@/ui/Text/Text";
-import Head from "next/head";
 import Image from "next/image";
 import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
 import FiveStarImg from "@/assets/badges/5star.webp"
@@ -74,22 +73,20 @@ export default async function Hero({ data = {}, cityContext }) {
 
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "VideoObject",
-              "name": "TV Wall Mounting Demo by TVPro Handy Services",
-              "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
-              "uploadDate": "2025-07-25",
-              "contentUrl": "https://tvprousa.com/mainVideo2.mp4",
-              "embedUrl": "https://tvprousa.com",
-            }),
-          }}
-        />
-      </Head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            "name": "TV Wall Mounting Demo by TVPro Handy Services",
+            "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
+            "uploadDate": "2025-07-25",
+            "contentUrl": "https://tvprousa.com/mainVideo2.mp4",
+            "embedUrl": "https://tvprousa.com",
+          }),
+        }}
+      />
       <RunningTextLine textLines={heroLinesData} />
       <div className={`block ${styles.hero}`}>
         <div className={`blockContainer ${styles.heroContainer}`}>
