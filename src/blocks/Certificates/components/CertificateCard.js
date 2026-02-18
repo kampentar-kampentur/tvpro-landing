@@ -74,7 +74,13 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
         role="button"
         onClick={handleOpen}
       >
-        {image && <ImageWrapper media={image} className={styles.image} defaultAlt="Professional Certification" />}
+        {image && <ImageWrapper
+          media={image}
+          className={styles.image}
+          defaultAlt="Professional Certification"
+          width={350}
+          sizes="(max-width: 768px) 212px, 350px"
+        />}
       </div>
       <Modal isOpen={open} onClose={() => setOpen(false)}>
         <div className={styles.modalContainer}>

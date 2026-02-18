@@ -1,43 +1,49 @@
+"use client";
+
 import Image from "next/image";
 
 /**
- * Inserts Cloudinary transformations into a Cloudinary URL.
- * Adds auto-format (WebP/AVIF), auto-quality, and width limit.
- * Example: .../upload/v123/image.jpg → .../upload/c_limit,w_640,f_auto,q_auto/v123/image.jpg
+ * Cloudinary loader for next/image.
+ * Generates optimized URLs with specific widths for srcset.
  */
-function getOptimizedCloudinaryUrl(url, maxWidth = 800) {
-    if (!url || !url.includes('res.cloudinary.com')) return url;
+const cloudinaryLoader = ({ src, width, quality }) => {
+    if (!src || !src.includes('res.cloudinary.com')) return src;
 
-    const transformation = `c_limit,w_${maxWidth},f_auto,q_auto`;
+    // Use c_limit to ensure we don't upscale, and auto-format/quality
+    const transformation = `c_limit,w_${width},f_auto,q_auto:${quality || 'good'}`;
 
     // Insert transformation after /upload/
-    return url.replace(
+    return src.replace(
         /\/upload\//,
         `/upload/${transformation}/`
     );
-}
+};
 
 export default function ImageWrapper({
     media,
     className,
     defaultAlt,
-    maxWidth = 800,
+    width,
+    height,
     sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
     priority = false
 }) {
     if (!media) return null;
 
-    const optimizedUrl = getOptimizedCloudinaryUrl(media.url, maxWidth);
+    // We use Math.min to avoid passing extremely large original dimensions to the <img> tag
+    // while still providing correctly scaled width/height attributes for aspect ratio.
+    const finalWidth = width || Math.min(media.width, 1200);
+    const finalHeight = height || Math.round(finalWidth / (media.width / (media.height || 1)));
 
     return <Image
+        loader={cloudinaryLoader}
+        src={media.url}
         className={className}
-        width={media.width}
-        height={media.height}
-        src={optimizedUrl}
-        alt={media.alternativeText || media.caption || defaultAlt || "Professional TV Mounting Service"}
-        unoptimized={true}
-        loading={priority ? "eager" : "lazy"}
+        width={finalWidth}
+        height={finalHeight}
+        alt={media.alternativeText || media.caption || defaultAlt || ""}
         priority={priority}
         sizes={sizes}
+    // Note: loading="lazy" is default unless priority is true
     />;
 }

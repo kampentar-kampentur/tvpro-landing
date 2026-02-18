@@ -165,40 +165,70 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
-        <Script
-          id="gtm-script"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-5QVX2Z6S');`,
-          }}
-        />
+        <Script id="delayed-marketing-scripts" strategy="afterInteractive">
+          {`
+            (function() {
+              var fired = false;
+              function loadScripts() {
+                if (fired) return;
+                fired = true;
+                
+                // GTM
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
+
+                // Meta Pixel
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '809936758465245');
+                fbq('track', 'PageView');
+
+                // Clarity
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
+                
+                // Google Ads / GA4
+                var gtagScript = document.createElement('script');
+                gtagScript.async = true;
+                gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130";
+                document.head.appendChild(gtagScript);
+                
+                window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
+                window.gtag('js', new Date());
+                window.gtag('config', 'G-GZBG74J130');
+                window.gtag('config', 'AW-17416148778');
+                window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
+              }
+
+              // Load after 3.5s or on interaction
+              var timeoutId = setTimeout(loadScripts, 3500);
+              window.addEventListener('scroll', loadScripts, {passive: true, once: true});
+              window.addEventListener('touchstart', loadScripts, {passive: true, once: true});
+            })();
+          `}
+        </Script>
         {/* Workiz tracking — deferred to not block rendering */}
         <Script id="workiz-tracking" strategy="lazyOnload">
           {`var $wc_load=function(a){return JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};`}
         </Script>
         <Script src="//s.ksrndkehqnwntyxlhgto.com/154265.js" strategy="lazyOnload" />
-        {/* Meta Pixel — deferred to lazyOnload */}
-        <Script id="facebook-pixel" strategy="lazyOnload">
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '809936758465245');
-            fbq('track', 'PageView');
-          `}
-        </Script>
+
         <noscript>
           <img height="1" width="1" style={{ display: 'none' }}
             src="https://www.facebook.com/tr?id=809936758465245&ev=PageView&noscript=1"
+            alt=""
           />
         </noscript>
       </head>
@@ -213,23 +243,7 @@ export default async function RootLayout({ children }) {
           <Footer cta={cta} />
         </ModalProvider>
         <ScrollToTop />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130" strategy="lazyOnload" />
-        <Script id="google-ads-config" strategy="lazyOnload">
-          {`
-            window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
-            window.gtag('config', 'AW-17416148778');
-            window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
-          `}
-        </Script>
-        <Script id="clarity-script" strategy="lazyOnload">
-          {`
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
-          `}
-        </Script>
+
       </body>
     </html>
   );

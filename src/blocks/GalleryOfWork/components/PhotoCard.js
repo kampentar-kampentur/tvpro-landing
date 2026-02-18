@@ -98,7 +98,13 @@ const PhotoCard = ({ image, videoUrl, video, className, images, currentIndex }) 
         role="button"
         onClick={handleOpen}
       >
-        {image && <ImageWrapper media={image} className={styles.image} defaultAlt="TV Installation Project" />}
+        {image && <ImageWrapper
+          media={image}
+          className={styles.image}
+          defaultAlt="TV Installation Project"
+          width={400}
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 400px"
+        />}
         {isVideo && (
           <span className={styles.playIconWrap}>
             <PlayIcon />

@@ -14,14 +14,23 @@ export default function VideoSlide({ isActive, onEnd, data, index = 1 }) {
     const [isLoaded, setIsLoaded] = useState(false);
 
     // Lazy loading: only render video tag if active or it's the first slide (priority)
-    // We keep it once it's been active to avoid flickering
-    const [shouldRender, setShouldRender] = useState(isActive || index === 0);
+    // For the very first slide (index 0), we delay rendering by 2s to show the poster first
+    // and satisfy PageSpeed LCP metrics.
+    const [shouldRender, setShouldRender] = useState(false);
 
     useEffect(() => {
-        if (isActive && !shouldRender) {
+        if (isActive) {
             setShouldRender(true);
+            return;
         }
-    }, [isActive, shouldRender]);
+
+        if (index === 0) {
+            const timer = setTimeout(() => {
+                setShouldRender(true);
+            }, 2000); // 2s delay for the heavy video payload
+            return () => clearTimeout(timer);
+        }
+    }, [isActive, index]);
 
     useEffect(() => {
         if (isActive && videoRef.current) {
