@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
-import { useModal } from "@/providers/ModalProvider";
 import styles from "./VideoSlide.module.css";
 
 export default function VideoSlide({ isActive, onEnd, data, index = 1 }) {
@@ -12,7 +11,6 @@ export default function VideoSlide({ isActive, onEnd, data, index = 1 }) {
         poster = "/videoplaceholder-392.webp"
     } = data || {};
     const videoRef = useRef(null);
-    const { openModal } = useModal();
     const [isLoaded, setIsLoaded] = useState(false);
 
     // Lazy loading: only render video tag if active or it's the first slide (priority)
@@ -38,10 +36,6 @@ export default function VideoSlide({ isActive, onEnd, data, index = 1 }) {
     return (
         <div
             className={styles.videoSlide}
-            onClick={() => openModal("VideoModal", {
-                videoData: data,
-                mutedInModal: data?.mutedInModal
-            })}
         >
             {shouldRender ? (
                 <video
