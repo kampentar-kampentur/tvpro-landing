@@ -1,18 +1,18 @@
 import React from "react";
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
-import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
-import dynamic from "next/dynamic";
+// import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
+// import dynamic from "next/dynamic";
 import Button from "@/ui/Button/Button";
 import Text from "@/ui/Text/Text";
-import Image from "next/image";
-import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
-import FiveStarImg from "@/assets/badges/5star.webp"
-import SevenDaysImg from "@/assets/badges/7days.webp"
-import InsuredImg from "@/assets/badges/insured.webp"
-import ExpandingSection from "./components/ExpandingSection";
-import HeroCarousel from "./components/HeroCarousel";
-import HeroClientContainer from "./components/HeroClientContainer";
+// import Image from "next/image";
+// import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
+// import FiveStarImg from "@/assets/badges/5star.webp"
+// import SevenDaysImg from "@/assets/badges/7days.webp"
+// import InsuredImg from "@/assets/badges/insured.webp"
+// import ExpandingSection from "./components/ExpandingSection";
+// import HeroCarousel from "./components/HeroCarousel";
+// import HeroClientContainer from "./components/HeroClientContainer";
 async function getHero() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
@@ -115,7 +115,7 @@ export default async function Hero({ data = {}, cityContext }) {
           {/* </div> */}
         </div>
       </div>
-      <HeroClientContainer />
+      {/* <HeroClientContainer /> */}
     </>
   );
 }
