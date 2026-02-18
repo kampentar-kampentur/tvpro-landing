@@ -12,7 +12,7 @@ import Text from "@/ui/Text/Text";
 // import InsuredImg from "@/assets/badges/insured.webp"
 // import ExpandingSection from "./components/ExpandingSection";
 // import HeroCarousel from "./components/HeroCarousel";
-// import HeroClientContainer from "./components/HeroClientContainer";
+import HeroClientContainer from "./components/HeroClientContainer";
 async function getHero() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
@@ -115,7 +115,7 @@ export default async function Hero({ data = {}, cityContext }) {
           {/* </div> */}
         </div>
       </div>
-      {/* <HeroClientContainer /> */}
+      <HeroClientContainer />
     </>
   );
 }
