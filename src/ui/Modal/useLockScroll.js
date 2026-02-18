@@ -34,6 +34,12 @@ export function useLockScroll(isOpen, modalRef) {
     return () => {
       if (isIOS) {
         document.removeEventListener('touchmove', preventTouchRef.current);
+
+        // Save original scroll behavior and disable it temporarily to prevent visible animation/jump
+        const html = document.documentElement;
+        const originalScrollBehavior = html.style.scrollBehavior;
+        html.style.scrollBehavior = 'auto';
+
         Object.assign(document.body.style, {
           position: '',
           top: '',
@@ -41,7 +47,13 @@ export function useLockScroll(isOpen, modalRef) {
           right: '',
           width: '',
         });
+
         window.scrollTo(0, savedY.current);
+
+        // Restore original scroll behavior after a small delay to ensure scrollTo is processed instantly
+        setTimeout(() => {
+          html.style.scrollBehavior = originalScrollBehavior || '';
+        }, 0);
       } else {
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
