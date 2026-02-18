@@ -137,6 +137,9 @@ Our TV dismount service is free with orders over $200. We also offer sound bar i
 Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
     images: ['https://tvprousa.com/og-image.png'],
   },
+  verification: {
+    // google: 'your-code', // Add if needed
+  },
 };
 
 async function getCTA() {
@@ -150,6 +153,13 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* Preload LCP Image */}
+        <link
+          rel="preload"
+          as="image"
+          href="/videoplaceholder-392.webp"
+          fetchPriority="high"
+        />
         {/* Only critical preconnects (max 4) */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
