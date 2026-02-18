@@ -124,6 +124,7 @@ export default function ExpandingSection({
 
     const containerStyle = {
         width: dimensions.width ? `${dimensions.width}px` : undefined,
+        maxWidth: isClient ? 'none' : undefined,
         borderRadius: dimensions.borderRadius != null ? `${dimensions.borderRadius}px` : undefined,
         transition: viewportWidth < 768 ? 'none' : 'width 0.1s ease-out, border-radius 0.1s ease-out'
     };
