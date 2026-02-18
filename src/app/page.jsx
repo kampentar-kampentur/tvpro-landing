@@ -43,27 +43,13 @@ const Contacts = dynamic(() => import("@/blocks/Contacts"), {
   loading: () => null
 });
 
-async function getWorkVideoGalleryData() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/see-our-work-in-action?populate=*`,
-      { cache: 'force-cache' }
-    );
-    const json = await res.json();
-    return json.data;
-  } catch (error) {
-    console.error("Error fetching WorkVideoGallery data:", error);
-    return null;
-  }
-}
 
 export default async function Home() {
-  const videoGalleryData = await getWorkVideoGalleryData();
 
   return (
     <div className={styles.tvproMain}>
       <Hero />
-      <WorkVideoGallery data={videoGalleryData || {}} />
+      <WorkVideoGallery />
       <CustomerReviews />
       <GalleryOfWork />
       <Certificates />

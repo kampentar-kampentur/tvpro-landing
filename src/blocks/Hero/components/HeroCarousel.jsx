@@ -85,6 +85,7 @@ export default function HeroCarousel({ slides = [], autoPlay = true, interval = 
                     return (
                         <div key={index} className={styles.slide}>
                             <Component
+                                index={index}
                                 isActive={index === currentSlide}
                                 onEnd={handleVideoEnd}
                                 data={slide.data}

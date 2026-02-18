@@ -98,7 +98,7 @@ const PhotoCard = ({ image, videoUrl, video, className, images, currentIndex }) 
         role="button"
         onClick={handleOpen}
       >
-        {image && <ImageWrapper media={image} className={styles.image} />}
+        {image && <ImageWrapper media={image} className={styles.image} defaultAlt="TV Installation Project" />}
         {isVideo && (
           <span className={styles.playIconWrap}>
             <PlayIcon />
@@ -117,7 +117,7 @@ const PhotoCard = ({ image, videoUrl, video, className, images, currentIndex }) 
             onTouchEnd={onTouchEnd}
           >
             {currentItem.image ? (
-              <ImageWrapper media={currentItem.image} className={styles.modalImage} />
+              <ImageWrapper media={currentItem.image} className={styles.modalImage} defaultAlt="TV Installation Gallery Image" />
             ) : currentIsVideo ? (
               <video
                 src={currentVideoSrc}
@@ -126,7 +126,9 @@ const PhotoCard = ({ image, videoUrl, video, className, images, currentIndex }) 
                 muted
                 playsInline
                 autoPlay
-              />
+              >
+                <track kind="captions" src="" label="No captions" />
+              </video>
             ) : null}
           </div>
           <button className={styles.arrowRight} onClick={handleNext}>

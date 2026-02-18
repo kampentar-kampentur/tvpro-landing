@@ -30,6 +30,17 @@ Our TV dismount service is free with orders over $200. We also offer sound bar i
 ✅ Trusted by homeowners, businesses, and designers
 
 Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   address: {
     "@type": "PostalAddress",
     "addressLocality": "Houston",
@@ -131,7 +142,6 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
 async function getCTA() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
   const json = await res.json();
-
   return json.data;
 }
 
@@ -144,7 +154,6 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://strapi-production-20d6.up.railway.app" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
         <GoogleTagManager gtmId="GTM-5QVX2Z6S" />
         {/* Workiz tracking — deferred to not block rendering */}
@@ -152,8 +161,8 @@ export default async function RootLayout({ children }) {
           {`var $wc_load=function(a){return JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};`}
         </Script>
         <Script src="//s.ksrndkehqnwntyxlhgto.com/154265.js" strategy="lazyOnload" />
-        {/* Meta Pixel — deferred to afterInteractive */}
-        <Script id="facebook-pixel" strategy="afterInteractive">
+        {/* Meta Pixel — deferred to lazyOnload */}
+        <Script id="facebook-pixel" strategy="lazyOnload">
           {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -172,7 +181,6 @@ export default async function RootLayout({ children }) {
             src="https://www.facebook.com/tr?id=809936758465245&ev=PageView&noscript=1"
           />
         </noscript>
-        {/* End Meta Pixel Code */}
       </head>
       <body className={redHatDisplay.variable}>
         <ModalProvider>
@@ -185,15 +193,15 @@ export default async function RootLayout({ children }) {
           <Footer cta={cta} />
         </ModalProvider>
         <ScrollToTop />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130" strategy="afterInteractive" />
-        <Script id="google-ads-config" strategy="afterInteractive">
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130" strategy="lazyOnload" />
+        <Script id="google-ads-config" strategy="lazyOnload">
           {`
             window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
             window.gtag('config', 'AW-17416148778');
             window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
           `}
         </Script>
-        <Script id="clarity-script" strategy="afterInteractive">
+        <Script id="clarity-script" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
