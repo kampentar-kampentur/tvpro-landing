@@ -1,7 +1,7 @@
 import styles from "./OurServices.module.css";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import OurServicesInteractive from "./components/OurServicesInteractive";
-import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 
 async function getOurServices() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/our-service?populate[services][populate]=image`);

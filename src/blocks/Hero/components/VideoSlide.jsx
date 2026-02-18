@@ -45,6 +45,8 @@ export default function VideoSlide({ isActive, onEnd, data, index = 1 }) {
                     autoPlay={isActive}
                     muted
                     playsInline
+                    width="1920"
+                    height="1080"
                     onEnded={onEnd}
                     onLoadedData={handleVideoReady}
                     onLoadedMetadata={handleVideoReady}
