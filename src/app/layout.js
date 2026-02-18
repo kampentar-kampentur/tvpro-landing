@@ -210,6 +210,14 @@ export default async function RootLayout({ children }) {
                 window.gtag('config', 'G-GZBG74J130');
                 window.gtag('config', 'AW-17416148778');
                 window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
+
+                // Workiz tracking
+                var workizLeads = {doc:{url:document.URL,ref:document.referrer,search:location.search,hash:location.hash}};
+                window.$wc_leads = JSON.parse(JSON.stringify(workizLeads));
+                var workizScript = document.createElement('script');
+                workizScript.async = true;
+                workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
+                document.head.appendChild(workizScript);
               }
 
               // Load after 3.5s or on interaction
@@ -219,11 +227,6 @@ export default async function RootLayout({ children }) {
             })();
           `}
         </Script>
-        {/* Workiz tracking — deferred to not block rendering */}
-        <Script id="workiz-tracking" strategy="lazyOnload">
-          {`var $wc_load=function(a){return JSON.parse(JSON.stringify(a))},$wc_leads=$wc_leads||{doc:{url:$wc_load(document.URL),ref:$wc_load(document.referrer),search:$wc_load(location.search),hash:$wc_load(location.hash)}};`}
-        </Script>
-        <Script src="//s.ksrndkehqnwntyxlhgto.com/154265.js" strategy="lazyOnload" />
 
         <noscript>
           <img height="1" width="1" style={{ display: 'none' }}
