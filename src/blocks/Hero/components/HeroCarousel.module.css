@@ -37,6 +37,7 @@
     z-index: 10;
     opacity: 0;
     transition: all 0.3s ease;
+    touch-action: manipulation;
 }
 
 .navButton.visible {
@@ -95,7 +96,19 @@
 
 @media (max-width: 1024px) {
     .navButton {
-        display: none;
-        /* Swipe is better on mobile */
+        display: flex;
+        opacity: 1;
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(4px);
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
     }
 }
