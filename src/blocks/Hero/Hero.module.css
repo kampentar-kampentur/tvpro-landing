@@ -125,6 +125,15 @@
   .heroContainer {
     /* align-items: flex-start;
     text-align: left; */
+    min-height: 200px;
+    /* Reserve space for heading and subtext */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero {
+    min-height: 250px;
   }
 
   .fiveStarBadge {

@@ -9,8 +9,8 @@ import Image from "next/image";
 const cloudinaryLoader = ({ src, width, quality }) => {
     if (!src || !src.includes('res.cloudinary.com')) return src;
 
-    // Use c_limit to ensure we don't upscale, and auto-format/quality
-    const transformation = `c_limit,w_${width},f_auto,q_auto:${quality || 'good'}`;
+    // Use c_fill to ensure aspect ratio, and q_auto:eco for better compression on mobile
+    const transformation = `c_fill,w_${width},f_auto,q_auto:${quality || 'eco'}`;
 
     // Insert transformation after /upload/
     return src.replace(
