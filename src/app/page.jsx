@@ -3,8 +3,17 @@ import dynamic from "next/dynamic";
 
 // Above-the-fold: direct imports for instant SSR (no Loading flash)
 import Hero from "@/blocks/Hero";
-import CustomerReviews from "@/blocks/CustomerReviews";
-import WorkVideoGallery from "@/blocks/WorkVideoGallery/WorkVideoGallery";
+
+// High-priority blocks but deferred to reduce initial JS execution
+const WorkVideoGallery = dynamic(() => import("@/blocks/WorkVideoGallery/WorkVideoGallery"), {
+  ssr: true,
+  loading: () => null
+});
+
+const CustomerReviews = dynamic(() => import("@/blocks/CustomerReviews/CustomerReviews"), {
+  ssr: true,
+  loading: () => null
+});
 
 // Below-the-fold: lazy loaded for performance (null loading = no visible placeholder)
 const TVSizes = dynamic(() => import("@/blocks/TVSizes"), {

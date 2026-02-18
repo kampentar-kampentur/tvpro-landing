@@ -218,6 +218,12 @@ export default async function RootLayout({ children }) {
                 workizScript.async = true;
                 workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
                 document.head.appendChild(workizScript);
+
+                // Thumbtack Star Widget
+                var ttScript = document.createElement('script');
+                ttScript.async = true;
+                ttScript.src = "https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star";
+                document.head.appendChild(ttScript);
               }
 
               // Load after 3.5s or on interaction
