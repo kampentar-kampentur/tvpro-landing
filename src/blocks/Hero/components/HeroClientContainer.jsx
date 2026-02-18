@@ -50,6 +50,8 @@ export default function HeroClientContainer({ videoSrc = '/optimized/mainVideo2-
         {
             type: 'video',
             data: {
+                src360: '/optimized/mainVideo2-360p.mp4',
+                src480: '/optimized/mainVideo2-480p.mp4',
                 src720: videoSrc,
                 mutedInModal: true
             }
