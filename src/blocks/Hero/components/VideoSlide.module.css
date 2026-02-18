@@ -1,8 +1,10 @@
 .videoSlide {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 9;
     cursor: default;
-    background: var(--foreground);
+    background: #000;
+    overflow: hidden;
+    position: relative;
 }
 
 .video {

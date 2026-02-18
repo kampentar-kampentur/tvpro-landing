@@ -1,8 +1,7 @@
+import Hero from '@/blocks/Hero/Hero';
 import dynamic from 'next/dynamic';
 
-// Dynamically import blocks to reduce initial bundle size and JS execution time.
-// This is critical for city pages that only use a subset of blocks.
-const Hero = dynamic(() => import('@/blocks/Hero/Hero'), { ssr: true });
+// Dynamically import other blocks to reduce initial bundle size and JS execution time.
 const TVSizes = dynamic(() => import('@/blocks/TVSizes/TVSizes'), { ssr: true });
 const GalleryOfWork = dynamic(() => import('@/blocks/GalleryOfWork/GalleryOfWork'), { ssr: true });
 const Certificates = dynamic(() => import('@/blocks/Certificates/Certificates'), { ssr: true });
