@@ -84,9 +84,13 @@ export default function VideoSlide({ isActive, onEnd, data, index = 1 }) {
                     ))}
                 </video>
             ) : (
-                <div
+                <img
+                    src={poster}
+                    alt=""
+                    fetchPriority={index === 0 ? "high" : "low"}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     className={styles.videoPlaceholder}
-                    style={{ backgroundImage: `url(${poster})`, backgroundSize: 'cover', backgroundPosition: 'center', width: '100%', height: '100%' }}
                 />
             )}
         </div>
