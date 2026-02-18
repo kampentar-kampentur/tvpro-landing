@@ -1,60 +1,18 @@
 import styles from "./page.module.css";
-import dynamic from "next/dynamic";
-
-// Above-the-fold: direct imports for instant SSR (no Loading flash)
 import Hero from "@/blocks/Hero";
-
-// High-priority blocks but deferred to reduce initial JS execution
-const WorkVideoGallery = dynamic(() => import("@/blocks/WorkVideoGallery/WorkVideoGallery"), {
-  ssr: true,
-  loading: () => null
-});
-
-const CustomerReviews = dynamic(() => import("@/blocks/CustomerReviews/CustomerReviews"), {
-  ssr: true,
-  loading: () => null
-});
-
-// Below-the-fold: lazy loaded for performance (null loading = no visible placeholder)
-const TVSizes = dynamic(() => import("@/blocks/TVSizes"), {
-  loading: () => null
-});
-
-const OurServices = dynamic(() => import("@/blocks/OurServices"), {
-  loading: () => null
-});
-
-const MountingTypes = dynamic(() => import("@/blocks/MountingTypes"), {
-  loading: () => null
-});
-
-const WhyCustomersTrustUs = dynamic(() => import("@/blocks/WhyCustomersTrustUs"), {
-  loading: () => null
-});
-
-const GalleryOfWork = dynamic(() => import("@/blocks/GalleryOfWork"), {
-  loading: () => null
-});
-
-const Certificates = dynamic(() => import("@/blocks/Certificates"), {
-  loading: () => null
-});
-
-const AboutUs = dynamic(() => import("@/blocks/AboutUs"), {
-  loading: () => null
-});
-
-const FAQ = dynamic(() => import("@/blocks/FAQ"), {
-  loading: () => null
-});
-
-const Contacts = dynamic(() => import("@/blocks/Contacts"), {
-  loading: () => null
-});
-
+import WorkVideoGallery from "@/blocks/WorkVideoGallery/WorkVideoGallery";
+import CustomerReviews from "@/blocks/CustomerReviews/CustomerReviews";
+import TVSizes from "@/blocks/TVSizes";
+import OurServices from "@/blocks/OurServices";
+import MountingTypes from "@/blocks/MountingTypes";
+import WhyCustomersTrustUs from "@/blocks/WhyCustomersTrustUs";
+import GalleryOfWork from "@/blocks/GalleryOfWork";
+import Certificates from "@/blocks/Certificates";
+import AboutUs from "@/blocks/AboutUs";
+import FAQ from "@/blocks/FAQ";
+import Contacts from "@/blocks/Contacts";
 
 export default async function Home() {
-
   return (
     <div className={styles.tvproMain}>
       <Hero />
