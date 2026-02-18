@@ -1,65 +1,69 @@
 import styles from "./page.module.css";
 import dynamic from "next/dynamic";
 
-// Dynamically import heavy components with lazy loading
-const Hero = dynamic(() => import("@/blocks/Hero"), {
-  loading: () => <div>Loading...</div>
-});
+// Above-the-fold: direct imports for instant SSR (no Loading flash)
+import Hero from "@/blocks/Hero";
+import CustomerReviews from "@/blocks/CustomerReviews";
+import WorkVideoGallery from "@/blocks/WorkVideoGallery/WorkVideoGallery";
 
+// Below-the-fold: lazy loaded for performance (null loading = no visible placeholder)
 const TVSizes = dynamic(() => import("@/blocks/TVSizes"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const OurServices = dynamic(() => import("@/blocks/OurServices"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const MountingTypes = dynamic(() => import("@/blocks/MountingTypes"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const WhyCustomersTrustUs = dynamic(() => import("@/blocks/WhyCustomersTrustUs"), {
-  loading: () => <div>Loading...</div>
-});
-
-const CustomerReviews = dynamic(() => import("@/blocks/CustomerReviews"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const GalleryOfWork = dynamic(() => import("@/blocks/GalleryOfWork"), {
-  loading: () => <div>Loading...</div>
-});
-
-const WorkVideoGallery = dynamic(() => import("@/blocks/WorkVideoGallery/WorkVideoGallery"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const Certificates = dynamic(() => import("@/blocks/Certificates"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const AboutUs = dynamic(() => import("@/blocks/AboutUs"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const FAQ = dynamic(() => import("@/blocks/FAQ"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
 const Contacts = dynamic(() => import("@/blocks/Contacts"), {
-  loading: () => <div>Loading...</div>
+  loading: () => null
 });
 
-// Create a client component for modals
-const Modals = dynamic(() => import("@/app/components/Modals"), {
-  loading: () => <div>Loading modals...</div>
-});
+async function getWorkVideoGalleryData() {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/see-our-work-in-action?populate=*`,
+      { cache: 'force-cache' }
+    );
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error("Error fetching WorkVideoGallery data:", error);
+    return null;
+  }
+}
 
-export default function Home() {
+export default async function Home() {
+  const videoGalleryData = await getWorkVideoGalleryData();
+
   return (
     <div className={styles.tvproMain}>
       <Hero />
-      <WorkVideoGallery />
+      <WorkVideoGallery data={videoGalleryData || {}} />
       <CustomerReviews />
       <GalleryOfWork />
       <Certificates />
@@ -70,7 +74,6 @@ export default function Home() {
       <AboutUs />
       <FAQ />
       <Contacts />
-      <Modals />
     </div>
   );
 }

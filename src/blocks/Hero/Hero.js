@@ -3,7 +3,7 @@ import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
 import ImageWrapper from "@/ui/ImageWrapper/ImgaeWrapper";
 import dynamic from "next/dynamic";
-import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import Button from "@/ui/Button/Button";
 import Text from "@/ui/Text/Text";
 import Head from "next/head";
 import Image from "next/image";
@@ -100,7 +100,7 @@ export default async function Hero({ data = {}, cityContext }) {
             <Text text={heroData.subTitle} />
           </p>
           <div className={styles.buttonWrapper}>
-            <QuoteButton size="big" className={styles.heroButton}>Unlock $30 Off</QuoteButton>
+            <Button size="big" className={styles.heroButton} href="tel:+18326647597">Unlock $30 Off</Button>
           </div>
           {/* <div className={styles.badgesWrapper}> */}
           {/* {heroData.badges.map(badge => (

@@ -2,14 +2,27 @@ import React from 'react';
 import { IMaskInput } from 'react-imask';
 import styles from './TextField.module.css';
 
+// Map field names to HTML autocomplete tokens
+const AUTOCOMPLETE_MAP = {
+  name: 'name',
+  phone: 'tel',
+  email: 'email',
+  address: 'street-address',
+  zip: 'postal-code',
+  apt: 'address-line2',
+};
+
 const TextField = ({ field, value = '', onChange, className }) => {
   const isTel = field.type === 'tel';
   const isNumber = field.type === 'number';
   const hasValue = Boolean(value && value.length > 0);
+  const autoCompleteValue = field.autoComplete || AUTOCOMPLETE_MAP[field.name] || 'on';
+  const fieldId = `field-${field.name}`;
+
   return (
     <div className={(hasValue ? `${styles.textFieldContainer} ${styles.hasValue}` : styles.textFieldContainer) + " " + className}>
       {field.textLabel && hasValue && (
-        <label className={styles.textLabel}>{field.textLabel}</label>
+        <label htmlFor={fieldId} className={styles.textLabel}>{field.textLabel}</label>
       )}
       {isTel ? (
         <IMaskInput
@@ -19,6 +32,9 @@ const TextField = ({ field, value = '', onChange, className }) => {
           className={styles.textInput}
           placeholder={field.placeholder}
           type="tel"
+          name={field.name}
+          id={fieldId}
+          autoComplete={autoCompleteValue}
         />
       ) : isNumber ? (
         <input
@@ -32,6 +48,9 @@ const TextField = ({ field, value = '', onChange, className }) => {
           step={field.step}
           inputMode="numeric"
           pattern="[0-9]*"
+          name={field.name}
+          id={fieldId}
+          autoComplete={autoCompleteValue}
         />
       ) : (
         <input
@@ -40,6 +59,9 @@ const TextField = ({ field, value = '', onChange, className }) => {
           value={value}
           placeholder={field.placeholder}
           onChange={(e) => onChange(e.target.value)}
+          name={field.name}
+          id={fieldId}
+          autoComplete={autoCompleteValue}
         />
       )}
     </div>

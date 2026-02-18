@@ -15,10 +15,19 @@
     transform: translateZ(0);
     background-color: var(--foreground);
     contain: layout style paint;
+    /* CSS aspect-ratio ensures correct height before JS hydration — prevents CLS */
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    max-width: 1180px;
 }
 
 @media (max-width: 1024px) {
     .expandingWrapper {
         margin-top: 40px;
+    }
+
+    .expandingContainer {
+        max-width: 100%;
+        border-radius: 0 !important;
     }
 }
