@@ -1,18 +1,15 @@
 import Hero from '@/blocks/Hero/Hero';
-import dynamic from 'next/dynamic';
-
-// Dynamically import other blocks to reduce initial bundle size and JS execution time.
-const TVSizes = dynamic(() => import('@/blocks/TVSizes/TVSizes'), { ssr: true });
-const GalleryOfWork = dynamic(() => import('@/blocks/GalleryOfWork/GalleryOfWork'), { ssr: true });
-const Certificates = dynamic(() => import('@/blocks/Certificates/Certificates'), { ssr: true });
-const MountingTypes = dynamic(() => import('@/blocks/MountingTypes/MountingTypes'), { ssr: true });
-const WhyCustomersTrustUs = dynamic(() => import('@/blocks/WhyCustomersTrustUs/WhyCustomersTrustUs'), { ssr: true });
-const CustomerReviews = dynamic(() => import('@/blocks/CustomerReviews/CustomerReviews'), { ssr: true });
-const OurServices = dynamic(() => import('@/blocks/OurServices/OurServices'), { ssr: true });
-const AboutUs = dynamic(() => import('@/blocks/AboutUs/AboutUs'), { ssr: true });
-const FAQ = dynamic(() => import('@/blocks/FAQ/FAQ'), { ssr: true });
-const Contacts = dynamic(() => import('@/blocks/Contacts/Contacts'), { ssr: true });
-const WorkVideoGallery = dynamic(() => import('@/blocks/WorkVideoGallery/WorkVideoGallery'), { ssr: true });
+import TVSizes from '@/blocks/TVSizes/TVSizes';
+import GalleryOfWork from '@/blocks/GalleryOfWork/GalleryOfWork';
+import Certificates from '@/blocks/Certificates/Certificates';
+import MountingTypes from '@/blocks/MountingTypes/MountingTypes';
+import WhyCustomersTrustUs from '@/blocks/WhyCustomersTrustUs/WhyCustomersTrustUs';
+import CustomerReviews from '@/blocks/CustomerReviews/CustomerReviews';
+import OurServices from '@/blocks/OurServices/OurServices';
+import AboutUs from '@/blocks/AboutUs/AboutUs';
+import FAQ from '@/blocks/FAQ/FAQ';
+import Contacts from '@/blocks/Contacts/Contacts';
+import WorkVideoGallery from '@/blocks/WorkVideoGallery/WorkVideoGallery';
 
 const blockMap = {
     'blocks.hero': Hero,
@@ -39,10 +36,6 @@ export default function BlockRenderer({ blocks, globalData, cityContext }) {
             return null;
         }
 
-        // Merge Strategy:
-        // If block has "use_global" flag, merge global data for that block type
-        // We assume globalData has a key matching the block name (e.g. 'hero')
-        // and that the block name can be derived from __component (e.g. 'blocks.hero' -> 'hero')
         const blockName = block.__component.split('.')[1];
         const globalBlockData = globalData ? globalData[blockName] : {};
 
