@@ -100,6 +100,8 @@ export default function HeroCarousel({ slides = [], autoPlay = true, interval = 
                     <button
                         className={`${styles.navButton} ${styles.prev} ${isHovered ? styles.visible : ''}`}
                         onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => e.stopPropagation()}
                         aria-label="Previous slide"
                     >
                         <ChevronIcon className={styles.iconPrev} />
@@ -107,6 +109,8 @@ export default function HeroCarousel({ slides = [], autoPlay = true, interval = 
                     <button
                         className={`${styles.navButton} ${styles.next} ${isHovered ? styles.visible : ''}`}
                         onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onTouchEnd={(e) => e.stopPropagation()}
                         aria-label="Next slide"
                     >
                         <ChevronIcon className={styles.iconNext} />

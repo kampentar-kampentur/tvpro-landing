@@ -42,8 +42,16 @@
   color: var(--text-secondary);
   cursor: pointer;
   line-height: 0;
-  margin-right: 8px;
-  display: block;
+  margin-right: 0;
+  /* Removed margin to center hit area */
+  padding: 10px;
+  /* Increase hit area to ~44x44px */
+  margin: -10px 0 -10px -10px;
+  /* Offset padding to maintain visual alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .backButton svg {

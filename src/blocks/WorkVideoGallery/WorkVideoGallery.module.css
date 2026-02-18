@@ -176,9 +176,9 @@
         border-radius: 12px;
     }
 
-    /* Vertical videos: portrait aspect ratio on mobile */
+    /* Vertical videos: portrait aspect ratio on mobile - restricted height */
     .verticalCard .thumbnailWrapper {
-        padding-bottom: 177%;
+        padding-bottom: 133%;
     }
 
     /* Span full width if odd and last */
