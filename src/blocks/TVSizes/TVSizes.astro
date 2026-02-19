@@ -1,0 +1,50 @@
+---
+import ServiceCard from "@/ui/ServiceCardWithMobile/ServiceCard";
+import styles from "./TVSizes.module.css";
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getTVSizes() {
+  const res = await fetch(`${baseUrl}/api/tv-size?populate[tvsizes][populate]=*`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultTvSizesData = await getTVSizes();
+
+const tvSizesData = {
+  ...defaultTvSizesData,
+  ...data,
+  title: data?.title || defaultTvSizesData.title,
+  subTitle: data?.subTitle || defaultTvSizesData.subTitle,
+  tvsizes: (data?.tvsizes && data.tvsizes.length > 0) ? data.tvsizes : defaultTvSizesData.tvsizes
+};
+---
+
+<section class={`block ${styles.tvsizes}`}>
+  <header>
+    <h2 class="blockHeading">
+      <AstroText text={tvSizesData.title} />
+    </h2>
+    <p class="subText">
+      <AstroText text={tvSizesData.subTitle} />
+    </p>
+  </header>
+  <div class={styles.cardsGrid}>
+    {tvSizesData.tvsizes && tvSizesData.tvsizes.length > 0 && tvSizesData.tvsizes.map((card, index) => (
+      <ServiceCard
+        client:load
+        key={card.id || index}
+        image={card.image}
+        title={card.title}
+        description={card.description}
+        buttonText="Get The Best Quote"
+        price={card.price}
+      />
+    ))}
+  </div>
+</section>

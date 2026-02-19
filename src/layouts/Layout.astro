@@ -1,0 +1,135 @@
+---
+import "../app/globals.css";
+import Header from "../ui/Header";
+import Footer from "../blocks/Footer";
+import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
+import Modals from "../app/components/Modals";
+import EngagementTracker from "../components/EngagementTracker/EngagementTracker";
+
+const { title, description, cta } = Astro.props;
+
+const appleMobileWebAppTitle = "TVPro";
+const ogImageUrl = "https://tvprousa.com/og-image.png";
+const clarityProjectId = import.meta.env.PUBLIC_CLARITY_PROJECT_ID;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content={appleMobileWebAppTitle} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://tvprousa.com" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Preload LCP Image -->
+    <link rel="preload" as="image" href="/videoplaceholder-392.webp" fetchpriority="high" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style is:global>
+      :root {
+        --font-red-hat-display: 'Red Hat Display', sans-serif;
+      }
+      body {
+        font-family: var(--font-red-hat-display);
+      }
+    </style>
+
+    <script is:inline define:vars={{ clarityProjectId }}>
+      (function() {
+        var fired = false;
+        function loadScripts() {
+          if (fired) return;
+          fired = true;
+          
+          // GTM
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
+
+          // Meta Pixel
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '809936758465245');
+          fbq('track', 'PageView');
+
+          // Clarity
+          (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", clarityProjectId);
+          
+          // Google Ads / GA4
+          var gtagScript = document.createElement('script');
+          gtagScript.async = true;
+          gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130";
+          document.head.appendChild(gtagScript);
+          
+          window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', 'G-GZBG74J130');
+          window.gtag('config', 'AW-17416148778');
+          window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
+
+          // Workiz tracking
+          var workizLeads = {doc:{url:document.URL,ref:document.referrer,search:location.search,hash:location.hash}};
+          window.$wc_leads = JSON.parse(JSON.stringify(workizLeads));
+          var workizScript = document.createElement('script');
+          workizScript.async = true;
+          workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
+          document.head.appendChild(workizScript);
+
+          // Thumbtack Star Widget
+          var ttScript = document.createElement('script');
+          ttScript.async = true;
+          ttScript.src = "https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star";
+          document.head.appendChild(ttScript);
+        }
+
+        // Load after 3.5s or on interaction
+        var timeoutId = setTimeout(loadScripts, 3500);
+        window.addEventListener('scroll', loadScripts, {passive: true, once: true});
+        window.addEventListener('touchstart', loadScripts, {passive: true, once: true});
+      })();
+    </script>
+  </head>
+  <body>
+    <EngagementTracker client:load />
+    <Modals client:load />
+    <Header cta={cta} client:load />
+    <main style="padding-top: 80px; flex-grow: 1;">
+      <slot />
+    </main>
+    <Footer cta={cta} client:load />
+    <ScrollToTop client:load />
+  </body>
+</html>

@@ -1,0 +1,58 @@
+---
+import styles from "./CustomerReviews.module.css";
+import CustomerReviewsClient from "./CustomerReviewsClient";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getCustomerReviews() {
+  const res = await fetch(`${baseUrl}/api/customer-review?populate=*`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultReviewsData = await getCustomerReviews();
+
+const customerReviewsData = {
+  ...defaultReviewsData,
+  ...data,
+  title: data?.title || defaultReviewsData.title,
+  subTitle: data?.subTitle || defaultReviewsData.subTitle,
+};
+---
+
+<section class={`block ${styles.customerReviews}`}>
+  <header class={styles.customerReviewsHeader}>
+     <h2 class="blockHeading">
+       <AstroText text={customerReviewsData.title} />
+     </h2>
+     <p class="subText"><AstroText text={customerReviewsData.subTitle} /></p>
+  </header>
+
+  <div class={"widget tt"} id="tt-review-widget-star">
+    <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/logos/thumbtack/wordmark.svg" alt="Thumbtack" class="tt-logo" width="86" height="21" />
+    <a target="_blank" href="https://www.thumbtack.com/tx/houston/tv-wall-mount-install/tvprohandyservices/service/538968360070111254">
+      <div>TVProHandyservices</div>
+    </a>
+    <div id="tt-dynamic">
+      <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="Star" width="16" height="16" />
+      <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="Star" width="16" height="16" />
+      <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="Star" width="16" height="16" />
+      <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="Star" width="16" height="16" />
+      <img src="https://cdn.thumbtackstatic.com/fe-assets-web/media/pages/profile/standard-widgets/review-widget/orange_star.svg" alt="Star" width="16" height="16" />
+      <span>118 reviews</span>
+    </div>
+  </div>
+  <CustomerReviewsClient client:load />
+  <div class={styles.ctaContainer}>
+    <p class={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
+    <div class={styles.ctaButtons}>
+      <QuoteButton client:load variant="secondary" modalName="BookNow">Leave Yours Here!</QuoteButton>
+      <QuoteButton client:load />
+    </div>
+  </div>
+</section>

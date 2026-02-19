@@ -1,0 +1,41 @@
+---
+import styles from "./AboutUs.module.css";
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getAboutUs() {
+  const res = await fetch(`${baseUrl}/api/about-us?populate=*`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultAboutUsData = await getAboutUs();
+
+const aboutUsData = {
+  ...defaultAboutUsData,
+  ...data,
+  title: data?.title || defaultAboutUsData.title,
+  subTitle: data?.subTitle || defaultAboutUsData.subTitle,
+  mainTextLeft: data?.mainTextLeft || defaultAboutUsData.mainTextLeft,
+  mainTextRight: data?.mainTextRight || defaultAboutUsData.mainTextRight,
+};
+---
+
+<section class={`block ${styles.aboutUs}`} id="about">
+  <header class={styles.aboutUsHeader}>
+    <h2 class="blockHeading"><AstroText text={aboutUsData.title} /></h2>
+    <p class="subText"><AstroText text={aboutUsData.subTitle} /></p>
+  </header>
+  <div class={styles.contentContainer}>
+    <p class={styles.mainText}>
+      <AstroText text={aboutUsData.mainTextLeft} />
+    </p>
+    <p class={styles.mainText}>
+      <AstroText text={aboutUsData.mainTextRight} />
+    </p>
+  </div>
+</section>

@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../blocks/Hero/Hero.astro';
+import WorkVideoGallery from '../blocks/WorkVideoGallery/WorkVideoGallery.astro';
+import CustomerReviews from '../blocks/CustomerReviews/CustomerReviews.astro';
+import MountingTypes from '../blocks/MountingTypes/MountingTypes.astro';
+import WhyCustomersTrustUs from '../blocks/WhyCustomersTrustUs/WhyCustomersTrustUs.astro';
+import OurServices from '../blocks/OurServices/OurServices.astro';
+import AboutUs from '../blocks/AboutUs/AboutUs.astro';
+import FAQ from '../blocks/FAQ/FAQ.astro';
+import Contacts from '../blocks/Contacts/Contacts.astro';
+import GalleryOfWork from '../blocks/GalleryOfWork/GalleryOfWork.astro';
+import Certificates from '../blocks/Certificates/Certificates.astro';
+import { getCTA } from '../lib/strapi';
+
+const cta = await getCTA();
+
+const title = "TV Mounting Services | TVPro Handy Services";
+const description = "Expert TV mounting and home theater installation services. nationwide coverage, same-day service, and 1-year warranty.";
+---
+
+<Layout {title} {description} {cta}>
+  <div class="tvpro-main">
+    <Hero />
+    <WorkVideoGallery />
+    <CustomerReviews />
+    <GalleryOfWork />
+    <Certificates />
+    <MountingTypes />
+    <WhyCustomersTrustUs />
+    <OurServices />
+    <AboutUs />
+    <FAQ />
+    <Contacts />
+  </div>
+</Layout>
+
+<style>
+  .tvpro-main {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

@@ -14,9 +14,13 @@ const flattenStrapiData = (data) => {
 };
 
 export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
-    // ... headers logic
+    const baseUrl = (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_SRTAPI_URL) ||
+        (import.meta.env?.PUBLIC_NEXT_PUBLIC_SRTAPI_URL) ||
+        (import.meta.env?.NEXT_PUBLIC_SRTAPI_URL) ||
+        'https://strapi-dev-e587.up.railway.app';
+
     const queryString = qs.stringify(urlParamsObject);
-    const requestUrl = `${process.env.NEXT_PUBLIC_SRTAPI_URL || 'https://strapi-dev-e587.up.railway.app'}/api${path}${queryString ? `?${queryString}` : ""}`;
+    const requestUrl = `${baseUrl}/api${path}${queryString ? `?${queryString}` : ""}`;
 
     const response = await fetch(requestUrl, {
         headers: { "Content-Type": "application/json" },
@@ -73,4 +77,14 @@ export async function getGlobalConfig() {
             }
         ]
     };
+}
+
+export async function getCTA() {
+    try {
+        const data = await fetchAPI("/cta");
+        return data?.data || null;
+    } catch (error) {
+        console.error("CTA fetch failed:", error);
+        return null;
+    }
 }

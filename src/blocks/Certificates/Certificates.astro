@@ -1,0 +1,58 @@
+---
+import styles from "./Certificates.module.css";
+import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
+import CertificateCard from "./components/CertificateCard";
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getCertificates() {
+  try {
+    const res = await fetch(`${baseUrl}/api/certificate?populate=*`);
+    if (!res.ok) throw new Error('API Error');
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    return {
+      title: "Our Certificates",
+      subTitle: "Professional certifications and quality assurances",
+      certificates: []
+    };
+  }
+}
+
+const { data = {} } = Astro.props;
+const defaultCertificatesData = await getCertificates();
+
+const certificatesData = {
+  ...defaultCertificatesData,
+  ...data,
+  title: data?.title || defaultCertificatesData.title,
+  subTitle: data?.subTitle || defaultCertificatesData.subTitle,
+  certificates: (data?.certificates && data.certificates.length > 0) ? data.certificates : defaultCertificatesData.certificates
+};
+---
+
+<section class={`block ${styles.certificates}`}>
+  <header class={styles.certificatesHeader}>
+    <h2 class="blockHeading">
+      <AstroText text={certificatesData.title} />
+    </h2>
+    <p class="subText"><AstroText text={certificatesData.subTitle} /></p>
+  </header>
+  <div class={styles.sliderWrap}>
+    <SliderGallery
+      client:load
+      CardComponent={CertificateCard}
+      cardData={certificatesData.certificates.map((c, index) => ({
+        image: c,
+        className: styles.imgWrapper,
+        certificates: certificatesData.certificates,
+        currentIndex: index
+      }))}
+      cardsPerPage={4}
+    />
+  </div>
+</section>

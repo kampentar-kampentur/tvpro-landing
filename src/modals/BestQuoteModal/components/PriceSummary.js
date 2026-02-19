@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+// Replaced next/link with <a>
 import styles from './PriceSummary.module.css';
 import Button from '@/ui/Button';
 
@@ -23,14 +23,14 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
   return (
     <div className={`${styles.priceSummaryContainer} ${currentStepIndex === 3 ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
       <div className={styles.scrollableContent}>
-        {!structuredCostBreakdown.filter(({type}) => type !== "discount").length && 
+        {!structuredCostBreakdown.filter(({ type }) => type !== "discount").length &&
           <div className={styles.tvSizeGroup}>
-              <h4 className={styles.tvSizeTitle}>--</h4>
-              <div className={styles.breakdownList}>
-                  <div className={styles.breakdownItem}>
-                      <span className={styles.itemLabel}>--</span>
-                  </div>
+            <h4 className={styles.tvSizeTitle}>--</h4>
+            <div className={styles.breakdownList}>
+              <div className={styles.breakdownItem}>
+                <span className={styles.itemLabel}>--</span>
               </div>
+            </div>
           </div>
         }
         {structuredCostBreakdown.map((group, index) => {
@@ -78,7 +78,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
             {isSubmitting ? 'Booking...' : 'Book'}
           </Button>
           <p className={styles.termsText}>
-            By booking an appointment you agree to the <br/><Link href="/terms">Terms of Service</Link> and the <Link href="/privacy-policy">Privacy Policy</Link>.
+            By booking an appointment you agree to the <br /><a href="/terms">Terms of Service</a> and the <a href="/privacy-policy">Privacy Policy</a>.
           </p>
         </>
       )}

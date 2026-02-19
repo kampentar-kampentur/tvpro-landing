@@ -1,0 +1,45 @@
+---
+import styles from "./GalleryOfWork.module.css";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import GalleryGrid from "./components/GalleryGrid";
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getGalleryOfWork() {
+  const res = await fetch(`${baseUrl}/api/gallery-of-work?populate=*`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultGalleryOfWorkData = await getGalleryOfWork();
+
+const galleryOfWorkData = {
+  ...defaultGalleryOfWorkData,
+  ...data,
+  title: data?.title || defaultGalleryOfWorkData.title,
+  subTitle: data?.subTitle || defaultGalleryOfWorkData.subTitle,
+  types: (data?.types && data.types.length > 0) ? data.types : defaultGalleryOfWorkData.types
+};
+---
+
+<section class={styles.galleryOfWork} id="gallery">
+  <div class="block">
+    <header class={styles.galleryOfWorkHeader}>
+      <h2 class="blockHeading">
+        <AstroText text={galleryOfWorkData.title} />
+      </h2>
+      <p class="subText"><AstroText text={galleryOfWorkData.subTitle} /></p>
+    </header>
+    <GalleryGrid client:load filters={galleryOfWorkData.types} />
+    <div class={styles.ctaContainer}>
+      <p class={styles.ctaText}>Like what you see?</p>
+      <div class={styles.ctaButtons}>
+        <QuoteButton client:load variant="primary" size="large" modalName="BookNow" className={styles.ctaButton}>Get Your Price in 30 Seconds</QuoteButton>
+      </div>
+    </div>
+  </div>
+</section>

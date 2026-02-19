@@ -1,0 +1,45 @@
+---
+import styles from "./WhyCustomersTrustUs.module.css";
+import TrustCard from "./components/TrustCard";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getWhyCustomersTrustUs() {
+  const res = await fetch(`${baseUrl}/api/why-customers-choose-us?populate[cards][populate]=*`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultTrustData = await getWhyCustomersTrustUs();
+
+const trustData = {
+  ...defaultTrustData,
+  ...data,
+  title: data?.title || defaultTrustData.title,
+  subTitle: data?.subTitle || defaultTrustData.subTitle,
+  cards: (data?.cards && data.cards.length > 0) ? data.cards : defaultTrustData.cards
+};
+---
+
+<section class={`block ${styles.whyCustomersTrustUs}`} id="reviews">
+  <header>
+    <h2 class="blockHeading">
+      {trustData.title}
+    </h2>
+    <p class="subText">{trustData.subTitle}</p>
+  </header>
+  <div class={styles.cardsContainer}>
+    {trustData.cards && trustData.cards.length > 0 && trustData.cards.map((card, index) => (
+      <TrustCard
+        client:load
+        key={card.id || index}
+        image={card.image}
+        title={card.title}
+        description={card.description}
+      />
+    ))}
+  </div>
+</section>

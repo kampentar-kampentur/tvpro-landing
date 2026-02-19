@@ -1,0 +1,30 @@
+---
+import styles from "./OurServices.module.css";
+import OurServicesInteractive from "./components/OurServicesInteractive";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getOurServices() {
+  const res = await fetch(`${baseUrl}/api/our-service?populate[services][populate]=image`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultServicesData = await getOurServices();
+
+const servicesData = {
+  ...defaultServicesData,
+  ...data,
+  services: (data?.services && data.services.length > 0) ? data.services : defaultServicesData.services
+};
+---
+
+<section class={styles.ourServices} id="services">
+  <div class={`blockContainer ${styles.ourServicesContainer}`}>
+    <h2 class={`${styles.mainHeading} blockHeading`}>Our Services</h2>
+    <OurServicesInteractive client:load servicesData={servicesData.services} />
+  </div>
+</section>

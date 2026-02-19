@@ -1,0 +1,106 @@
+---
+import styles from "./WorkVideoGallery.module.css";
+import AstroText from "../../ui/Text/AstroText.astro";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import VideoCardClient from "./VideoCardClient";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getWorkVideoGalleryData() {
+    try {
+        const res = await fetch(`${baseUrl}/api/see-our-work-in-action?populate=*`);
+        const json = await res.json();
+        return json.data;
+    } catch (error) {
+        return {
+            title: "See Our Work in Action",
+            subTitle: "Documentation of our high-quality professional installations.",
+            videoItem: []
+        };
+    }
+}
+
+const { data = {} } = Astro.props;
+const videoGalleryDataRaw = await getWorkVideoGalleryData();
+
+const displayData = {
+    ...videoGalleryDataRaw,
+    ...data,
+    videoItem: data.videoItem?.length > 0 ? data.videoItem : (videoGalleryDataRaw?.videoItem || [])
+}
+const title = displayData.title || "See Our Work in Action";
+const subTitle = displayData.subTitle || "Documentation of our high-quality professional installations.";
+
+const videos = displayData.videoItem.map((v, idx) => ({
+    id: v.id || idx,
+    youtubeId: v.youtubeId || "dQw4w9WgXcQ",
+    isVertical: v.isVertical ?? false,
+    title: v.title || "Installation Project",
+    description: v.description || "Professional TV mounting by TVPro team"
+}));
+---
+
+<section class={styles.workVideoGallery} id="video-gallery">
+    <div class="block">
+        <header class={styles.header}>
+            <h2 class="blockHeading">
+                <AstroText text={title} />
+            </h2>
+            {subTitle && (
+                <p class="subText">
+                    <AstroText text={subTitle} />
+                </p>
+            )}
+        </header>
+
+        <div class={styles.grid}>
+            {videos.map((video, idx) => {
+                const thumbType = videos.length % 2 !== 0 && idx !== videos.length - 1 ? 'hqdefault' : 'sddefault';
+                const thumbWidth = videos.length % 2 !== 0 && idx !== videos.length - 1 ? 480 : 640;
+                const thumbHeight = videos.length % 2 !== 0 && idx !== videos.length - 1 ? 360 : 480;
+                
+                return (
+                    <VideoCardClient client:load videoId={video.youtubeId} isVertical={video.isVertical}>
+                        <div
+                            class={`${styles.videoCard}${video.isVertical ? ` ${styles.verticalCard}` : ''}`}
+                            style={{ "--reveal-delay": `${idx * 0.1}s` }}
+                        >
+                            <div class={styles.thumbnailWrapper}>
+                                <img
+                                    src={`https://img.youtube.com/vi/${video.youtubeId}/${thumbType}.jpg`}
+                                    alt={video.title}
+                                    class={styles.thumbnail}
+                                    width={thumbWidth}
+                                    height={thumbHeight}
+                                    loading="lazy"
+                                />
+                                <div class={styles.playOverlay}>
+                                    <div class={styles.playButton}>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <polygon points="6,3 20,12 6,21" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class={styles.videoInfo}>
+                                <h3 class={styles.videoTitle}>{video.title}</h3>
+                                <p class={styles.videoDescription}>{video.description}</p>
+                            </div>
+                        </div>
+                    </VideoCardClient>
+                );
+            })}
+        </div>
+
+        <div class={styles.footer}>
+            <p class={styles.ctaText}>Ready to start your project?</p>
+            <div class={styles.ctaButtons}>
+                <QuoteButton client:load variant="primary" size="large" className={styles.ctaButton}>
+                    Get Your Price in 30 Seconds
+                </QuoteButton>
+            </div>
+        </div>
+    </div>
+</section>

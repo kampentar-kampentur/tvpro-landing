@@ -1,0 +1,72 @@
+---
+import styles from "./FAQ.module.css";
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getFAQ() {
+  const res = await fetch(`${baseUrl}/api/faq?populate=*`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultFaqData = await getFAQ();
+
+// Merge: Use prop data if available, otherwise fallback to default
+const faqData = {
+  ...defaultFaqData,
+  ...data,
+  title: data?.title || defaultFaqData.title,
+  subTitle: data?.subTitle || defaultFaqData.subTitle,
+  faqs: (data?.faqs && data.faqs.length > 0) ? data.faqs : defaultFaqData.faqs,
+};
+
+const structuredFAQ = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": (faqData.faqs || []).map(({ question, answer }) => ({
+    "@type": "Question",
+    "name": question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": answer,
+    },
+  })),
+};
+---
+
+<section class={`block ${styles.faq}`} id="faq">
+  <script type="application/ld+json" set:html={JSON.stringify(structuredFAQ)} />
+  <header class={styles.faqHeader}>
+    <h2><AstroText text={faqData.title} /></h2>
+    {faqData.subTitle && <p class="subText"><AstroText text={faqData.subTitle} /></p>}
+  </header>
+  <div class={styles.faqContent}>
+    {faqData.faqs && faqData.faqs.map((item, index) => (
+      <div class={styles.faqItem}>
+        <input
+          type="radio"
+          name="faq-accordion"
+          id={`faq-toggle-${index}`}
+          class={styles.faqToggle}
+          checked={index === 0}
+        />
+        <label for={`faq-toggle-${index}`} class={styles.faqQuestionContainer}>
+          <span role="heading" aria-level="3" class={styles.faqQuestion}>
+            <AstroText text={item.question} />
+          </span>
+          <span class={styles.icon}>
+            <svg class={styles.plusIcon} xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" d="M12 4v16M20 12H4"/></svg>
+            <svg class={styles.minusIcon} xmlns="http://www.w3.org/2000/svg" fill="none" width="24" height="24" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" d="M20 12H4"/></svg>
+          </span>
+        </label>
+        <div class={styles.faqAnswerWrapper}>
+          <p class={styles.faqAnswer}><AstroText text={item.answer} /></p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

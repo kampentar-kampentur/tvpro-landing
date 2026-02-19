@@ -1,0 +1,86 @@
+---
+import Hero from "../blocks/Hero/Hero.astro";
+import TVSizes from "../blocks/TVSizes/TVSizes.astro";
+import GalleryOfWork from "../blocks/GalleryOfWork/GalleryOfWork.astro";
+import Certificates from "../blocks/Certificates/Certificates.astro";
+import MountingTypes from "../blocks/MountingTypes/MountingTypes.astro";
+import WhyCustomersTrustUs from "../blocks/WhyCustomersTrustUs/WhyCustomersTrustUs.astro";
+import CustomerReviews from "../blocks/CustomerReviews/CustomerReviews.astro";
+import OurServices from "../blocks/OurServices/OurServices.astro";
+import AboutUs from "../blocks/AboutUs/AboutUs.astro";
+import FAQ from "../blocks/FAQ/FAQ.astro";
+import Contacts from "../blocks/Contacts/Contacts.astro";
+import WorkVideoGallery from "../blocks/WorkVideoGallery/WorkVideoGallery.astro";
+
+const { blocks, globalData, cityContext } = Astro.props;
+
+function getFinalizedData(block) {
+    const blockName = block.__component.split(".")[1];
+    const globalBlockData = globalData ? globalData[blockName] : {};
+    return block.use_global && globalBlockData
+        ? { ...globalBlockData, ...block }
+        : block;
+}
+---
+
+{
+    blocks &&
+        blocks.map((block) => {
+            const data = getFinalizedData(block);
+
+            switch (block.__component) {
+                case "blocks.hero":
+                    return <Hero data={data} cityContext={cityContext} />;
+                case "blocks.tv-sizes":
+                    return <TVSizes data={data} cityContext={cityContext} />;
+                case "blocks.gallery-of-work":
+                    return (
+                        <GalleryOfWork data={data} cityContext={cityContext} />
+                    );
+                case "blocks.certificate":
+                    return (
+                        <Certificates data={data} cityContext={cityContext} />
+                    );
+                case "blocks.tv-mounting-types":
+                    return (
+                        <MountingTypes data={data} cityContext={cityContext} />
+                    );
+                case "blocks.why-customers-choose-us":
+                    return (
+                        <WhyCustomersTrustUs
+                            data={data}
+                            cityContext={cityContext}
+                        />
+                    );
+                case "blocks.customer-reviews":
+                    return (
+                        <CustomerReviews
+                            data={data}
+                            cityContext={cityContext}
+                        />
+                    );
+                case "blocks.our-services":
+                    return (
+                        <OurServices data={data} cityContext={cityContext} />
+                    );
+                case "blocks.about-us":
+                    return <AboutUs data={data} cityContext={cityContext} />;
+                case "blocks.faq":
+                    return <FAQ data={data} cityContext={cityContext} />;
+                case "blocks.contact-us":
+                    return <Contacts data={data} cityContext={cityContext} />;
+                case "blocks.see-our-work-in-action":
+                    return (
+                        <WorkVideoGallery
+                            data={data}
+                            cityContext={cityContext}
+                        />
+                    );
+                default:
+                    console.warn(
+                        `Component not found for: ${block.__component}`,
+                    );
+                    return null;
+            }
+        })
+}

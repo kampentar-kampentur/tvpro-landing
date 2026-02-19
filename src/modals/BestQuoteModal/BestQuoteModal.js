@@ -5,7 +5,7 @@ import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form"
 import React, { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useSafeRouter } from '@/hooks/useSafeRouter';
 import PriceSummary from "./components/PriceSummary";
 import LogoSVG from "@/assets/logo.svg"
 import CloseIcon from "@/assets/icons/close.svg"
@@ -482,7 +482,7 @@ const BestQuoteScheme = {
 const BestQuoteModal = () => {
   const { isOpen, close } = useModalState('BestQuote');
   const { openModal } = useModal();
-  const router = useRouter();
+  const router = useSafeRouter();
   const [formData, setFormData] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);

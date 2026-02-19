@@ -2,7 +2,7 @@
 
 import Button from "@/ui/Button";
 import { useModal } from "@/providers/ModalProvider";
-import { useRouter } from 'next/navigation'
+import { useSafeRouter } from "@/hooks/useSafeRouter";
 
 export default function QuoteButton({ children, modalName = "BestQuote", onClick: existingOnClick, ...props }) {
     const { openModal } = useModal();
