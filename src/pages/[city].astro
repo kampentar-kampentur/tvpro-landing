@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AstroBlockRenderer from '../components/AstroBlockRenderer.astro';
+import { getCityBySlug, getAllCities, getGlobalConfig, getCTA } from '../lib/strapi';
+
+export async function getStaticPaths() {
+  const cities = await getAllCities() || [];
+  return cities
+    .filter(city => !city.test_version && city.path)
+    .map((city) => ({
+      params: { city: city.path },
+    }));
+}
+
+const { city: citySlug } = Astro.params;
+
+const [cityData, globalData, cta] = await Promise.all([
+    getCityBySlug(citySlug),
+    getGlobalConfig(),
+    getCTA()
+]);
+
+if (!cityData) {
+    return Astro.redirect('/404');
+}
+
+const layout = cityData.page && cityData.page.length > 0
+    ? cityData.page
+    : globalData.default_layout || [];
+
+const { seo, city_name, state_code } = cityData;
+const displayName = city_name ? `${city_name}${state_code ? `, ${state_code}` : ''}` : 'TVPro Handy Services';
+
+const title = seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`;
+const description = seo?.metaDescription || `Expert TV mounting and home theater installation services in ${displayName}.`;
+
+const cityContext = {
+    city_name: cityData.city_name,
+    state_code: cityData.state_code
+};
+---
+
+<Layout {title} {description} {cta}>
+  <AstroBlockRenderer 
+    blocks={layout} 
+    globalData={globalData} 
+    cityContext={cityContext} 
+  />
+</Layout>

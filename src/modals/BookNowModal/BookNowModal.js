@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter } from 'next/navigation';
+import { useSafeRouter } from '@/hooks/useSafeRouter';
 import { useModalState, useModal } from "@/providers/ModalProvider";
 import styles from "./BookNowModal.module.css";
 import Modal from "@/ui/Modal";
@@ -52,7 +52,7 @@ const emailField = {
 const BookNowModal = () => {
     const { isOpen, close } = useModalState('BookNow');
     const { openModal } = useModal();
-    const router = useRouter();
+    const router = useSafeRouter();
     const [formData, setFormData] = useState({ name: '', phone: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
 

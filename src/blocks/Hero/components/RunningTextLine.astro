@@ -1,0 +1,58 @@
+---
+import styles from "./RunningTextLine.module.css";
+import textStyles from "@/ui/Text/Text.module.css";
+
+const { textLines } = Astro.props;
+
+const duplicatedTextLines = [];
+for (let copy = 0; copy < 3; copy++) {
+  textLines.forEach((line, originalIndex) => {
+    duplicatedTextLines.push({
+      ...line,
+      _id: `${originalIndex}-${copy}`,
+    });
+  });
+}
+
+function processText(text) {
+  if (!text) return null;
+  const parts = text.split(/(\*\*.*?\*\*|\[.*?\])/g);
+  return parts;
+}
+---
+
+<div class={styles.marquee}>
+  <div class={styles.marqueeContent}>
+    {duplicatedTextLines.map((line) => (
+      <p class={styles.textLine}>
+        <span class={styles.mainText}>
+          {processText(line.main).map((part) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return <strong>{part.slice(2, -2)}</strong>;
+            }
+            if (part.startsWith('[') && part.endsWith(']')) {
+              return <span class={textStyles.accent}>{part.slice(1, -1)}</span>;
+            }
+            return part;
+          })}
+        </span>
+        {line.sub && (
+          <>
+            <span class={styles.separator}> — </span>
+            <span class={styles.subText}>
+              {processText(line.sub).map((part) => {
+                if (part.startsWith('**') && part.endsWith('**')) {
+                  return <strong>{part.slice(2, -2)}</strong>;
+                }
+                if (part.startsWith('[') && part.endsWith(']')) {
+                  return <span class={textStyles.accent}>{part.slice(1, -1)}</span>;
+                }
+                return part;
+              })}
+            </span>
+          </>
+        )}
+      </p>
+    ))}
+  </div>
+</div>

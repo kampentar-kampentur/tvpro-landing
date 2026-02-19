@@ -1,63 +1,26 @@
 "use client"
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useCallback, useMemo } from 'react';
+import { useStore } from '@nanostores/react';
+import { $modals, $modalIdCounter, openModalAction, closeModalAction, closeLastModalAction, closeAllModalsAction } from '@/store/modalStore';
 
 // Создаем контекст для модалки
 const ModalContext = createContext();
 
 // Провайдер модалки
 export const ModalProvider = ({ children }) => {
-  const [modals, setModals] = useState([]);
-  const [modalIdCounter, setModalIdCounter] = useState(0); // Счетчик для id
+  const modals = useStore($modals);
 
-  // Функция для открытия модалки
-  const openModal = useCallback((name, props = {}) => {
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden'; 
-    setModals(prev => [
-      ...prev,
-      { name, props, id: modalIdCounter }
-    ]);
-    setModalIdCounter(prev => prev + 1);
-  }, [modalIdCounter]);
-
-  // Функция для закрытия модалки по имени
-  const closeModal = useCallback((name) => {
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = ''; 
-    setModals(prev => prev.filter(modal => modal.name !== name));
-  }, []);
-
-  // Функция для закрытия последней модалки
-  const closeLastModal = useCallback(() => {
-    setModals(prev => prev.slice(0, -1));
-  }, []);
-
-  // Функция для закрытия всех модалок
-  const closeAllModals = useCallback(() => {
-    setModals([]);
-  }, []);
-
-  // Функция для получения активной модалки
-  const getActiveModal = useCallback(() => {
-    return modals.length > 0 ? modals[modals.length - 1] : null;
-  }, [modals]);
-
-  // Проверка, открыта ли модалка с определенным именем
-  const isModalOpen = useCallback((name) => {
-    return modals.some(modal => modal.name === name);
-  }, [modals]);
-
-  const value = {
+  // Мы просто прокидываем actions и state из nanostores в Context
+  const value = useMemo(() => ({
     modals,
-    openModal,
-    closeModal,
-    closeLastModal,
-    closeAllModals,
-    getActiveModal,
-    isModalOpen,
-    // Для удобства - получение имени активной модалки
-    activeModalName: getActiveModal()?.name || null
-  };
+    openModal: openModalAction,
+    closeModal: closeModalAction,
+    closeLastModal: closeLastModalAction,
+    closeAllModals: closeAllModalsAction,
+    getActiveModal: () => modals.length > 0 ? modals[modals.length - 1] : null,
+    isModalOpen: (name) => modals.some(modal => modal.name === name),
+    activeModalName: modals.length > 0 ? modals[modals.length - 1].name : null
+  }), [modals]);
 
   return (
     <ModalContext.Provider value={value}>
@@ -68,9 +31,24 @@ export const ModalProvider = ({ children }) => {
 
 // Хук для использования контекста модалки
 export const useModal = () => {
+  // Для Astro мы возвращаем fallback, если провайдера нет, 
+  // используя nanostores напрямую.
   const context = useContext(ModalContext);
+  const modals = useStore($modals);
+
   if (!context) {
-    throw new Error('useModal must be used within a ModalProvider');
+    // В Astro островах может не быть провайдера, 
+    // поэтому возвращаем функционал через nanostores напрямую.
+    return {
+      modals,
+      openModal: openModalAction,
+      closeModal: closeModalAction,
+      closeLastModal: closeLastModalAction,
+      closeAllModals: closeAllModalsAction,
+      getActiveModal: () => modals.length > 0 ? modals[modals.length - 1] : null,
+      isModalOpen: (name) => modals.some(modal => modal.name === name),
+      activeModalName: modals.length > 0 ? modals[modals.length - 1].name : null
+    };
   }
   return context;
 };

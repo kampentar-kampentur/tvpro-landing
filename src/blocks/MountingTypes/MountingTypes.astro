@@ -1,0 +1,53 @@
+---
+import ServiceCard from "@/ui/ServiceCard/ServiceCard";
+import styles from "./MountingTypes.module.css";
+import OptionalAddons from "./components/OptionalAddons";
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getMountingTypes() {
+  const res = await fetch(`${baseUrl}/api/tv-mounting-type?populate[mountingTypes][populate]=*`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultMountingData = await getMountingTypes();
+
+const mountingData = {
+  ...defaultMountingData,
+  ...data,
+  title: data?.title || defaultMountingData.title,
+  subTitle: data?.subTitle || defaultMountingData.subTitle,
+  mountingTypes: (data?.mountingTypes && data.mountingTypes.length > 0) ? data.mountingTypes : defaultMountingData.mountingTypes,
+  addons: (data?.addons && data.addons.length > 0) ? data.addons : defaultMountingData.addons
+};
+---
+
+<section class={`block ${styles.mountingTypes}`}>
+  <header>
+    <h2 class="blockHeading">
+      <AstroText text={mountingData.title} />
+    </h2>
+    <p class="subText">
+      <AstroText text={mountingData.subTitle} />
+    </p>
+  </header>
+  <div class={styles.cardsGrid}>
+    {mountingData.mountingTypes && mountingData.mountingTypes.length > 0 && mountingData.mountingTypes.map((card, index) => (
+      <ServiceCard
+        client:load
+        key={card.id || index}
+        image={card.image}
+        title={card.title}
+        description={card.description}
+        buttonText="Book Now"
+        modalName="BookNow"
+      />
+    ))}
+  </div>
+  <OptionalAddons client:load addons={mountingData.addons || []} />
+</section>

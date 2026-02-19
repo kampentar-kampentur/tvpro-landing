@@ -2,6 +2,7 @@
 
 import Button from "@/ui/Button";
 import { useModal } from "@/providers/ModalProvider";
+import { useSafeRouter } from "@/hooks/useSafeRouter";
 import { useRouter } from 'next/navigation';
 import { useCTA } from "@/providers/CTAProvider";
 

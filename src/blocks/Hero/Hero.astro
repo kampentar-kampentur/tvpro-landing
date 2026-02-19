@@ -1,0 +1,77 @@
+---
+import styles from "./Hero.module.css";
+import RunningTextLine from "./components/RunningTextLine.astro";
+import Button from "@/ui/Button/Button";
+import AstroText from "../../ui/Text/AstroText.astro";
+import HeroClientContainer from "./components/HeroClientContainer";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getHero() {
+  try {
+    const res = await fetch(`${baseUrl}/api/hero?populate=*`);
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    return null;
+  }
+}
+
+async function getHeroRunningLines() {
+  try {
+    const res = await fetch(`${baseUrl}/api/hero-text-lines`);
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    return [];
+  }
+}
+
+const { data = {}, cityContext } = Astro.props;
+const defaultHeroData = await getHero();
+const defaultLinesData = await getHeroRunningLines();
+
+const heroData = {
+  ...defaultHeroData,
+  ...data,
+  title: data?.title || defaultHeroData?.title || '',
+  subTitle: data?.subTitle || defaultHeroData?.subTitle || '',
+};
+
+const heroLinesData = data?.runningLines && data.runningLines.length > 0
+  ? data.runningLines
+  : defaultLinesData;
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "TV Wall Mounting Demo by TVPro Handy Services",
+    "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
+    "uploadDate": "2025-07-25",
+    "contentUrl": "https://tvprousa.com/mainVideo2.mp4",
+    "embedUrl": "https://tvprousa.com",
+  })}
+/>
+
+<RunningTextLine textLines={heroLinesData} />
+
+<div class={`block ${styles.hero}`}>
+  <div class={`blockContainer ${styles.heroContainer}`}>
+    <h1 class={styles.mainHeading}>
+      <AstroText text={heroData.title} />
+    </h1>
+    <p class="subText">
+      <AstroText text={heroData.subTitle} />
+    </p>
+    <div class={styles.buttonWrapper}>
+      <Button client:load size="big" class={styles.heroButton} href="tel:+18326647597">Unlock $30 Off</Button>
+    </div>
+  </div>
+</div>
+
+<HeroClientContainer client:load />

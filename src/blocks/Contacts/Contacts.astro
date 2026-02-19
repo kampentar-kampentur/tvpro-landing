@@ -1,0 +1,143 @@
+---
+import styles from "./Contacts.module.css";
+import FacebookDefault from "@/assets/socialIcons/FacebookDefault.svg?react";
+import FacebookHover from "@/assets/socialIcons/FacebookHover.svg?react";
+import InstagramDefault from "@/assets/socialIcons/InstagramDefault.svg?react";
+import InstagramHover from "@/assets/socialIcons/InstagramHover.svg?react";
+import TikTokDefault from "@/assets/socialIcons/TikTokDefault.svg?react";
+import TikTokHover from "@/assets/socialIcons/TikTokHover.svg?react";
+import YouTubeDefault from "@/assets/socialIcons/YouTubeDefault.svg?react";
+import YouTubeHover from "@/assets/socialIcons/YouTubeHover.svg?react";
+import YelpDefault from "@/assets/socialIcons/YelpDefault.svg?react";
+import YelpHover from "@/assets/socialIcons/YelpHover.svg?react";
+import ThumbtackDefault from "@/assets/socialIcons/ThumbtackDefault.svg?react";
+import ThumbtackHover from "@/assets/socialIcons/ThumbtackHover.svg?react";
+import PinterestDefault from "@/assets/socialIcons/pinterest.svg?react"
+import PinterestHover from "@/assets/socialIcons/pinterestHover.svg?react"
+import XDefault from "@/assets/socialIcons/X.svg?react"
+import XHover from "@/assets/socialIcons/XHover.svg?react"
+import AstroText from "../../ui/Text/AstroText.astro";
+
+const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
+                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
+                'https://strapi-dev-e587.up.railway.app';
+
+async function getContactUs() {
+  const res = await fetch(`${baseUrl}/api/contact-us`);
+  const json = await res.json();
+  return json.data;
+}
+
+async function getCTA() {
+  const res = await fetch(`${baseUrl}/api/cta`);
+  const json = await res.json();
+  return json.data;
+}
+
+const { data = {} } = Astro.props;
+const defaultContact = await getContactUs();
+const cta = await getCTA();
+
+const contact = {
+  ...defaultContact,
+  ...data,
+  title: data?.title || defaultContact.title,
+  subTitle: data?.subTitle || defaultContact.subTitle,
+  facebook: data?.facebook || defaultContact.facebook,
+  instagram: data?.instagram || defaultContact.instagram,
+  tiktok: data?.tiktok || defaultContact.tiktok,
+  youtube: data?.youtube || defaultContact.youtube,
+  yelp: data?.yelp || defaultContact.yelp,
+  thumbtack: data?.thumbtack || defaultContact.thumbtack,
+  pinterest: data?.pinterest || defaultContact.pinterest,
+  x: data?.x || defaultContact.x,
+};
+---
+
+<section class={styles.contacts} id="contact">
+  <div class={`blockContainer ${styles.contactsContainer}`}>
+    <h2 class={styles.heading}><AstroText text={contact.title} /></h2>
+    <p class={styles.subHeading}><AstroText text={contact.subTitle} /></p>
+    <div class={styles.mapWrap}>
+      <div class={styles.contactDetailsSection}>
+        <div class={styles.detailItem}>
+          <h3 class={styles.detailTitle}>Working Hours</h3>
+          <p class={styles.detailText}>{cta?.workHours || 'Mon-Sun 8:00 AM - 8:00 PM'}</p>
+        </div>
+        <div class={styles.detailItem}>
+          <h3 class={styles.detailTitle}>Phone Number</h3>
+          <p class={styles.detailText}>
+            <a href={`tel:${cta?.phone || '(877) 455-5535'}`}>{cta?.phoneLabel || 'Call Us'}</a>
+          </p>
+        </div>
+        <div class={styles.detailItem}>
+          <h3 class={styles.detailTitle}>Email</h3>
+          <p class={styles.detailText}>
+            <a href={`mailto:${cta?.email || 'tvprohandyservices@gmail.com'}`}>{cta?.email || 'info@tvprousa.com'}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class={styles.socialNetworksSection}>
+      <h3 class={styles.detailTitle}>Social Networks</h3>
+      <div class={styles.socialIcons}>
+        {contact.facebook && (
+          <a href={contact.facebook} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="FaceBook">
+            <FacebookDefault class={styles.defaultIcon} />
+            <FacebookHover class={styles.hoverIcon} />
+            <span class="sr-only">FaceBook</span>
+          </a>
+        )}
+        {contact.instagram && (
+          <a href={contact.instagram} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Instagram">
+            <InstagramDefault class={styles.defaultIcon} />
+            <InstagramHover class={styles.hoverIcon} />
+            <span class="sr-only">Instagram</span>
+          </a>
+        )}
+        {contact.tiktok && (
+          <a href={contact.tiktok} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="TikTok">
+            <TikTokDefault class={styles.defaultIcon} />
+            <TikTokHover class={styles.hoverIcon} />
+            <span class="sr-only">TikTok</span>
+          </a>
+        )}
+        {contact.youtube && (
+          <a href={contact.youtube} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="YouTube">
+            <YouTubeDefault class={styles.defaultIcon} />
+            <YouTubeHover class={styles.hoverIcon} />
+            <span class="sr-only">YouTube</span>
+          </a>
+        )}
+        {contact.yelp && (
+          <a href={contact.yelp} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Yelp">
+            <YelpDefault class={styles.defaultIcon} />
+            <YelpHover class={styles.hoverIcon} />
+            <span class="sr-only">Yelp</span>
+          </a>
+        )}
+        {contact.thumbtack && (
+          <a href={contact.thumbtack} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Thumbtack">
+            <ThumbtackDefault class={styles.defaultIcon} />
+            <ThumbtackHover class={styles.hoverIcon} />
+            <span class="sr-only">Thumbtack</span>
+          </a>
+        )}
+        {contact.pinterest && (
+          <a href={contact.pinterest} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Pinterest">
+            <PinterestDefault class={styles.defaultIcon} />
+            <PinterestHover class={styles.hoverIcon} />
+            <span class="sr-only">Pinterest</span>
+          </a>
+        )}
+        {contact.x && (
+          <a href={contact.x} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="X">
+            <XDefault class={styles.defaultIcon} />
+            <XHover class={styles.hoverIcon} />
+            <span class="sr-only">X</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

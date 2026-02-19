@@ -9,7 +9,7 @@ import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
-import { useRouter } from 'next/navigation';
+import { useSafeRouter } from "@/hooks/useSafeRouter";
 
 const nameField = {
     "name": "name",
@@ -41,7 +41,7 @@ const ExitIntentModal = () => {
     const { isOpen, close } = useModalState("ExitIntentModal");
     const [formData, setFormData] = useState({ name: '', phone: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const router = useRouter();
+    const router = useSafeRouter();
 
     const handleChange = (fieldName) => (value) => {
         setFormData(prev => ({ ...prev, [fieldName]: value }));

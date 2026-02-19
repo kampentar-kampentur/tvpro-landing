@@ -1,0 +1,37 @@
+---
+import styles from "./Text.module.css";
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+
+if (!text) return null;
+
+const lines = text.split('\n');
+
+const processedLines = lines.map((line) => {
+  const parts = line.split(/(\*\*.*?\*\*|\[.*?\])/g);
+  return parts.map((part) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return { type: 'strong', content: part.slice(2, -2) };
+    }
+    if (part.startsWith('[') && part.endsWith(']')) {
+      return { type: 'span', content: part.slice(1, -1), class: styles.accent };
+    }
+    return { type: 'text', content: part };
+  });
+});
+---
+
+{processedLines.map((line, index) => (
+  <>
+    {line.map(part => {
+      if (part.type === 'strong') return <strong>{part.content}</strong>;
+      if (part.type === 'span') return <span class={part.class}>{part.content}</span>;
+      return part.content;
+    })}
+    {index < processedLines.length - 1 && <br />}
+  </>
+))}

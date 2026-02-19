@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./Footer.module.css";
-import Link from 'next/link';
+// Replaced next/link with <a>
 import LogoSVG from "@/assets/logoFooter.svg";
 import { useCTA } from "@/providers/CTAProvider";
 
@@ -24,7 +24,7 @@ const Footer = () => {
               height="40"
               role="img"
             />
-          </Link>
+          </a>
           <div className={styles.copyright}>
             <p>© {currentYear} TV PRO Handy Services</p>
             <p>All Rights Reserved</p>

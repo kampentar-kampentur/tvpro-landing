@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import React from "react";
 
 export default function ImageWrapper({
     media,
@@ -50,7 +50,7 @@ export default function ImageWrapper({
         width={finalWidth}
         height={finalHeight}
         alt={media.alternativeText || media.caption || defaultAlt || ""}
-        priority={priority}
+        loading={priority ? "eager" : "lazy"}
         sizes={sizes}
     />;
 }

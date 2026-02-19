@@ -16,7 +16,7 @@ export default function Header({ cta: parentCta }) {
           <Link href={cta?.homeLink || "/"} aria-label="TVPro Main Page" className="logo">
             <LogoSVG width="82" height="40" />
             <span className="sr-only">TVPro Logo</span>
-          </Link>
+          </a>
           <HeaderActions cta={cta} />
         </div>
       </div>
