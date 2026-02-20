@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "./Header.module.css";
 import Navbar from "./components/Navbar";
 import Button from "@/ui/Button";
@@ -5,8 +7,10 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import buttonStyles from "@/ui/Button/Button.module.css";
 import MenuAutoClose from "./MenuAutoClose";
 import PhoneIcon from "@/assets/icons/phone.svg";
+import { useCTA } from "@/providers/CTAProvider";
 
-export default function HeaderActions({ cta }) {
+export default function HeaderActions() {
+    const cta = useCTA();
     return (
         <>
             <input type="checkbox" id="menu-toggle" className={styles.menuToggle} />

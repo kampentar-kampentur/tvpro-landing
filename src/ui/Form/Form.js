@@ -112,9 +112,8 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
       console.error('something went wrong', e)
     }
   }
-  const handlePrevious = () => goToPreviousStep();
 
-  const handleBack = () => goToStep(currentStepIndex - 1);
+  const handleBack = () => goToPreviousStep();
 
   const isLastOverallStep = isLastMainStep && currentSubStepIndex === renderedSteps.length - 1;
 

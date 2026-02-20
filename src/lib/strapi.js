@@ -24,7 +24,13 @@ export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
     });
 
     if (!response.ok) {
-        throw new Error(`Error fetching ${path}: ${response.statusText}`);
+        let errorDetails = "";
+        try {
+            const errData = await response.json();
+            errorDetails = JSON.stringify(errData, null, 2);
+            console.error(`Strapi error details for ${path}:`, errorDetails);
+        } catch (e) { }
+        throw new Error(`Error fetching ${path}: ${response.statusText} - ${errorDetails}`);
     }
     return await response.json();
 }
@@ -40,6 +46,7 @@ export async function getCity(slug, version = null) {
         populate: {
             page: { populate: "*" },
             seo: { populate: "*" },
+            cta_override: { populate: "*" }
         },
     });
 

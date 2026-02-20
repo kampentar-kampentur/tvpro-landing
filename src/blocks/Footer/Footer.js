@@ -1,22 +1,26 @@
+"use client";
+
 import styles from "./Footer.module.css";
 import Link from 'next/link';
 import LogoSVG from "@/assets/logoFooter.svg";
+import { useCTA } from "@/providers/CTAProvider";
 
-const Footer = async ({cta}) => {
+const Footer = () => {
+  const cta = useCTA();
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <div className={styles.logoWrapper}>
-          <Link 
-            href="/" 
-            aria-label="TVPro Handy Services - Home" 
+          <Link
+            href={cta?.homeLink || "/"}
+            aria-label="TVPro Handy Services - Home"
             className={styles.logoLink}
             title="TVPro Handy Services - Professional handyman services"
           >
-            <LogoSVG 
-              width="82" 
+            <LogoSVG
+              width="82"
               height="40"
               role="img"
             />
@@ -26,7 +30,7 @@ const Footer = async ({cta}) => {
             <p>All Rights Reserved</p>
           </div>
         </div>
-        
+
         <div className={styles.contactInfo}>
           <div className={styles.contactItem}>
             <h3 className={styles.contactLabel}>Phone Number</h3>
@@ -43,7 +47,7 @@ const Footer = async ({cta}) => {
               <span>({cta?.workHours || 'Mon-Sun 8:00 AM - 8:00 PM'})</span>
             </p>
           </div>
-          
+
           <div className={styles.contactItem}>
             <h3 className={styles.contactLabel}>Email</h3>
             <p className={styles.contactText}>

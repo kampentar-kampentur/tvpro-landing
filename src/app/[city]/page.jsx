@@ -1,6 +1,7 @@
 import { getCityBySlug, getAllCities, getGlobalConfig } from '@/lib/strapi';
 import BlockRenderer from '@/components/BlockRenderer';
 import { notFound } from 'next/navigation';
+import { CityCTASetter } from '@/providers/CTAProvider';
 
 // 1. Generate Static Params for SSG
 export const dynamicParams = false;
@@ -108,6 +109,7 @@ export default async function CityPage({ params }) {
 
     return (
         <main>
+            <CityCTASetter ctaOverride={cityData.cta_override} citySlug={citySlug} />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -2,10 +2,12 @@
 
 import Button from "@/ui/Button";
 import { useModal } from "@/providers/ModalProvider";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { useCTA } from "@/providers/CTAProvider";
 
 export default function QuoteButton({ children, modalName = "BestQuote", onClick: existingOnClick, ...props }) {
     const { openModal } = useModal();
+    const cta = useCTA();
 
     function onClick(e) {
         if (existingOnClick) {
@@ -27,6 +29,8 @@ export default function QuoteButton({ children, modalName = "BestQuote", onClick
     //         </Button>
     //     )
     // }
+
+    // ... other logic if needed in future
 
     return (
         <Button onClick={onClick} {...props}>

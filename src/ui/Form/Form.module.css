@@ -38,7 +38,7 @@
 
 @media (max-width: 980px) {
     .optionsGrid {
-        grid-template-columns: repeat(auto-fit, minmax(159px, 0.5fr));
+        grid-template-columns: repeat(auto-fit, minmax(135px, 0.5fr));
         margin-left: auto;
         margin-right: auto;
     }

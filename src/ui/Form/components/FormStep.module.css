@@ -129,4 +129,5 @@
 
 .selectedField {
   color: var(--text-secondary);
+  padding-right: 40px;
 }
