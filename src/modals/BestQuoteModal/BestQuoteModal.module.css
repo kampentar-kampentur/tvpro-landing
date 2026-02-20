@@ -114,6 +114,7 @@
   align-self: stretch;
   display: flex;
   flex-direction: column;
+  padding: 0 18px;
 }
 
 .quoteSummary {
@@ -281,9 +282,10 @@
     order: 2;
     position: relative;
     max-width: 100%;
-    max-height: calc(100vh - 100px);
+    /* max-height: calc(100vh - 100px); */
     width: 100%;
     padding: 20px;
+    padding-bottom: 100px;
   }
 
   .bestQuoteHeader {

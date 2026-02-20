@@ -10,6 +10,7 @@ import Script from "next/script";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import EngagementTracker from "@/components/EngagementTracker/EngagementTracker";
 import Modals from "@/app/components/Modals";
+import { CTAProvider } from "@/providers/CTAProvider";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -242,15 +243,17 @@ export default async function RootLayout({ children }) {
         </noscript>
       </head>
       <body className={redHatDisplay.variable}>
-        <ModalProvider>
-          <EngagementTracker />
-          <Modals />
-          <Header cta={cta} />
-          <main style={{ paddingTop: 80, flexGrow: 1 }}>
-            {children}
-          </main>
-          <Footer cta={cta} />
-        </ModalProvider>
+        <CTAProvider initialCTA={cta}>
+          <ModalProvider>
+            <EngagementTracker />
+            <Modals />
+            <Header cta={cta} />
+            <main style={{ paddingTop: 80, flexGrow: 1 }}>
+              {children}
+            </main>
+            <Footer cta={cta} />
+          </ModalProvider>
+        </CTAProvider>
         <ScrollToTop />
 
       </body>

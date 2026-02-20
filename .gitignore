@@ -44,3 +44,6 @@ next-env.d.ts
 functions/middleware-config.json
 
 .wrangler
+
+dist*/
+.astro

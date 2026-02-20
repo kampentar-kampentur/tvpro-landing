@@ -3,7 +3,7 @@ import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
 // import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 // import dynamic from "next/dynamic";
-import Button from "@/ui/Button/Button";
+import HeroCTA from "./components/HeroCTA";
 import Text from "@/ui/Text/Text";
 // import Image from "next/image";
 // import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
@@ -96,9 +96,7 @@ export default async function Hero({ data = {}, cityContext }) {
           <p className="subText">
             <Text text={heroData.subTitle} />
           </p>
-          <div className={styles.buttonWrapper}>
-            <Button size="big" className={styles.heroButton} href="tel:+18326647597">Unlock $30 Off</Button>
-          </div>
+          <HeroCTA className={styles.heroButton} />
           {/* <div className={styles.badgesWrapper}> */}
           {/* {heroData.badges.map(badge => (
                 <ImageWrapper
