@@ -171,3 +171,9 @@ a {
 #tt-review-widget-star.widget.tt {
   margin-bottom: 0px !important;
 }
+
+
+.wc_form_1 {
+  height: 100%;
+  width: 100%;
+}
