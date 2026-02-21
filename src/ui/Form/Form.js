@@ -6,7 +6,9 @@ import FormNavigation from './components/FormNavigation';
 import Breadcrumbs from '@/ui/Breadcrumbs';
 import styles from './Form.module.css';
 import { shouldRenderField, isStepComplete, hasConditionalFields, clearHiddenFields } from './utils/formUtils';
+import { validatePhone } from './utils/phoneValidation';
 import { usePriceCalculation } from '@/modals/BestQuoteModal/hooks/usePriceCalculation';
+
 import { sendGTMEvent } from '@next/third-parties/google'
 
 const discountOptions = {
@@ -130,7 +132,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
       if (field.isRequired && shouldRenderField(field.showIf, value, stepToRender.id, parentContext)) {
         const fieldValue = value[stepToRender.id] ? value[stepToRender.id][field.name] : undefined;
         // Универсальная валидация minLength/maxLength для text/number/tel
-        if (["text", "number", "tel"].includes(field.type) && (field.minLength || field.maxLength)) {
+        if (["text", "number"].includes(field.type) && (field.minLength || field.maxLength)) {
           const strValue = fieldValue ? String(fieldValue) : "";
           if (field.minLength && strValue.length < field.minLength) {
             return false;
@@ -138,6 +140,10 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
           if (field.maxLength && strValue.length > field.maxLength) {
             return false;
           }
+        }
+        // Phone validation
+        if (field.type === 'tel' && !validatePhone(fieldValue)) {
+          return false;
         }
         // Специальная валидация для splited полей
         if (field.type === "splited") {
@@ -148,8 +154,8 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
               if (subField.isRequired && (!subFieldValue || String(subFieldValue).trim() === '')) {
                 return false;
               }
-              // Универсальная валидация minLength/maxLength для text/number/tel
-              if (["text", "number", "tel"].includes(subField.type) && (subField.minLength || subField.maxLength)) {
+              // Универсальная валидация minLength/maxLength для text/number
+              if (["text", "number"].includes(subField.type) && (subField.minLength || subField.maxLength)) {
                 const strValue = subFieldValue ? String(subFieldValue) : "";
                 if (subField.minLength && strValue.length < subField.minLength) {
                   return false;
@@ -158,11 +164,16 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
                   return false;
                 }
               }
+              // Phone validation for subfields
+              if (subField.type === 'tel' && !validatePhone(subFieldValue)) {
+                return false;
+              }
             }
           } else if (field.isRequired) {
             return false;
           }
         }
+
         // Check for undefined, null, empty string, or empty array for checkboxWithCounter/checkboxGroup
         if (fieldValue === undefined || fieldValue === null || fieldValue === '') {
           return false;

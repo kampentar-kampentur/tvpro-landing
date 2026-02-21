@@ -39,17 +39,17 @@ export default async function Contacts({ data = {} }) {
   const contact = {
     ...defaultContact,
     ...data,
-    title: data?.title || defaultContact.title,
-    subTitle: data?.subTitle || defaultContact.subTitle,
+    title: data?.title || defaultContact?.title,
+    subTitle: data?.subTitle || defaultContact?.subTitle,
     // Social links - priority to prop data if present
-    facebook: data?.facebook || defaultContact.facebook,
-    instagram: data?.instagram || defaultContact.instagram,
-    tiktok: data?.tiktok || defaultContact.tiktok,
-    youtube: data?.youtube || defaultContact.youtube,
-    yelp: data?.yelp || defaultContact.yelp,
-    thumbtack: data?.thumbtack || defaultContact.thumbtack,
-    pinterest: data?.pinterest || defaultContact.pinterest,
-    x: data?.x || defaultContact.x,
+    facebook: data?.facebook || defaultContact?.facebook,
+    instagram: data?.instagram || defaultContact?.instagram,
+    tiktok: data?.tiktok || defaultContact?.tiktok,
+    youtube: data?.youtube || defaultContact?.youtube,
+    yelp: data?.yelp || defaultContact?.yelp,
+    thumbtack: data?.thumbtack || defaultContact?.thumbtack,
+    pinterest: data?.pinterest || defaultContact?.pinterest,
+    x: data?.x || defaultContact?.x,
   };
   return (
     <section className={styles.contacts} id="contact">

@@ -2,9 +2,14 @@ import styles from "./AboutUs.module.css";
 import Text from "@/ui/Text/Text";
 
 async function getAboutUs() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/about-us?populate=*`);
-  const json = await res.json();
-  return json.data;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/about-us?populate=*`);
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error("Error fetching about us:", error);
+    return {};
+  }
 }
 
 // Default export with data prop
