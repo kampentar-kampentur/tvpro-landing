@@ -11,6 +11,8 @@ import LogoSVG from "@/assets/logo.svg"
 import CloseIcon from "@/assets/icons/close.svg"
 import ChevronIcon from "@/assets/icons/chevron.svg"
 import Button from "@/ui/Button"
+import { validatePhone } from "@/ui/Form/utils/phoneValidation";
+
 
 const BestQuoteScheme = {
   "steps": [
@@ -498,7 +500,7 @@ const BestQuoteModal = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const isFormValid = !!(formData.contactInfo?.name && formData.contactInfo?.phone && formData.contactInfo?.zipApt?.zip);
+  const isFormValid = !!(formData.contactInfo?.name && validatePhone(formData.contactInfo?.phone) && formData.contactInfo?.zipApt?.zip);
 
   useEffect(() => {
     if (!isOpen) {

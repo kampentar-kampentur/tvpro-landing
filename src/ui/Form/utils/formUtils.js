@@ -1,3 +1,5 @@
+import { validatePhone } from './phoneValidation';
+
 export const shouldRenderField = (showIfCondition, currentFormData, currentStepId, parentContext) => {
   console.log('🔍 shouldRenderField called with:', { showIfCondition, currentStepId, wallType: currentFormData[currentStepId]?.wallType });
   if (!showIfCondition) {
@@ -174,6 +176,12 @@ export const isStepComplete = (step, formData) => {
     // Check if has value
     if (fieldValue === undefined || fieldValue === null || fieldValue === '') return false;
     if (Array.isArray(fieldValue) && fieldValue.length === 0) return false;
+
+    // Phone validation
+    if (field.type === 'tel' && !validatePhone(fieldValue)) {
+      return false;
+    }
+
     // For checkboxWithCounter, check if any item has count > 0
     if (field.type === "checkboxWithCounter" && Array.isArray(fieldValue)) {
       return fieldValue.some(item => item.count && item.count > 0);
@@ -181,6 +189,7 @@ export const isStepComplete = (step, formData) => {
 
     return true;
   });
+
 };
 
 export const hasConditionalFields = (step) => {

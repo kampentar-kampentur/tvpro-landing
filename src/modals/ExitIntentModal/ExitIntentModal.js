@@ -5,7 +5,9 @@ import styles from "./ExitIntentModal.module.css";
 import Modal from "@/ui/Modal";
 import { useModalState } from "@/providers/ModalProvider";
 import TextField from "@/ui/Form/components/fields/TextField";
+import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import Button from "@/ui/Button";
+
 import Checkbox from "@/ui/Checkbox";
 import { useRouter } from 'next/navigation';
 
@@ -47,7 +49,8 @@ const ExitIntentModal = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.name || !formData.phone) return;
+        if (!formData.name || !validatePhone(formData.phone)) return;
+
 
         setIsSubmitting(true);
         try {
@@ -103,7 +106,7 @@ const ExitIntentModal = () => {
                             type="submit"
                             variant="primary"
                             className={styles.submitBtn}
-                            disabled={isSubmitting || !formData.name || !formData.phone}
+                            disabled={isSubmitting || !formData.name || !validatePhone(formData.phone)}
                         >
                             {isSubmitting ? "Sending..." : "Claim My $30 Off"}
                         </Button>
