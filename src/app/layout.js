@@ -164,7 +164,8 @@ export default async function RootLayout({ children }) {
         {/* Only critical preconnects (max 4) */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+
+        <link rel="preconnect" href="https://media.tvprousa.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
         <Script id="delayed-marketing-scripts" strategy="afterInteractive">
           {`
