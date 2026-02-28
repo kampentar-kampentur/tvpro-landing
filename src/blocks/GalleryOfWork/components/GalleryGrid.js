@@ -3,6 +3,23 @@ import { useState, useEffect, useRef } from "react";
 import FilterButtons from "./FilterButtons";
 import PhotoGrid from "./PhotoGrid";
 import styles from "../GalleryOfWork.module.css";
+import Modal from "@/ui/Modal/Modal";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
+import modalStyles from "./PhotoCard.module.css";
+
+// SVG Arrow Left иконка
+const ArrowLeftIcon = (props) => (
+  <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
+    <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+// SVG Arrow Right иконка
+const ArrowRightIcon = (props) => (
+  <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
+    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 export default function GalleryGrid({ filters }) {
   const [activeFilter, setActiveFilter] = useState(filters?.[0]?.type || "");
@@ -12,6 +29,13 @@ export default function GalleryGrid({ filters }) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [gridKey, setGridKey] = useState(`${activeFilter}-${Date.now()}`);
   const [containerHeight, setContainerHeight] = useState('auto');
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalIndex, setModalIndex] = useState(0);
+  const [modalImages, setModalImages] = useState([]);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const containerRef = useRef(null);
   const cacheRef = useRef({});
@@ -87,6 +111,7 @@ export default function GalleryGrid({ filters }) {
           setLoading(false);
         }
       }
+      console.log(nextData);
 
       // 5. Apply Data
       setGalleryPhotos(nextData);
@@ -107,6 +132,53 @@ export default function GalleryGrid({ filters }) {
     performUpdate();
   }, [activeFilter]);
 
+  // Modal Handlers
+  const handleOpenModal = (index, currentImages) => {
+    setModalImages(currentImages);
+    setModalIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const photoItems = modalImages ? modalImages.filter(item => item.image) : [];
+
+  const handleNext = () => {
+    const currentPhotoIndex = photoItems.findIndex(item => item === modalImages[modalIndex]);
+    const nextPhotoIndex = (currentPhotoIndex + 1) % photoItems.length;
+    const nextItemIndex = modalImages.indexOf(photoItems[nextPhotoIndex]);
+    setModalIndex(nextItemIndex);
+  };
+
+  const handlePrev = () => {
+    const currentPhotoIndex = photoItems.findIndex(item => item === modalImages[modalIndex]);
+    const prevPhotoIndex = (currentPhotoIndex - 1 + photoItems.length) % photoItems.length;
+    const prevItemIndex = modalImages.indexOf(photoItems[prevPhotoIndex]);
+    setModalIndex(prevItemIndex);
+  };
+
+  // Swipe logic
+  const minSwipeDistance = 50;
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (distance > minSwipeDistance) handleNext();
+    if (distance < -minSwipeDistance) handlePrev();
+  };
+
+  const currentItem = modalImages[modalIndex];
+  const currentIsVideo = currentItem ? Boolean(currentItem.videoUrl || currentItem.video) : false;
+  const currentVideoSrc = currentItem ? (currentItem.videoUrl || (currentItem.video && currentItem.video.url)) : null;
+
   return (
     <>
       <FilterButtons
@@ -119,8 +191,45 @@ export default function GalleryGrid({ filters }) {
         className={`${styles.gridContainer} ${isTransitioning ? styles.fadeOut : styles.fadeIn}`}
         style={{ minHeight: containerHeight }}
       >
-        <PhotoGrid key={gridKey} images={galleryPhotos} />
+        <PhotoGrid key={gridKey} images={galleryPhotos} onPhotoClick={handleOpenModal} />
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <div className={modalStyles.modalContainer}>
+          <button className={modalStyles.arrowLeft} onClick={handlePrev}>
+            <ArrowLeftIcon />
+          </button>
+          <div
+            className={modalStyles.modalMediaContainer}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            {currentItem && currentItem.image ? (
+              <ImageWrapper
+                media={currentItem.image}
+                className={modalStyles.modalImage}
+                defaultAlt="TV Installation Gallery Image"
+                preferFormat="large"
+              />
+            ) : currentIsVideo ? (
+              <video
+                src={currentVideoSrc}
+                className={modalStyles.modalVideo}
+                controls
+                muted
+                playsInline
+                autoPlay
+              >
+                <track kind="captions" src="" label="No captions" />
+              </video>
+            ) : null}
+          </div>
+          <button className={modalStyles.arrowRight} onClick={handleNext}>
+            <ArrowRightIcon />
+          </button>
+        </div>
+      </Modal>
     </>
   );
 }

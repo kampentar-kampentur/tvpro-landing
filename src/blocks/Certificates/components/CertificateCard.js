@@ -84,6 +84,9 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
       </div>
       <Modal isOpen={open} onClose={() => setOpen(false)}>
         <div className={styles.modalContainer}>
+          <div className={styles.imageContainer}>
+            <ImageWrapper media={image} defaultAlt="Professional Certification" width={400} />
+          </div>
           <button className={styles.arrowLeft} onClick={handlePrev}>
             <ArrowLeftIcon />
           </button>
@@ -93,7 +96,12 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            {currentCertificate && <ImageWrapper media={currentCertificate} className={styles.modalImage} defaultAlt="Enlarged Certificate View" />}
+            {currentCertificate && <ImageWrapper
+              media={currentCertificate}
+              className={styles.modalImage}
+              defaultAlt="Enlarged Certificate View"
+              preferFormat="large"
+            />}
           </div>
           <button className={styles.arrowRight} onClick={handleNext}>
             <ArrowRightIcon />

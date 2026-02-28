@@ -8,7 +8,7 @@ export default function ServiceCard({ image, title, description, buttonText, mod
     <div className={styles.serviceCard}>
       <SendIcon className={styles.sendIcon} width="16" height="16" />
       <div className={styles.imageContainer}>
-        <ImageWrapper media={image} defaultAlt={title} />
+        <ImageWrapper media={image} defaultAlt={title} sizes="(max-width: 768px) 100px, 150px" />
       </div>
 
       <div className={styles.textWrapper}>

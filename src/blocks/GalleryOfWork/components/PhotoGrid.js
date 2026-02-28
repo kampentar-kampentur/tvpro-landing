@@ -3,7 +3,7 @@ import styles from "./PhotoGrid.module.css";
 import PhotoCard from "./PhotoCard";
 import photoStyles from "./PhotoCard.module.css"
 
-const PhotoGrid = ({ images }) => {
+const PhotoGrid = ({ images, onPhotoClick }) => {
   return (
     <div className={styles.photoGrid}>
       {images && images.map((image, index) => (
@@ -13,8 +13,8 @@ const PhotoGrid = ({ images }) => {
           image={image.image}
           videoUrl={image.videoUrl}
           video={image.video}
-          images={images}
           currentIndex={index}
+          onClick={() => onPhotoClick(index, images)}
         />
       ))}
     </div>
