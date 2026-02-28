@@ -42,7 +42,7 @@ export default async function OurServices({ data = {} }) {
           {servicesData.services.map(service => (
             <div className={`${styles.detailsWrapper} sr-only`} key={service.id}>
               <div className={styles.detailsImage}>
-                <ImageWrapper media={service.image} defaultAlt={service.title} />
+                <ImageWrapper media={service.image} defaultAlt={service.title} sizes="(max-width: 768px) 100vw, 800px" />
               </div>
               <div className={styles.detailsContent}>
                 <h3 className={styles.detailsTitle}>{service.title}</h3>

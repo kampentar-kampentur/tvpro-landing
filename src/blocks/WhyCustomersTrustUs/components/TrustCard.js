@@ -35,7 +35,12 @@ const TrustCard = ({ image, title, description }) => {
   return (
     <div ref={cardRef} className={`${styles.trustCard} ${isInfoShow ? styles.isShowInfo : ''}`}>
       <div className={styles.iconContainer}>
-        <ImageWrapper media={image} defaultAlt={title} />
+        <ImageWrapper
+          media={image}
+          defaultAlt={title}
+          preferFormat="thumbnail"
+          sizes="48px"
+        />
       </div>
       <div>
         <h3 className={styles.title}>{title}</h3>

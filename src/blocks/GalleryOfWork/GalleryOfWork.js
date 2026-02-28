@@ -25,6 +25,7 @@ async function getGalleryPhotos() {
 export default async function GalleryOfWork({ data = {} }) {
   const defaultGalleryOfWorkData = await getGalleryOfWork();
   const galleryPhotos = await getGalleryPhotos();
+  console.log(defaultGalleryOfWorkData);
 
   // Merge: Use prop data if available, otherwise fallback to default
   const galleryOfWorkData = {
