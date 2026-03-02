@@ -2,9 +2,11 @@ import ServiceCard from "@/ui/ServiceCard/ServiceCard";
 import styles from "./MountingTypes.module.css";
 import OptionalAddons from "./components/OptionalAddons";
 import Text from "@/ui/Text/Text";
+import { getBaseUrl } from "@/lib/env";
 
 async function getMountingTypes() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-mounting-type?populate[mountingTypes][populate]=*`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/tv-mounting-type?populate[mountingTypes][populate]=*`);
   const json = await res.json();
   return json.data;
 }

@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../ui/Button/Button.astro";
+
+const title = "Page Not Found | TVPro Handy Services";
+const description = "Sorry, the page you are looking for does not exist.";
+---
+
+<Layout {title} {description}>
+    <main class="not-found-main">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Page Not Found</h2>
+        <p class="error-message">
+            Sorry, the page you are looking for does not exist.<br />
+            You can return to the main page.
+        </p>
+        <Button href="/" variant="primary" size="big" as="a">
+            Go to Home
+        </Button>
+    </main>
+</Layout>
+
+<style>
+    .not-found-main {
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--background);
+        text-align: center;
+        padding: 40px 16px;
+    }
+    .error-code {
+        font-size: 64px;
+        font-weight: 700;
+        color: var(--green);
+        margin-bottom: 16px;
+    }
+    .error-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 12px;
+    }
+    .error-message {
+        font-size: 18px;
+        color: var(--gray-medium);
+        margin-bottom: 32px;
+    }
+</style>

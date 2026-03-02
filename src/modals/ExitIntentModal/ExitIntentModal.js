@@ -10,6 +10,7 @@ import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
 import { useSafeRouter } from "@/hooks/useSafeRouter";
+import { getBaseUrl } from "@/lib/env";
 
 const nameField = {
     "name": "name",
@@ -54,7 +55,7 @@ const ExitIntentModal = () => {
 
         setIsSubmitting(true);
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
+            const apiUrl = getBaseUrl();
             const response = await fetch(`${apiUrl}/api/book-now`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

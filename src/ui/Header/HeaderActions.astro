@@ -1,0 +1,89 @@
+---
+import styles from "./Header.module.css";
+import Navbar from "./components/Navbar.astro";
+import Button from "../Button/Button.astro";
+import QuoteButton from "../QuoteButton/QuoteButton.astro";
+import buttonStyles from "../Button/Button.module.css";
+
+const { cta } = Astro.props;
+---
+
+<input type="checkbox" id="menu-toggle" class={styles.menuToggle} />
+<Navbar cta={cta} />
+
+<div class={styles.cta}>
+    <span class={styles.hours}
+        >{cta?.workHours || "Mon-Sun 7:00 AM - 10:00 PM"}</span
+    >
+    <Button
+        variant="secondary"
+        size="small"
+        href={`tel:${cta?.phone || "(877) 455-5535"}`}
+        class={styles.phoneMobileHide}>{cta?.phoneLabel || "Call Us"}</Button
+    >
+    <QuoteButton size="small" modalName="BookNow">Book Now</QuoteButton>
+    <label
+        for="menu-toggle"
+        class={`${styles.menuButton} ${styles.menuLabel} ${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}
+    >
+        <div class={styles.hamburger}>
+            <span class={styles.line}></span>
+            <span class={styles.line}></span>
+            <span class={styles.line}></span>
+        </div>
+        <span class="sr-only">Menu</span>
+    </label>
+</div>
+
+<Button
+    class={styles.phoneButton}
+    href={`tel:${cta?.phone || "(877) 455-5535"}`}
+>
+    <!-- Inline Phone Icon -->
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+        width="24"
+        height="24"
+        style="fill: currentColor;"
+    >
+        <path
+            d="M160.2 25C152.3 6.1 131.7-3.9 112.1 1.4l-5.5 1.5c-64.6 17.6-119.8 80.2-103.7 156.4 37.1 175 174.8 312.7 349.8 349.8 76.3 16.2 138.8-39.1 156.4-103.7l1.5-5.5c5.4-19.7-4.7-40.3-23.5-48.1l-97.3-40.5c-16.5-6.9-35.6-2.1-47 11.8l-38.6 47.2C233.9 335.4 177.3 277 144.8 205.3L189 169.3c13.9-11.3 18.6-30.4 11.8-47L160.2 25z"
+        ></path>
+    </svg>
+    <span class="visually-hidden">Telephones to TVPro Handy Services</span>
+</Button>
+
+<script>
+    const menuToggleId = "menu-toggle";
+    const menuToggle = document.getElementById(menuToggleId);
+    const navbarWrapper = document.querySelector('[class*="navbarWrapper"]');
+
+    function closeMenu() {
+        if (menuToggle) menuToggle.checked = false;
+    }
+
+    function onMenuClick(e) {
+        if (e.target.tagName === "A") {
+            closeMenu();
+        }
+    }
+
+    function onDocumentClick(e) {
+        if (!menuToggle) return;
+        const target = e.target;
+        if (
+            target.getAttribute("for") === menuToggleId ||
+            target.getAttribute("id") === menuToggleId
+        )
+            return;
+
+        if (menuToggle.checked && !target.closest(`[class*="navbarWrapper"]`)) {
+            closeMenu();
+        }
+    }
+
+    if (navbarWrapper) navbarWrapper.addEventListener("click", onMenuClick);
+    document.addEventListener("click", onDocumentClick);
+    document.addEventListener("touchmove", closeMenu, { passive: true });
+</script>

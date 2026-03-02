@@ -4,9 +4,11 @@ import PlusIcon from "@/assets/icons/plus.svg";
 import MinusIcon from "@/assets/icons/minus.svg";
 import Text from "@/ui/Text/Text";
 import Head from "next/head";
+import { getBaseUrl } from "@/lib/env";
 
 async function getFAQ() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/faq?populate=*`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/faq?populate=*`);
   const json = await res.json();
   return json.data;
 }

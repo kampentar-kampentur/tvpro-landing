@@ -6,16 +6,19 @@ import Button from "@/ui/Button/Button";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import GalleryGrid from "./components/GalleryGrid";
 import Text from "@/ui/Text/Text";
+import { getBaseUrl } from "@/lib/env";
 
 async function getGalleryOfWork() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/gallery-of-work?populate=*`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/gallery-of-work?populate=*`);
   const json = await res.json();
 
   return json.data;
 }
 
 async function getGalleryPhotos() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/galler-photos?populate=*`);
   const json = await res.json();
 
   return json.data;

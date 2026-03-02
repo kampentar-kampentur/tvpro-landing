@@ -1,24 +1,25 @@
 ---
 import styles from "./Certificates.module.css";
-import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
-import CertificateCard from "./components/CertificateCard";
+import CertificatesSlider from "./components/CertificatesSlider";
 import AstroText from "../../ui/Text/AstroText.astro";
+import { minimizeMedia } from "../../lib/optimizeData";
 
-const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
-                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
-                'https://strapi-dev-e587.up.railway.app';
+const baseUrl =
+  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
+  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
+  "https://strapi-dev-e587.up.railway.app";
 
 async function getCertificates() {
   try {
     const res = await fetch(`${baseUrl}/api/certificate?populate=*`);
-    if (!res.ok) throw new Error('API Error');
+    if (!res.ok) throw new Error("API Error");
     const json = await res.json();
     return json.data;
   } catch (error) {
     return {
       title: "Our Certificates",
       subTitle: "Professional certifications and quality assurances",
-      certificates: []
+      certificates: [],
     };
   }
 }
@@ -26,12 +27,26 @@ async function getCertificates() {
 const { data = {} } = Astro.props;
 const defaultCertificatesData = await getCertificates();
 
+// Raw certificates array extraction
+const rawCertificates =
+  data?.certificates?.length > 0
+    ? data.certificates
+    : defaultCertificatesData?.certificates || [];
+
+// Minimize certificates array once - and filter out nulls
+const minimalCertificates = (rawCertificates || [])
+  .map(minimizeMedia)
+  .filter(Boolean);
+
 const certificatesData = {
   ...defaultCertificatesData,
   ...data,
-  title: data?.title || defaultCertificatesData.title,
-  subTitle: data?.subTitle || defaultCertificatesData.subTitle,
-  certificates: (data?.certificates && data.certificates.length > 0) ? data.certificates : defaultCertificatesData.certificates
+  title: data?.title || defaultCertificatesData.title || "Our Certificates",
+  subTitle:
+    data?.subTitle ||
+    defaultCertificatesData.subTitle ||
+    "Professional certifications and quality assurances",
+  certificates: minimalCertificates,
 };
 ---
 
@@ -43,15 +58,9 @@ const certificatesData = {
     <p class="subText"><AstroText text={certificatesData.subTitle} /></p>
   </header>
   <div class={styles.sliderWrap}>
-    <SliderGallery
+    <CertificatesSlider
       client:load
-      CardComponent={CertificateCard}
-      cardData={certificatesData.certificates.map((c, index) => ({
-        image: c,
-        className: styles.imgWrapper,
-        certificates: certificatesData.certificates,
-        currentIndex: index
-      }))}
+      certificates={certificatesData.certificates}
       cardsPerPage={4}
     />
   </div>

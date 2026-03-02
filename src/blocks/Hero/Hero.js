@@ -5,6 +5,7 @@ import RunningTextLine from "./components/RunningTextLine";
 // import dynamic from "next/dynamic";
 import HeroCTA from "./components/HeroCTA";
 import Text from "@/ui/Text/Text";
+import { getBaseUrl } from "@/lib/env";
 // import Image from "next/image";
 // import TwoYearsWarantyImg from "@/assets/badges/2yearswaranty.webp"
 // import FiveStarImg from "@/assets/badges/5star.webp"
@@ -14,8 +15,9 @@ import Text from "@/ui/Text/Text";
 // import HeroCarousel from "./components/HeroCarousel";
 import HeroClientContainer from "./components/HeroClientContainer";
 async function getHero() {
+  const baseUrl = getBaseUrl();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
+    const res = await fetch(`${baseUrl}/api/hero?populate=*`);
     const json = await res.json();
     return json.data;
   } catch (error) {
@@ -24,8 +26,9 @@ async function getHero() {
   }
 }
 async function getHeroRunningLines() {
+  const baseUrl = getBaseUrl();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero-text-lines`);
+    const res = await fetch(`${baseUrl}/api/hero-text-lines`);
     const json = await res.json();
     return json.data;
   } catch (error) {

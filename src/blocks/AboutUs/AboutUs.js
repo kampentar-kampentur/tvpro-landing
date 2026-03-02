@@ -1,9 +1,11 @@
 import styles from "./AboutUs.module.css";
 import Text from "@/ui/Text/Text";
+import { getBaseUrl } from "@/lib/env";
 
 async function getAboutUs() {
+  const baseUrl = getBaseUrl();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/about-us?populate=*`);
+    const res = await fetch(`${baseUrl}/api/about-us?populate=*`);
     const json = await res.json();
     return json.data;
   } catch (error) {

@@ -18,15 +18,18 @@ import XDefault from "@/assets/socialIcons/X.svg"
 import XHover from "@/assets/socialIcons/XHover.svg"
 import Text from "@/ui/Text/Text";
 import ContactsDetails from "./components/ContactsDetails";
+import { getBaseUrl } from "@/lib/env";
 
 async function getContactUs() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/contact-us`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/contact-us`);
   const json = await res.json();
   return json.data;
 }
 
 async function getCTA() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/cta`);
   const json = await res.json();
   return json.data;
 }

@@ -4,9 +4,11 @@ import CustomerReviewsClient from "./CustomerReviewsClient";
 import styles from "./CustomerReviews.module.css";
 import Image from "next/image";
 import Script from "next/script";
+import { getBaseUrl } from "@/lib/env";
 
 async function getCustomerReviews() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/customer-review?populate=*`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/customer-review?populate=*`);
   const json = await res.json();
   return json.data;
 }

@@ -1,0 +1,73 @@
+<script>
+    (function () {
+        const STORAGE_KEY = "exit_popup_triggered";
+        let hasTriggeredInSession = false;
+        let idleTimer = null;
+        let lastScrollPos = 0;
+
+        function triggerPopup() {
+            // Capping: One per session
+            if (hasTriggeredInSession || sessionStorage.getItem(STORAGE_KEY))
+                return;
+
+            // Trigger modal via Custom Event
+            document.dispatchEvent(
+                new CustomEvent("modal:open", {
+                    detail: { name: "ExitIntentModal" },
+                }),
+            );
+
+            hasTriggeredInSession = true;
+            sessionStorage.setItem(STORAGE_KEY, "true");
+        }
+
+        // --- 1. Exit Intent (Desktop) ---
+        document.addEventListener("mouseout", (e) => {
+            if (e.clientY <= 0) {
+                triggerPopup();
+            }
+        });
+
+        // --- 2. Inactivity (Hybrid) ---
+        function resetIdleTimer() {
+            if (idleTimer) clearTimeout(idleTimer);
+            idleTimer = setTimeout(triggerPopup, 40000); // 40 seconds
+        }
+
+        // --- 3. Scroll Depth & Behavior (Mobile) ---
+        function handleScroll() {
+            resetIdleTimer();
+
+            const scrollTop = window.scrollY;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrollPercent =
+                (scrollTop / (scrollHeight - clientHeight)) * 100;
+
+            // Trigger if scrolled deep (>70%) and scrolls UP (searching for navigation/exit)
+            if (scrollPercent > 70 && scrollTop < lastScrollPos) {
+                triggerPopup();
+            }
+            lastScrollPos = scrollTop;
+        }
+
+        // --- 4. Visibility Change (Hybrid) ---
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") {
+                triggerPopup();
+            }
+        });
+
+        // Activity events
+        ["mousemove", "mousedown", "keydown", "touchstart", "scroll"].forEach(
+            (event) => {
+                document.addEventListener(event, resetIdleTimer, {
+                    passive: true,
+                });
+            },
+        );
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        resetIdleTimer();
+    })();
+</script>

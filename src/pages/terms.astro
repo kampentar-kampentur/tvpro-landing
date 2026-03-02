@@ -1,0 +1,85 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCTA } from "../lib/strapi";
+
+const cta = await getCTA();
+
+const title = "Terms and Conditions | TVPro Handy Services";
+const description = "Terms and conditions TVPro Handy Services.";
+---
+
+<Layout {title} {description} {cta}>
+    <main style="max-width: 700px; margin: 0 auto; padding: 2rem;">
+        <div class="terms-content">
+            <h1>TERMS OF SERVICE</h1>
+            <p><strong>Last updated: July 29, 2025</strong></p>
+
+            <h2>AGREEMENT TO OUR LEGAL TERMS</h2>
+            <p>
+                We are TVPro Handy Service LLC ("Company," "we," "us," "our").
+                We operate the website tvprousa.com (the "Site"), as well as any
+                other related products and services that refer or link to these
+                legal terms (the "Legal Terms") (collectively, the "Services").
+            </p>
+
+            <p>
+                You can contact us by phone at (877) 455-5535, email at
+                tvprohandyservices@gmail.com.
+            </p>
+
+            <p>
+                These Legal Terms constitute a legally binding agreement made
+                between you, whether personally or on behalf of an entity
+                ("you"), and TVPro Handy Service LLC, concerning your access to
+                and use of the Services. You agree that by accessing the
+                Services, you have read, understood, and agreed to be bound by
+                all of these Legal Terms. IF YOU DO NOT AGREE WITH ALL OF THESE
+                LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE
+                SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
+            </p>
+
+            <h2>1. OUR SERVICES</h2>
+            <p>
+                The information provided when using the Services is not intended
+                for distribution to or use by any person or entity in any
+                jurisdiction or country where such distribution or use would be
+                contrary to law or regulation or which would subject us to any
+                registration requirement within such jurisdiction or country.
+            </p>
+
+            <h2>2. INTELLECTUAL PROPERTY RIGHTS</h2>
+            <p>
+                We are the owner or the licensee of all intellectual property
+                rights in our Services, including all source code, databases,
+                functionality, software, website designs, audio, video, text,
+                photographs, and graphics in the Services (collectively, the
+                "Content"), as well as the trademarks, service marks, and logos
+                contained therein (the "Marks").
+            </p>
+
+            <p>
+                Our Content and Marks are protected by copyright and trademark
+                laws and treaties in the United States and around the world.
+            </p>
+
+            <p>
+                <em
+                    >(Simplified for brevity, refer to original document for
+                    full legal text)</em>
+            </p>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    .terms-content h1,
+    .terms-content h2,
+    .terms-content h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .terms-content p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+</style>

@@ -1,14 +1,17 @@
 ---
-import ServiceCard from "@/ui/ServiceCardWithMobile/ServiceCard";
+import ServiceCard from "@/ui/ServiceCardWithMobile/ServiceCard.astro";
 import styles from "./TVSizes.module.css";
 import AstroText from "../../ui/Text/AstroText.astro";
 
-const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
-                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
-                'https://strapi-dev-e587.up.railway.app';
+const baseUrl =
+  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
+  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
+  "https://strapi-dev-e587.up.railway.app";
 
 async function getTVSizes() {
-  const res = await fetch(`${baseUrl}/api/tv-size?populate[tvsizes][populate]=*`);
+  const res = await fetch(
+    `${baseUrl}/api/tv-size?populate[tvsizes][populate]=*`,
+  );
   const json = await res.json();
   return json.data;
 }
@@ -16,12 +19,25 @@ async function getTVSizes() {
 const { data = {} } = Astro.props;
 const defaultTvSizesData = await getTVSizes();
 
+const normalizedBlockData = Array.isArray(defaultTvSizesData)
+  ? defaultTvSizesData[0]
+  : defaultTvSizesData;
+const blockData = normalizedBlockData?.attributes || normalizedBlockData || {};
+
+const rawTvsizes =
+  data?.tvsizes?.length > 0
+    ? data.tvsizes
+    : blockData.tvsizes?.data || blockData.tvsizes || [];
+
 const tvSizesData = {
-  ...defaultTvSizesData,
+  ...blockData,
   ...data,
-  title: data?.title || defaultTvSizesData.title,
-  subTitle: data?.subTitle || defaultTvSizesData.subTitle,
-  tvsizes: (data?.tvsizes && data.tvsizes.length > 0) ? data.tvsizes : defaultTvSizesData.tvsizes
+  title: data?.title || blockData.title || "TV Size Compatibility",
+  subTitle:
+    data?.subTitle ||
+    blockData.subTitle ||
+    "We mount TVs of all shapes and sizes",
+  tvsizes: rawTvsizes,
 };
 ---
 
@@ -35,16 +51,19 @@ const tvSizesData = {
     </p>
   </header>
   <div class={styles.cardsGrid}>
-    {tvSizesData.tvsizes && tvSizesData.tvsizes.length > 0 && tvSizesData.tvsizes.map((card, index) => (
-      <ServiceCard
-        client:load
-        key={card.id || index}
-        image={card.image}
-        title={card.title}
-        description={card.description}
-        buttonText="Get The Best Quote"
-        price={card.price}
-      />
-    ))}
+    {
+      tvSizesData.tvsizes &&
+        tvSizesData.tvsizes.length > 0 &&
+        tvSizesData.tvsizes.map((card, index) => (
+          <ServiceCard
+            image={card.image}
+            title={card.title}
+            description={card.description}
+            buttonText="Get The Best Quote"
+            modalName="BestQuote"
+            price={card.price}
+          />
+        ))
+    }
   </div>
 </section>

@@ -44,10 +44,7 @@ export function CTAProvider({ children, initialCTA }) {
 
 export function useCTA() {
     const context = useContext(CTAContext);
-    if (!context) {
-        throw new Error("useCTA must be used within a CTAProvider");
-    }
-    return context.cta;
+    return context?.cta || {};
 }
 
 export function CityCTASetter({ ctaOverride, citySlug }) {

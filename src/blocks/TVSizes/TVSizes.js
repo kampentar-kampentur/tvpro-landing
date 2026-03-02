@@ -1,9 +1,11 @@
 import ServiceCard from "@/ui/ServiceCardWithMobile/ServiceCard";
 import styles from "./TVSizes.module.css";
 import Text from "@/ui/Text/Text";
+import { getBaseUrl } from "@/lib/env";
 
 async function getTVSizes() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-size?populate[tvsizes][populate]=*`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/tv-size?populate[tvsizes][populate]=*`);
   const json = await res.json();
   return json.data;
 }

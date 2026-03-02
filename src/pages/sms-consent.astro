@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../ui/Button/Button.astro";
+import { getCTA } from "../lib/strapi";
+
+const cta = await getCTA();
+
+const title = "SMS Consent Form | TVPro Handy Services";
+const description =
+    "Consent form for receiving SMS from TVPro Handy Services LLC.";
+---
+
+<Layout {title} {description} {cta}>
+    <main style="max-width: 700px; margin: 0 auto; padding: 2rem;">
+        <h2>SMS Consent Form</h2>
+        <form style="margin-top: 24px;" action="#" method="post">
+            <label
+                style="display: block; margin-bottom: 16px; font-weight: 500;"
+            >
+                <input type="checkbox" required style="margin-right: 8px;" />
+                I agree to receive SMS from TVPro Handy Services LLC regarding appointments
+                and service updates.
+                <p>
+                    <a
+                        href="/privacy-policy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="sms-link">Privacy Policy</a
+                    > and
+                    <a
+                        href="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="sms-link"
+                        style="margin-left: 8px;">Terms of Service</a
+                    >
+                </p>
+            </label>
+            <div style="margin-top: 24px;">
+                <Button type="submit">Submit Consent</Button>
+            </div>
+        </form>
+    </main>
+</Layout>
+
+<style>
+    .sms-link {
+        color: var(--green);
+        text-decoration: underline;
+    }
+</style>

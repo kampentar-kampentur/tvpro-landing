@@ -4,6 +4,7 @@ import Text from "@/ui/Text/Text";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Image from "next/image";
 import VideoCardClient from "./VideoCardClient";
+import { getBaseUrl } from "@/lib/env";
 
 const VideoCard = ({ video, index = 0, length }) => {
     // Optimization: Use mqdefault (320x180) for all grid thumbnails to save data.
@@ -46,9 +47,10 @@ const VideoCard = ({ video, index = 0, length }) => {
 };
 
 async function getWorkVideoGalleryData() {
+    const baseUrl = getBaseUrl();
     try {
         const res = await fetch(
-            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/see-our-work-in-action?populate=*`,
+            `${baseUrl}/api/see-our-work-in-action?populate=*`,
             { cache: 'force-cache' }
         );
         const json = await res.json();

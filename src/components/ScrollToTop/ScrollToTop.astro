@@ -1,0 +1,54 @@
+---
+import styles from "./ScrollToTop.module.css";
+---
+
+<button id="scroll-to-top" class={styles.scrollToTop} aria-label="Back to top">
+    <!-- Inline Chevron Icon -->
+    <svg
+        class={styles.icon}
+        viewBox="0 0 448 512"
+        width="20"
+        height="20"
+        fill="currentColor"
+    >
+        <path
+            d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+        ></path>
+    </svg>
+</button>
+
+<script>
+    const btn = document.getElementById("scroll-to-top");
+    const visibleClass = "visible"; // We need the actual class from CSS modules if we want to be strict,
+    // but we can just use a global class or handle it via style.
+
+    // Better way: find the class name from the button itself or use data attribute
+
+    function toggleVisibility() {
+        if (window.pageYOffset > 400) {
+            btn?.classList.add("is-visible");
+        } else {
+            btn?.classList.remove("is-visible");
+        }
+    }
+
+    btn?.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    });
+
+    window.addEventListener("scroll", toggleVisibility);
+    toggleVisibility();
+</script>
+
+<style is:global>
+    /* Bridge between CSS Modules and Vanilla JS if needed, 
+       or just use a global class for visibility state */
+    [class*="scrollToTop"].is-visible {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+    }
+</style>

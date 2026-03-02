@@ -1,13 +1,14 @@
 ---
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine.astro";
-import Button from "@/ui/Button/Button";
+import Button from "@/ui/Button/Button.astro";
 import AstroText from "../../ui/Text/AstroText.astro";
 import HeroClientContainer from "./components/HeroClientContainer";
 
-const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
-                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
-                'https://strapi-dev-e587.up.railway.app';
+const baseUrl =
+  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
+  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
+  "https://strapi-dev-e587.up.railway.app";
 
 async function getHero() {
   try {
@@ -36,13 +37,14 @@ const defaultLinesData = await getHeroRunningLines();
 const heroData = {
   ...defaultHeroData,
   ...data,
-  title: data?.title || defaultHeroData?.title || '',
-  subTitle: data?.subTitle || defaultHeroData?.subTitle || '',
+  title: data?.title || defaultHeroData?.title || "",
+  subTitle: data?.subTitle || defaultHeroData?.subTitle || "",
 };
 
-const heroLinesData = data?.runningLines && data.runningLines.length > 0
-  ? data.runningLines
-  : defaultLinesData;
+const heroLinesData =
+  data?.runningLines && data.runningLines.length > 0
+    ? data.runningLines
+    : defaultLinesData;
 ---
 
 <script
@@ -50,11 +52,12 @@ const heroLinesData = data?.runningLines && data.runningLines.length > 0
   set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    "name": "TV Wall Mounting Demo by TVPro Handy Services",
-    "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
-    "uploadDate": "2025-07-25",
-    "contentUrl": "https://tvprousa.com/mainVideo2.mp4",
-    "embedUrl": "https://tvprousa.com",
+    name: "TV Wall Mounting Demo by TVPro Handy Services",
+    description:
+      "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
+    uploadDate: "2025-07-25",
+    contentUrl: "https://tvprousa.com/mainVideo2.mp4",
+    embedUrl: "https://tvprousa.com",
   })}
 />
 
@@ -69,7 +72,9 @@ const heroLinesData = data?.runningLines && data.runningLines.length > 0
       <AstroText text={heroData.subTitle} />
     </p>
     <div class={styles.buttonWrapper}>
-      <Button client:load size="big" class={styles.heroButton} href="tel:+18326647597">Unlock $30 Off</Button>
+      <Button size="big" class={styles.heroButton} href="tel:+18326647597"
+        >Unlock $30 Off</Button
+      >
     </div>
   </div>
 </div>

@@ -1,12 +1,13 @@
 ---
 import styles from "./GalleryOfWork.module.css";
-import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton.astro";
 import GalleryGrid from "./components/GalleryGrid";
 import AstroText from "../../ui/Text/AstroText.astro";
 
-const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
-                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
-                'https://strapi-dev-e587.up.railway.app';
+const baseUrl =
+  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
+  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
+  "https://strapi-dev-e587.up.railway.app";
 
 async function getGalleryOfWork() {
   const res = await fetch(`${baseUrl}/api/gallery-of-work?populate=*`);
@@ -17,12 +18,31 @@ async function getGalleryOfWork() {
 const { data = {} } = Astro.props;
 const defaultGalleryOfWorkData = await getGalleryOfWork();
 
+const normalizedBlockData = Array.isArray(defaultGalleryOfWorkData)
+  ? defaultGalleryOfWorkData[0]
+  : defaultGalleryOfWorkData;
+const blockData = normalizedBlockData?.attributes || normalizedBlockData || {};
+
+const rawTypes =
+  data?.types && data.types.length > 0
+    ? data.types
+    : blockData.types?.data || blockData.types || [];
+
+// Minimize filters data - GalleryGrid only needs type and title (as label) for buttons
+const minimalFilters = (rawTypes || []).map((t) => {
+  const item = t.attributes || t;
+  return {
+    type: item.type,
+    label: item.title || item.label || item.type,
+  };
+});
+
 const galleryOfWorkData = {
-  ...defaultGalleryOfWorkData,
+  ...blockData,
   ...data,
-  title: data?.title || defaultGalleryOfWorkData.title,
-  subTitle: data?.subTitle || defaultGalleryOfWorkData.subTitle,
-  types: (data?.types && data.types.length > 0) ? data.types : defaultGalleryOfWorkData.types
+  title: data?.title || blockData.title,
+  subTitle: data?.subTitle || blockData.subTitle,
+  types: minimalFilters,
 };
 ---
 
@@ -34,11 +54,20 @@ const galleryOfWorkData = {
       </h2>
       <p class="subText"><AstroText text={galleryOfWorkData.subTitle} /></p>
     </header>
-    <GalleryGrid client:load filters={galleryOfWorkData.types} />
+    <GalleryGrid
+      client:load
+      filters={galleryOfWorkData.types}
+      baseUrl={baseUrl}
+    />
     <div class={styles.ctaContainer}>
       <p class={styles.ctaText}>Like what you see?</p>
       <div class={styles.ctaButtons}>
-        <QuoteButton client:load variant="primary" size="large" modalName="BookNow" className={styles.ctaButton}>Get Your Price in 30 Seconds</QuoteButton>
+        <QuoteButton
+          variant="primary"
+          size="large"
+          modalName="BookNow"
+          class={styles.ctaButton}>Get Your Price in 30 Seconds</QuoteButton
+        >
       </div>
     </div>
   </div>

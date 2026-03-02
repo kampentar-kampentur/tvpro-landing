@@ -1,8 +1,10 @@
 import styles from "./WhyCustomersTrustUs.module.css";
 import TrustCard from "./components/TrustCard";
+import { getBaseUrl } from "@/lib/env";
 
 async function getWhyCustomersTrustUs() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/why-customers-choose-us?populate[cards][populate]=*`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/why-customers-choose-us?populate[cards][populate]=*`);
   const json = await res.json();
   return json.data;
 }

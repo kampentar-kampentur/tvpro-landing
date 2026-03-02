@@ -5,6 +5,7 @@ import styles from "./BookNowModal.module.css";
 import TextField from '@/ui/Form/components/fields/TextField';
 import Checkbox from '@/ui/Checkbox';
 import Button from '@/ui/Button';
+import { getBaseUrl } from '@/lib/env';
 
 const nameField = {
     "name": "name",
@@ -61,7 +62,7 @@ export default function BookNowPage() {
         }
         setIsSubmitting(true);
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
+            const apiUrl = getBaseUrl();
             const response = await fetch(`${apiUrl}/api/book-now`, {
                 method: 'POST',
                 headers: {
@@ -85,7 +86,7 @@ export default function BookNowPage() {
                     'user_data.email': formData.email
                 });
                 if (typeof gtag !== 'undefined') {
-                    gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
+                    gtag('event', 'conversion', { 'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA' });
                 }
                 router.push(`/`)
             } else {
@@ -101,17 +102,17 @@ export default function BookNowPage() {
         }
     };
 
-    const isFormValid = formData.name && formData.phone.length === 12 && formData.zip.length === 5  && isCheked;
+    const isFormValid = formData.name && formData.phone.length === 12 && formData.zip.length === 5 && isCheked;
 
     const TermsText = () => {
-        return(
-        <div style={{fontSize: '12px', maxWidth: "100%", textWrap: "wrap", textAlign: "left"}}>
-            I agree to receive SMS from TVPro Handy Services LLC regarding appointments and service updates.
-            <p>
-            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="sms-link">Privacy Policy</a> and
-            <a href="/terms" target="_blank" rel="noopener noreferrer" className="sms-link" style={{marginLeft: 8}}>Terms of Service</a>
-            </p>
-        </div>
+        return (
+            <div style={{ fontSize: '12px', maxWidth: "100%", textWrap: "wrap", textAlign: "left" }}>
+                I agree to receive SMS from TVPro Handy Services LLC regarding appointments and service updates.
+                <p>
+                    <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="sms-link">Privacy Policy</a> and
+                    <a href="/terms" target="_blank" rel="noopener noreferrer" className="sms-link" style={{ marginLeft: 8 }}>Terms of Service</a>
+                </p>
+            </div>
         )
     }
 
@@ -148,9 +149,9 @@ export default function BookNowPage() {
                 onChange={handleChange('email')}
                 className={styles.bookNowInput}
             />
-            <div style={{maxWidth: "100%"}}>
-                <Checkbox value={isCheked} onChange={() => setIsCheked(!isCheked)} label={<TermsText/>}/>
-            </div>  
+            <div style={{ maxWidth: "100%" }}>
+                <Checkbox value={isCheked} onChange={() => setIsCheked(!isCheked)} label={<TermsText />} />
+            </div>
             <Button className={styles.button} onClick={handleSubmit} disabled={isSubmitting || !isFormValid}>
                 {isSubmitting ? 'Sending...' : 'Send'}
             </Button>

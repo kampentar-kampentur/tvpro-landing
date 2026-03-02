@@ -1,19 +1,20 @@
 "use client";
 
-import Link from 'next/link';
+// Replaced next/link with <a>
 import { useCTA } from "@/providers/CTAProvider";
 import styles from "./Header.module.css";
 import LogoSVG from "@/assets/logo.svg"
 import HeaderActions from './HeaderActions';
 
-export default function Header({ cta: parentCta }) {
-  const cta = useCTA();
+export default function Header({ cta: propCta }) {
+  const contextCta = useCTA();
+  const cta = propCta || contextCta;
 
   return (
     <header className={styles.header}>
       <div className={styles.headerWrapper}>
         <div className={styles.headerNavWrapper}>
-          <Link href={cta?.homeLink || "/"} aria-label="TVPro Main Page" className="logo">
+          <a href={cta?.homeLink || "/"} aria-label="TVPro Main Page" className="logo">
             <LogoSVG width="82" height="40" />
             <span className="sr-only">TVPro Logo</span>
           </a>

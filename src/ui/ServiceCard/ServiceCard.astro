@@ -1,0 +1,44 @@
+---
+import styles from "./ServiceCard.module.css";
+import SendIcon from "@/assets/icons/send.svg?raw";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton.astro";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper"; // Assuming this is Astro-compatible or we can use <img> for now
+
+const { image, title, description, buttonText, modalName } = Astro.props;
+---
+
+<div class={styles.serviceCard}>
+    <div
+        class={styles.sendIcon}
+        set:html={SendIcon}
+        style="width: 16px; height: 16px;"
+    />
+    <div class={styles.imageContainer}>
+        {
+            image && (
+                <ImageWrapper
+                    media={image}
+                    defaultAlt={title}
+                    sizes="(max-width: 768px) 100px, 150px"
+                />
+            )
+        }
+    </div>
+
+    <div class={styles.textWrapper}>
+        <h3 class={styles.title}>{title}</h3>
+        <span class={styles.description}>{description}</span>
+    </div>
+    <QuoteButton
+        class={styles.hiddenButton}
+        variant="primary"
+        size="small"
+        modalName={modalName || "BookNow"}
+    >
+        {buttonText}
+    </QuoteButton>
+    <QuoteButton
+        class={styles.invisibleButton}
+        modalName={modalName || "BookNow"}
+    />
+</div>

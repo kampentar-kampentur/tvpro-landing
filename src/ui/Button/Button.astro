@@ -1,0 +1,38 @@
+---
+const {
+    variant = "primary", // primary | secondary
+    size = "small", // big | small
+    disabled = false,
+    as,
+    href,
+    class: className,
+    type = "button",
+    ...props
+} = Astro.props;
+
+import styles from "./Button.module.css";
+
+const classNames = [
+    styles.button,
+    styles[variant],
+    styles[size],
+    disabled ? styles.disabled : "",
+    className,
+]
+    .filter(Boolean)
+    .join(" ");
+
+const Element = as || (href ? "a" : "button");
+---
+
+<Element
+    class={classNames}
+    href={href && !disabled ? href : undefined}
+    type={Element === "button" ? type : undefined}
+    aria-disabled={disabled && Element === "a" ? "true" : undefined}
+    tabindex={disabled && Element === "a" ? -1 : 0}
+    disabled={disabled && Element === "button" ? true : undefined}
+    {...props}
+>
+    <span class={styles.content}><slot /></span>
+</Element>

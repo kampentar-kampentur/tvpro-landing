@@ -1,0 +1,83 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import AstroBlockRenderer from "../../../components/AstroBlockRenderer.astro";
+import {
+    fetchAPI,
+    getAllCities,
+    getGlobalConfig,
+    getCity,
+    getCTA,
+} from "../../../lib/strapi";
+
+export async function getStaticPaths() {
+    try {
+        const cities = (await getAllCities()) || [];
+        const paths = cities
+            .filter((city) => city.test_version && city.path)
+            .map((city) => ({
+                params: {
+                    city: city.path,
+                    version: city.test_version,
+                },
+            }));
+
+        if (paths.length === 0) {
+            console.log("[Build Info] No variants found in Strapi.");
+            return [];
+        }
+
+        console.log(
+            `[Build Success] Generating ${paths.length} variant static paths`,
+        );
+        return paths;
+    } catch (error) {
+        console.error(
+            "[Build Error] Failed to generate variant static paths:",
+            error,
+        );
+        return [];
+    }
+}
+
+const { city: citySlug, version } = Astro.params;
+
+const [variantData, globalData, cta] = await Promise.all([
+    getCity(citySlug, version),
+    getGlobalConfig(),
+    getCTA(),
+]);
+
+if (!variantData) {
+    return Astro.redirect("/404");
+}
+
+const layout =
+    variantData.page && variantData.page.length > 0
+        ? variantData.page
+        : globalData.default_layout || [];
+
+const { seo, city_name, state_code } = variantData;
+const displayName = city_name
+    ? `${city_name}${state_code ? `, ${state_code}` : ""}`
+    : "TVPro Handy Services";
+
+const title =
+    `[Variant ${version}] ` +
+    (seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`);
+const description =
+    seo?.metaDescription ||
+    `Expert TV mounting and home theater installation services in ${displayName}.`;
+
+const cityContext = {
+    city_name: variantData.city_name,
+    state_code: variantData.state_code,
+};
+---
+
+<Layout {title} {description} {cta}>
+    <AstroBlockRenderer
+        blocks={layout}
+        globalData={globalData}
+        cityContext={cityContext}
+    />
+</Layout>

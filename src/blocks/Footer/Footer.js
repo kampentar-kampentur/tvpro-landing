@@ -5,15 +5,16 @@ import styles from "./Footer.module.css";
 import LogoSVG from "@/assets/logoFooter.svg";
 import { useCTA } from "@/providers/CTAProvider";
 
-const Footer = () => {
-  const cta = useCTA();
+const Footer = ({ cta: propCta }) => {
+  const contextCta = useCTA();
+  const cta = propCta || contextCta;
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <div className={styles.logoWrapper}>
-          <Link
+          <a
             href={cta?.homeLink || "/"}
             aria-label="TVPro Handy Services - Home"
             className={styles.logoLink}

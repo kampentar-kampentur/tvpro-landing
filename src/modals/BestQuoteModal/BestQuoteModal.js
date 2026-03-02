@@ -12,6 +12,7 @@ import CloseIcon from "@/assets/icons/close.svg"
 import ChevronIcon from "@/assets/icons/chevron.svg"
 import Button from "@/ui/Button"
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
+import { getBaseUrl } from "@/lib/env";
 
 
 const BestQuoteScheme = {
@@ -513,7 +514,7 @@ const BestQuoteModal = () => {
     console.log("formData", formData);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
+      const apiUrl = getBaseUrl();
       const response = await fetch(`${apiUrl}/api/best-quote`, {
         method: 'POST',
         headers: {

@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../ui/Button/Button.astro";
+import styles from "../modals/SeeYouSoonModal/SeeYouSoonModal.module.css";
+
+const title = "You're all set! | TVPro Handy Services";
+const description =
+    "We'll see you soon. Get a Free Consultation Within 15 Minutes!";
+---
+
+<Layout {title} {description}>
+    <div class={styles.seeYouSoon}>
+        <h3 class={styles.title}>You're all set!<br />We'll see you soon.</h3>
+        <div class={styles.subtitle}>
+            Get a Free Consultation Within 15 Minutes!
+        </div>
+        <Button
+            variant="primary"
+            size="big"
+            class={styles.button}
+            onclick="window.history.back()">OK</Button
+        >
+    </div>
+</Layout>
+
+<style>
+    /* Ensure the component styles are applied correctly in the main layout */
+    :global(.seeYouSoon) {
+        padding: 40px 20px;
+        text-align: center;
+    }
+</style>

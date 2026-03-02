@@ -1,26 +1,27 @@
 ---
 import styles from "./Contacts.module.css";
-import FacebookDefault from "@/assets/socialIcons/FacebookDefault.svg?react";
-import FacebookHover from "@/assets/socialIcons/FacebookHover.svg?react";
-import InstagramDefault from "@/assets/socialIcons/InstagramDefault.svg?react";
-import InstagramHover from "@/assets/socialIcons/InstagramHover.svg?react";
-import TikTokDefault from "@/assets/socialIcons/TikTokDefault.svg?react";
-import TikTokHover from "@/assets/socialIcons/TikTokHover.svg?react";
-import YouTubeDefault from "@/assets/socialIcons/YouTubeDefault.svg?react";
-import YouTubeHover from "@/assets/socialIcons/YouTubeHover.svg?react";
-import YelpDefault from "@/assets/socialIcons/YelpDefault.svg?react";
-import YelpHover from "@/assets/socialIcons/YelpHover.svg?react";
-import ThumbtackDefault from "@/assets/socialIcons/ThumbtackDefault.svg?react";
-import ThumbtackHover from "@/assets/socialIcons/ThumbtackHover.svg?react";
-import PinterestDefault from "@/assets/socialIcons/pinterest.svg?react"
-import PinterestHover from "@/assets/socialIcons/pinterestHover.svg?react"
-import XDefault from "@/assets/socialIcons/X.svg?react"
-import XHover from "@/assets/socialIcons/XHover.svg?react"
+import FacebookDefault from "@/assets/socialIcons/FacebookDefault.svg";
+import FacebookHover from "@/assets/socialIcons/FacebookHover.svg";
+import InstagramDefault from "@/assets/socialIcons/InstagramDefault.svg";
+import InstagramHover from "@/assets/socialIcons/InstagramHover.svg";
+import TikTokDefault from "@/assets/socialIcons/TikTokDefault.svg";
+import TikTokHover from "@/assets/socialIcons/TikTokHover.svg";
+import YouTubeDefault from "@/assets/socialIcons/YouTubeDefault.svg";
+import YouTubeHover from "@/assets/socialIcons/YouTubeHover.svg";
+import YelpDefault from "@/assets/socialIcons/YelpDefault.svg";
+import YelpHover from "@/assets/socialIcons/YelpHover.svg";
+import ThumbtackDefault from "@/assets/socialIcons/ThumbtackDefault.svg";
+import ThumbtackHover from "@/assets/socialIcons/ThumbtackHover.svg";
+import PinterestDefault from "@/assets/socialIcons/pinterest.svg";
+import PinterestHover from "@/assets/socialIcons/pinterestHover.svg";
+import XDefault from "@/assets/socialIcons/X.svg";
+import XHover from "@/assets/socialIcons/XHover.svg";
 import AstroText from "../../ui/Text/AstroText.astro";
 
-const baseUrl = import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL || 
-                import.meta.env.NEXT_PUBLIC_SRTAPI_URL || 
-                'https://strapi-dev-e587.up.railway.app';
+const baseUrl =
+  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
+  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
+  "https://strapi-dev-e587.up.railway.app";
 
 async function getContactUs() {
   const res = await fetch(`${baseUrl}/api/contact-us`);
@@ -62,18 +63,24 @@ const contact = {
       <div class={styles.contactDetailsSection}>
         <div class={styles.detailItem}>
           <h3 class={styles.detailTitle}>Working Hours</h3>
-          <p class={styles.detailText}>{cta?.workHours || 'Mon-Sun 8:00 AM - 8:00 PM'}</p>
+          <p class={styles.detailText}>
+            {cta?.workHours || "Mon-Sun 8:00 AM - 8:00 PM"}
+          </p>
         </div>
         <div class={styles.detailItem}>
           <h3 class={styles.detailTitle}>Phone Number</h3>
           <p class={styles.detailText}>
-            <a href={`tel:${cta?.phone || '(877) 455-5535'}`}>{cta?.phoneLabel || 'Call Us'}</a>
+            <a href={`tel:${cta?.phone || "(877) 455-5535"}`}
+              >{cta?.phoneLabel || "Call Us"}</a
+            >
           </p>
         </div>
         <div class={styles.detailItem}>
           <h3 class={styles.detailTitle}>Email</h3>
           <p class={styles.detailText}>
-            <a href={`mailto:${cta?.email || 'tvprohandyservices@gmail.com'}`}>{cta?.email || 'info@tvprousa.com'}</a>
+            <a href={`mailto:${cta?.email || "tvprohandyservices@gmail.com"}`}
+              >{cta?.email || "info@tvprousa.com"}</a
+            >
           </p>
         </div>
       </div>
@@ -81,62 +88,186 @@ const contact = {
     <div class={styles.socialNetworksSection}>
       <h3 class={styles.detailTitle}>Social Networks</h3>
       <div class={styles.socialIcons}>
-        {contact.facebook && (
-          <a href={contact.facebook} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="FaceBook">
-            <FacebookDefault class={styles.defaultIcon} />
-            <FacebookHover class={styles.hoverIcon} />
-            <span class="sr-only">FaceBook</span>
-          </a>
-        )}
-        {contact.instagram && (
-          <a href={contact.instagram} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Instagram">
-            <InstagramDefault class={styles.defaultIcon} />
-            <InstagramHover class={styles.hoverIcon} />
-            <span class="sr-only">Instagram</span>
-          </a>
-        )}
-        {contact.tiktok && (
-          <a href={contact.tiktok} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="TikTok">
-            <TikTokDefault class={styles.defaultIcon} />
-            <TikTokHover class={styles.hoverIcon} />
-            <span class="sr-only">TikTok</span>
-          </a>
-        )}
-        {contact.youtube && (
-          <a href={contact.youtube} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="YouTube">
-            <YouTubeDefault class={styles.defaultIcon} />
-            <YouTubeHover class={styles.hoverIcon} />
-            <span class="sr-only">YouTube</span>
-          </a>
-        )}
-        {contact.yelp && (
-          <a href={contact.yelp} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Yelp">
-            <YelpDefault class={styles.defaultIcon} />
-            <YelpHover class={styles.hoverIcon} />
-            <span class="sr-only">Yelp</span>
-          </a>
-        )}
-        {contact.thumbtack && (
-          <a href={contact.thumbtack} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Thumbtack">
-            <ThumbtackDefault class={styles.defaultIcon} />
-            <ThumbtackHover class={styles.hoverIcon} />
-            <span class="sr-only">Thumbtack</span>
-          </a>
-        )}
-        {contact.pinterest && (
-          <a href={contact.pinterest} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="Pinterest">
-            <PinterestDefault class={styles.defaultIcon} />
-            <PinterestHover class={styles.hoverIcon} />
-            <span class="sr-only">Pinterest</span>
-          </a>
-        )}
-        {contact.x && (
-          <a href={contact.x} target="_blank" rel="noopener noreferrer" class={styles.socialIconLink} aria-label="X">
-            <XDefault class={styles.defaultIcon} />
-            <XHover class={styles.hoverIcon} />
-            <span class="sr-only">X</span>
-          </a>
-        )}
+        {
+          contact.facebook && (
+            <a
+              href={contact.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="FaceBook"
+            >
+              <img
+                src={FacebookDefault.src || FacebookDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img
+                src={FacebookHover.src || FacebookHover}
+                class={styles.hoverIcon}
+                alt=""
+              />
+              <span class="sr-only">FaceBook</span>
+            </a>
+          )
+        }
+        {
+          contact.instagram && (
+            <a
+              href={contact.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="Instagram"
+            >
+              <img
+                src={InstagramDefault.src || InstagramDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img
+                src={InstagramHover.src || InstagramHover}
+                class={styles.hoverIcon}
+                alt=""
+              />
+              <span class="sr-only">Instagram</span>
+            </a>
+          )
+        }
+        {
+          contact.tiktok && (
+            <a
+              href={contact.tiktok}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="TikTok"
+            >
+              <img
+                src={TikTokDefault.src || TikTokDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img
+                src={TikTokHover.src || TikTokHover}
+                class={styles.hoverIcon}
+                alt=""
+              />
+              <span class="sr-only">TikTok</span>
+            </a>
+          )
+        }
+        {
+          contact.youtube && (
+            <a
+              href={contact.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="YouTube"
+            >
+              <img
+                src={YouTubeDefault.src || YouTubeDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img
+                src={YouTubeHover.src || YouTubeHover}
+                class={styles.hoverIcon}
+                alt=""
+              />
+              <span class="sr-only">YouTube</span>
+            </a>
+          )
+        }
+        {
+          contact.yelp && (
+            <a
+              href={contact.yelp}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="Yelp"
+            >
+              <img
+                src={YelpDefault.src || YelpDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img
+                src={YelpHover.src || YelpHover}
+                class={styles.hoverIcon}
+                alt=""
+              />
+              <span class="sr-only">Yelp</span>
+            </a>
+          )
+        }
+        {
+          contact.thumbtack && (
+            <a
+              href={contact.thumbtack}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="Thumbtack"
+            >
+              <img
+                src={ThumbtackDefault.src || ThumbtackDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img
+                src={ThumbtackHover.src || ThumbtackHover}
+                class={styles.hoverIcon}
+                alt=""
+              />
+              <span class="sr-only">Thumbtack</span>
+            </a>
+          )
+        }
+        {
+          contact.pinterest && (
+            <a
+              href={contact.pinterest}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="Pinterest"
+            >
+              <img
+                src={PinterestDefault.src || PinterestDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img
+                src={PinterestHover.src || PinterestHover}
+                class={styles.hoverIcon}
+                alt=""
+              />
+              <span class="sr-only">Pinterest</span>
+            </a>
+          )
+        }
+        {
+          contact.x && (
+            <a
+              href={contact.x}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={styles.socialIconLink}
+              aria-label="X"
+            >
+              <img
+                src={XDefault.src || XDefault}
+                class={styles.defaultIcon}
+                alt=""
+              />
+              <img src={XHover.src || XHover} class={styles.hoverIcon} alt="" />
+              <span class="sr-only">X</span>
+            </a>
+          )
+        }
       </div>
     </div>
   </div>

@@ -21,7 +21,7 @@ const ArrowRightIcon = (props) => (
   </svg>
 );
 
-export default function GalleryGrid({ filters }) {
+export default function GalleryGrid({ filters, baseUrl }) {
   const [activeFilter, setActiveFilter] = useState(filters?.[0]?.type || "");
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -99,8 +99,10 @@ export default function GalleryGrid({ filters }) {
       } else {
         setLoading(true);
         try {
+          const apiBaseUrl = baseUrl || 'https://strapi-dev-e587.up.railway.app';
+          const filterParam = activeFilter ? encodeURIComponent(activeFilter) : '';
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*&filters[type]=${encodeURIComponent(activeFilter)}`
+            `${apiBaseUrl}/api/galler-photos?populate=*&filters[type]=${filterParam}`
           );
           const json = await res.json();
           nextData = json.data || [];

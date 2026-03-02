@@ -11,6 +11,7 @@ import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import EngagementTracker from "@/components/EngagementTracker/EngagementTracker";
 import Modals from "@/app/components/Modals";
 import { CTAProvider } from "@/providers/CTAProvider";
+import { getBaseUrl } from "@/lib/env";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -144,7 +145,8 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
 };
 
 async function getCTA() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/cta`);
   const json = await res.json();
   return json.data;
 }
@@ -199,7 +201,7 @@ export default async function RootLayout({ children }) {
                     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
                     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-                })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
+                })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || import.meta.env?.PUBLIC_NEXT_PUBLIC_CLARITY_PROJECT_ID || import.meta.env?.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
                 
                 // Google Ads / GA4
                 var gtagScript = document.createElement('script');

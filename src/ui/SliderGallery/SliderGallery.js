@@ -2,10 +2,10 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import styles from './SliderGallery.module.css';
 
-export const SliderGallery = ({ 
-  CardComponent, 
-  cardsPerPage = 1, 
-  cardData, 
+export const SliderGallery = ({
+  CardComponent,
+  cardsPerPage = 1,
+  cardData,
   autoplayInterval = 0,
   enableAutoplay = true,
   transitionDuration = 300
@@ -15,18 +15,18 @@ export const SliderGallery = ({
   const currentIndexRef = useRef(0);
   const scrollTimeoutRef = useRef(null);
   const isScrollingRef = useRef(false);
-  
+
   const [activeDotIndex, setActiveDotIndex] = useState(0);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
 
   // Мемоизируем вычисления
-  const totalPages = useMemo(() => 
-    Math.ceil(cardData.length / cardsPerPage), 
+  const totalPages = useMemo(() =>
+    Math.ceil(cardData.length / cardsPerPage),
     [cardData.length, cardsPerPage]
   );
 
-  const cardWidth = useMemo(() => 
-    100 / cardsPerPage, 
+  const cardWidth = useMemo(() =>
+    100 / cardsPerPage,
     [cardsPerPage]
   );
 
@@ -38,7 +38,7 @@ export const SliderGallery = ({
     isScrollingRef.current = true;
     const visibleWidth = slider.offsetWidth;
     const scrollLeft = pageIndex * visibleWidth;
-    
+
     slider.scrollTo({
       left: scrollLeft,
       behavior: 'smooth',
@@ -70,7 +70,7 @@ export const SliderGallery = ({
       const scrollLeft = slider.scrollLeft;
       const visibleWidth = slider.offsetWidth;
       const newPageIndex = Math.round(scrollLeft / visibleWidth);
-      
+
       if (newPageIndex !== currentIndexRef.current) {
         currentIndexRef.current = newPageIndex;
         setActiveDotIndex(newPageIndex);
@@ -147,7 +147,7 @@ export const SliderGallery = ({
     if (!slider) return;
 
     slider.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     return () => {
       slider.removeEventListener('scroll', handleScroll);
     };
@@ -180,28 +180,28 @@ export const SliderGallery = ({
         <CardComponent {...data} />
       </div>
     )),
-    [cardData, cardWidth]
+    [cardData, cardWidth, CardComponent]
   );
 
   // Мемоизируем рендер точек
-  const renderDots = useMemo(() => 
+  const renderDots = useMemo(() =>
     Array.from({ length: totalPages }, (_, index) => (
       <button
         key={index}
         type="button"
         className={`${styles.dot} ${index === activeDotIndex ? styles.activeDot : ''}`}
         onClick={() => handleDotClick(index)}
-        aria-label={`Перейти к слайду ${index + 1}`}
+        aria-label={`Next slide ${index + 1}`}
         aria-current={index === activeDotIndex ? 'true' : 'false'}
         role="tab"
         aria-selected={index === activeDotIndex}
       />
-    )), 
+    )),
     [totalPages, activeDotIndex, handleDotClick]
   );
 
   return (
-    <div 
+    <div
       className={styles.sliderContainer}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -210,7 +210,7 @@ export const SliderGallery = ({
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="region"
-      aria-label="Галерея слайдов"
+      aria-label="Slider"
     >
       <div
         className={styles.sliderWrapper}
@@ -220,7 +220,7 @@ export const SliderGallery = ({
       >
         {renderCards}
       </div>
-      
+
       {totalPages > 1 && (
         <div className={styles.paginationDots} role="tablist">
           {renderDots}

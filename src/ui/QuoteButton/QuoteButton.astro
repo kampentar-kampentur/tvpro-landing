@@ -1,0 +1,45 @@
+---
+import Button from "../Button/Button.astro";
+
+const {
+    modalName = "BestQuote",
+    class: className,
+    label,
+    ...props
+} = Astro.props;
+---
+
+<Button
+    {...props}
+    class={`quote-btn-vanilla ${className || ""}`}
+    data-modal={modalName}
+>
+    {label || <slot>Book Now</slot>}
+</Button>
+
+<script>
+    // Add listeners for vanilla QuoteButtons
+    function initQuoteButtons() {
+        const buttons = document.querySelectorAll(".quote-btn-vanilla");
+        buttons.forEach((btn) => {
+            // Avoid double listeners
+            if (btn.getAttribute("data-has-listener")) return;
+
+            btn.addEventListener("click", (e) => {
+                const modal = btn.getAttribute("data-modal");
+                if (modal) {
+                    document.dispatchEvent(
+                        new CustomEvent("modal:open", {
+                            detail: { name: modal },
+                        }),
+                    );
+                }
+            });
+            btn.setAttribute("data-has-listener", "true");
+        });
+    }
+
+    // Init on load and after any content swaps (if using View Transitions/etc)
+    initQuoteButtons();
+    document.addEventListener("astro:page-load", initQuoteButtons);
+</script>

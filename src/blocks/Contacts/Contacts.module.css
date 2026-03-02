@@ -66,15 +66,17 @@
   display: flex;
   gap: 20px;
   margin-top: 20px;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
 .socialIconLink {
   position: relative;
   display: flex;
-  width: auto; /* Assuming a fixed size for the icons based on Figma */
-  height: 24px; /* Assuming a fixed size for the icons based on Figma */
+  width: auto;
+  /* Assuming a fixed size for the icons based on Figma */
+  height: 24px;
+  /* Assuming a fixed size for the icons based on Figma */
 }
 
 .socialIconLink .defaultIcon {
@@ -108,16 +110,18 @@
   }
 
   .detailTitle {
-      font-size: 14px;
-      line-height: 20px;
+    font-size: 14px;
+    line-height: 20px;
   }
+
   .contacts {
     padding: 40px 0;
   }
+
   .mapWrap {
     flex-direction: column;
   }
-} 
+}
 
 .mapWrap {
   display: flex;

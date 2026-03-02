@@ -1,0 +1,99 @@
+---
+import styles from "./ServiceCard.module.css";
+import InfoCircle from "@/assets/icons/InfoCircle.svg?raw";
+import InfoCircleActive from "@/assets/icons/InfoCircleActive.svg?raw";
+import QuoteButton from "@/ui/QuoteButton/QuoteButton.astro";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
+
+const { image, title, description, buttonText, modalName, price } = Astro.props;
+const displayTitle = title.split(" - ")[0];
+---
+
+<div class={styles.serviceCard} data-has-description={!!description}>
+    <div class={styles.imageContainer}>
+        {
+            image && (
+                <ImageWrapper
+                    media={image}
+                    defaultAlt={title}
+                    sizes="(max-width: 768px) 100px, 150px"
+                />
+            )
+        }
+    </div>
+
+    <div class={styles.textWrapper}>
+        <h3 class={styles.title}>{displayTitle}</h3>
+        <span class={styles.description}>{description}</span>
+    </div>
+
+    <QuoteButton
+        class={styles.hiddenButton}
+        variant="primary"
+        size="small"
+        modalName={modalName || "BestQuote"}
+    >
+        {buttonText}
+    </QuoteButton>
+    <QuoteButton
+        class={styles.invisibleButton}
+        modalName={modalName || "BestQuote"}
+    />
+
+    {
+        description && (
+            <div class="info-toggle-wrapper">
+                <button
+                    class={`${styles.info} info-icon-default`}
+                    aria-label="Show info"
+                    set:html={InfoCircle}
+                />
+                <button
+                    class={`${styles.info} info-icon-active`}
+                    aria-label="Hide info"
+                    style="display: none;"
+                    set:html={InfoCircleActive}
+                />
+            </div>
+        )
+    }
+    {price && <span class={styles.price}>${price}</span>}
+</div>
+
+<script>
+    function initServiceCards() {
+        const cards = document.querySelectorAll(
+            '[data-has-description="true"]',
+        );
+        cards.forEach((card) => {
+            const defaultIcon = card.querySelector(".info-icon-default");
+            const activeIcon = card.querySelector(".info-icon-active");
+
+            if (!defaultIcon || !activeIcon) return;
+
+            const toggle = () => {
+                const isActive = card.classList.toggle("isShowInfo");
+                if (isActive) {
+                    defaultIcon.style.display = "none";
+                    activeIcon.style.display = "block";
+                } else {
+                    defaultIcon.style.display = "block";
+                    activeIcon.style.display = "none";
+                }
+            };
+
+            defaultIcon.addEventListener("click", toggle);
+            activeIcon.addEventListener("click", toggle);
+        });
+    }
+
+    initServiceCards();
+    document.addEventListener("astro:page-load", initServiceCards);
+</script>
+
+<style>
+    /* Add some styles for the info toggle because we use classes in JS */
+    .isShowInfo {
+        /* These styles should match ServiceCard.module.css if applicable */
+    }
+</style>

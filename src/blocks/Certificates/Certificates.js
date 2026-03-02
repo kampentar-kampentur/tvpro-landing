@@ -2,10 +2,12 @@ import styles from "./Certificates.module.css";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
 import CertificateCard from "./components/CertificateCard";
 import Text from "@/ui/Text/Text";
+import { getBaseUrl } from "@/lib/env";
 
 async function getCertificates() {
+  const baseUrl = getBaseUrl();
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/certificate?populate=*`, {
+    const res = await fetch(`${baseUrl}/api/certificate?populate=*`, {
       next: { revalidate: 60 } // Revalidate at most every 60 seconds
     });
 

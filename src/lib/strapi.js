@@ -1,4 +1,5 @@
-import qs from "qs";
+import { getBaseUrl } from "./env";
+import * as qs from "qs";
 
 const flattenStrapiData = (data) => {
     if (!data) return null;
@@ -14,10 +15,7 @@ const flattenStrapiData = (data) => {
 };
 
 export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
-    const baseUrl = (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_SRTAPI_URL) ||
-        (import.meta.env?.PUBLIC_NEXT_PUBLIC_SRTAPI_URL) ||
-        (import.meta.env?.NEXT_PUBLIC_SRTAPI_URL) ||
-        'https://strapi-dev-e587.up.railway.app';
+    const baseUrl = getBaseUrl();
 
     const queryString = qs.stringify(urlParamsObject);
     const requestUrl = `${baseUrl}/api${path}${queryString ? `?${queryString}` : ""}`;

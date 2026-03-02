@@ -2,6 +2,11 @@
 
 import React from "react";
 
+/**
+ * ImageWrapper handles image rendering across Next.js and Astro.
+ * It uses a standard <img> tag to avoid framework-specific constraints and 
+ * implements its own optimization logic using Strapi image formats.
+ */
 export default function ImageWrapper({
     media,
     className,
@@ -16,41 +21,45 @@ export default function ImageWrapper({
 
     const formats = media.formats || {};
 
-    const strapiLoader = ({ src, width: requestedWidth, quality }) => {
-        if (preferFormat && formats[preferFormat]) {
-            return formats[preferFormat].url;
-        }
-
+    // Helper to get the best URL for a specific width (for srcSet)
+    const getFormatUrl = (requestedWidth) => {
         if (!formats || Object.keys(formats).length === 0) {
-            return src;
+            return media.url;
         }
 
         const availableFormats = Object.keys(formats)
             .map(key => ({ key, ...formats[key] }))
             .sort((a, b) => a.width - b.width);
 
-        // Find the smallest format that is larger than or equal to the requested width
         const bestFit = availableFormats.find(f => f.width >= requestedWidth);
-
-        if (bestFit) {
-            return bestFit.url;
-        }
-
-        // Fallback to the largest available format or the original URL
-        return availableFormats[availableFormats.length - 1]?.url || src;
+        return bestFit ? bestFit.url : (availableFormats[availableFormats.length - 1]?.url || media.url);
     };
+
+    // Construct srcSet
+    const srcSet = Object.values(formats)
+        .map(f => `${f.url} ${f.width}w`)
+        .join(", ");
+
+    // Initial src
+    let src = media.url;
+    if (preferFormat && formats[preferFormat]) {
+        src = formats[preferFormat].url;
+    }
 
     const finalWidth = width || (media.width ? Math.min(media.width, 1200) : 1200);
     const finalHeight = height || (media.width && media.height ? Math.round(finalWidth / (media.width / media.height)) : undefined);
 
-    return <Image
-        loader={strapiLoader}
-        src={media.url}
-        className={className}
-        width={finalWidth}
-        height={finalHeight}
-        alt={media.alternativeText || media.caption || defaultAlt || ""}
-        loading={priority ? "eager" : "lazy"}
-        sizes={sizes}
-    />;
+    return (
+        <img
+            src={src}
+            srcSet={srcSet || undefined}
+            className={className}
+            width={finalWidth}
+            height={finalHeight}
+            alt={media.alternativeText || media.caption || defaultAlt || ""}
+            loading={priority ? "eager" : "lazy"}
+            sizes={sizes}
+            decoding="async"
+        />
+    );
 }

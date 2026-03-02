@@ -2,9 +2,11 @@ import styles from "./OurServices.module.css";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import OurServicesInteractive from "./components/OurServicesInteractive";
 import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
+import { getBaseUrl } from "@/lib/env";
 
 async function getOurServices() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/our-service?populate[services][populate]=image`);
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/our-service?populate[services][populate]=image`);
   const json = await res.json();
 
   return json.data;

@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Layout.astro";
+import BookingSuccessClient from "./_BookingSuccessClient";
+
+const title = "Booking Success | TVPro Handy Services";
+const description =
+    "Your TV installation is booked! Thanks for booking with us.";
+---
+
+<Layout {title} {description}>
+    <BookingSuccessClient client:only="react" />
+</Layout>
