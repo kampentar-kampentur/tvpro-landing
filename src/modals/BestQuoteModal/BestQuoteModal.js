@@ -12,6 +12,7 @@ import CloseIcon from "@/assets/icons/close.svg"
 import ChevronIcon from "@/assets/icons/chevron.svg"
 import Button from "@/ui/Button"
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
+import { getUtmParams } from "@/lib/utmTracker";
 
 
 const BestQuoteScheme = {
@@ -526,7 +527,8 @@ const BestQuoteModal = () => {
               ...formData.contactInfo,
               zip: formData.contactInfo.zipApt.zip,
               apt: formData.contactInfo.zipApt.apt
-            }
+            },
+            ...getUtmParams(),
           }
         }),
       });

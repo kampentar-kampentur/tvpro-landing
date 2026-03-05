@@ -10,6 +10,7 @@ import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
+import { getUtmParams } from "@/lib/utmTracker";
 
 const nameField = {
     "name": "name",
@@ -78,6 +79,7 @@ const BookNowModal = () => {
                     data: {
                         name: formData.name,
                         phone: formData.phone,
+                        ...getUtmParams(),
                     }
                 }),
             });
