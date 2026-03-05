@@ -16,12 +16,10 @@ import PinterestDefault from "@/assets/socialIcons/pinterest.svg";
 import PinterestHover from "@/assets/socialIcons/pinterestHover.svg";
 import XDefault from "@/assets/socialIcons/X.svg";
 import XHover from "@/assets/socialIcons/XHover.svg";
-import AstroText from "../../ui/Text/AstroText.astro";
+import Text from "../../ui/Text/Text.astro";
+import { getBaseUrl } from "../../lib/env";
 
-const baseUrl =
-  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
-  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
-  "https://strapi-dev-e587.up.railway.app";
+const baseUrl = getBaseUrl();
 
 async function getContactUs() {
   const res = await fetch(`${baseUrl}/api/contact-us`);
@@ -57,8 +55,8 @@ const contact = {
 
 <section class={styles.contacts} id="contact">
   <div class={`blockContainer ${styles.contactsContainer}`}>
-    <h2 class={styles.heading}><AstroText text={contact.title} /></h2>
-    <p class={styles.subHeading}><AstroText text={contact.subTitle} /></p>
+    <h2 class={styles.heading}><Text text={contact.title} /></h2>
+    <p class={styles.subHeading}><Text text={contact.subTitle} /></p>
     <div class={styles.mapWrap}>
       <div class={styles.contactDetailsSection}>
         <div class={styles.detailItem}>

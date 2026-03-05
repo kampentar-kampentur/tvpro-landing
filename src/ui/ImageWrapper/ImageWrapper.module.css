@@ -1,0 +1,5 @@
+.imageWrapper {
+    position: relative;
+    overflow: hidden;
+    display: block;
+}

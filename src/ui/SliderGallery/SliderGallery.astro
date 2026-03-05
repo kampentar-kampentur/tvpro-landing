@@ -1,0 +1,156 @@
+---
+import styles from "./SliderGallery.module.css";
+
+interface Props {
+    cardsPerPage?: number;
+    autoplayInterval?: number;
+    enableAutoplay?: boolean;
+}
+
+const {
+    cardsPerPage = 1,
+    autoplayInterval = 0,
+    enableAutoplay = true,
+} = Astro.props;
+
+const cardWidth = 100 / cardsPerPage;
+---
+
+<div
+    class={styles.sliderContainer}
+    data-cards-per-page={cardsPerPage}
+    data-autoplay-interval={autoplayInterval}
+    data-enable-autoplay={enableAutoplay}
+    tabindex="0"
+    role="region"
+    aria-label="Slider"
+    id="slider-container"
+>
+    <div
+        class={styles.sliderWrapper}
+        role="list"
+        aria-live="polite"
+        id="slider-wrapper"
+    >
+        <slot />
+    </div>
+
+    <div class={styles.paginationDots} role="tablist" id="pagination-dots">
+    </div>
+</div>
+
+<script>
+    function initSlider() {
+        const sliderContainer = document.getElementById("slider-container");
+        const sliderWrapper = document.getElementById("slider-wrapper");
+        const dotsContainer = document.getElementById("pagination-dots");
+        if (!sliderContainer || !sliderWrapper || !dotsContainer) return;
+
+        const cardsPerPage = parseInt(
+            sliderContainer.dataset.cardsPerPage || "1",
+        );
+        const autoplayInterval = parseInt(
+            sliderContainer.dataset.autoplayInterval || "0",
+        );
+        const enableAutoplay =
+            sliderContainer.dataset.enableAutoplay === "true";
+
+        const cards = Array.from(sliderWrapper.children);
+        const totalPages = Math.ceil(cards.length / cardsPerPage);
+
+        // Create dots
+        dotsContainer.innerHTML = "";
+        for (let i = 0; i < totalPages; i++) {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className =
+                i === 0 ? `${styles.dot} ${styles.activeDot}` : styles.dot;
+            dot.setAttribute("aria-label", `Go to page ${i + 1}`);
+            dot.setAttribute("role", "tab");
+            dot.dataset.index = i.toString();
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = Array.from(dotsContainer.children);
+        let currentIndex = 0;
+        let autoplayTimer = null;
+
+        const scrollToPage = (index) => {
+            currentIndex = (index + totalPages) % totalPages;
+            const visibleWidth = sliderWrapper.offsetWidth;
+            sliderWrapper.scrollTo({
+                left: currentIndex * visibleWidth,
+                behavior: "smooth",
+            });
+
+            dots.forEach((dot, i) => {
+                dot.dataset.active = (i === currentIndex).toString();
+            });
+        };
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener("click", () => {
+                scrollToPage(i);
+                stopAutoplay();
+            });
+        });
+
+        const handleScroll = () => {
+            const scrollLeft = sliderWrapper.scrollLeft;
+            const visibleWidth = sliderWrapper.offsetWidth;
+            const newIndex = Math.round(scrollLeft / visibleWidth);
+            if (newIndex !== currentIndex) {
+                currentIndex = newIndex;
+                dots.forEach((dot, i) => {
+                    dot.dataset.active = (i === currentIndex).toString();
+                });
+            }
+        };
+
+        sliderWrapper.addEventListener("scroll", handleScroll, {
+            passive: true,
+        });
+
+        const startAutoplay = () => {
+            if (enableAutoplay && autoplayInterval > 0) {
+                autoplayTimer = setInterval(() => {
+                    scrollToPage((currentIndex + 1) % totalPages);
+                }, autoplayInterval);
+            }
+        };
+
+        const stopAutoplay = () => {
+            if (autoplayTimer) clearInterval(autoplayTimer);
+        };
+
+        sliderContainer.addEventListener("mouseenter", stopAutoplay);
+        sliderContainer.addEventListener("mouseleave", startAutoplay);
+        sliderContainer.addEventListener("touchstart", stopAutoplay, {
+            passive: true,
+        });
+
+        startAutoplay();
+    }
+
+    initSlider();
+    document.addEventListener("astro:page-load", initSlider);
+</script>
+
+<style is:global>
+    /* We need to ensure children have the correct width */
+    [data-cards-per-page="1"] > #slider-wrapper > * {
+        min-width: 100%;
+    }
+    [data-cards-per-page="2"] > #slider-wrapper > * {
+        min-width: 50%;
+    }
+    [data-cards-per-page="3"] > #slider-wrapper > * {
+        min-width: 33.333%;
+    }
+
+    /* Fix for active dot */
+    [data-active="true"]::after {
+        background-color: var(--foreground);
+        transform: scale(1.2);
+    }
+</style>

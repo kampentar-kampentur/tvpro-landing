@@ -1,0 +1,151 @@
+---
+import styles from "./ExitIntentModal.module.css";
+import ModalBase from "../../ui/Modal/ModalBase.astro";
+---
+
+<ModalBase id="exit-intent-modal" modalName="ExitIntentModal">
+    <div class={styles.exitModalContent}>
+        <div class={styles.container}>
+            <h2 class={styles.title}>Wait! Get $30 OFF</h2>
+            <p class={styles.subtitle}>
+                Don't leave yet! Claim your discount for your first professional
+                TV installation.
+            </p>
+
+            <form class={styles.form} id="exit-intent-form">
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your name *"
+                    required
+                    class={styles.input}
+                />
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone number *"
+                    required
+                    class={styles.input}
+                />
+
+                <div class={styles.footer}>
+                    <label class={styles.checkboxContainer}>
+                        <input type="checkbox" name="terms" required checked />
+                        <span
+                            class={styles.termsText}
+                            style="text-align: left; display: block; margin-left: 10px;"
+                        >
+                            I agree to receive SMS from TVPro Handy Services LLC
+                            regarding appointments and service updates.
+                            <div style="margin-top: 4px;">
+                                <a
+                                    href="/privacy-policy"
+                                    target="_blank"
+                                    class="sms-link">Privacy Policy</a
+                                > and
+                                <a
+                                    href="/terms"
+                                    target="_blank"
+                                    class="sms-link"
+                                    style="margin-left: 8px;"
+                                    >Terms of Service</a
+                                >
+                            </div>
+                        </span>
+                    </label>
+                    <button
+                        type="submit"
+                        class={styles.submitBtn}
+                        id="exit-intent-submit">Claim My $30 Off</button
+                    >
+                </div>
+            </form>
+
+            <button
+                type="button"
+                class={styles.noThanks}
+                id="exit-intent-cancel"
+            >
+                No thanks, I'll pay full price
+            </button>
+        </div>
+    </div>
+</ModalBase>
+
+<script>
+    import { getBaseUrl } from "@/lib/env";
+
+    function setupExitIntent() {
+        // Exit intent logic
+        let shown = false;
+        const handleMouseLeave = (e) => {
+            if (
+                e.clientY <= 0 &&
+                !shown &&
+                !localStorage.getItem("exit_intent_shown")
+            ) {
+                import("@/store/modalStore").then((m) =>
+                    m.openModalAction("ExitIntentModal"),
+                );
+                shown = true;
+                localStorage.setItem("exit_intent_shown", "true");
+            }
+        };
+        document.addEventListener("mouseleave", handleMouseLeave);
+
+        const form = document.getElementById("exit-intent-form");
+        const cancelBtn = document.getElementById("exit-intent-cancel");
+
+        if (form && !form._initialized) {
+            form._initialized = true;
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const submitBtn = document.getElementById("exit-intent-submit");
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = "Sending...";
+                }
+
+                try {
+                    const baseUrl = getBaseUrl();
+                    const response = await fetch(`${baseUrl}/api/book-now`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            data: { ...data, source: "exit_intent_popup" },
+                        }),
+                    });
+
+                    if (response.ok) {
+                        import("@/store/modalStore").then((m) =>
+                            m.closeModalAction("ExitIntentModal"),
+                        );
+                        window.location.href = "/see-you-soon";
+                    }
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = "Claim My $30 Off";
+                    }
+                }
+            });
+        }
+
+        if (cancelBtn && !cancelBtn._initialized) {
+            cancelBtn._initialized = true;
+            cancelBtn.addEventListener("click", () => {
+                import("@/store/modalStore").then((m) =>
+                    m.closeModalAction("ExitIntentModal"),
+                );
+            });
+        }
+    }
+
+    setupExitIntent();
+    document.addEventListener("astro:page-load", setupExitIntent);
+</script>

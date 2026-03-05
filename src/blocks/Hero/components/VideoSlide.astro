@@ -1,0 +1,137 @@
+---
+import styles from "./AstroVideoSlide.module.css";
+
+interface Props {
+    isActive?: boolean;
+    data: any;
+    index?: number;
+}
+
+const { data, index = 0, isActive = false } = Astro.props;
+
+const {
+    src360 = "/optimized/mainVideo2-360p.mp4",
+    src480 = "/optimized/mainVideo2-480p.mp4",
+    src720 = "/optimized/mainVideo2-720p.mp4",
+    poster = "/videoplaceholder-392.webp",
+} = data || {};
+
+// We render the video tag directly in Astro for the first slide (priority)
+// or use a placeholder for others if we want extreme performance.
+// But for LCP, we NEED the first slide to be ready.
+---
+
+<div
+    class={styles.videoSlide}
+    data-index={index}
+    data-active={isActive ? "true" : "false"}
+>
+    <img
+        src={poster}
+        alt=""
+        fetchpriority={index === 0 ? "high" : "low"}
+        loading={index === 0 ? "eager" : "lazy"}
+        class={styles.videoPlaceholder}
+    />
+    <video
+        poster={poster}
+        preload={index === 0 ? "auto" : "metadata"}
+        muted
+        playsinline
+        width="1920"
+        height="1080"
+        class={styles.video}
+        fetchpriority={index === 0 ? "high" : "low"}
+        style={{
+            position: "relative",
+            zIndex: 2,
+            opacity: 0,
+            transition: "opacity 0.5s ease",
+        }}
+    >
+        <source src={src360} type="video/mp4" media="(max-width: 480px)" />
+        <source src={src480} type="video/mp4" media="(max-width: 1024px)" />
+        <source src={src720} type="video/mp4" />
+        {
+            (data?.tracks || []).map((track: any) => (
+                <track
+                    kind={track.kind || "subtitles"}
+                    src={track.src}
+                    srclang={track.srcLang}
+                    label={track.label}
+                    default={track.default}
+                />
+            ))
+        }
+    </video>
+</div>
+
+<script>
+    // Logic to match VideoSlide.jsx
+    function initVideoSlides() {
+        const slides = document.querySelectorAll(`[class*="videoSlide"]`);
+
+        slides.forEach((slide) => {
+            const index = parseInt(slide.getAttribute("data-index") || "0");
+            const video = slide.querySelector("video");
+            const placeholder = slide.querySelector("img");
+
+            if (!video) return;
+
+            let isLoaded = false;
+            let shouldRender = false;
+
+            const handleVideoReady = () => {
+                isLoaded = true;
+                video.setAttribute("data-loaded", "true");
+                video.style.opacity = "1";
+                if (placeholder) placeholder.style.opacity = "0";
+            };
+
+            video.addEventListener("loadeddata", handleVideoReady);
+            video.addEventListener("canplay", handleVideoReady);
+            video.addEventListener("playing", handleVideoReady);
+
+            // TimeUpdate fallback for loading
+            video.addEventListener("timeupdate", () => {
+                if (!isLoaded && video.currentTime > 0) {
+                    handleVideoReady();
+                }
+            });
+
+            // React's shouldRender logic
+            const checkRender = () => {
+                const isActive = slide.getAttribute("data-active") === "true";
+                if (isActive) {
+                    shouldRender = true;
+                } else if (index === 0 && !shouldRender) {
+                    setTimeout(() => {
+                        shouldRender = true;
+                        // For Astro, video is already in DOM, so we just "consider" it rendered
+                    }, 2000);
+                }
+            };
+
+            // Initial check
+            checkRender();
+
+            // Observe data-active changes
+            const observer = new MutationObserver(() => {
+                const isActive = slide.getAttribute("data-active") === "true";
+                if (isActive) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            });
+
+            observer.observe(slide, {
+                attributes: true,
+                attributeFilter: ["data-active"],
+            });
+        });
+    }
+
+    initVideoSlides();
+    document.addEventListener("astro:page-load", initVideoSlides);
+</script>

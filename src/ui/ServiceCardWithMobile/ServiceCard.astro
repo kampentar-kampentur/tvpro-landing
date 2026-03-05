@@ -1,9 +1,9 @@
 ---
 import styles from "./ServiceCard.module.css";
-import InfoCircle from "@/assets/icons/InfoCircle.svg?raw";
-import InfoCircleActive from "@/assets/icons/InfoCircleActive.svg?raw";
-import QuoteButton from "@/ui/QuoteButton/QuoteButton.astro";
-import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
+import InfoCircle from "../../assets/icons/InfoCircle.svg?raw";
+import InfoCircleActive from "../../assets/icons/InfoCircleActive.svg?raw";
+import QuoteButton from "../QuoteButton/QuoteButton.astro";
+import ImageWrapper from "../ImageWrapper/ImageWrapper.astro";
 
 const { image, title, description, buttonText, modalName, price } = Astro.props;
 const displayTitle = title.split(" - ")[0];

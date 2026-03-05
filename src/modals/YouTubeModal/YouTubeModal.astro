@@ -1,0 +1,65 @@
+---
+import styles from "./YouTubeModal.module.css";
+import ModalBase from "../../ui/Modal/ModalBase.astro";
+---
+
+<ModalBase id="youtube-modal" modalName="YouTubeModal">
+    <div class={styles.modalContent}>
+        <div class={styles.videoWrapper} id="youtube-video-container">
+            <!-- iframe will be injected here -->
+        </div>
+    </div>
+</ModalBase>
+
+<script>
+    import { $modals } from "@/store/modalStore";
+    import styles from "./YouTubeModal.module.css";
+
+    function setupYouTubeModal() {
+        const dialog = document.getElementById("youtube-modal");
+        const container = document.getElementById("youtube-video-container");
+
+        if (!dialog || !container) return;
+        if (dialog._initialized_yt) return;
+        dialog._initialized_yt = true;
+
+        const updateContent = (modalData) => {
+            if (modalData && modalData.name === "YouTubeModal") {
+                const { videoId, isVertical } = modalData.props || {};
+                if (videoId && container) {
+                    container.innerHTML = `
+                        <iframe
+                            src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                            style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
+                        ></iframe>
+                    `;
+                    if (isVertical) {
+                        container.classList.add(styles.isVertical);
+                    } else {
+                        container.classList.remove(styles.isVertical);
+                    }
+                }
+            } else {
+                if (container) container.innerHTML = "";
+            }
+        };
+
+        // Subscribe to store for content updates (ModalBase handles show/hide)
+        $modals.subscribe((modals) => {
+            const ytModal = modals.find((m) => m.name === "YouTubeModal");
+            updateContent(ytModal);
+        });
+
+        // Clear content on native close
+        dialog.addEventListener("close", () => {
+            if (container) container.innerHTML = "";
+        });
+    }
+
+    setupYouTubeModal();
+    document.addEventListener("astro:page-load", setupYouTubeModal);
+</script>

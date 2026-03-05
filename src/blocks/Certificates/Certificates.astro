@@ -1,13 +1,12 @@
 ---
 import styles from "./Certificates.module.css";
-import CertificatesSlider from "./components/CertificatesSlider";
-import AstroText from "../../ui/Text/AstroText.astro";
+import SliderGallery from "@/ui/SliderGallery/SliderGallery.astro";
+import CertificateCard from "./components/CertificateCard.astro";
+import Text from "../../ui/Text/Text.astro";
 import { minimizeMedia } from "../../lib/optimizeData";
+import { getBaseUrl } from "../../lib/env";
 
-const baseUrl =
-  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
-  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
-  "https://strapi-dev-e587.up.railway.app";
+const baseUrl = getBaseUrl();
 
 async function getCertificates() {
   try {
@@ -53,15 +52,21 @@ const certificatesData = {
 <section class={`block ${styles.certificates}`}>
   <header class={styles.certificatesHeader}>
     <h2 class="blockHeading">
-      <AstroText text={certificatesData.title} />
+      <Text text={certificatesData.title} />
     </h2>
-    <p class="subText"><AstroText text={certificatesData.subTitle} /></p>
+    <p class="subText"><Text text={certificatesData.subTitle} /></p>
   </header>
   <div class={styles.sliderWrap}>
-    <CertificatesSlider
-      client:load
-      certificates={certificatesData.certificates}
-      cardsPerPage={4}
-    />
+    <SliderGallery cardsPerPage={4}>
+      {
+        certificatesData.certificates.map((cert, index) => (
+          <CertificateCard
+            image={cert}
+            certificates={certificatesData.certificates}
+            currentIndex={index}
+          />
+        ))
+      }
+    </SliderGallery>
   </div>
 </section>

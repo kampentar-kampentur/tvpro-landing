@@ -1,13 +1,10 @@
 ---
 import styles from "./WorkVideoGallery.module.css";
-import AstroText from "../../ui/Text/AstroText.astro";
+import Text from "../../ui/Text/Text.astro";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton.astro";
-import VideoCardClient from "./VideoCardClient";
+import { getBaseUrl } from "../../lib/env";
 
-const baseUrl =
-    import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
-    import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
-    "https://strapi-dev-e587.up.railway.app";
+const baseUrl = getBaseUrl();
 
 async function getWorkVideoGalleryData() {
     try {
@@ -60,12 +57,12 @@ const videos = displayData.videoItem.map((v, idx) => ({
     <div class="block">
         <header class={styles.header}>
             <h2 class="blockHeading">
-                <AstroText text={title} />
+                <Text text={title} />
             </h2>
             {
                 subTitle && (
                     <p class="subText">
-                        <AstroText text={subTitle} />
+                        <Text text={subTitle} />
                     </p>
                 )
             }
@@ -88,10 +85,11 @@ const videos = displayData.videoItem.map((v, idx) => ({
                             : 480;
 
                     return (
-                        <VideoCardClient
-                            client:load
-                            videoId={video.youtubeId}
-                            isVertical={video.isVertical}
+                        <div
+                            class="video-card-trigger"
+                            data-video-id={video.youtubeId}
+                            data-is-vertical={video.isVertical}
+                            style={{ cursor: "pointer" }}
                         >
                             <div
                                 class={`${styles.videoCard}${video.isVertical ? ` ${styles.verticalCard}` : ""}`}
@@ -130,7 +128,7 @@ const videos = displayData.videoItem.map((v, idx) => ({
                                     </p>
                                 </div>
                             </div>
-                        </VideoCardClient>
+                        </div>
                     );
                 })
             }
@@ -150,3 +148,27 @@ const videos = displayData.videoItem.map((v, idx) => ({
         </div>
     </div>
 </section>
+
+<script>
+    function initVideoGallery() {
+        const triggers = document.querySelectorAll(".video-card-trigger");
+        triggers.forEach((trigger) => {
+            trigger.addEventListener("click", () => {
+                const videoId = trigger.dataset.videoId;
+                const isVertical = trigger.dataset.isVertical === "true";
+
+                document.dispatchEvent(
+                    new CustomEvent("modal:open", {
+                        detail: {
+                            name: "YouTubeModal",
+                            props: { videoId, isVertical },
+                        },
+                    }),
+                );
+            });
+        });
+    }
+
+    initVideoGallery();
+    document.addEventListener("astro:page-load", initVideoGallery);
+</script>

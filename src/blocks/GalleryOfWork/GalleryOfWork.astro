@@ -2,7 +2,7 @@
 import styles from "./GalleryOfWork.module.css";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton.astro";
 import GalleryGrid from "./components/GalleryGrid";
-import AstroText from "../../ui/Text/AstroText.astro";
+import Text from "../../ui/Text/Text.astro";
 
 const baseUrl =
   import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
@@ -50,9 +50,9 @@ const galleryOfWorkData = {
   <div class="block">
     <header class={styles.galleryOfWorkHeader}>
       <h2 class="blockHeading">
-        <AstroText text={galleryOfWorkData.title} />
+        <Text text={galleryOfWorkData.title} />
       </h2>
-      <p class="subText"><AstroText text={galleryOfWorkData.subTitle} /></p>
+      <p class="subText"><Text text={galleryOfWorkData.subTitle} /></p>
     </header>
     <GalleryGrid
       client:load

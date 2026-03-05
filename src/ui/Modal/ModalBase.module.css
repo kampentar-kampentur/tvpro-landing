@@ -1,0 +1,95 @@
+.dialog {
+    padding: 0;
+    border: none;
+    background: transparent;
+    width: auto;
+    max-width: 100vw;
+    max-height: 100vh;
+    outline: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.dialog::backdrop {
+    background-color: rgba(14, 14, 19, 0.6);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modalContent {
+    background-color: var(--background);
+    border-radius: 40px;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.closeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--gray-light);
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    color: var(--foreground);
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.closeButton:hover {
+    border-color: var(--foreground);
+}
+
+.modalWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 980px) {
+    .modalContent {
+        border-radius: 0;
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        padding: 20px;
+        overflow-y: auto;
+        display: block;
+    }
+
+    .dialog {
+        max-width: 100vw;
+        max-height: 100vh;
+        width: 100%;
+        height: 100%;
+    }
+
+    .closeButton {
+        top: 20px;
+        right: 20px;
+    }
+}

@@ -1,6 +1,7 @@
 "use client"
 
-import { useModalState, useModal } from "@/providers/ModalProvider";
+import { useStore } from '@nanostores/react';
+import { $modals, closeModalAction, openModalAction } from "@/store/modalStore";
 import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form"
@@ -483,8 +484,13 @@ const BestQuoteScheme = {
 }
 
 const BestQuoteModal = () => {
-  const { isOpen, close } = useModalState('BestQuote');
-  const { openModal } = useModal();
+  const modals = useStore($modals);
+  const currentModal = modals.find(m => m.name === 'BestQuote');
+  const isOpen = !!currentModal;
+
+  const close = () => closeModalAction('BestQuote');
+  const openModal = (name, props) => openModalAction(name, props);
+
   const router = useSafeRouter();
   const [formData, setFormData] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);

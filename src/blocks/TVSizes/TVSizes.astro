@@ -1,12 +1,11 @@
 ---
 import ServiceCard from "@/ui/ServiceCardWithMobile/ServiceCard.astro";
 import styles from "./TVSizes.module.css";
-import AstroText from "../../ui/Text/AstroText.astro";
+import Text from "../../ui/Text/Text.astro";
 
-const baseUrl =
-  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
-  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
-  "https://strapi-dev-e587.up.railway.app";
+import { getBaseUrl } from "../../lib/env";
+
+const baseUrl = getBaseUrl();
 
 async function getTVSizes() {
   const res = await fetch(
@@ -44,10 +43,10 @@ const tvSizesData = {
 <section class={`block ${styles.tvsizes}`}>
   <header>
     <h2 class="blockHeading">
-      <AstroText text={tvSizesData.title} />
+      <Text text={tvSizesData.title} />
     </h2>
     <p class="subText">
-      <AstroText text={tvSizesData.subTitle} />
+      <Text text={tvSizesData.subTitle} />
     </p>
   </header>
   <div class={styles.cardsGrid}>

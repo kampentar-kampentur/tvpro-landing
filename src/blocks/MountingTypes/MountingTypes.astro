@@ -1,13 +1,11 @@
 ---
-import ServiceCard from "@/ui/ServiceCard/ServiceCard";
+import ServiceCard from "@/ui/ServiceCard/ServiceCard.astro";
 import styles from "./MountingTypes.module.css";
-import OptionalAddons from "./components/OptionalAddons";
-import AstroText from "../../ui/Text/AstroText.astro";
+import OptionalAddons from "./components/OptionalAddons.astro";
+import Text from "../../ui/Text/Text.astro";
+import { getBaseUrl } from "../../lib/env";
 
-const baseUrl =
-  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
-  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
-  "https://strapi-dev-e587.up.railway.app";
+const baseUrl = getBaseUrl();
 
 async function getMountingTypes() {
   const res = await fetch(
@@ -49,10 +47,10 @@ const mountingData = {
 <section class={`block ${styles.mountingTypes}`}>
   <header>
     <h2 class="blockHeading">
-      <AstroText text={mountingData.title} />
+      <Text text={mountingData.title} />
     </h2>
     <p class="subText">
-      <AstroText text={mountingData.subTitle} />
+      <Text text={mountingData.subTitle} />
     </p>
   </header>
   <div class={styles.cardsGrid}>
@@ -61,7 +59,6 @@ const mountingData = {
         mountingData.mountingTypes.length > 0 &&
         mountingData.mountingTypes.map((card, index) => (
           <ServiceCard
-            key={card.id || index}
             image={card.image}
             title={card.title}
             description={card.description}
@@ -71,5 +68,5 @@ const mountingData = {
         ))
     }
   </div>
-  <OptionalAddons client:load addons={mountingData.addons || []} />
+  <OptionalAddons addons={mountingData.addons || []} />
 </section>

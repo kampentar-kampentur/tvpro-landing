@@ -1,0 +1,22 @@
+---
+import styles from "./OptionalAddons.module.css";
+
+interface Props {
+    addons: Array<{ label: string }>;
+}
+
+const { addons } = Astro.props;
+
+if (!addons || !addons.length) return null;
+---
+
+<div class={styles.optionalAddonsContainer}>
+    <h4 class={styles.heading}>Optional Add-ons</h4>
+    <div class={styles.buttonsContainer}>
+        {
+            addons.map((addon) => (
+                <button class={styles.button}>{addon.label}</button>
+            ))
+        }
+    </div>
+</div>

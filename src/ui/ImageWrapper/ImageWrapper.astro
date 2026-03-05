@@ -1,0 +1,65 @@
+---
+interface Props {
+    media: {
+        url: string;
+        width?: number;
+        height?: number;
+        alternativeText?: string;
+        caption?: string;
+        formats?: Record<string, any>;
+    };
+    className?: string;
+    width?: number;
+    height?: number;
+    priority?: boolean;
+    sizes?: string;
+    defaultAlt?: string;
+    preferFormat?: string;
+}
+
+const {
+    media,
+    className,
+    width,
+    height,
+    priority = false,
+    sizes = "100vw",
+    defaultAlt = "",
+    preferFormat,
+} = Astro.props;
+
+if (!media || !media.url) return null;
+
+const formats = media.formats || {};
+
+// Construct srcSet
+const srcSet = Object.values(formats)
+    .map((f: any) => `${f.url} ${f.width}w`)
+    .join(", ");
+
+// Initial src
+let src = media.url;
+if (preferFormat && formats[preferFormat]) {
+    src = formats[preferFormat].url;
+}
+
+const finalWidth = width || (media.width ? Math.min(media.width, 1200) : 1200);
+const finalHeight =
+    height ||
+    (media.width && media.height
+        ? Math.round(finalWidth / (media.width / media.height))
+        : undefined);
+---
+
+<img
+    src={src}
+    srcset={srcSet || undefined}
+    class={className}
+    width={finalWidth}
+    height={finalHeight}
+    alt={media.alternativeText || media.caption || defaultAlt || ""}
+    loading={priority ? "eager" : "lazy"}
+    sizes={sizes}
+    decoding="async"
+    fetchpriority={priority ? "high" : "auto"}
+/>

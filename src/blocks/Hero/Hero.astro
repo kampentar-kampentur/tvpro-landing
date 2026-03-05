@@ -2,13 +2,23 @@
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine.astro";
 import Button from "@/ui/Button/Button.astro";
-import AstroText from "../../ui/Text/AstroText.astro";
-import HeroClientContainer from "./components/HeroClientContainer";
+import Text from "../../ui/Text/Text.astro";
+import AstroExpandingSection from "./components/AstroExpandingSection.astro";
+import AstroHeroCarousel from "./components/AstroHeroCarousel.astro";
 
-const baseUrl =
-  import.meta.env.PUBLIC_NEXT_PUBLIC_SRTAPI_URL ||
-  import.meta.env.NEXT_PUBLIC_SRTAPI_URL ||
-  "https://strapi-dev-e587.up.railway.app";
+import { getBaseUrl } from "../../lib/env";
+
+const baseUrl = getBaseUrl();
+
+async function getCTA() {
+  try {
+    const res = await fetch(`${baseUrl}/api/cta?populate=*`);
+    const json = await res.json();
+    return json.data.attributes;
+  } catch (error) {
+    return null;
+  }
+}
 
 async function getHero() {
   try {
@@ -33,6 +43,7 @@ async function getHeroRunningLines() {
 const { data = {}, cityContext } = Astro.props;
 const defaultHeroData = await getHero();
 const defaultLinesData = await getHeroRunningLines();
+const cta = await getCTA();
 
 const heroData = {
   ...defaultHeroData,
@@ -45,6 +56,44 @@ const heroLinesData =
   data?.runningLines && data.runningLines.length > 0
     ? data.runningLines
     : defaultLinesData;
+
+const carouselSlides = [
+  {
+    type: "video",
+    data: {
+      src360: "/optimized/IMG_3107-360p.mp4",
+      src480: "/optimized/IMG_3107-480p.mp4",
+      src720: "/optimized/IMG_3107-720p.mp4",
+      mutedInModal: false,
+      tracks: [
+        {
+          src: "/subs/IMG_3107.vtt",
+          srcLang: "en",
+          label: "English",
+          default: false,
+        },
+      ],
+    },
+  },
+  {
+    type: "video",
+    data: {
+      src360: "/optimized/mainVideo2-360p.mp4",
+      src480: "/optimized/mainVideo2-480p.mp4",
+      src720: "/optimized/mainVideo2-720p.mp4",
+      mutedInModal: true,
+    },
+  },
+  {
+    type: "video",
+    data: {
+      src360: "/optimized/IMG_3057-360p.mp4",
+      src480: "/optimized/IMG_3057-480p.mp4",
+      src720: "/optimized/IMG_3057-720p.mp4",
+      mutedInModal: false,
+    },
+  },
+];
 ---
 
 <script
@@ -66,17 +115,19 @@ const heroLinesData =
 <div class={`block ${styles.hero}`}>
   <div class={`blockContainer ${styles.heroContainer}`}>
     <h1 class={styles.mainHeading}>
-      <AstroText text={heroData.title} />
+      <Text text={heroData.title} />
     </h1>
     <p class="subText">
-      <AstroText text={heroData.subTitle} />
+      <Text text={heroData.subTitle} />
     </p>
     <div class={styles.buttonWrapper}>
-      <Button size="big" class={styles.heroButton} href="tel:+18326647597"
-        >Unlock $30 Off</Button
-      >
+      <Button size="big" class={styles.heroButton} href="tel:+18326647597">
+        {cta ? cta.bottom_cta_button_text : "Unlock $30 Off"}
+      </Button>
     </div>
   </div>
 </div>
 
-<HeroClientContainer client:load />
+<AstroExpandingSection>
+  <AstroHeroCarousel slides={carouselSlides} />
+</AstroExpandingSection>

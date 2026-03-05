@@ -1,20 +1,13 @@
-.youtubeModalContent.youtubeModalContent {
-    max-width: 1000px !important;
-    width: 95vw !important;
-    padding: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.youtubeModalContent.isVerticalModal {
-    max-width: 500px !important;
+.modalContent {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
 }
 
 .videoWrapper {
     position: relative;
     padding-bottom: 56.25%;
-    /* 16:9 aspect ratio */
+    /* 16:9 */
     height: 0;
     overflow: hidden;
     border-radius: 12px;
@@ -23,21 +16,14 @@
 
 .videoWrapper.isVertical {
     padding-bottom: 177.77%;
-    /* 9:16 aspect ratio */
-}
-
-.iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    /* 9:16 */
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 @media (max-width: 768px) {
-    .youtubeModalContent.youtubeModalContent {
-        width: 100vw !important;
-        height: auto !important;
+    .modalContent {
+        max-width: 100%;
     }
 
     .videoWrapper {

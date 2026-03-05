@@ -3,7 +3,7 @@ import "../app/globals.css";
 import Header from "../ui/Header/Header.astro";
 import Footer from "../blocks/Footer/Footer.astro";
 import ScrollToTop from "../components/ScrollToTop/ScrollToTop.astro";
-import Modals from "../app/components/Modals";
+import NativeModals from "../app/components/NativeModals.astro";
 import EngagementTracker from "../components/EngagementTracker/EngagementTracker.astro";
 
 const { title, description, cta } = Astro.props;
@@ -180,7 +180,7 @@ const clarityProjectId = import.meta.env.PUBLIC_CLARITY_PROJECT_ID;
   </head>
   <body>
     <EngagementTracker />
-    <Modals client:load />
+    <NativeModals />
     <Header cta={cta} />
     <main style="padding-top: 80px; flex-grow: 1;">
       <slot />

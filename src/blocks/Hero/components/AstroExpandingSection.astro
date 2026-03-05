@@ -1,0 +1,102 @@
+---
+import styles from "./ExpandingSection.module.css";
+
+interface Props {
+    minWidth?: number;
+    aspectRatio?: number;
+    class?: string;
+}
+
+const { minWidth = 1180, class: className = "" } = Astro.props;
+---
+
+<section
+    class={`${styles.expandingWrapper} ${className}`}
+    id="expanding-wrapper"
+    data-min-width={minWidth}
+>
+    <div class={styles.expandingContainer} id="expanding-container">
+        <slot />
+    </div>
+</section>
+
+<style>
+    /* Ensure initial state is responsive and clean */
+    #expanding-container {
+        margin: 0 auto;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100vw;
+        border-radius: 16px;
+        transition:
+            width 0.1s ease-out,
+            border-radius 0.1s ease-out;
+    }
+
+    @media (max-width: 768px) {
+        #expanding-container {
+            border-radius: 0 !important;
+            width: 100% !important;
+            transition: none !important;
+        }
+    }
+</style>
+
+<script>
+    function initExpandingSection() {
+        if (window.innerWidth < 768) return;
+
+        const wrapper = document.getElementById("expanding-wrapper");
+        const container = document.getElementById("expanding-container");
+        if (!wrapper || !container) return;
+
+        const minWidth = parseInt(wrapper.dataset.minWidth || "1180");
+
+        let lastUpdateTime = 0;
+        let animationFrameId;
+
+        const handleScroll = () => {
+            const now = performance.now();
+            if (now - lastUpdateTime < 16) return;
+
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+            animationFrameId = requestAnimationFrame(() => {
+                const rect = wrapper.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const windowWidth = window.innerWidth;
+                const elementCenter = rect.top + rect.height / 2;
+                const screenCenter = windowHeight / 2;
+                const distanceFromCenter = Math.abs(
+                    elementCenter - screenCenter,
+                );
+                const maxDistance = windowHeight / 2;
+
+                let progress =
+                    1 - Math.min(distanceFromCenter / maxDistance, 1);
+                progress = Math.max(0, Math.min(1, progress));
+
+                // Ease function: progress * progress * (3 - 2 * progress)
+                const smoothedProgress =
+                    elementCenter <= screenCenter
+                        ? 1
+                        : progress * progress * (3 - 2 * progress);
+
+                const currentWidth =
+                    minWidth + (windowWidth - minWidth) * smoothedProgress;
+                const borderRadius = 16 * (1 - smoothedProgress);
+
+                container.style.width = `${Math.round(currentWidth)}px`;
+                container.style.borderRadius = `${Math.round(borderRadius)}px`;
+
+                lastUpdateTime = now;
+            });
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll(); // Initial check
+    }
+
+    initExpandingSection();
+    document.addEventListener("astro:page-load", initExpandingSection);
+</script>

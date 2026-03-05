@@ -1,0 +1,39 @@
+---
+import YouTubeModal from "../../modals/YouTubeModal/YouTubeModal.astro";
+import BookNowModal from "../../modals/BookNowModal/BookNowModal.astro";
+import ExitIntentModal from "../../modals/ExitIntentModal/ExitIntentModal.astro";
+import BestQuoteModal from "../../modals/BestQuoteModal/BestQuoteModal";
+
+// Redundant but safe for now to keep imports clear
+---
+
+<div id="native-modals-container">
+    <YouTubeModal />
+    <BookNowModal />
+    <ExitIntentModal />
+
+    <!-- React Modals as standalone islands -->
+    <BestQuoteModal client:only="react" />
+</div>
+
+<script>
+    import { $modals } from "@/store/modalStore";
+
+    // Global listener for modal events to sync with Nano Stores if needed,
+    // though most components already use $modals directly.
+    document.addEventListener("modal:open", (e) => {
+        const { name, props } = e.detail;
+        if (name) {
+            import("@/store/modalStore").then((m) =>
+                m.openModalAction(name, props),
+            );
+        }
+    });
+
+    document.addEventListener("modal:close", (e) => {
+        const { name } = e.detail;
+        if (name) {
+            import("@/store/modalStore").then((m) => m.closeModalAction(name));
+        }
+    });
+</script>

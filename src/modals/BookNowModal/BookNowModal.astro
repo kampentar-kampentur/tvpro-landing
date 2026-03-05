@@ -1,0 +1,131 @@
+---
+import styles from "./BookNowModal.module.css";
+import ModalBase from "../../ui/Modal/ModalBase.astro";
+---
+
+<ModalBase id="book-now-modal" modalName="BookNow">
+    <div class={styles.bookNowContent}>
+        <form id="book-now-form">
+            <h3 class={styles.title}>Get a Quick Quote</h3>
+            <p class={styles.subtitle}>
+                Leave your number — we’ll call and give you the exact price
+            </p>
+
+            <div class={styles.fieldContainer}>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your name *"
+                    required
+                    class={styles.bookNowInput}
+                />
+            </div>
+
+            <div class={styles.fieldContainer}>
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone number *"
+                    required
+                    class={styles.bookNowInput}
+                    id="book-now-phone"
+                />
+            </div>
+
+            <div class={styles.discountBanner}>
+                <p class={styles.discountLabel}>Installing 2 or more TVs?</p>
+                <p class={styles.discountText}>
+                    Let the manager know to receive a multi-TVs <span
+                        class={styles.discountWord}>DISCOUNT</span
+                    >: <span class={styles.discountPercent}>10% OFF</span> for 2 TVs,
+                    <span class={styles.discountPercent}>15% OFF</span> for 3, <span
+                        class={styles.discountPercent}>20% OFF</span
+                    > for 4 or more.
+                </p>
+            </div>
+
+            <div class={styles.btnWrap}>
+                <label class={styles.checkboxContainer}>
+                    <input type="checkbox" name="terms" required checked />
+                    <span
+                        class={styles.termsText}
+                        style="text-align: left; display: block; margin-left: 10px;"
+                    >
+                        I agree to receive SMS from TVPro Handy Services LLC
+                        regarding appointments and service updates.
+                        <div style="margin-top: 4px;">
+                            <a
+                                href="/privacy-policy"
+                                target="_blank"
+                                class="sms-link">Privacy Policy</a
+                            > and
+                            <a
+                                href="/terms"
+                                target="_blank"
+                                class="sms-link"
+                                style="margin-left: 8px;">Terms of Service</a
+                            >
+                        </div>
+                    </span>
+                </label>
+                <button type="submit" class={styles.button} id="book-now-submit"
+                    >Send</button
+                >
+            </div>
+        </form>
+    </div>
+</ModalBase>
+
+<script>
+    import { getBaseUrl } from "@/lib/env";
+
+    function setupBookNowForm() {
+        const form = document.getElementById("book-now-form");
+        if (!form) return;
+
+        // Prevent duplicate listeners
+        if (form._initialized) return;
+        form._initialized = true;
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById("book-now-submit");
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Sending...";
+            }
+
+            try {
+                const baseUrl = getBaseUrl();
+                const response = await fetch(`${baseUrl}/api/book-now`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ data }),
+                });
+
+                if (response.ok) {
+                    import("@/store/modalStore").then((m) =>
+                        m.closeModalAction("BookNow"),
+                    );
+                    window.location.href = "/see-you-soon";
+                } else {
+                    alert("Error submitting form. Please try again.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Connection error.");
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Send";
+                }
+            }
+        });
+    }
+
+    setupBookNowForm();
+    document.addEventListener("astro:page-load", setupBookNowForm);
+</script>
