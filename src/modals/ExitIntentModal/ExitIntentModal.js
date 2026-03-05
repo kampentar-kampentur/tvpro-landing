@@ -10,6 +10,7 @@ import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
 import { useRouter } from 'next/navigation';
+import { getUtmParams } from "@/lib/utmTracker";
 
 const nameField = {
     "name": "name",
@@ -62,7 +63,8 @@ const ExitIntentModal = () => {
                     data: {
                         name: formData.name,
                         phone: formData.phone,
-                        source: 'exit_intent_popup'
+                        source: 'exit_intent_popup',
+                        ...getUtmParams(),
                     }
                 }),
             });

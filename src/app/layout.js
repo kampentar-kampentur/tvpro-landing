@@ -9,6 +9,7 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import Script from "next/script";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import EngagementTracker from "@/components/EngagementTracker/EngagementTracker";
+import UtmCapture from "@/components/UtmCapture/UtmCapture";
 import Modals from "@/app/components/Modals";
 import { CTAProvider } from "@/providers/CTAProvider";
 
@@ -249,6 +250,7 @@ export default async function RootLayout({ children }) {
         <CTAProvider initialCTA={cta}>
           <ModalProvider>
             <EngagementTracker />
+            <UtmCapture />
             <Modals />
             <Header cta={cta} />
             <main style={{ paddingTop: 80, flexGrow: 1 }}>
