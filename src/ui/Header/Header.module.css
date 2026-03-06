@@ -153,11 +153,12 @@ button.menuButton {
   }
 
   .phoneButton.phoneButton {
-    width: 64px;
-    height: 64px;
+    width: 58px;
+    /* Slightly larger to be consistent with chat widget */
+    height: 58px;
     display: inline-flex !important;
     position: fixed;
-    bottom: 20px;
+    bottom: 84px;
     right: 20px;
     z-index: 999;
     border-radius: 50%;
@@ -167,6 +168,8 @@ button.menuButton {
     align-items: center;
     justify-content: center;
     transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+
+    transform-origin: center center !important;
   }
 
   .phoneButton:hover {

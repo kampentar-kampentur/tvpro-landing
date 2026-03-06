@@ -177,13 +177,23 @@ export default async function RootLayout({ children }) {
             })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
           `}
         </Script>
-        <Script id="delayed-marketing-scripts" strategy="afterInteractive">
+        <Script id="delayed-marketing-scripts" strategy="lazyOnload">
           {`
+          console.log('-----------------------');
             (function() {
+              console.log('Marketing scripts: Initialization started');
               var fired = false;
+              var timeoutId;
+              
               function loadScripts() {
                 if (fired) return;
                 fired = true;
+                console.log('Marketing scripts: Loading triggered');
+                
+                clearTimeout(timeoutId);
+                ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
+                  window.removeEventListener(e, loadScripts);
+                });
                 
                 // GTM
                 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -229,12 +239,153 @@ export default async function RootLayout({ children }) {
                 ttScript.async = true;
                 ttScript.src = "https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star";
                 document.head.appendChild(ttScript);
+
+                // LeadConnector Chat Widget
+                var lcScript = document.createElement('script');
+                lcScript.async = true;
+                lcScript.src = "https://beta.leadconnectorhq.com/loader.js";
+                lcScript.setAttribute('data-resources-url', 'https://beta.leadconnectorhq.com/chat-widget/loader.js');
+                lcScript.setAttribute('data-widget-id', '69a71eb8a27e8c3d964270ee');
+                document.body.appendChild(lcScript);
+
+                // Enhancement Logic (Animations & Badge)
+                function enhanceWidget() {
+                  console.log('Marketing scripts: Searching for chat-widget...');
+                  const widget = document.querySelector('chat-widget');
+                  
+                  if (widget && widget.shadowRoot) {
+                    console.log('Marketing scripts: chat-widget found, injecting Shadow Styles');
+                    
+                    if (!widget.shadowRoot.querySelector('#tvpro-enhancements')) {
+                      const style = document.createElement('style');
+                      style.id = 'tvpro-enhancements';
+                      style.textContent = \`
+                        /* 1. Expressive Wiggle (Current) */
+                        @keyframes widget-wiggle {
+                          0%, 85% { transform: scale(1) rotate(0); }
+                          87% { transform: scale(1.2) rotate(15deg); }
+                          89% { transform: scale(1.2) rotate(-15deg); }
+                          91% { transform: scale(1.2) rotate(15deg); }
+                          93% { transform: scale(1.2) rotate(-15deg); }
+                          95% { transform: scale(1.2) rotate(15deg); }
+                          97% { transform: scale(1.2) rotate(-15deg); }
+                          100% { transform: scale(1) rotate(0); }
+                        }
+
+                        /* 2. Pulse (Continuous heartbeat) */
+                        @keyframes widget-pulse {
+                          0% { transform: scale(1); }
+                          50% { transform: scale(1.1); }
+                          100% { transform: scale(1); }
+                        }
+
+                        /* 3. Tada (Celebratory shake) */
+                        @keyframes widget-tada {
+                          0%, 85% { transform: scale(1); }
+                          87%, 89% { transform: scale(0.9) rotate(-3deg); }
+                          91%, 93%, 95%, 97% { transform: scale(1.3) rotate(3deg); }
+                          92%, 94%, 96% { transform: scale(1.3) rotate(-3deg); }
+                          100% { transform: scale(1) rotate(0); }
+                        }
+
+                        /* 4. Bounce (Playful jump) */
+                        @keyframes widget-bounce {
+                           0%, 20%, 50%, 80%, 85% { transform: translateY(0); }
+                           87% { transform: translateY(-20px); }
+                           90% { transform: translateY(0); }
+                           93% { transform: translateY(-10px); }
+                           96%, 100% { transform: translateY(0); }
+                        }
+                        
+                        /* 5. Sequence (All three in a row) - 30s Cycle */
+                        @keyframes widget-sequence {
+                          /* Wiggle: 0-2s (0-7%) */
+                          0%, 6% { transform: scale(1) rotate(0); }
+                          1% { transform: scale(1.2) rotate(15deg); }
+                          2% { transform: scale(1.2) rotate(-15deg); }
+                          3% { transform: scale(1.2) rotate(15deg); }
+                          4% { transform: scale(1.2) rotate(-15deg); }
+                          5% { transform: scale(1.2) rotate(15deg); }
+
+                          /* Pause: 7-32% */
+                          7%, 32% { transform: scale(1) rotate(0); }
+
+                          /* Tada: 33-43% */
+                          33% { transform: scale(1); }
+                          34%, 35% { transform: scale(0.9) rotate(-3deg); }
+                          36%, 37%, 38% { transform: scale(1.3) rotate(3deg); }
+                          36.5%, 37.5%, 38.5% { transform: scale(1.3) rotate(-3deg); }
+                          43% { transform: scale(1) rotate(0); }
+
+                          /* Pause: 44-65% */
+                          44%, 65% { transform: scale(1) rotate(0); }
+
+                          /* Bounce: 66-76% */
+                          66% { transform: translateY(0); }
+                          68% { transform: translateY(-20px); }
+                          71% { transform: translateY(0); }
+                          73% { transform: translateY(-10px); }
+                          76% { transform: translateY(0); }
+
+                          /* Long Final Pause: 77-100% */
+                          77%, 100% { transform: scale(1) rotate(0) translateY(0); }
+                        }
+                        
+                        button, .chat-widget-button, .chip-button {
+                          animation: widget-sequence 30s infinite !important;
+                          transform-origin: center center !important;
+                          transition: transform 0.3s ease-in-out !important;
+                          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important;
+                        }
+                      \`;
+                      widget.shadowRoot.appendChild(style);
+                    }
+
+                    let badge = document.querySelector('.lc-widget-badge');
+                    if (!badge) {
+                      badge = document.createElement('div');
+                      badge.className = 'lc-widget-badge';
+                      document.body.appendChild(badge);
+                      // Adding a small delay to the initial show for better UX
+                      setTimeout(() => badge.classList.add('visible'), 2000);
+                    }
+
+                    // Click listner to hide badge when opened
+                    const chatButton = widget.shadowRoot.querySelector('button') || 
+                                     widget.shadowRoot.querySelector('.chat-widget-button') || 
+                                     widget.shadowRoot.querySelector('.chip-button');
+                    
+                    if (chatButton && !chatButton.hasAttribute('data-badge-listener')) {
+                      chatButton.setAttribute('data-badge-listener', 'true');
+                      chatButton.addEventListener('click', () => {
+                        const badgeToHide = document.querySelector('.lc-widget-badge');
+                        if (badgeToHide) badgeToHide.classList.remove('visible');
+                      });
+                    }
+                  } else if (widget && !widget.shadowRoot) {
+                    setTimeout(enhanceWidget, 500);
+                  } else {
+                    setTimeout(enhanceWidget, 1000);
+                  }
+                }
+                
+                const observer = new MutationObserver((mutations, obs) => {
+                    const widget = document.querySelector('chat-widget');
+                    if (widget) {
+                        enhanceWidget();
+                        obs.disconnect();
+                    }
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+                setTimeout(enhanceWidget, 2000);
+
+                console.log('Marketing scripts: All activated');
               }
 
-              // Load after 3.5s or on interaction
-              var timeoutId = setTimeout(loadScripts, 3500);
-              window.addEventListener('scroll', loadScripts, {passive: true, once: true});
-              window.addEventListener('touchstart', loadScripts, {passive: true, once: true});
+              timeoutId = setTimeout(loadScripts, 1000);
+              ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
+                window.addEventListener(e, loadScripts, { passive: true, once: true });
+              });
             })();
           `}
         </Script>

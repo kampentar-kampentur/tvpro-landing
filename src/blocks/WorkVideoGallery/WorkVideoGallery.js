@@ -26,7 +26,7 @@ const VideoCard = ({ video, index = 0, length }) => {
                         height={thumbHeight}
                         loading="lazy"
                         fetchPriority="low"
-                    // unoptimized={true}
+                        unoptimized={true}
                     />
                     <div className={styles.playOverlay}>
                         <div className={styles.playButton}>
