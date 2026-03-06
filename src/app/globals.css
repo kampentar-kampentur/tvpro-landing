@@ -18,6 +18,235 @@
   --gray-extra-light: #e7e7eb;
   /* extra light gray (button disabled, border hover) */
   --text-secondary: var(--gray);
+
+}
+
+/* Chat Widget Engagement Enhancements */
+chat-widget {
+  display: contents !important;
+  transform-origin: bottom right !important;
+}
+
+.chat-widget-animated {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Attention Animations (Reusable) */
+@keyframes widget-sequence {
+
+  /* cycle is 30s total */
+  /* Wiggle: 0-2s (approx 0-7%) */
+  0%,
+  6% {
+    transform: scale(1) rotate(0);
+  }
+
+  1% {
+    transform: scale(1.2) rotate(15deg);
+  }
+
+  2% {
+    transform: scale(1.2) rotate(-15deg);
+  }
+
+  3% {
+    transform: scale(1.2) rotate(15deg);
+  }
+
+  4% {
+    transform: scale(1.2) rotate(-15deg);
+  }
+
+  5% {
+    transform: scale(1.2) rotate(15deg);
+  }
+
+  /* Long Pause: 6-33% (approx 2s to 10s) */
+  7%,
+  32% {
+    transform: scale(1) rotate(0);
+  }
+
+  /* Tada: 33-40% (approx 10s to 12s) */
+  33% {
+    transform: scale(1);
+  }
+
+  34%,
+  35% {
+    transform: scale(0.9) rotate(-3deg);
+  }
+
+  36%,
+  37%,
+  38% {
+    transform: scale(1.3) rotate(3deg);
+  }
+
+  36.5%,
+  37.5%,
+  38.5% {
+    transform: scale(1.3) rotate(-3deg);
+  }
+
+  40% {
+    transform: scale(1) rotate(0);
+  }
+
+  /* Long Pause: 40-66% (approx 12s to 20s) */
+  41%,
+  65% {
+    transform: scale(1) rotate(0);
+  }
+
+  /* Bounce: 66-73% (approx 20s to 22s) */
+  66% {
+    transform: translateY(0);
+  }
+
+  68% {
+    transform: translateY(-20px);
+  }
+
+  70% {
+    transform: translateY(0);
+  }
+
+  72% {
+    transform: translateY(-10px);
+  }
+
+  73% {
+    transform: translateY(0);
+  }
+
+  /* Final Long Pause: 73-100% (approx 22s to 30s) */
+  74%,
+  100% {
+    transform: scale(1) rotate(0) translateY(0);
+  }
+}
+
+@keyframes widget-wiggle-keyframes {
+
+  0%,
+  90% {
+    transform: rotate(0);
+  }
+
+  92% {
+    transform: rotate(10deg);
+  }
+
+  94% {
+    transform: rotate(-10deg);
+  }
+
+  96% {
+    transform: rotate(10deg);
+  }
+
+  98% {
+    transform: rotate(-10deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes widget-pulse-keyframes {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes widget-bounce-keyframes {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes widget-glow-keyframes {
+  0% {
+    box-shadow: 0 0 0 0 rgba(13, 100, 160, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 15px rgba(13, 100, 160, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(13, 100, 160, 0);
+  }
+}
+
+/* Notification Badge */
+.lc-widget-badge {
+  position: fixed;
+  right: 58px;
+  bottom: 16px;
+  /* Standard leadconnector position is ~20px from bottom, badge goes on top-right of bubble */
+  width: 18px;
+  height: 18px;
+  background-color: #22c55e;
+  border: 2.5px solid white;
+  border-radius: 50%;
+  z-index: 99999999;
+  /* Ensure it's above the widget */
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Shown via JS when widget is ready */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.lc-widget-badge.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Floating Phone Button Animation (Out of sync with Chat Widget) */
+[class*="phoneButton"] {
+  animation: widget-sequence 30s infinite !important;
+  animation-delay: 15.1s !important;
+  /* Tiny offset to prevent identical sub-frame starts if any */
+  transform-origin: center center !important;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+@keyframes badge-appear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 html {
