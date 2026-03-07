@@ -228,14 +228,6 @@ chat-widget {
   transform: scale(1);
 }
 
-/* Floating Phone Button Animation (Out of sync with Chat Widget) */
-[class*="phoneButton"] {
-  animation: widget-sequence 30s infinite !important;
-  animation-delay: 15.1s !important;
-  /* Tiny offset to prevent identical sub-frame starts if any */
-  transform-origin: center center !important;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
 
 @keyframes badge-appear {
   from {

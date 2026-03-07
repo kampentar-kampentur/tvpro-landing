@@ -330,7 +330,53 @@ export default async function RootLayout({ children }) {
                           /* Long Final Pause: 77-100% */
                           77%, 100% { transform: scale(1) rotate(0) translateY(0); }
                         }
+
+                        /* 6. Chat Window Enhancements (Resize & Animation) */
+                        .lc_text-widget--box {
+                          transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease, width 1s ease, height 1s ease !important;
+                          transform: translateY(20px) !important;
+                          opacity: 0 !important;
+                          transform-origin: bottom right !important;
+                          display: flex !important;
+                          flex-direction: column !important;
+                        }
+
+                        .lc_text-widget--box.active {
+                          transform: translateY(0) scale(1) !important;
+                          opacity: 1 !important;
+                          visibility: visible !important;
+                        }
+                        .lc_text-widget {
+                          transition: all 1s ease !important;
+                        }
+                        .lc_text-widget--mobile {
+                          width: 100vw !important;
+                          height: 100vh !important;
+                          top: 0 !important;
+                          left: 0 !important;
+                          right: 0 !important;
+                          bottom: 0 !important;
+                          padding-bottom: 0px !important;
+                        }
                         
+                        /* Ensure the content inside doesn't overflow */
+                        .lc_text-widget--mobile .lc_text-widget--box .lc_text-widget_content {
+                          width: 100% !important;
+                        }
+                        .lc_text-widget--mobile .lc_text-widget_heading--root {
+                          border-radius: 0 !important;
+                        }
+                        @media (any-pointer: coarse) {
+                          .lc_text-widget {
+                            width: 100vw !important;
+                            height: 100vh !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            bottom: 0 !important;
+                            padding-bottom: 0px !important;
+                          }
+                        }
                         button, .chat-widget-button, .chip-button {
                           animation: widget-sequence 30s infinite !important;
                           transform-origin: center center !important;
