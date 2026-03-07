@@ -87,13 +87,34 @@
     color: #495057;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
     .exitModal {
-        padding: 30px 20px !important;
+        padding: 24px 16px !important;
         border-radius: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .title {
         font-size: 28px;
+        line-height: 40px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 21px;
+    }
+
+    .footer {
+        gap: 21px;
+    }
+
+    .submitBtn {
+        height: 52px;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
