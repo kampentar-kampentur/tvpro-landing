@@ -50,6 +50,7 @@ const ExitIntentModal = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (!formData.name || !validatePhone(formData.phone)) return;
 
 
@@ -105,6 +106,7 @@ const ExitIntentModal = () => {
                     <div className={styles.footer}>
                         <Checkbox label={<TermsText />} />
                         <Button
+                            type="submit"
                             variant="primary"
                             className={styles.submitBtn}
                             disabled={isSubmitting || !formData.name || !validatePhone(formData.phone)}
