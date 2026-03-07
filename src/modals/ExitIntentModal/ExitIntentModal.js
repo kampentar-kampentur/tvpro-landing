@@ -51,6 +51,7 @@ const ExitIntentModal = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
         if (!formData.name || !validatePhone(formData.phone)) return;
 
 
