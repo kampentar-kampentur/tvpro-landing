@@ -90,24 +90,31 @@ const ExitIntentModal = () => {
                     Don&apos;t leave yet! Claim your discount for your first professional TV installation.
                 </p>
 
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.form}>
                     <TextField
                         field={nameField}
                         value={formData.name}
                         onChange={handleChange('name')}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSubmit(e);
+                        }}
                         className={styles.input}
                     />
                     <TextField
                         field={phoneField}
                         value={formData.phone}
                         onChange={handleChange('phone')}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSubmit(e);
+                        }}
                         className={styles.input}
                     />
 
                     <div className={styles.footer}>
                         <Checkbox label={<TermsText />} />
                         <Button
-                            type="submit"
+                            type="button"
+                            onClick={handleSubmit}
                             variant="primary"
                             className={styles.submitBtn}
                             disabled={isSubmitting || !formData.name || !validatePhone(formData.phone)}
@@ -115,7 +122,7 @@ const ExitIntentModal = () => {
                             {isSubmitting ? "Sending..." : "Claim My $30 Off"}
                         </Button>
                     </div>
-                </form>
+                </div>
 
                 <button type="button" className={styles.noThanks} onClick={close}>
                     No thanks, I&apos;ll pay full price
