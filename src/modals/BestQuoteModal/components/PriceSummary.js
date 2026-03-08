@@ -16,21 +16,20 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
   const renderBreakdownItem = (item) => (
     <div key={item.label} className={styles.breakdownItem}>
       <span className={styles.itemLabel}><span className={styles.itemLabel1x}>1x</span>{item.label}</span>
-      <span className={styles.itemCost}>{item.cost === 0 ? "Free" : formatCurrency(item.cost)}</span>
     </div>
   );
 
   return (
     <div className={`${styles.priceSummaryContainer} ${currentStepIndex === 3 ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
       <div className={styles.scrollableContent}>
-        {!structuredCostBreakdown.filter(({type}) => type !== "discount").length && 
+        {!structuredCostBreakdown.filter(({ type }) => type !== "discount").length &&
           <div className={styles.tvSizeGroup}>
-              <h4 className={styles.tvSizeTitle}>--</h4>
-              <div className={styles.breakdownList}>
-                  <div className={styles.breakdownItem}>
-                      <span className={styles.itemLabel}>--</span>
-                  </div>
+            <h4 className={styles.tvSizeTitle}>--</h4>
+            <div className={styles.breakdownList}>
+              <div className={styles.breakdownItem}>
+                <span className={styles.itemLabel}>--</span>
               </div>
+            </div>
           </div>
         }
         {structuredCostBreakdown.map((group, index) => {
@@ -68,17 +67,14 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
         })}
       </div>
 
-      <div className={styles.estimatedTotal}>
-        <span className={styles.estimatedLabel}>Subtotal</span>
-        <span className={styles.totalAmount}>{formatCurrency(totalPrice)}</span>
-      </div>
+
       {currentStepIndex === 3 && (
         <>
           <Button className={styles.bookBtn} disabled={!isFormValid || isSubmitting} onClick={onSubmit} size="big">
             {isSubmitting ? 'Booking...' : 'Book'}
           </Button>
           <p className={styles.termsText}>
-            By booking an appointment you agree to the <br/><Link href="/terms">Terms of Service</Link> and the <Link href="/privacy-policy">Privacy Policy</Link>.
+            By booking an appointment you agree to the <br /><Link href="/terms">Terms of Service</Link> and the <Link href="/privacy-policy">Privacy Policy</Link>.
           </p>
         </>
       )}

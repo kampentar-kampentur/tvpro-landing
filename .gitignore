@@ -47,3 +47,7 @@ functions/middleware-config.json
 
 dist*/
 .astro
+
+# video processing
+scripts/input/
+scripts/output/
