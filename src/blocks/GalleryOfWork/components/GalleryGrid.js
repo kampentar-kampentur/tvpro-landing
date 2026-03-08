@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import FilterButtons from "./FilterButtons";
 import PhotoGrid from "./PhotoGrid";
 import styles from "../GalleryOfWork.module.css";
@@ -42,21 +42,21 @@ export default function GalleryGrid({ filters }) {
   const timerRef = useRef(null);
   const transitionTimeoutRef = useRef(null);
 
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       const currentIndex = filters.findIndex((f) => f.type === activeFilter);
       const nextIndex = (currentIndex + 1) % filters.length;
       handleFilterChange(filters[nextIndex].type);
     }, 12000);
-  };
+  }, [filters, activeFilter]);
 
   useEffect(() => {
     if (isAutoPlaying && filters?.length > 1) {
       startTimer();
     }
     return () => clearInterval(timerRef.current);
-  }, [isAutoPlaying, filters, activeFilter]);
+  }, [isAutoPlaying, filters, activeFilter, startTimer]);
 
   const handleFilterChange = (filter, isManual = false) => {
     if (filter === activeFilter && !isTransitioning) return;

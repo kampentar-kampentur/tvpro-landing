@@ -12,6 +12,7 @@ import ChevronIcon from "@/assets/icons/chevron.svg"
 import Button from "@/ui/Button"
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import { getUtmParams } from "@/lib/utmTracker";
+import Link from 'next/link';
 
 
 const BestQuoteScheme = {
@@ -592,7 +593,7 @@ const BestQuoteModal = () => {
                 {isSubmitting ? 'Booking...' : 'Book Now'}
               </Button>
               <p className={styles.mobileTermsText}>
-                By booking an appointment you agree to the <br /><a href="/terms">Terms of Service</a> and the <a href="/privacy-policy">Privacy Policy</a>.
+                By booking an appointment you agree to the <br /><Link href="/terms">Terms of Service</Link> and the <Link href="/privacy-policy">Privacy Policy</Link>.
               </p>
             </div>
           )}
