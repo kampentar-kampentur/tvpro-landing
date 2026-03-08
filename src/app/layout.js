@@ -367,7 +367,7 @@ export default async function RootLayout({ children }) {
                           border-radius: 0 !important;
                         }
                         @media (any-pointer: coarse) {
-                          .lc_text-widget {
+                          .lc_text-widget--active {
                             width: 100vw !important;
                             height: 100vh !important;
                             top: 0 !important;
@@ -375,6 +375,26 @@ export default async function RootLayout({ children }) {
                             right: 0 !important;
                             bottom: 0 !important;
                             padding-bottom: 0px !important;
+                          }
+                          .lc_text-widget--formContainer {
+                            display: none !important;
+                            width: 1px !important;
+                            height: 1px !important;
+                          }
+                          .lc_text-widget--box {
+                            width: 1px !important;
+                            height: 1px !important;
+                          }
+                          .lc_text-widget--active .lc_text-widget--formContainer {
+                            display: flex !important;
+                            width: auto !important;
+                            height: auto !important;
+                          }
+
+                          .lc_text-widget--active .lc_text-widget--box {
+                            display: flex !important;
+                            width: 100% !important;
+                            height: 100% !important;
                           }
                         }
                         button, .chat-widget-button, .chip-button {
