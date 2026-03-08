@@ -8,6 +8,10 @@
   animation: modalAppear 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.videoModalContent.isVerticalModal {
+  max-width: 500px !important;
+}
+
 @keyframes modalAppear {
   from {
     opacity: 0;
@@ -52,6 +56,10 @@
   align-items: center;
   justify-content: center;
   background: black;
+}
+
+.videoContainer.isVertical {
+  aspect-ratio: 9 / 16;
 }
 
 .video {

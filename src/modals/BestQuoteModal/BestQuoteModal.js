@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import PriceSummary from "./components/PriceSummary";
 import LogoSVG from "@/assets/logo.svg"
-import CloseIcon from "@/assets/icons/close.svg"
 import ChevronIcon from "@/assets/icons/chevron.svg"
 import Button from "@/ui/Button"
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
@@ -490,7 +489,6 @@ const BestQuoteModal = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPriceExpanded, setIsPriceExpanded] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -533,14 +531,6 @@ const BestQuoteModal = () => {
         }),
       });
       if (response.ok) {
-        // Store pricing data in localStorage with timestamp
-        const pricingData = {
-          totalPrice,
-          structuredCostBreakdown,
-          timestamp: new Date().toISOString()
-        };
-        localStorage.setItem('pricingData', JSON.stringify(pricingData));
-
         close();
         setFormData({});
         if (typeof gtag !== 'undefined') {
@@ -565,15 +555,6 @@ const BestQuoteModal = () => {
     setStructuredCostBreakdown(newStructuredCostBreakdown);
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
-
   return (
     <Modal className={styles.bestQuoteModalcontent} isOpen={isOpen} onClose={close}>
       <header className={styles.bestQuoteHeader}>
@@ -584,36 +565,7 @@ const BestQuoteModal = () => {
         />
       </header>
       <div className={styles.bestQuote}>
-        {/* Mobile price summary - visible on small screens */}
-        {totalPrice > 0 &&
-          <div className={styles.mobilePriceSummary}>
-            <div
-              className={styles.mobilePriceHeader + (currentStepIndex === 3 ? ' ' + styles.center : '')}
-              onClick={() => setIsPriceExpanded(!isPriceExpanded)}
-            >
-              <span className={styles.mobilePriceLabel}>{currentStepIndex === 3 ? "Go to Book" : "View Order"}</span>
-              <span className={styles.mobilePriceAmount}>{formatCurrency(totalPrice)}</span>
-            </div>
-            {isPriceExpanded && (
-              <div className={styles.mobilePriceExpanded}>
-                <div className={styles.expandedHeader}>
-                  <Button variant="secondary" size="small" className={styles.closeButton} onClick={() => setIsPriceExpanded(false)}>
-                    <CloseIcon width="10" heigth="10" />
-                  </Button>
-                </div>
-                <div className={styles.orderInfo}>
-                  <p className={styles.orderTitle}>Your order</p>
-                  <p className={styles.orderItem}>FREE Above-Fireplace TV Installation</p>
-                  <p className={styles.orderDisclaimer}>Prices shown are estimates. Final cost will be confirmed by your technician.</p>
-                  <hr className={styles.orderDivider} />
-                </div>
-                <div className={styles.priceWrapper}>
-                  <PriceSummary totalPrice={totalPrice} structuredCostBreakdown={structuredCostBreakdown} currentStepIndex={currentStepIndex} isFormValid={isFormValid} isSubmitting={isSubmitting} onSubmit={onSubmit} darkMode={true} />
-                </div>
-              </div>
-            )}
-          </div>
-        }
+
         <main className={styles.bestQuoteMain}>
           <Form
             scheme={BestQuoteScheme}
@@ -634,6 +586,16 @@ const BestQuoteModal = () => {
               <p className={styles.discountText}>Let the manager know to receive a multi-TVs <span className={styles.discountWord}>DISCOUNT</span>: <span className={styles.discountPercent}>10% OFF</span> for 2 TVs, <span className={styles.discountPercent}>15% OFF</span> for 3, <span className={styles.discountPercent}>20% OFF</span> for 4 or more.</p>
             </div>
           }
+          {isMobile && currentStepIndex === 3 && (
+            <div className={styles.mobileBookSection}>
+              <Button className={styles.mobileBookBtn} disabled={!isFormValid || isSubmitting} onClick={onSubmit} size="big">
+                {isSubmitting ? 'Booking...' : 'Book Now'}
+              </Button>
+              <p className={styles.mobileTermsText}>
+                By booking an appointment you agree to the <br /><a href="/terms">Terms of Service</a> and the <a href="/privacy-policy">Privacy Policy</a>.
+              </p>
+            </div>
+          )}
         </main>
         <aside className={styles.servicesContainer}>
           <div className={styles.orderInfo}>

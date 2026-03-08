@@ -12,14 +12,18 @@ const VideoCard = ({ video, index = 0, length }) => {
     const thumbWidth = length % 2 !== 0 && index !== length - 1 ? 480 : 640;
     const thumbHeight = length % 2 !== 0 && index !== length - 1 ? 360 : 480;
     return (
-        <VideoCardClient videoId={video.youtubeId} isVertical={video.isVertical}>
+        <VideoCardClient
+            selfHostedVideo={video.selfHostedVideo}
+            videoId={video.youtubeId}
+            isVertical={video.isVertical}
+        >
             <div
                 className={`${styles.videoCard}${video.isVertical ? ` ${styles.verticalCard}` : ''}`}
                 style={{ "--reveal-delay": `${index * 0.1}s` }}
             >
                 <div className={styles.thumbnailWrapper}>
                     <Image
-                        src={`https://img.youtube.com/vi/${video.youtubeId}/${thumbType}.jpg`}
+                        src={video.selfHostedVideo?.thumbnail?.url || `https://img.youtube.com/vi/${video.youtubeId}/${thumbType}.jpg`}
                         alt={video.title}
                         className={styles.thumbnail}
                         width={thumbWidth}
@@ -48,7 +52,7 @@ const VideoCard = ({ video, index = 0, length }) => {
 async function getWorkVideoGalleryData() {
     try {
         const res = await fetch(
-            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/see-our-work-in-action?populate=*`,
+            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/see-our-work-in-action?populate[videoItem][populate][selfHostedVideo][populate]=*`,
             { cache: 'force-cache' }
         );
         const json = await res.json();
@@ -72,6 +76,7 @@ export default async function WorkVideoGallery({ data = {} }) {
     const videos = displayData.videoItem.map((v, idx) => ({
         id: v.id || idx,
         youtubeId: v.youtubeId || "dQw4w9WgXcQ",
+        selfHostedVideo: v.selfHostedVideo || null,
         isVertical: v.isVertical ?? false,
         title: v.title || "Installation Project",
         description: v.description || "Professional TV mounting by TVPro team"
