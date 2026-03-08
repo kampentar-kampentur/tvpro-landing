@@ -333,7 +333,7 @@ export default async function RootLayout({ children }) {
 
                         /* 6. Chat Window Enhancements (Resize & Animation) */
                         .lc_text-widget--box {
-                          transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease, width 1s ease, height 1s ease !important;
+                          //transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease, width 1s ease, height 1s ease !important;
                           transform: translateY(20px) !important;
                           opacity: 0 !important;
                           transform-origin: bottom right !important;
@@ -347,7 +347,7 @@ export default async function RootLayout({ children }) {
                           visibility: visible !important;
                         }
                         .lc_text-widget {
-                          transition: all 1s ease !important;
+                          //transition: all 1s ease !important;
                         }
                         .lc_text-widget--mobile {
                           width: 100vw !important;
