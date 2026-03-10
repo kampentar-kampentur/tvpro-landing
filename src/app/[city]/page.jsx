@@ -50,6 +50,9 @@ export async function generateMetadata({ params }) {
             "addressRegion": state_code || "TX",
             "addressCountry": "US",
         },
+        alternates: {
+            canonical: `https://tvprousa.com/${citySlug}/`,
+        },
         openGraph: {
             title,
             description,
@@ -62,6 +65,7 @@ export async function generateMetadata({ params }) {
                 },
             ],
             type: 'website',
+            url: `https://tvprousa.com/${citySlug}/`,
         },
         twitter: {
             card: 'summary_large_image',
