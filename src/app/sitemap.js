@@ -17,7 +17,7 @@ export default async function sitemap() {
     const cityEntries = cities
         .filter(city => !city.test_version && city.path)
         .map((city) => ({
-            url: `${baseUrl}/${city.path}`,
+            url: `${baseUrl}/${city.path}/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 1,
@@ -26,25 +26,25 @@ export default async function sitemap() {
     // 3. Static routes
     const staticEntries = [
         {
-            url: baseUrl,
+            url: `${baseUrl}/`,
             lastModified: new Date(),
             changeFrequency: 'daily',
             priority: 1,
         },
         {
-            url: `${baseUrl}/privacy-policy`,
+            url: `${baseUrl}/privacy-policy/`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.3,
         },
         {
-            url: `${baseUrl}/terms`,
+            url: `${baseUrl}/terms/`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.3,
         },
         {
-            url: `${baseUrl}/sms-consent`,
+            url: `${baseUrl}/sms-consent/`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.3,

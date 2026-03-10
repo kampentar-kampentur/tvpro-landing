@@ -96,7 +96,7 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
     },
   ],
   alternates: {
-    canonical: 'https://tvprousa.com',
+    canonical: 'https://tvprousa.com/',
   },
   openGraph: {
     title: 'TV Mounting Services | TVPro Handy Services',
