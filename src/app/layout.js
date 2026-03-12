@@ -202,37 +202,23 @@ export default async function RootLayout({ children }) {
                 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
                 })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
 
-                // Meta Pixel
-                !function(f,b,e,v,n,t,s)
-                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)}(window, document,'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '809936758465245');
-                fbq('track', 'PageView');
-                
-                // Google Ads / GA4
-                var gtagScript = document.createElement('script');
-                gtagScript.async = true;
-                gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-GZBG74J130";
-                document.head.appendChild(gtagScript);
-                
-                window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
-                window.gtag('js', new Date());
-                window.gtag('config', 'G-GZBG74J130');
-                window.gtag('config', 'AW-17416148778');
-                window.gtag('config', 'AW-17416148778/cLquCL68mv8aEKqu1fBA', { 'phone_conversion_number': '(877) 455-5535' });
-
-                // Workiz tracking
+                // WhatConverts tracking
                 var workizLeads = {doc:{url:document.URL,ref:document.referrer,search:location.search,hash:location.hash}};
                 window.$wc_leads = JSON.parse(JSON.stringify(workizLeads));
                 var workizScript = document.createElement('script');
                 workizScript.async = true;
                 workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
                 document.head.appendChild(workizScript);
+
+                // WhatConverts Chat tracking
+                window.$wc_leads = window.$wc_leads || [];
+                $wc_leads.track.chat({
+                  'First Name': 'Joe',
+                  'Last Name': 'Smith',
+                  'Email Address': 'joe.smith@example.com',
+                  'Phone Number': '+18883437185',
+                  'Chat Log': 'Visitor - Does your company offer unlimited ...'
+                });
 
                 // Thumbtack Star Widget
                 var ttScript = document.createElement('script');
@@ -456,12 +442,6 @@ export default async function RootLayout({ children }) {
           `}
         </Script>
 
-        <noscript>
-          <img height="1" width="1" style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=809936758465245&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
       </head>
       <body className={redHatDisplay.variable}>
         <CTAProvider initialCTA={cta}>
