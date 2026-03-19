@@ -58,6 +58,12 @@ const ExitIntentModal = () => {
         setIsSubmitting(true);
         try {
             const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
+            const path = window.location.pathname;
+
+            const pathParts = path.split('/').filter(part => part !== "");
+
+            const city = pathParts[0];
+
             const response = await fetch(`${apiUrl}/api/book-now`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -67,6 +73,7 @@ const ExitIntentModal = () => {
                         phone: formData.phone,
                         source: 'exit_intent_popup',
                         ...getUtmParams(),
+                        city
                     }
                 }),
             });
