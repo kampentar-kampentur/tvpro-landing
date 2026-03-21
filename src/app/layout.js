@@ -237,16 +237,6 @@ export default async function RootLayout({ children }) {
                   } catch(e) { console.error('WhatConverts Error:', e); }
                 })();
 
-                // 3. Thumbtack Star Widget
-                (function() {
-                  try {
-                    var ttScript = document.createElement('script');
-                    ttScript.async = true;
-                    ttScript.src = "https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star";
-                    document.head.appendChild(ttScript);
-                    console.log('Marketing scripts: Thumbtack loaded');
-                  } catch(e) { console.error('Thumbtack Error:', e); }
-                })();
 
                 // 4. LeadConnector Chat Widget
                 (function() {
