@@ -1,0 +1,425 @@
+---
+import PhotoCard from "./PhotoCard.astro";
+
+interface Props {
+    filters: any[];
+    photos: any[];
+}
+
+const { filters = [], photos = [] } = Astro.props;
+---
+
+<div class="photo-grid-container" id="photo-grid-root">
+    <!-- Filter Buttons -->
+    <div class="filter-buttons-container">
+        {
+            filters.map((filter, index) => (
+                <button
+                    class={`filter-button ${index === 0 ? "active" : ""}`}
+                    data-filter={filter.type}
+                >
+                    {filter.label}
+                </button>
+            ))
+        }
+    </div>
+
+    <!-- The Grid -->
+    <div class="photo-grid" id="photo-grid">
+        {
+            photos.map((photo, index) => (
+                <PhotoCard photo={photo} index={index} className="photo-cell" />
+            ))
+        }
+    </div>
+
+    <!-- Modal (simplified replication of GalleryGrid.js modal) -->
+    <div id="gallery-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button id="modal-close" class="modal-close">&times;</button>
+            <button id="modal-prev" class="modal-nav prev">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+                    <path
+                        d="M15 18l-6-6 6-6"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                </svg>
+            </button>
+            <div id="modal-media-container" class="modal-media-container">
+                <!-- Image or Video will be injected here -->
+            </div>
+            <button id="modal-next" class="modal-nav next">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+                    <path
+                        d="M9 18l6-6-6-6"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .photo-grid-container {
+        margin-top: 40px;
+    }
+
+    .filter-buttons-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 32px;
+        justify-content: flex-start;
+    }
+
+    .filter-button {
+        background-color: var(--white);
+        border: 1px solid var(--gray-light);
+        color: var(--foreground);
+        padding: 8px 24px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-button:hover {
+        border-color: var(--blue-main);
+        color: var(--blue-main);
+    }
+
+    .filter-button.active {
+        background-color: var(--foreground);
+        color: var(--white);
+        border-color: var(--foreground);
+    }
+
+    .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 32px;
+        justify-items: center;
+        transition: opacity 0.3s ease;
+    }
+
+    .photo-grid.fadeOut {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(14, 14, 19, 0.95);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        backdrop-filter: blur(8px);
+    }
+
+    .modal-content {
+        position: relative;
+        max-width: 90vw;
+        max-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-media-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    :global(.modal-image) {
+        max-width: 90vw;
+        max-height: 80vh;
+        border-radius: 16px;
+        object-fit: contain;
+    }
+
+    :global(.modal-video) {
+        max-width: 90vw;
+        max-height: 80vh;
+        border-radius: 16px;
+        background: #000;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 32px;
+        cursor: pointer;
+    }
+
+    .modal-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        padding: 12px;
+        cursor: pointer;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease;
+    }
+
+    .modal-nav:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-nav.prev {
+        left: -60px;
+    }
+    .modal-nav.next {
+        right: -60px;
+        overflow: hidden;
+    }
+    @media (max-width: 1024px) {
+        .photo-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .photo-grid > :global(*:last-child:nth-child(odd)) {
+            grid-column: span 2;
+        }
+
+        .filter-buttons-container {
+            justify-content: center;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding-bottom: 8px;
+            scroll-behavior: smooth;
+        }
+
+        .filter-buttons-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .modal-nav {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px;
+        }
+        .modal-nav.prev {
+            left: 10px;
+        }
+        .modal-nav.next {
+            right: 10px;
+        }
+        .modal-close {
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+    }
+</style>
+
+<script is:inline>
+    // Component logic in vanilla JS for maximum performance and Astro compatibility
+    function setupGallery() {
+        const root = document.getElementById("photo-grid-root");
+        if (!root) return;
+
+        const grid = root.querySelector("#photo-grid");
+        const buttons = root.querySelectorAll(".filter-button");
+        const modal = root.querySelector("#gallery-modal");
+        const modalContent = root.querySelector("#modal-media-container");
+        const modalClose = root.querySelector("#modal-close");
+        const modalPrev = root.querySelector("#modal-prev");
+        const modalNext = root.querySelector("#modal-next");
+        const cards = root.querySelectorAll(".photo-card");
+
+        let currentPhotos = Array.from(cards);
+        let activeIndex = 0;
+
+        // Set initial filter (first button)
+        const firstFilterBtn = buttons[0];
+        if (firstFilterBtn) {
+            const firstFilter = firstFilterBtn.getAttribute("data-filter");
+            if (firstFilter) {
+                cards.forEach((card) => {
+                    const type = card.getAttribute("data-type");
+                    if (
+                        type &&
+                        type.toLowerCase() === firstFilter.toLowerCase()
+                    ) {
+                        card.style.display = "flex";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+                currentPhotos = Array.from(cards).filter(
+                    (c) => c.style.display !== "none",
+                );
+            }
+        }
+
+        // Reveal Animation Logic
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "50px",
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("reveal");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        function triggerReveal() {
+            let visibleIndex = 0;
+            cards.forEach((card) => {
+                if (card.style.display !== "none") {
+                    card.classList.remove("reveal");
+                    // Set staggered delay
+                    card.style.setProperty(
+                        "--reveal-delay",
+                        `${visibleIndex * 0.1}s`,
+                    );
+                    revealObserver.observe(card);
+                    visibleIndex++;
+                }
+            });
+        }
+
+        // Initial reveal
+        triggerReveal();
+
+        // Filtering
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const filter = btn.getAttribute("data-filter");
+
+                // Update active state
+                buttons.forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                // Fade out grid slightly
+                grid.style.opacity = "0.5";
+
+                setTimeout(() => {
+                    cards.forEach((card) => {
+                        const type = card.getAttribute("data-type");
+                        // Case-insensitive comparison and handling 'all'
+                        if (
+                            filter === "all" ||
+                            (type &&
+                                type.toLowerCase() === filter.toLowerCase())
+                        ) {
+                            card.style.display = "flex";
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+
+                    // Update current visible photos for modal navigation
+                    currentPhotos = Array.from(cards).filter(
+                        (c) => c.style.display !== "none",
+                    );
+
+                    // Re-trigger reveal animations for the new set
+                    triggerReveal();
+
+                    grid.style.opacity = "1";
+                }, 300);
+            });
+        });
+
+        // Modal Logic
+        const openModal = (index) => {
+            activeIndex = index;
+            const card = currentPhotos[activeIndex];
+            const img = card.querySelector(".photo-image");
+            const videoUrl = card.getAttribute("data-video-url"); // Wait, card needs this data
+
+            modalContent.innerHTML = "";
+
+            // Replicate VideoReviews logic
+            const videoAttr = card.getAttribute("data-video-url");
+            if (videoAttr) {
+                const video = document.createElement("video");
+                video.src = videoAttr;
+                video.className = "modal-video";
+                video.controls = true;
+                video.autoplay = true;
+                video.playsinline = true;
+                modalContent.appendChild(video);
+            } else {
+                const cloneImg = img.cloneNode(true);
+                cloneImg.className = "modal-image";
+                modalContent.appendChild(cloneImg);
+            }
+
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden";
+        };
+
+        const closeModal = () => {
+            modal.style.display = "none";
+            modalContent.innerHTML = "";
+            document.body.style.overflow = "";
+        };
+
+        cards.forEach((card, idx) => {
+            card.addEventListener("click", () => {
+                const visibleIdx = currentPhotos.indexOf(card);
+                openModal(visibleIdx);
+            });
+        });
+
+        modalClose.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        modalNext.addEventListener("click", (e) => {
+            e.stopPropagation();
+            activeIndex = (activeIndex + 1) % currentPhotos.length;
+            openModal(activeIndex);
+        });
+
+        modalPrev.addEventListener("click", (e) => {
+            e.stopPropagation();
+            activeIndex =
+                (activeIndex - 1 + currentPhotos.length) % currentPhotos.length;
+            openModal(activeIndex);
+        });
+
+        // Keyboard support
+        document.addEventListener("keydown", (e) => {
+            if (modal.style.display === "flex") {
+                if (e.key === "Escape") closeModal();
+                if (e.key === "ArrowRight") modalNext.click();
+                if (e.key === "ArrowLeft") modalPrev.click();
+            }
+        });
+    }
+
+    // Run on load and on Astro page transitions
+    setupGallery();
+    document.addEventListener("astro:page-load", setupGallery);
+</script>

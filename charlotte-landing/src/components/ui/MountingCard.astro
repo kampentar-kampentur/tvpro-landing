@@ -1,0 +1,125 @@
+---
+import ImageWrapper from "../ImageWrapper.astro";
+
+interface Props {
+    title: string;
+    description: string;
+    image: any;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<div class="mounting-card" data-open-modal="booking-modal">
+    <div class="card-image-container">
+        <ImageWrapper media={image} defaultAlt={title} />
+    </div>
+    <div class="card-content">
+        <h3 class="card-title">{title}</h3>
+        <p class="card-description">{description}</p>
+        <button class="book-button">Book Now</button>
+    </div>
+</div>
+
+<style>
+    .mounting-card {
+        background: var(--white);
+        border: 1px solid var(--gray-extra-light);
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        min-height: 280px;
+        height: 100%;
+        width: 100%;
+        /* STATIC SHADOWS FOR PREMIUM LOOK - MORE PROMINENT */
+        box-shadow:
+            0px 4px 10px 0px rgba(0, 0, 0, 0.08),
+            0px 12px 24px 0px rgba(0, 0, 0, 0.04);
+    }
+
+    /* ENHANCED HOVER SHADOWS - DEEP & EXPRESSIVE */
+    .mounting-card:hover {
+        border-color: transparent;
+        transform: translateY(-10px);
+        background-color: var(--white);
+        box-shadow:
+            0px 8px 15px 0px rgba(0, 0, 0, 0.15),
+            0px 25px 25px 0px rgba(0, 0, 0, 0.12),
+            0px 50px 35px 0px rgba(0, 0, 0, 0.1),
+            0px 85px 45px 0px rgba(0, 0, 0, 0.06),
+            0px 130px 50px 0px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-image-container {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .card-image-container :global(img) {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--foreground);
+    }
+
+    .card-description {
+        font-size: 14px;
+        color: var(--gray);
+        line-height: 1.5;
+        transition:
+            opacity 0.3s ease,
+            height 0.3s ease;
+    }
+
+    .book-button {
+        display: none;
+        background: var(--blue-main);
+        color: var(--white);
+        border: none;
+        padding: 10px 24px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 14px;
+        margin-top: 16px;
+        transition: background 0.3s ease;
+    }
+
+    .mounting-card:hover .card-description {
+        display: none;
+    }
+
+    .mounting-card:hover .book-button {
+        display: block;
+    }
+
+    @media (max-width: 600px) {
+        .mounting-card {
+            padding: 20px 16px;
+            min-height: 200px;
+        }
+
+        .card-title {
+            font-size: 16px;
+        }
+
+        .card-description {
+            font-size: 12px;
+        }
+    }
+</style>

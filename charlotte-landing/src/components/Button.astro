@@ -1,0 +1,92 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary';
+  size?: 'big' | 'small';
+  class?: string;
+  href?: string;
+  id?: string;
+  type?: 'button' | 'submit' | 'reset';
+  style?: string;
+  [key: string]: any;
+}
+
+const { 
+  variant = 'primary', 
+  size = 'big', 
+  class: className = '', 
+  href, 
+  id,
+  type = 'button',
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag 
+  href={href} 
+  id={id}
+  type={href ? undefined : type}
+  class:list={['button', variant, size, className]}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 36px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border 0.2s, transform 0.2s, box-shadow 0.2s;
+    outline: none;
+    gap: 8px;
+    padding: 0 24px;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+
+  .primary {
+    background: var(--blue-main);
+    color: var(--white);
+    font-weight: 700;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  .primary:hover {
+    background: var(--blue-hover);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    transform: translateY(-3px);
+  }
+
+  .primary:active {
+    filter: brightness(0.92);
+  }
+
+  .secondary {
+    background: transparent;
+    color: var(--foreground);
+    border: 2px solid var(--gray-light);
+  }
+
+  .secondary:hover {
+    border-color: var(--gray-extra-light);
+    background: var(--gray-extra-light);
+  }
+
+  .big {
+    height: 52px;
+    font-size: 16px;
+  }
+
+  .small {
+    height: 40px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+</style>

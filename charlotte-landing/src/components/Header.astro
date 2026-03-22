@@ -1,0 +1,136 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+    phone?: string;
+    hours?: string;
+}
+
+const { phone = "(213) 584-4010", hours = "8:00 AM - 10:00 PM DAILY" } =
+    Astro.props;
+
+const phoneLink = `tel:+1${phone.replace(/\D/g, "")}`;
+---
+
+<style>
+    .header-desktop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        padding: 12px 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .header-mobile {
+        display: none;
+        padding: 1rem;
+        background: white;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1001;
+    }
+    body {
+        padding-top: 72px;
+    }
+    @media (max-width: 1024px) {
+        .header-desktop {
+            display: none;
+        }
+        .header-mobile {
+            position: relative;
+            display: flex;
+        }
+
+        body {
+            padding-top: 0;
+        }
+    }
+
+    .logo-img {
+        height: 42px;
+        width: auto;
+    }
+
+    .hours-text {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--foreground);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .phone-link {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--brand-blue);
+        text-decoration: none;
+        transition: color 0.2s;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        margin-right: 12px;
+    }
+
+    .phone-link:hover {
+        color: var(--brand-blue-hover);
+        text-decoration: underline;
+    }
+
+    .cta-container {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .header-mobile .cta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+</style>
+
+<!-- Desktop Header -->
+<nav class="header-desktop">
+    <a href="/" class="flex items-center">
+        <img src="/logo.svg" alt="TVPro Logo" class="logo-img" />
+    </a>
+
+    <div class="cta-container">
+        <span class="hours-text">{hours}</span>
+        <div class="flex items-center gap-6">
+            <a href={phoneLink} class="phone-link">{phone}</a>
+            <Button data-open-modal="booking-modal" size="small"
+                >Book Now</Button
+            >
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Header -->
+<nav class="header-mobile">
+    <a href="/">
+        <img
+            src="/logo.svg"
+            alt="TVPro Logo"
+            class="logo-img"
+            height="40"
+            width="82"
+        />
+    </a>
+    <div class="cta">
+        <span class="hours-text" style="font-size: 10px;">{hours}</span>
+        <a href={phoneLink} class="phone-link text-sm">{phone}</a>
+        <Button data-open-modal="booking-modal" size="small">Book Now</Button>
+    </div>
+</nav>

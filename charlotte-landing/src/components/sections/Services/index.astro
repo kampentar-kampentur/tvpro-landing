@@ -1,0 +1,106 @@
+---
+---
+
+<section class="services">
+    <div class="services-container">
+        <h2 class="services-title">Total TVs to mount?</h2>
+        <div class="services-grid">
+            <div class="service-card" data-open-modal="booking-modal">
+                <div class="service-emoji">📺</div>
+                <h3 class="service-name">1 TV</h3>
+                <p class="service-info">2-Year Warranty</p>
+            </div>
+            <div class="service-card" data-open-modal="booking-modal">
+                <div class="service-emoji">📺📺</div>
+                <h3 class="service-name">2 TVs</h3>
+                <p class="service-info">Better Deal</p>
+            </div>
+            <div class="service-card" data-open-modal="booking-modal">
+                <div class="service-emoji">📺📺📺</div>
+                <h3 class="service-name">3 TVs</h3>
+                <p class="service-info">Bundle Price</p>
+            </div>
+            <div class="service-card" data-open-modal="booking-modal">
+                <div class="service-emoji">🚀</div>
+                <h3 class="service-name">3+ TVs</h3>
+                <p class="service-info">Best Price</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .services {
+        padding: 6rem 1rem;
+        background-color: white;
+    }
+
+    .services-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .services-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 4rem;
+        letter-spacing: -0.02em;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .service-card {
+        padding: 2.5rem 1.5rem;
+        border: 2px solid #f3f4f6;
+        border-radius: 2.5rem;
+        background-color: white;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .service-card:hover {
+        border-color: var(--blue-main);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-emoji {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .service-card:hover .service-emoji {
+        transform: scale(1.15);
+    }
+
+    .service-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .service-info {
+        color: var(--gray);
+        font-size: 0.875rem;
+    }
+
+    @media (min-width: 768px) {
+        .services-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .services-title {
+            font-size: 3rem;
+        }
+    }
+</style>
+

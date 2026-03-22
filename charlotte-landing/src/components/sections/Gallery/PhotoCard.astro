@@ -1,0 +1,132 @@
+---
+// PhotoCard is a simple visual component
+import ImageWrapper from '../../ImageWrapper.astro';
+
+interface Props {
+    photo: any;
+    index: number;
+    className?: string;
+}
+
+const { photo, index, className } = Astro.props;
+
+const baseUrl = import.meta.env.PUBLIC_STRAPI_URL || 'https://strapi-dev-e587.up.railway.app';
+const videoRaw = photo.videoUrl || photo.video?.url;
+const videoUrl = videoRaw ? (videoRaw.startsWith('http') ? videoRaw : `${baseUrl}${videoRaw}`) : null;
+const isVideo = Boolean(videoUrl);
+---
+
+<div 
+    class={`photo-card ${className || ''}`} 
+    data-index={index}
+    data-type={photo.type}
+    data-video-url={videoUrl}
+>
+    <div class="image-wrapper">
+        <ImageWrapper 
+            media={photo.image} 
+            className="photo-image" 
+            loading={index < 4 ? "eager" : "lazy"}
+        />
+        {isVideo && (
+            <div class="play-icon-wrap">
+                <svg viewBox="0 0 48 48" width="48" height="48" fill="none">
+                    <circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.5)" />
+                    <polygon points="19,16 36,24 19,32" fill="#fff" />
+                </svg>
+            </div>
+        )}
+    </div>
+</div>
+
+<style>
+    .photo-card {
+        background-color: var(--white);
+        border-radius: 20px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+        
+        /* Reveal Animation State */
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+        transition: 
+            opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+            transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+            box-shadow 0.3s ease, 
+            background-color 0.3s ease;
+        transition-delay: var(--reveal-delay, 0s);
+    }
+
+    .photo-card.reveal {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    .photo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+            0px 5px 11px 0px rgba(0,0,0,0.12),
+            0px 19px 19px 0px rgba(0,0,0,0.09);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        transition-delay: 0s !important;
+    }
+
+    .image-wrapper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    :global(.photo-image) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+        border-radius: 12px;
+    }
+
+    .photo-card:hover :global(.photo-image) {
+        transform: scale(1.05);
+    }
+
+    .play-icon-wrap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .photo-card:hover .play-icon-wrap {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    /* Standard Grid sizes matching original project */
+    @media (min-width: 1025px) {
+        :global(.photo-cell) {
+            height: 280px !important;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .photo-card {
+            border-radius: 12px;
+            padding: 6px;
+        }
+
+        :global(.photo-cell) {
+            height: 120px !important;
+        }
+    }
+</style>

@@ -1,0 +1,66 @@
+---
+interface Props {
+    media: any;
+    className?: string;
+    defaultAlt?: string;
+    width?: number;
+    height?: number;
+    sizes?: string;
+    priority?: boolean;
+    preferFormat?: 'large' | 'medium' | 'small' | 'thumbnail';
+}
+
+const {
+    media,
+    className,
+    defaultAlt,
+    width,
+    height,
+    sizes = "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw",
+    priority = false,
+    preferFormat
+} = Astro.props;
+
+if (!media) return null;
+
+const baseUrl = import.meta.env.PUBLIC_STRAPI_URL || 'https://strapi-dev-e587.up.railway.app';
+
+const formats = media.formats || {};
+
+const getImageUrl = () => {
+    if (preferFormat && formats[preferFormat]) {
+        return formats[preferFormat].url;
+    }
+
+    if (!formats || Object.keys(formats).length === 0) {
+        return media.url;
+    }
+
+    const availableFormats = Object.keys(formats)
+        .map(key => ({ key, ...formats[key] }))
+        .sort((a, b) => a.width - b.width);
+
+    // In Astro, we don't have a dynamic loader like Next.js in the browser easily,
+    // so we'll pick a sensible default (largest or preferred)
+    // For now, let's pick the largest available or the original URL
+    return availableFormats[availableFormats.length - 1]?.url || media.url;
+};
+
+const resolvedUrl = getImageUrl();
+const finalUrl = resolvedUrl && resolvedUrl.startsWith('http') ? resolvedUrl : `${baseUrl}${resolvedUrl}`;
+
+const altText = media.alternativeText || media.caption || defaultAlt || "";
+
+const finalWidth = width || media.width || 1200;
+const finalHeight = height || media.height || (media.width ? Math.round(finalWidth / (media.width / media.height)) : undefined);
+---
+
+<img 
+    src={finalUrl} 
+    class={className} 
+    alt={altText} 
+    width={finalWidth} 
+    height={finalHeight}
+    loading={priority ? "eager" : "lazy"}
+    decoding="async"
+/>

@@ -1,0 +1,266 @@
+---
+import ImageWrapper from "../../ImageWrapper.astro";
+
+interface Props {
+    data?: any;
+}
+
+const { data } = Astro.props;
+
+const title = data?.title || "See Our Work in Action";
+const subTitle = data?.subTitle || "Documentation of our high-quality professional installations.";
+const videos = data?.videoItem || [];
+
+const baseUrl = import.meta.env.PUBLIC_STRAPI_URL || 'https://strapi-dev-e587.up.railway.app';
+---
+
+<section class="video-reviews" id="video-gallery">
+    <div class="container">
+        <header class="section-header">
+            <h2 class="blockHeading">{title}</h2>
+            {subTitle && <p class="section-subtitle">{subTitle}</p>}
+        </header>
+
+        <div class="video-grid">
+            {videos.map((video: any, index: number) => {
+                const isVertical = video.isVertical;
+                const selfHosted = video.selfHostedVideo;
+                const thumbnailUrl = selfHosted?.thumbnail?.url;
+                const videoUrl = selfHosted?.video720?.url || selfHosted?.video480?.url || selfHosted?.video1080?.url;
+                
+                return (
+                    <div 
+                        class={`video-card ${isVertical ? 'vertical' : 'horizontal'}`} 
+                        data-video-url={videoUrl ? (videoUrl.startsWith('http') ? videoUrl : `${baseUrl}${videoUrl}`) : ''}
+                    >
+                        <div class="thumbnail-wrapper">
+                            {thumbnailUrl ? (
+                                <ImageWrapper media={selfHosted.thumbnail} className="thumbnail" />
+                            ) : (
+                                <img src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`} class="thumbnail" alt={video.title} />
+                            )}
+                            <div class="play-overlay">
+                                <div class="play-icon-wrap">
+                                    <svg viewBox="0 0 48 48" width="48" height="48" fill="none">
+                                        <circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.5)" />
+                                        <polygon points="19,16 36,24 19,32" fill="#fff" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    </div>
+</section>
+
+<style>
+    .video-reviews {
+        padding: 80px 20px;
+        background-color: var(--background);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        margin-bottom: 48px;
+        text-align: left;
+    }
+
+    .section-subtitle {
+        font-size: 18px;
+        color: var(--gray);
+        max-width: 700px;
+        margin-top: 12px;
+    }
+
+    .video-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 24px;
+        overflow-x: auto;
+        padding-bottom: 20px;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .video-grid::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+
+    .video-card {
+        flex: 0 0 auto;
+        background: var(--white);
+        border-radius: 20px;
+        padding: 8px;
+        border: 1px solid var(--gray-extra-light);
+        cursor: pointer;
+        transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .video-card.vertical {
+        width: 335px;
+        height: 480px;
+    }
+
+    .video-card.horizontal {
+        width: 372px;
+        height: 280px;
+    }
+
+    .video-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+            0px 5px 11px 0px rgba(0,0,0,0.12),
+            0px 19px 19px 0px rgba(0,0,0,0.09),
+            0px 44px 26px 0px rgba(0,0,0,0.08),
+            0px 78px 31px 0px rgba(0,0,0,0.04),
+            0px 121px 34px 0px rgba(0,0,0,0.02);
+        background-color: var(--white);
+        border-color: transparent;
+    }
+
+    .thumbnail-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 12px;
+        background: #000;
+    }
+
+    .thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+        border-radius: 12px;
+    }
+
+    .video-card:hover .thumbnail {
+        transform: scale(1.05);
+    }
+
+    .play-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .play-icon-wrap {
+        transition: all 0.3s ease;
+    }
+
+    .video-card:hover .play-icon-wrap {
+        transform: scale(1.1);
+    }
+
+    .thumbnail-wrapper :global(video) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        border-radius: 12px;
+        pointer-events: auto;
+    }
+
+    @media (max-width: 768px) {
+        .section-header {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            overflow-x: hidden;
+            padding: 0;
+        }
+
+        .video-card {
+            padding: 6px;
+            border-radius: 12px;
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .video-card.vertical {
+            height: 304px !important;
+        }
+
+        .video-card.horizontal {
+            height: 120px !important;
+        }
+
+        .thumbnail-wrapper {
+            border-radius: 14px;
+        }
+
+        .play-icon-wrap svg {
+            width: 32px;
+            height: 32px;
+        }
+    }
+</style>
+
+<script>
+    function setupVideoPlayback() {
+        const cards = document.querySelectorAll('.video-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const videoUrl = card.getAttribute('data-video-url');
+                if (!videoUrl) return;
+
+                const wrapper = card.querySelector('.thumbnail-wrapper');
+                if (!wrapper) return;
+
+                // Check if video already exists
+                let video = wrapper.querySelector('video');
+                if (video) {
+                    if (video.paused) video.play();
+                    else video.pause();
+                    return;
+                }
+
+                // Create video element
+                video = document.createElement('video');
+                video.src = videoUrl;
+                video.controls = true;
+                video.autoplay = true;
+                video.muted = true;
+                video.playsInline = true;
+                
+                // Hide overlay
+                const overlay = wrapper.querySelector('.play-overlay');
+                if (overlay) overlay.style.display = 'none';
+
+                wrapper.appendChild(video);
+            });
+        });
+    }
+
+    // Initialize
+    setupVideoPlayback();
+
+    // Re-initialize on Astro page load (for view transitions)
+    document.addEventListener('astro:page-load', setupVideoPlayback);
+</script>

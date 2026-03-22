@@ -1,0 +1,84 @@
+---
+import ImageWrapper from '../../ImageWrapper.astro';
+
+interface Props {
+    image: any;
+    title: string;
+    description: string;
+}
+
+const { image, title, description } = Astro.props;
+---
+
+<div class="trust-card">
+    <div class="icon-container">
+        <ImageWrapper
+            media={image}
+            className="trust-icon"
+            loading="lazy"
+        />
+    </div>
+    <div class="content">
+        <h3 class="title">{title}</h3>
+        <p class="description">{description}</p>
+    </div>
+</div>
+
+<style>
+    .trust-card {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .icon-container {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 24px;
+        filter: grayscale(100%) brightness(2);
+    }
+
+    :global(.trust-icon) {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .title {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
+        margin: 0;
+        color: var(--white);
+    }
+
+    .description {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 26px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-top: 12px;
+    }
+
+    @media (max-width: 1024px) {
+        .trust-card {
+            padding: 24px;
+            min-width: 280px;
+            border-radius: 16px;
+        }
+
+        .title {
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+        .description {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+</style>

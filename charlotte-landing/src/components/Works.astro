@@ -1,0 +1,75 @@
+---
+import ImageWrapper from './ImageWrapper.astro';
+
+interface Project {
+    title: string;
+    image?: any;
+}
+
+interface Props {
+	projects: Project[];
+}
+
+const { projects = [] } = Astro.props;
+---
+
+<style>
+    .works-section {
+        background-color: #f9fafb;
+        padding: 5rem 1rem;
+    }
+
+    .works-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 2rem;
+    }
+
+    @media (min-width: 640px) {
+        .works-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+        .works-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .work-card {
+        position: relative;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        aspect-ratio: 4 / 3;
+    }
+
+    .work-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .work-card:hover .work-img {
+        transform: scale(1.05);
+    }
+</style>
+
+<section class="works-section" id="works">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Our Recent Works</h2>
+        
+        {projects.length > 0 ? (
+            <div class="works-grid">
+                {projects.map((project) => (
+                    <div class="work-card">
+                        <ImageWrapper 
+                            media={project.image} 
+                            defaultAlt={project.title} 
+                            className="work-img"
+                        />
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p class="text-center text-gray-400 italic">No project photos available yet.</p>
+        )}
+    </div>
+</section>

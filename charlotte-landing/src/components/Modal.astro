@@ -1,0 +1,190 @@
+---
+interface Props {
+  id: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const { id, title, subtitle } = Astro.props;
+---
+
+<div id={id} class="modal-overlay" data-modal>
+  <div class="modal-content">
+    <button class="close-button" data-close-modal={id} aria-label="Close modal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <div class="modal-header">
+      {title && <h2 class="modal-title">{title}</h2>}
+      {subtitle && <p class="modal-subtitle">{subtitle}</p>}
+    </div>
+    
+    <div class="modal-body">
+      <slot />
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(14, 14, 19, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000000;
+    animation: modalOverlayFadeIn 0.3s ease-out;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  @keyframes modalOverlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .modal-content {
+    background-color: var(--background);
+    border-radius: 40px;
+    padding: 40px;
+    position: relative;
+    max-width: 584px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .modal-header {
+      width: 100%;
+      text-align: left;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--background);
+    border: 1px solid var(--gray-light);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    color: var(--foreground);
+    z-index: 10;
+  }
+
+  .close-button:hover {
+    border-color: var(--foreground);
+  }
+
+  .modal-title {
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 60px;
+    letter-spacing: 0%;
+    margin-bottom: 8px;
+    color: var(--foreground);
+    text-align: left;
+  }
+
+  .modal-subtitle {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 24px;
+    color: var(--foreground);
+    text-align: left;
+  }
+
+  .modal-body {
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 980px) {
+    .modal-content {
+      border-radius: 0;
+      padding: 24px 16px;
+      height: 100% !important;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    .modal-overlay {
+      background-color: var(--background);
+    }
+
+    .modal-title {
+        font-size: 28px;
+        line-height: 40px;
+    }
+
+    .modal-subtitle {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 21px;
+    }
+  }
+</style>
+
+
+<script>
+  function setupModals() {
+    const openButtons = document.querySelectorAll('[data-open-modal]');
+    const closeButtons = document.querySelectorAll('[data-close-modal]');
+    const overlays = document.querySelectorAll('.modal-overlay');
+
+    openButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const modalId = button.getAttribute('data-open-modal');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const modalId = button.getAttribute('data-close-modal');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    overlays.forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  }
+
+  // Setup on page load
+  setupModals();
+
+  // Setup on Astro page navigation
+  document.addEventListener('astro:page-load', setupModals);
+</script>

@@ -1,0 +1,97 @@
+---
+interface Props {
+	phone?: string;
+	hours?: string;
+}
+
+const { 
+	phone = "(213) 584-4010", 
+	hours = "8:00 AM - 10:00 PM DAILY" 
+} = Astro.props;
+
+const phoneLink = `tel:+1${phone.replace(/\D/g, '')}`;
+---
+
+<style>
+    footer {
+        background-color: #052533;
+        color: white;
+        padding: 4rem 2rem;
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-cols: 1fr 1fr;
+        gap: 3rem;
+    }
+
+    @media (max-width: 768px) {
+        .footer-container {
+            grid-template-cols: 1fr;
+            text-align: center;
+        }
+    }
+
+    .footer-logo {
+        height: 64px;
+        width: auto;
+        margin-bottom: 2rem;
+        filter: brightness(0) invert(1);
+    }
+
+    .btn-call {
+        display: inline-block;
+        background: white;
+        color: var(--blue-main);
+        padding: 0.8rem 2rem;
+        border-radius: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        transition: transform 0.2s;
+    }
+
+    .btn-call:hover {
+        transform: scale(1.05);
+    }
+
+    .footer-heading {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .legal-links {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        display: flex;
+        gap: 2rem;
+        font-size: 14px;
+        color: var(--gray);
+    }
+</style>
+
+<footer>
+    <div class="footer-container">
+        <div class="flex flex-col items-center md:items-start">
+            <img src="/logo.svg" alt="TVPro Logo" class="footer-logo" />
+            <a href={phoneLink} class="btn-call">Call {phone}</a>
+            <p class="text-gray-400">Serving Charlotte and Surrounding Areas</p>
+        </div>
+        
+        <div>
+            <h3 class="footer-heading">Contact Us</h3>
+            <p class="mb-2">Hours: {hours}</p>
+            <p class="mb-2">Email: info@tvprousa.com</p>
+            <p class="mb-2">Address: Charlotte, NC</p>
+        </div>
+    </div>
+
+    <div class="max-w-[1200px] mx-auto legal-links">
+        <a href="/privacy-policy" class="hover:text-white">Privacy Policy</a>
+        <a href="/terms" class="hover:text-white">Terms of Use</a>
+        <p>© 2026 TVPro Handy Services. All rights reserved.</p>
+    </div>
+</footer>
