@@ -1,0 +1,183 @@
+---
+import Button from "../../Button.astro";
+
+interface Props {
+    cityName: string;
+}
+
+const { cityName } = Astro.props;
+---
+
+<form class="booking-form">
+    <div class="form-group" data-input-container>
+        <label class="form-label">Full Name</label>
+        <div class="input-wrapper">
+            <input 
+                type="text" 
+                name="name" 
+                placeholder="Enter your name *" 
+                required 
+                class="form-input"
+                oninput="this.parentElement.parentElement.classList.toggle('has-value', !!this.value)"
+            >
+        </div>
+    </div>
+    <div class="form-group" data-input-container>
+        <label class="form-label">Phone Number *</label>
+        <div class="input-wrapper">
+            <input 
+                type="tel" 
+                name="phone" 
+                placeholder="Enter your number *" 
+                required 
+                class="form-input"
+                oninput="this.parentElement.parentElement.classList.toggle('has-value', !!this.value)"
+            >
+        </div>
+    </div>
+    <div class="discount-banner">
+        <p class="discount-label">Installing 2 or more TVs?</p>
+        <p class="discount-text">
+            Let the manager know to receive a multi-TVs 
+            <span class="discount-word">DISCOUNT</span>: 
+            <span class="discount-percent">10% OFF</span> for 2 TVs, 
+            <span class="discount-percent">15% OFF</span> for 3, 
+            <span class="discount-percent">20% OFF</span> for 4 or more.
+        </p>
+    </div>
+    <p class="form-privacy">
+        No spam. Your data is used strictly for scheduling your appointment.
+    </p>
+
+    <Button type="submit" class="submit-button" size="big">Send Request</Button>
+</form>
+
+<style>
+    .booking-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px 0;
+        width: 100%;
+    }
+
+    .form-group {
+        background: #fff;
+        border: 1px solid #e7e7eb;
+        border-radius: 12px;
+        padding: 8px 16px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 64px;
+        justify-content: center;
+        position: relative;
+        transition: border-color 0.2s;
+    }
+
+    .form-group:focus-within {
+        border-color: var(--blue-main);
+    }
+
+    .form-label {
+        font-size: 10px;
+        color: #91929c;
+        font-weight: 400;
+        line-height: 16px;
+        margin-bottom: 2px;
+        opacity: 0;
+        transition: opacity 0.2s;
+        text-align: left;
+    }
+
+    .form-group.has-value .form-label {
+        opacity: 1;
+    }
+
+    .input-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .form-input {
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        color: #0e0e13;
+        font-weight: 500;
+        line-height: 20px;
+        padding: 0;
+        height: 20px;
+        width: 100%;
+        font-family: inherit;
+    }
+
+    .form-input::placeholder {
+        color: #91929c;
+        font-weight: 400;
+    }
+
+    .discount-banner {
+        border: 1px solid var(--gray-extra-light);
+        background-color: var(--gray-extra-light);
+        border-radius: 12px;
+        padding: 24px;
+        align-items: flex-start;
+        text-align: start;
+        margin-top: 20px;
+    }
+
+    .discount-label {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .discount-text {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .discount-word {
+        font-weight: bold;
+    }
+
+    .discount-percent {
+        font-weight: bold;
+        color: #FA0004;
+    }
+
+    @media (max-width: 980px) {
+        .discount-banner {
+            padding: 16px;
+        }
+        .discount-label {
+            font-size: 16px;
+            line-height: 20px;
+            margin: 0;
+        }
+    }
+
+
+    .form-privacy {
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--gray);
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .submit-button {
+        width: 100%;
+        height: 52px;
+        border-radius: 36px;
+        font-weight: 700;
+        font-size: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+</style>
+
+

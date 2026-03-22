@@ -1,0 +1,140 @@
+---
+import MountingCard from "../../ui/MountingCard.astro";
+
+interface Props {
+    data?: any;
+}
+
+const { data } = Astro.props;
+
+const title = data?.title || "TV Mounting Types";
+const subTitle =
+    data?.subTitle || "Choose the perfect mount for your home setup";
+const mountingTypes = data?.mountingTypes || [];
+const addons = data?.addons || [];
+---
+
+<section class="mounting-types">
+    <div class="container">
+        <header class="section-header">
+            <h2 class="section-title">{title}</h2>
+            <p class="section-subtitle">{subTitle}</p>
+        </header>
+
+        <div class="cards-grid">
+            {
+                mountingTypes.map((type: any) => (
+                    <MountingCard
+                        title={type.title}
+                        description={type.description}
+                        image={type.image}
+                    />
+                ))
+            }
+        </div>
+
+        {
+            addons.length > 0 && (
+                <div class="addons-container">
+                    <h4 class="addons-title">Optional Add-ons</h4>
+                    <div class="addons-list">
+                        {addons.map((addon: any) => (
+                            <button
+                                class="addon-tag"
+                                data-open-modal="booking-modal"
+                            >
+                                {addon.label || addon}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )
+        }
+    </div>
+</section>
+
+<style>
+    .mounting-types {
+        padding: 80px 20px;
+        background-color: #fff;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+        font-size: 18px;
+        color: var(--gray);
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 60px;
+    }
+
+    /* Add-ons Styles */
+    .addons-container {
+        text-align: center;
+    }
+
+    .addons-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 24px;
+    }
+
+    .addons-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .addon-tag {
+        background: #f6f6f8;
+        border: 1px solid #e7e7eb;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .addon-tag:hover {
+        background: var(--blue-main);
+        color: #fff;
+        border-color: var(--blue-main);
+        transform: translateY(-2px);
+    }
+
+    @media (min-width: 1024px) {
+        .cards-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .section-title {
+            font-size: 28px;
+        }
+    }
+</style>

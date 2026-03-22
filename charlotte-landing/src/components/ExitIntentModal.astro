@@ -1,0 +1,107 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+    id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div id={id} class="modal-overlay hidden">
+    <div class="modal-content max-w-lg p-8 rounded-[2rem] bg-white relative">
+        <button class="close-btn absolute top-6 right-6 text-gray-400 hover:text-black" data-close-modal={id}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <div class="text-center">
+            <h2 class="text-3xl font-black text-gray-900 mb-4 uppercase tracking-tight">Wait! Get $30 OFF</h2>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                Don't leave yet! Claim your discount for your first professional TV installation.
+            </p>
+
+            <form class="flex flex-col gap-4 text-left" id="exit-intent-form">
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest">Your Name *</label>
+                    <input type="text" name="name" placeholder="E.g. John Doe" required class="p-4 border-2 border-gray-100 rounded-2xl outline-none focus:border-blue-500 transition-colors">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest">Phone Number *</label>
+                    <input type="tel" name="phone" placeholder="+1 (___) ___-____" required class="p-4 border-2 border-gray-100 rounded-2xl outline-none focus:border-blue-500 transition-colors">
+                </div>
+
+                <div class="mt-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 italic text-sm text-gray-500">
+                    "Awesome service! Highly recommend for anyone in Charlotte."
+                </div>
+
+                <div class="mt-4 text-xs text-gray-400 leading-relaxed">
+                    I agree to receive SMS from TVPro Handy Services LLC regarding appointments and service updates.
+                    <div class="mt-1 flex gap-2">
+                        <a href="/privacy-policy" class="underline hover:text-blue-600">Privacy Policy</a>
+                        <a href="/terms" class="underline hover:text-blue-600">Terms of Service</a>
+                    </div>
+                </div>
+
+                <Button type="submit" class="w-full mt-4">Claim My $30 Off</Button>
+                
+                <button type="button" class="mt-4 text-sm text-gray-400 hover:text-gray-600 transition-colors" data-close-modal={id}>
+                    No thanks, I'll pay full price
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(8px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 1rem;
+    }
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+    .modal-content {
+        animation: modalScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    @keyframes modalScale {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>
+
+<script is:inline>
+    // Simple Exit Intent Form Handler
+    const exitForm = document.getElementById('exit-intent-form');
+    if (exitForm) {
+        exitForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = "Sending...";
+            btn.disabled = true;
+
+            try {
+                // Mock API call or real one if URL is available
+                await new Promise(r => setTimeout(r, 1000));
+                window.location.href = '/see-you-soon';
+            } catch (err) {
+                console.error(err);
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+    }
+</script>

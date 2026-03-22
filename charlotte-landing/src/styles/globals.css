@@ -1,0 +1,60 @@
+:root {
+  --background: #f6f6f8;
+  --foreground: #0e0e13;
+  --white: #ffffff;
+  --gray-light: #dbdbdf;
+  --gray: #91929c;
+  --gray-medium: #6B6A73;
+  --blue-main: #0d64a0;
+  --blue-hover: #0a4d7d;
+  --gray-extra-light: #e7e7eb;
+
+  /* Red Hat Display is the main project font */
+  --font-main: 'Red Hat Display', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  font-family: var(--font-main);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Utility classes for consistency with main project */
+.blockHeading {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 60px;
+  color: var(--foreground);
+}
+
+@media (max-width: 1024px) {
+  .blockHeading {
+    font-size: 28px;
+    line-height: 36px;
+    text-align: center;
+  }
+}

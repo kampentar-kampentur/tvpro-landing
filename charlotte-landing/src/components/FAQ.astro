@@ -1,0 +1,115 @@
+---
+interface FAQItem {
+    question: string;
+    answer: string;
+}
+
+interface Props {
+	faqs: FAQItem[];
+}
+
+const { faqs = [] } = Astro.props;
+---
+
+<style>
+    .faq-section {
+        background-color: white;
+        padding: 5rem 1rem;
+    }
+
+    .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .faq-item {
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1.5rem 0;
+    }
+
+    .faq-question {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        color: #111827;
+        transition: color 0.2s;
+    }
+
+    .faq-question:hover {
+        color: var(--blue-main);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, margin-top 0.3s;
+        margin-top: 0;
+        color: #4b5563;
+        line-height: 1.6;
+    }
+
+    .faq-item.active .faq-answer {
+        max-height: 500px;
+        margin-top: 1rem;
+    }
+
+    .faq-icon {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.3s;
+    }
+
+    .faq-item.active .faq-icon {
+        transform: rotate(180deg);
+    }
+</style>
+
+<section class="faq-section" id="faq">
+    <div class="faq-container">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        
+        {faqs.length > 0 ? (
+            <div class="space-y-4">
+                {faqs.map((item, index) => (
+                    <div class="faq-item" data-index={index}>
+                        <button class="faq-question">
+                            <span>{item.question}</span>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='dp 19l-7-7-7 7' /%3E%3C/svg%3E" class="faq-icon" alt="toggle" />
+                        </button>
+                        <div class="faq-answer">
+                            <p>{item.answer}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p class="text-center text-gray-400">No FAQs available yet.</p>
+        )}
+    </div>
+</section>
+
+<script>
+    const items = document.querySelectorAll('.faq-item');
+    items.forEach(item => {
+        const btn = item.querySelector('.faq-question');
+        btn.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Close others
+            items.forEach(i => i.classList.remove('active'));
+            
+            // Open current if it was not active
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>

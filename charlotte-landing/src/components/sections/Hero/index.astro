@@ -1,0 +1,142 @@
+---
+import Button from "../../Button.astro";
+import ImageWrapper from "../../ImageWrapper.astro";
+
+interface Props {
+    cityName: string;
+    data?: any;
+}
+
+const { cityName, data } = Astro.props;
+
+const title = data?.title || `Premium TV Mounting <br class="br-desktop" /> Service In ${cityName}`;
+const subTitle = data?.subTitle || "Take a <span class=\"hero-quiz-link\" data-open-modal=\"booking-modal\">brief quiz</span> and get <b>$30 off</b> your quote";
+---
+
+<section class="hero">
+    <div class="hero-background">
+        {data?.background ? (
+            <ImageWrapper media={data.background} className="hero-bg-wrapper" priority={true} />
+        ) : (
+            <div class="hero-bg-image"></div>
+        )}
+        <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+        <h1 class="hero-title" set:html={title} />
+        <p class="hero-subtitle" set:html={subTitle} />
+        <Button data-open-modal="booking-modal" size="big">Get Started Now</Button>
+    </div>
+</section>
+
+<style>
+    .hero {
+        position: relative;
+        height: 65vh;
+        min-height: 550px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .hero-background {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .hero-bg-image, .hero-bg-wrapper {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-bg-image {
+        background-image: url("/hero-bg.webp");
+        background-position: center;
+        background-size: cover;
+    }
+
+    .hero-bg-wrapper :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        color: var(--foreground);
+        padding: 0 1.5rem;
+        max-width: 900px;
+    }
+
+    .hero-title {
+        font-size: 36px;
+        font-weight: 900;
+        text-transform: uppercase;
+        line-height: 1.1;
+        text-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    }
+
+    .br-desktop {
+        display: none;
+    }
+
+    .hero-subtitle {
+        font-size: 1.15rem;
+        margin-bottom: 2.5rem;
+        font-weight: 500;
+        opacity: 0.95;
+    }
+
+    .hero-quiz-link {
+        color: var(--blue-main);
+        font-weight: 800;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-quiz-link:hover {
+        color: #93c5fd;
+        text-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+    }
+
+    @media (min-width: 768px) {
+        .hero-bg-image, .hero-bg-wrapper {
+            transform: scale(1.4) translate(-6px, 95px);
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+        }
+        .br-desktop {
+            display: block;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .hero-title {
+            font-size: 48px;
+        }
+        .hero {
+            height: 70vh;
+        }
+    }
+    main {
+        padding-top: 70px;
+    }
+</style>

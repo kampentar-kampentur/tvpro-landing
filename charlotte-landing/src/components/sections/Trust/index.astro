@@ -1,0 +1,126 @@
+---
+import TrustCard from './TrustCard.astro';
+
+interface Props {
+    data: any;
+}
+
+const { data } = Astro.props;
+const title = data?.title || "Why Customers Choose Us";
+const subTitle = data?.subTitle || "Experience the difference with our professional mounting service";
+const cards = data?.cards || [];
+---
+
+<section class="trust-section" id="trust">
+    <div class="container">
+        <header class="section-header">
+            <h2 class="section-title">{title}</h2>
+            {subTitle && <p class="section-subtitle">{subTitle}</p>}
+        </header>
+
+        <div class="trust-cards-wrapper" id="trust-cards-root">
+            {cards.map((card) => (
+                <div class="card-wrap">
+                    <TrustCard
+                        image={card.image}
+                        title={card.title}
+                        description={card.description}
+                    />
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    .trust-section {
+        padding: 120px 0;
+        background-color: #0f0e13;
+        color: var(--white);
+    }
+
+    .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .section-title {
+        font-size: 56px;
+        line-height: 64px;
+        font-weight: 700;
+        margin-bottom: 24px;
+        color: var(--white);
+    }
+
+    .section-subtitle {
+        font-size: 18px;
+        line-height: 28px;
+        color: rgba(255, 255, 255, 0.6);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .trust-cards-wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+    }
+
+    @media (max-width: 1200px) {
+        .trust-cards-wrapper {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .trust-section {
+            padding: 80px 0;
+            overflow: hidden;
+        }
+        
+        .container {
+            padding: 0;
+        }
+
+        .section-header {
+            padding: 0 20px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            line-height: 40px;
+        }
+
+        .trust-cards-wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            width: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 16px;
+            padding: 0 20px 40px 20px; /* Increased bottom padding for scrollbar */
+            grid-template-columns: none;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .trust-cards-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card-wrap {
+            width: 85%; /* Shows a peek of the next card */
+            flex-shrink: 0;
+            scroll-snap-align: center;
+        }
+    }
+</style>
+

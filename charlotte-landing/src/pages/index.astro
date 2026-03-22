@@ -1,17 +1,137 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Reviews from "../components/Reviews.astro";
+import FAQ from "../components/FAQ.astro";
+import Modal from "../components/Modal.astro";
+import Hero from "../components/sections/Hero/index.astro";
+import MountingTypes from "../components/sections/MountingTypes/index.astro";
+import CTA from "../components/sections/CTA/index.astro";
+import BookingForm from "../components/sections/BookingForm/index.astro";
+import VideoReviews from "../components/sections/VideoReviews/index.astro";
+import Gallery from "../components/sections/Gallery/index.astro";
+import Trust from "../components/sections/Trust/index.astro";
+import {
+    getCityBySlug,
+    getCustomerReviews,
+    getGalleryPhotos,
+    getFAQ,
+    getMountingTypes,
+    getHero,
+    getWorkVideos,
+    getGalleryOfWork,
+    getTrustData,
+} from "../lib/strapi";
 
+const citySlug = "charlotte";
+let cityData = null;
+let error = null;
+let reviewsMeta = null;
+let faqs = [];
+let mountingData = null;
+let heroData = null;
+let videoData = null;
+let galleryData = null;
+let trustData = null;
+let photos = [];
+
+try {
+    const [city, recData, photosData, faqData, mtData, hData, vData, gData, tData] =
+        await Promise.all([
+            getCityBySlug(citySlug),
+            getCustomerReviews(),
+            getGalleryPhotos(),
+            getFAQ(),
+            getMountingTypes(),
+            getHero(),
+            getWorkVideos(),
+            getGalleryOfWork(),
+            getTrustData(),
+        ]);
+
+    cityData = city;
+    reviewsMeta = recData;
+    mountingData = mtData;
+    heroData = hData;
+    videoData = vData;
+    galleryData = gData;
+    trustData = tData;
+    photos = photosData;
+    // We still keep 'reviews' array for other purposes if needed, but Reviews.astro now uses metadata
+    reviews = Array.isArray(recData)
+        ? recData.map((r) => ({ name: r.name, text: r.review_text, rating: 5 }))
+        : [];
+    projects = Array.isArray(photos)
+        ? photos.map((p) => ({ title: p.title, image: p.image }))
+        : [];
+    faqs = faqData?.[0]?.faqs || [];
+} catch (e) {
+    error = e.message;
+    console.error("Error fetching Phase 3 data:", e);
+}
+
+const phone = cityData?.phone || "(213) 584-4010";
+const hours = cityData?.hours || "8:00 AM - 10:00 PM DAILY";
+const cityName = cityData?.city_name || "Charlotte";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+    title={`TV Mounting in ${cityName}`}
+    description={cityData?.seo?.metaDescription}
+>
+    <Header phone={phone} hours={hours} />
+
+    <main>
+        <Hero cityName={cityName} data={heroData} />
+
+        {
+            error && (
+                <div class="error-banner">
+                    Note: Partial data loading issues. Some sections may show
+                    fallback content.
+                </div>
+            )
+        }
+
+        <MountingTypes data={mountingData} />
+
+        <VideoReviews data={videoData} />
+
+        <Reviews
+            title={reviewsMeta?.title}
+            subTitle={reviewsMeta?.subTitle}
+            cityName={cityName}
+        />
+
+        <Gallery galleryOfWorkData={galleryData} galleryPhotos={photos} />
+
+        <Trust data={trustData} />
+
+        <FAQ faqs={faqs} />
+
+        <CTA cityName={cityName} />
+    </main>
+
+    <Footer phone={phone} hours={hours} />
+
+    <Modal
+        id="booking-modal"
+        title="Get a Quick Quote"
+        subtitle="Leave your number — we’ll call and give you the exact price"
+    >
+        <BookingForm cityName={cityName} />
+    </Modal>
+</Layout>
+
+<style>
+    .error-banner {
+        background-color: #fef2f2;
+        padding: 1rem;
+        color: #dc2626;
+        text-align: center;
+        border-bottom: 1px solid #fee2e2;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+</style>

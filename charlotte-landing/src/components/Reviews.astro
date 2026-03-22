@@ -1,0 +1,128 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+    title?: string;
+    subTitle?: string;
+    cityName?: string;
+}
+
+const {
+    title = "Customer Reviews",
+    subTitle = "See what our customers have to say about our professional TV mounting services.",
+    cityName = "Charlotte",
+} = Astro.props;
+---
+
+<style>
+    .customerReviews {
+        padding: 60px 20px;
+        background-color: #fff;
+    }
+
+    .customerReviewsContainer {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .customerReviewsHeader {
+        margin-bottom: 32px;
+        text-align: center;
+    }
+
+    .block-heading {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 24px;
+    }
+
+    .ctaContainer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 60px;
+        padding: 0 20px;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .ctaText {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: var(--foreground);
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .ctaButtons {
+        display: flex;
+        gap: 12px;
+    }
+
+    /* Elfsight specific overrides if needed */
+    :global(.eapps-widget-toolbar) {
+        display: none !important;
+    }
+
+    :global(.elfsight-app-0c8768dc-758c-4c7f-a7fe-9fcc2345d890) {
+        min-height: 100px;
+    }
+
+    @media (max-width: 1024px) {
+        .ctaContainer {
+            padding: 0;
+            flex-direction: column;
+        }
+
+        .customerReviews {
+            padding: 40px 16px;
+        }
+    }
+</style>
+
+<section class="customerReviews" id="reviews">
+    <div class="customerReviewsContainer">
+        <header class="customerReviewsHeader">
+            <h2 class="block-heading">What our customers say</h2>
+        </header>
+
+        <div
+            class="elfsight-app-0c8768dc-758c-4c7f-a7fe-9fcc2345d890"
+            data-elfsight-app-lazy
+        >
+        </div>
+
+        <div class="ctaContainer">
+            <p class="ctaText">
+                Ready to mount your TV? Book your service now — fast, easy, and
+                professional.
+            </p>
+            <div class="ctaButtons">
+                <Button variant="secondary" data-open-modal="booking-modal"
+                    >Leave Yours Here!</Button
+                >
+                <Button data-open-modal="booking-modal"
+                    >Get The Best Quote</Button
+                >
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function loadElfsight() {
+        if (!window.hasOwnProperty("Elfsight")) {
+            const script = document.createElement("script");
+            script.src = "https://static.elfsight.com/platform/platform.js";
+            script.async = true;
+            document.body.appendChild(script);
+        }
+    }
+
+    // Load on page load
+    loadElfsight();
+
+    // Re-load on Astro view transitions
+    document.addEventListener("astro:page-load", loadElfsight);
+</script>

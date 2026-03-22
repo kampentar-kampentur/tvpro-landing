@@ -1,0 +1,253 @@
+---
+import '../styles/globals.css';
+import ExitIntentModal from '../components/ExitIntentModal.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+    canonical?: string;
+    ogImage?: string;
+}
+
+const defaultTitle = "TV Mounting Services | TVPro Handy Services";
+const defaultDescription = "TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.";
+
+const { 
+	title = defaultTitle, 
+	description = defaultDescription,
+    canonical = "https://tvprousa.com/",
+    ogImage = "https://tvprousa.com/og-image.png"
+} = Astro.props;
+
+const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if possible
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+        <!-- Icons -->
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/web-app-manifest-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/web-app-manifest-512x512.png" />
+
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
+
+        <!-- Robots -->
+        <meta name="robots" content="index, follow" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImage} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={canonical} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={ogImage} />
+
+		<!-- Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+        <!-- Critical Preconnects -->
+        <link rel="preconnect" href="https://media.tvprousa.com" crossorigin="anonymous" />
+        <link rel="dns-prefetch" href="https://img.youtube.com" />
+
+        <!-- Analytics & Tracking Scripts -->
+        <script is:inline>
+            // Microsoft Clarity
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "qqsc062vks"); // Static ID for now
+
+            // Delayed Marketing Scripts (GTM, WhatConverts, etc.)
+            (function() {
+              var fired = false;
+              var timeoutId;
+              
+              function loadScripts() {
+                if (fired) return;
+                fired = true;
+                
+                clearTimeout(timeoutId);
+                ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
+                  window.removeEventListener(e, loadScripts);
+                });
+                
+                // 1. Google Tag Manager
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
+
+                // 2. WhatConverts Chat & Tracking
+                (function() {
+                  var workizLeads = {doc:{url:document.URL,ref:document.referrer,search:location.search,hash:location.hash}};
+                  window.$wc_leads = JSON.parse(JSON.stringify(workizLeads));
+                  var workizScript = document.createElement('script');
+                  workizScript.async = true;
+                  workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
+                  document.head.appendChild(workizScript);
+                })();
+
+                // 3. Thumbtack Star Widget
+                (function() {
+                  var ttScript = document.createElement('script');
+                  ttScript.async = true;
+                  ttScript.src = "https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star";
+                  document.head.appendChild(ttScript);
+                })();
+
+                // 4. LeadConnector Chat Widget
+                (function() {
+                  var lcScript = document.createElement('script');
+                  lcScript.async = true;
+                  lcScript.src = "https://beta.leadconnectorhq.com/loader.js";
+                  lcScript.setAttribute('data-resources-url', 'https://beta.leadconnectorhq.com/chat-widget/loader.js');
+                  lcScript.setAttribute('data-widget-id', '69a71eb8a27e8c3d964270ee');
+                  document.body.appendChild(lcScript);
+                  
+                  // LeadConnector Enhancement
+                  function enhanceWidget() {
+                    const widget = document.querySelector('chat-widget');
+                    if (widget && widget.shadowRoot) {
+                      if (!widget.shadowRoot.querySelector('#tvpro-enhancements')) {
+                        const style = document.createElement('style');
+                        style.id = 'tvpro-enhancements';
+                        style.textContent = '@keyframes widget-sequence { 0%, 6% { transform: scale(1) rotate(0); } 1% { transform: scale(1.2) rotate(15deg); } 2% { transform: scale(1.2) rotate(-15deg); } 3% { transform: scale(1.2) rotate(15deg); } 4% { transform: scale(1.2) rotate(-15deg); } 5% { transform: scale(1.2) rotate(15deg); } 7%, 32% { transform: scale(1) rotate(0); } 33% { transform: scale(1); } 34%, 35% { transform: scale(0.9) rotate(-3deg); } 36%, 37%, 38% { transform: scale(1.3) rotate(3deg); } 36.5%, 37.5%, 38.5% { transform: scale(1.3) rotate(-3deg); } 43% { transform: scale(1) rotate(0); } 44%, 65% { transform: scale(1) rotate(0); } 66% { transform: translateY(0); } 68% { transform: translateY(-20px); } 71% { transform: translateY(0); } 73% { transform: translateY(-10px); } 76% { transform: translateY(0); } 77%, 100% { transform: scale(1) rotate(0) translateY(0); } } button, .chat-widget-button, .chip-button { animation: widget-sequence 30s infinite !important; transform-origin: center center !important; transition: transform 0.3s ease-in-out !important; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important; }';
+                        widget.shadowRoot.appendChild(style);
+                      }
+                    } else {
+                      setTimeout(enhanceWidget, 500);
+                    }
+                  }
+                  
+                  const observer = new MutationObserver((mutations, obs) => {
+                      if (document.querySelector('chat-widget')) { enhanceWidget(); obs.disconnect(); }
+                  });
+                  observer.observe(document.body, { childList: true, subtree: true });
+                })();
+              }
+
+              timeoutId = setTimeout(loadScripts, 3000); // 3s delay for critical performance
+              ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
+                window.addEventListener(e, loadScripts, { passive: true, once: true });
+              });
+            })();
+        </script>
+
+		<!-- Global CSS Variables -->
+		<style is:global>
+			:root {
+				--brand-blue: #0d64a0;
+				--brand-blue-hover: #0a4d7d;
+                --font-red-hat-display: 'Red Hat Display', sans-serif;
+			}
+            body { font-family: var(--font-red-hat-display); }
+		</style>
+	</head>
+	<body>
+		<slot />
+
+        <!-- Exit Intent Modal -->
+        <ExitIntentModal id="ExitIntentModal" />
+        
+        <!-- Functional Scripts (Engagement, UTM, ScrollToTop) -->
+        <script is:inline>
+            // --- 1. UTM Capture ---
+            (function() {
+                const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+                const params = new URLSearchParams(window.location.search);
+                const utm = {};
+                UTM_KEYS.forEach(key => {
+                    const val = params.get(key);
+                    if (val) utm[key] = val;
+                });
+                if (Object.keys(utm).length > 0) {
+                    sessionStorage.setItem('utm_params', JSON.stringify(utm));
+                }
+            })();
+
+            // --- 2. Engagement Tracker (Exit Intent & Inactivity) ---
+            (function() {
+                let hasTriggered = false;
+                let idleTimer;
+                let lastScrollPos = 0;
+
+                function openModal(id) {
+                    const modal = document.getElementById(id);
+                    if (modal && !hasTriggered && !sessionStorage.getItem('exit_popup_triggered')) {
+                        modal.classList.add('open');
+                        document.body.style.overflow = 'hidden';
+                        hasTriggered = true;
+                        sessionStorage.setItem('exit_popup_triggered', 'true');
+                    }
+                }
+
+                function triggerPopup() {
+                    openModal('ExitIntentModal');
+                }
+
+                function resetIdleTimer() {
+                    if (idleTimer) clearTimeout(idleTimer);
+                    idleTimer = setTimeout(triggerPopup, 40000); // 40s
+                }
+
+                // Desktop Exit Intent
+                document.addEventListener('mouseout', (e) => {
+                    if (e.clientY <= 0) triggerPopup();
+                });
+
+                // Visibility Change
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'hidden') triggerPopup();
+                });
+
+                // Scroll Depth & Up-scroll (Mobile Exit Intent)
+                window.addEventListener('scroll', () => {
+                    resetIdleTimer();
+                    const scrollHeight = document.documentElement.scrollHeight;
+                    const scrollTop = window.scrollY;
+                    const clientHeight = document.documentElement.clientHeight;
+                    const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+
+                    if (scrollPercent > 70 && scrollTop < lastScrollPos) {
+                        triggerPopup();
+                    }
+                    lastScrollPos = scrollTop;
+                });
+
+                ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'].forEach(e => {
+                    document.addEventListener(e, resetIdleTimer);
+                });
+
+                resetIdleTimer();
+            })();
+
+            // --- 3. Scroll To Top ---
+            window.addEventListener('scroll', () => {
+                const btn = document.getElementById('scroll-to-top');
+                if (btn) btn.style.display = window.scrollY > 500 ? 'block' : 'none';
+            });
+        </script>
+	</body>
+</html>
