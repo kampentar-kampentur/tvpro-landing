@@ -16,6 +16,8 @@ const flattenStrapiData = (data) => {
 export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
     const queryString = qs.stringify(urlParamsObject);
     const requestUrl = `${import.meta.env.PUBLIC_STRAPI_URL || 'https://strapi-dev-e587.up.railway.app'}/api${path}${queryString ? `?${queryString}` : ""}`;
+    
+    console.log(`[Strapi Fetch] ${requestUrl}`);
 
     const response = await fetch(requestUrl, {
         headers: { "Content-Type": "application/json" },
@@ -100,5 +102,9 @@ export async function getTrustData() {
             cards: { populate: "*" }
         }
     });
+    return flattenStrapiData(data?.data);
+}
+export async function getAboutUs() {
+    const data = await fetchAPI("/about-us", { populate: "*" });
     return flattenStrapiData(data?.data);
 }

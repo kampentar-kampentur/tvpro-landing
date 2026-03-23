@@ -1,5 +1,6 @@
 ---
 import Button from "../../Button.astro";
+import Input from "../../ui/Input.astro";
 
 interface Props {
     cityName: string;
@@ -9,32 +10,19 @@ const { cityName } = Astro.props;
 ---
 
 <form class="booking-form">
-    <div class="form-group" data-input-container>
-        <label class="form-label">Full Name</label>
-        <div class="input-wrapper">
-            <input 
-                type="text" 
-                name="name" 
-                placeholder="Enter your name *" 
-                required 
-                class="form-input"
-                oninput="this.parentElement.parentElement.classList.toggle('has-value', !!this.value)"
-            >
-        </div>
-    </div>
-    <div class="form-group" data-input-container>
-        <label class="form-label">Phone Number *</label>
-        <div class="input-wrapper">
-            <input 
-                type="tel" 
-                name="phone" 
-                placeholder="Enter your number *" 
-                required 
-                class="form-input"
-                oninput="this.parentElement.parentElement.classList.toggle('has-value', !!this.value)"
-            >
-        </div>
-    </div>
+    <Input 
+        label="Full Name" 
+        name="name" 
+        placeholder="Enter your name *" 
+        required 
+    />
+    <Input 
+        label="Phone Number *" 
+        name="phone" 
+        type="tel"
+        placeholder="Enter your number *" 
+        required 
+    />
     <div class="discount-banner">
         <p class="discount-label">Installing 2 or more TVs?</p>
         <p class="discount-text">
@@ -59,64 +47,6 @@ const { cityName } = Astro.props;
         gap: 12px;
         padding: 20px 0;
         width: 100%;
-    }
-
-    .form-group {
-        background: #fff;
-        border: 1px solid #e7e7eb;
-        border-radius: 12px;
-        padding: 8px 16px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        min-height: 64px;
-        justify-content: center;
-        position: relative;
-        transition: border-color 0.2s;
-    }
-
-    .form-group:focus-within {
-        border-color: var(--blue-main);
-    }
-
-    .form-label {
-        font-size: 10px;
-        color: #91929c;
-        font-weight: 400;
-        line-height: 16px;
-        margin-bottom: 2px;
-        opacity: 0;
-        transition: opacity 0.2s;
-        text-align: left;
-    }
-
-    .form-group.has-value .form-label {
-        opacity: 1;
-    }
-
-    .input-wrapper {
-        display: flex;
-        align-items: center;
-        width: 100%;
-    }
-
-    .form-input {
-        border: none;
-        outline: none;
-        background: transparent;
-        font-size: 14px;
-        color: #0e0e13;
-        font-weight: 500;
-        line-height: 20px;
-        padding: 0;
-        height: 20px;
-        width: 100%;
-        font-family: inherit;
-    }
-
-    .form-input::placeholder {
-        color: #91929c;
-        font-weight: 400;
     }
 
     .discount-banner {
@@ -180,4 +110,102 @@ const { cityName } = Astro.props;
     }
 </style>
 
+<script is:inline>
+    (function() {
+        function setupBookingForm() {
+            const form = document.querySelector('.booking-form');
+            if (!form) return;
 
+            const submitBtn = form.querySelector('.submit-button');
+            const phoneInput = form.querySelector('input[name="phone"]');
+
+            const PHONE_REGEX = /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
+
+            const formatPhone = (value) => {
+                let digits = value.replace(/\D/g, "");
+                if (!digits.startsWith("1") && digits.length > 0) digits = "1" + digits;
+                digits = digits.slice(0, 11);
+
+                if (digits.length === 0) return "";
+                if (digits.length === 1) return "+1";
+                if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
+                if (digits.length <= 7) return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
+                return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+            };
+
+            if (phoneInput) {
+                phoneInput.addEventListener("focus", () => {
+                    if (!phoneInput.value) phoneInput.value = "+1 ";
+                });
+                phoneInput.addEventListener("input", () => {
+                    phoneInput.value = formatPhone(phoneInput.value);
+                });
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const name = formData.get("name")?.toString() || "";
+                let phone = formData.get("phone")?.toString() || "";
+
+                if (!phone.startsWith("+1")) phone = "+1" + phone;
+
+                if (!PHONE_REGEX.test(phone)) {
+                    alert("Invalid phone number");
+                    return;
+                }
+
+                if (submitBtn) {
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = "Sending...";
+                    submitBtn.disabled = true;
+
+                    const citySlug = window.location.pathname.split("/").filter(Boolean).pop() || "charlotte";
+                    
+                    // Get UTM params from sessionStorage
+                    let utmParams = {};
+                    try {
+                        const raw = sessionStorage.getItem('utm_params');
+                        utmParams = raw ? JSON.parse(raw) : {};
+                    } catch (e) {}
+
+                    const payload = {
+                        data: {
+                            name,
+                            phone,
+                            city: citySlug,
+                            source: 'booking_form_modal',
+                            ...utmParams
+                        }
+                    };
+
+                    try {
+                        const baseUrl = 'https://strapi-dev-e587.up.railway.app';
+                        const response = await fetch(`${baseUrl}/api/book-now`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) {
+                            window.location.href = "/see-you-soon";
+                        } else {
+                            alert("Submission failed. Please try again.");
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    } catch (err) {
+                        console.error("Error submitting form:", err);
+                        alert("An error occurred. Please try again.");
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
+                }
+            });
+        }
+
+        setupBookingForm();
+        document.addEventListener('astro:page-load', setupBookingForm);
+    })();
+</script>

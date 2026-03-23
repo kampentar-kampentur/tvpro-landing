@@ -74,7 +74,7 @@ const { filters = [], photos = [] } = Astro.props;
         flex-wrap: wrap;
         gap: 12px;
         margin-bottom: 32px;
-        justify-content: flex-start;
+        justify-content: center;
     }
 
     .filter-button {
@@ -206,11 +206,15 @@ const { filters = [], photos = [] } = Astro.props;
         }
 
         .filter-buttons-container {
-            justify-content: center;
+            justify-content: flex-start;
             overflow-x: auto;
             flex-wrap: nowrap;
-            padding-bottom: 8px;
+            padding: 0 16px 12px 16px;
+            margin-left: -16px;
+            margin-right: -16px;
+            width: calc(100% + 32px);
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .filter-buttons-container::-webkit-scrollbar {

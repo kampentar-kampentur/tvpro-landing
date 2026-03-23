@@ -12,6 +12,7 @@ import BookingForm from "../components/sections/BookingForm/index.astro";
 import VideoReviews from "../components/sections/VideoReviews/index.astro";
 import Gallery from "../components/sections/Gallery/index.astro";
 import Trust from "../components/sections/Trust/index.astro";
+import AboutUs from "../components/sections/AboutUs/index.astro";
 import {
     getCityBySlug,
     getCustomerReviews,
@@ -22,33 +23,48 @@ import {
     getWorkVideos,
     getGalleryOfWork,
     getTrustData,
+    getAboutUs,
 } from "../lib/strapi";
 
 const citySlug = "charlotte";
 let cityData = null;
 let error = null;
 let reviewsMeta = null;
-let faqs = [];
+let faqData = null;
 let mountingData = null;
 let heroData = null;
 let videoData = null;
 let galleryData = null;
 let trustData = null;
 let photos = [];
+let reviews = [];
+let projects = [];
+let aboutUsData = null;
 
 try {
-    const [city, recData, photosData, faqData, mtData, hData, vData, gData, tData] =
-        await Promise.all([
-            getCityBySlug(citySlug),
-            getCustomerReviews(),
-            getGalleryPhotos(),
-            getFAQ(),
-            getMountingTypes(),
-            getHero(),
-            getWorkVideos(),
-            getGalleryOfWork(),
-            getTrustData(),
-        ]);
+    const [
+        city,
+        recData,
+        photosData,
+        fData,
+        mtData,
+        hData,
+        vData,
+        gData,
+        tData,
+        aData,
+    ] = await Promise.all([
+        getCityBySlug(citySlug),
+        getCustomerReviews(),
+        getGalleryPhotos(),
+        getFAQ(),
+        getMountingTypes(),
+        getHero(),
+        getWorkVideos(),
+        getGalleryOfWork(),
+        getTrustData(),
+        getAboutUs(),
+    ]);
 
     cityData = city;
     reviewsMeta = recData;
@@ -57,7 +73,10 @@ try {
     videoData = vData;
     galleryData = gData;
     trustData = tData;
+    aboutUsData = aData;
     photos = photosData;
+    faqData = fData;
+
     // We still keep 'reviews' array for other purposes if needed, but Reviews.astro now uses metadata
     reviews = Array.isArray(recData)
         ? recData.map((r) => ({ name: r.name, text: r.review_text, rating: 5 }))
@@ -65,7 +84,6 @@ try {
     projects = Array.isArray(photos)
         ? photos.map((p) => ({ title: p.title, image: p.image }))
         : [];
-    faqs = faqData?.[0]?.faqs || [];
 } catch (e) {
     error = e.message;
     console.error("Error fetching Phase 3 data:", e);
@@ -108,9 +126,15 @@ const cityName = cityData?.city_name || "Charlotte";
 
         <Trust data={trustData} />
 
-        <FAQ faqs={faqs} />
+        <AboutUs cityName={cityName} data={aboutUsData} />
 
-        <CTA cityName={cityName} />
+        <FAQ
+            title={faqData?.title}
+            subTitle={faqData?.subTitle}
+            faqs={faqData?.faqs || []}
+        />
+
+        <!-- <CTA cityName={cityName} /> -->
     </main>
 
     <Footer phone={phone} hours={hours} />

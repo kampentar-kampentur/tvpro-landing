@@ -1,0 +1,136 @@
+---
+interface Props {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder?: string;
+  required?: boolean;
+  id?: string;
+  value?: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  label,
+  name,
+  type = "text",
+  placeholder,
+  required = false,
+  id,
+  value = "",
+  class: className = "",
+  ...rest
+} = Astro.props;
+---
+
+<div
+  class:list={["form-group", { "has-value": !!value }, className]}
+  data-input-container
+>
+  <label class="form-label">{label}</label>
+  <div class="input-wrapper">
+    <input
+      type={type}
+      name={name}
+      id={id}
+      placeholder={placeholder}
+      required={required}
+      value={value}
+      class="form-input"
+      {...rest}
+    />
+  </div>
+</div>
+
+<script>
+  const setupInputs = () => {
+    const containers = document.querySelectorAll("[data-input-container]");
+
+    containers.forEach((container) => {
+      const input = container.querySelector("input");
+      if (!input) return;
+
+      const toggleClass = () => {
+        container.classList.toggle("has-value", !!input.value);
+      };
+
+      input.addEventListener("input", toggleClass);
+      input.addEventListener("change", toggleClass);
+
+      // Initial check
+      toggleClass();
+    });
+  };
+
+  // Setup on page load
+  setupInputs();
+
+  // Setup on Astro page navigation
+  document.addEventListener("astro:page-load", setupInputs);
+</script>
+
+<style>
+  .form-group {
+    background: var(--input-bg, #fff);
+    border: 1px solid var(--input-border, #e7e7eb);
+    border-radius: 12px;
+    padding: 8px 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 64px;
+    justify-content: center;
+    position: relative;
+    transition:
+      border-color 0.2s,
+      background-color 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .form-group:focus-within {
+    border-color: var(--blue-main);
+  }
+
+  .form-label {
+    font-size: 10px;
+    color: #91929c;
+    font-weight: 400;
+    line-height: 16px;
+    margin-bottom: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    text-align: left;
+    display: none;
+  }
+
+  .form-group.has-value .form-label {
+    opacity: 1;
+    display: block;
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .form-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--input-text, #0e0e13);
+    font-weight: 500;
+    line-height: 20px;
+    padding: 0;
+    height: 20px;
+    width: 100%;
+    font-family: inherit;
+  }
+
+  .form-input::placeholder {
+    color: var(--input-placeholder, #91929c);
+    font-weight: 400;
+  }
+</style>
