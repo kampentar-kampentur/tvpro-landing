@@ -5,12 +5,23 @@
   --gray-light: #dbdbdf;
   --gray: #91929c;
   --gray-medium: #6B6A73;
-  --blue-main: #0d64a0;
-  --blue-hover: #0a4d7d;
+  --green: #0d64a0; /* main blue color, named 'green' in original project */
+  --green-hover: #0a4d7d;
+  --blue-main: var(--green);
+  --blue-hover: var(--green-hover);
+  --brand-blue: var(--green);
+  --brand-blue-hover: var(--green-hover);
   --gray-extra-light: #e7e7eb;
+  --text-secondary: var(--gray);
 
   /* Red Hat Display is the main project font */
   --font-main: 'Red Hat Display', sans-serif;
+  --accent-color: #FA0004; /* Bright red from original project */
+}
+
+.accent {
+    color: var(--accent-color);
+    font-weight: 800;
 }
 
 * {

@@ -9,8 +9,18 @@ interface Props {
 
 const { cityName, data } = Astro.props;
 
-const title = data?.title || `Premium TV Mounting <br class="br-desktop" /> Service In ${cityName}`;
-const subTitle = data?.subTitle || "Take a <span class=\"hero-quiz-link\" data-open-modal=\"booking-modal\">brief quiz</span> and get <b>$30 off</b> your quote";
+const formatText = (text: string) => {
+    if (!text) return "";
+    return text.split('\n').map((line) => {
+        // [accent text] -> <span class="accent">
+        // **bold text** -> <strong>
+        return line.replace(/\[(.*?)\]/g, '<span class="accent">$1</span>')
+                   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    }).join('<br />');
+};
+
+const title = formatText(data?.title) || `Premium TV Mounting <br class="br-desktop" /> Service In ${cityName}`;
+const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-link\" data-open-modal=\"booking-modal\">brief quiz</span> and get <b>$30 off</b> your quote";
 ---
 
 <section class="hero">

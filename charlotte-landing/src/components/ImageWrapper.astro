@@ -16,7 +16,7 @@ const {
     defaultAlt,
     width,
     height,
-    sizes = "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw",
+    sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
     priority = false,
     preferFormat
 } = Astro.props;
@@ -27,36 +27,60 @@ const baseUrl = import.meta.env.PUBLIC_STRAPI_URL || 'https://strapi-dev-e587.up
 
 const formats = media.formats || {};
 
-const getImageUrl = () => {
+const getImageUrl = (formatData?: any) => {
+    const url = formatData?.url || media.url;
+    return url && url.startsWith('http') ? url : `${baseUrl}${url}`;
+};
+
+// Logic to select the best format similar to Next.js
+const getBestUrl = () => {
     if (preferFormat && formats[preferFormat]) {
-        return formats[preferFormat].url;
+        return getImageUrl(formats[preferFormat]);
     }
 
     if (!formats || Object.keys(formats).length === 0) {
-        return media.url;
+        return getImageUrl();
     }
 
     const availableFormats = Object.keys(formats)
         .map(key => ({ key, ...formats[key] }))
         .sort((a, b) => a.width - b.width);
 
-    // In Astro, we don't have a dynamic loader like Next.js in the browser easily,
-    // so we'll pick a sensible default (largest or preferred)
-    // For now, let's pick the largest available or the original URL
-    return availableFormats[availableFormats.length - 1]?.url || media.url;
+    // If we have a specific width requested, try to find the best fit
+    if (width) {
+        const bestFit = availableFormats.find(f => f.width >= width);
+        if (bestFit) return getImageUrl(bestFit);
+    }
+
+    // Default to the largest available format
+    return getImageUrl(availableFormats[availableFormats.length - 1]);
 };
 
-const resolvedUrl = getImageUrl();
-const finalUrl = resolvedUrl && resolvedUrl.startsWith('http') ? resolvedUrl : `${baseUrl}${resolvedUrl}`;
+// Generate srcset if multiple formats are available
+const getSrcSet = () => {
+    if (!formats || Object.keys(formats).length === 0) return undefined;
+
+    return Object.keys(formats)
+        .map(key => {
+            const f = formats[key];
+            return `${getImageUrl(f)} ${f.width}w`;
+        })
+        .join(', ');
+};
+
+const finalUrl = getBestUrl();
+const srcSet = getSrcSet();
 
 const altText = media.alternativeText || media.caption || defaultAlt || "";
 
-const finalWidth = width || media.width || 1200;
-const finalHeight = height || media.height || (media.width ? Math.round(finalWidth / (media.width / media.height)) : undefined);
+const finalWidth = width || (media.width ? Math.min(media.width, 1200) : 1200);
+const finalHeight = height || (media.width && media.height ? Math.round(finalWidth / (media.width / media.height)) : undefined);
 ---
 
 <img 
     src={finalUrl} 
+    srcset={srcSet}
+    sizes={sizes}
     class={className} 
     alt={altText} 
     width={finalWidth} 

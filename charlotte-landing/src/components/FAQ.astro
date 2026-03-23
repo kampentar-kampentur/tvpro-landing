@@ -5,111 +5,273 @@ interface FAQItem {
 }
 
 interface Props {
-	faqs: FAQItem[];
+    title?: string;
+    subTitle?: string;
+    faqs: FAQItem[];
 }
 
-const { faqs = [] } = Astro.props;
+const { 
+    title = "Frequently Asked Questions", 
+    subTitle = "", 
+    faqs = [] 
+} = Astro.props;
+
+const processText = (text: string) => {
+    if (!text) return "";
+    return text.split('\n').map(line => {
+        return line
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\[(.*?)\]/g, '<span class="accent">$1</span>');
+    }).join('<br />');
+};
+
+const structuredFAQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(({ question, answer }) => ({
+        "@type": "Question",
+        "name": question,
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": answer,
+        },
+    })),
+};
 ---
-
-<style>
-    .faq-section {
-        background-color: white;
-        padding: 5rem 1rem;
-    }
-
-    .faq-container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    .faq-item {
-        border-bottom: 1px solid #e5e7eb;
-        padding: 1.5rem 0;
-    }
-
-    .faq-question {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-align: left;
-        font-size: 18px;
-        font-weight: 700;
-        cursor: pointer;
-        background: none;
-        border: none;
-        padding: 0;
-        color: #111827;
-        transition: color 0.2s;
-    }
-
-    .faq-question:hover {
-        color: var(--blue-main);
-    }
-
-    .faq-answer {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-out, margin-top 0.3s;
-        margin-top: 0;
-        color: #4b5563;
-        line-height: 1.6;
-    }
-
-    .faq-item.active .faq-answer {
-        max-height: 500px;
-        margin-top: 1rem;
-    }
-
-    .faq-icon {
-        width: 24px;
-        height: 24px;
-        transition: transform 0.3s;
-    }
-
-    .faq-item.active .faq-icon {
-        transform: rotate(180deg);
-    }
-</style>
 
 <section class="faq-section" id="faq">
     <div class="faq-container">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-        
+        <header class="section-header">
+            <h2 class="section-title" set:html={processText(title)}></h2>
+            {subTitle && <p class="section-subtitle" set:html={processText(subTitle)}></p>}
+        </header>
+
         {faqs.length > 0 ? (
-            <div class="space-y-4">
+            <div class="faq-list">
                 {faqs.map((item, index) => (
-                    <div class="faq-item" data-index={index}>
-                        <button class="faq-question">
-                            <span>{item.question}</span>
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='dp 19l-7-7-7 7' /%3E%3C/svg%3E" class="faq-icon" alt="toggle" />
+                    <div class="faq-item" data-faq-item>
+                        <button class="faq-trigger" aria-expanded="false">
+                            <span class="faq-question" set:html={processText(item.question)}></span>
+                            <span class="faq-status">
+                                <span class="icon-line hor"></span>
+                                <span class="icon-line ver"></span>
+                            </span>
                         </button>
-                        <div class="faq-answer">
-                            <p>{item.answer}</p>
+                        <div class="faq-content">
+                            <div class="faq-answer-inner">
+                                <p set:html={processText(item.answer)}></p>
+                            </div>
                         </div>
                     </div>
                 ))}
             </div>
         ) : (
-            <p class="text-center text-gray-400">No FAQs available yet.</p>
+            <p class="no-faqs">No FAQs available yet.</p>
         )}
     </div>
+
+    <!-- JSON-LD for SEO -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredFAQ)} />
 </section>
 
 <script>
-    const items = document.querySelectorAll('.faq-item');
-    items.forEach(item => {
-        const btn = item.querySelector('.faq-question');
-        btn.addEventListener('click', () => {
-            const isActive = item.classList.contains('active');
+    const setupFAQ = () => {
+        const items = document.querySelectorAll('[data-faq-item]');
+        
+        items.forEach(item => {
+            const trigger = item.querySelector('.faq-trigger');
+            const content = item.querySelector('.faq-content') as HTMLElement;
             
-            // Close others
-            items.forEach(i => i.classList.remove('active'));
-            
-            // Open current if it was not active
-            if (!isActive) {
-                item.classList.add('active');
-            }
+            if (!trigger || !content) return;
+
+            trigger.addEventListener('click', () => {
+                const isOpen = item.classList.contains('active');
+                
+                // Close other items
+                items.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('.faq-trigger')?.setAttribute('aria-expanded', 'false');
+                        (otherItem.querySelector('.faq-content') as HTMLElement).style.maxHeight = '0px';
+                    }
+                });
+
+                // Toggle current item
+                if (isOpen) {
+                    item.classList.remove('active');
+                    trigger.setAttribute('aria-expanded', 'false');
+                    content.style.maxHeight = '0px';
+                } else {
+                    item.classList.add('active');
+                    trigger.setAttribute('aria-expanded', 'true');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
         });
-    });
+    };
+
+    setupFAQ();
+    document.addEventListener('astro:page-load', setupFAQ);
 </script>
+
+<style>
+    .faq-section {
+        padding: 100px 20px;
+        background-color: var(--background);
+        color: var(--foreground);
+    }
+
+    .faq-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-title {
+        font-size: 44px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: var(--foreground);
+        text-transform: uppercase;
+    }
+
+    .section-subtitle {
+        font-size: 18px;
+        opacity: 0.7;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .faq-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: border-color 0.3s, background-color 0.3s;
+    }
+
+    .faq-item:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .faq-item.active {
+        border-color: var(--blue-main);
+        background: rgba(13, 100, 160, 0.05);
+    }
+
+    .faq-trigger {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 32px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        color: inherit;
+        font-family: inherit;
+        gap: 20px;
+    }
+
+    .faq-question {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    .faq-status {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+    .icon-line {
+        position: absolute;
+        background-color: var(--foreground);
+        transition: transform 0.3s ease, background-color 0.3s;
+    }
+
+    .hor {
+        width: 100%;
+        height: 2px;
+        top: 50%;
+        left: 0;
+        margin-top: -1px;
+    }
+
+    .ver {
+        width: 2px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+        margin-left: -1px;
+    }
+
+    .faq-item.active .ver {
+        transform: rotate(90deg);
+    }
+
+    .faq-item.active .hor {
+        transform: rotate(180deg);
+    }
+
+    /* Hide vertical line when active to make a minus sign */
+    .faq-item.active .ver {
+        opacity: 0;
+    }
+
+    .faq-item.active .icon-line {
+        background-color: var(--blue-main);
+    }
+
+    .faq-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .faq-answer-inner {
+        padding: 0 32px 32px 32px;
+        font-size: 16px;
+        line-height: 1.6;
+        opacity: 0.8;
+    }
+
+    .accent {
+        color: var(--blue-main);
+        font-weight: 600;
+    }
+
+    .no-faqs {
+        text-align: center;
+        opacity: 0.5;
+        padding: 40px;
+    }
+
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 32px;
+        }
+
+        .faq-trigger {
+            padding: 20px;
+        }
+
+        .faq-answer-inner {
+            padding: 0 20px 20px 20px;
+        }
+    }
+</style>
