@@ -50,11 +50,35 @@ const { projects = [] } = Astro.props;
     .work-card:hover .work-img {
         transform: scale(1.05);
     }
+
+    .works-container {
+        max-width: 1152px;
+        margin: 0 auto;
+    }
+
+    .works-title {
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    @media (min-width: 768px) {
+        .works-title {
+            font-size: 36px;
+        }
+    }
+
+    .no-works {
+        text-align: center;
+        color: #9ca3af;
+        font-style: italic;
+    }
 </style>
 
 <section class="works-section" id="works">
-    <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Our Recent Works</h2>
+    <div class="works-container">
+        <h2 class="works-title">Our Recent Works</h2>
         
         {projects.length > 0 ? (
             <div class="works-grid">
@@ -69,7 +93,7 @@ const { projects = [] } = Astro.props;
                 ))}
             </div>
         ) : (
-            <p class="text-center text-gray-400 italic">No project photos available yet.</p>
+            <p class="no-works">No project photos available yet.</p>
         )}
     </div>
 </section>
