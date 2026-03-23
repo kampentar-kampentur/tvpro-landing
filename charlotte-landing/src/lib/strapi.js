@@ -108,3 +108,46 @@ export async function getAboutUs() {
     const data = await fetchAPI("/about-us", { populate: "*" });
     return flattenStrapiData(data?.data);
 }
+
+/**
+ * Helper to get the final block data by merging city-specific overrides with global data.
+ * @param {Object} cityData - The city-specific data object (from getCityBySlug).
+ * @param {Object} globalData - The global data object (from getHero, getFAQ, etc.).
+ * @param {string} blockName - The Strapi block name (e.g., 'hero', 'faq').
+ * @returns {Object} The final merged data object.
+ */
+export function getFinalBlockData(cityData, globalData, blockName) {
+    if (!cityData || !cityData.page || !Array.isArray(cityData.page)) {
+        return globalData;
+    }
+
+    const strapiComponentName = `blocks.${blockName}`;
+    const cityBlock = cityData.page.find(block => block.__component === strapiComponentName);
+
+    if (!cityBlock) {
+        return globalData;
+    }
+
+    if (!globalData) {
+        return cityBlock;
+    }
+
+    // Merge logic: only override globalData fields if the cityBlock field is NOT empty/null
+    // This applies to top-level fields in the block
+    const mergedData = { ...globalData };
+    
+    Object.keys(cityBlock).forEach(key => {
+        const val = cityBlock[key];
+        // If it's a valid non-empty value, override the global one
+        if (val !== null && val !== undefined && val !== "" && (!Array.isArray(val) || val.length > 0)) {
+            mergedData[key] = val;
+        }
+    });
+
+    // Ensure we keep the city block's ID and component name
+    mergedData.id = cityBlock.id;
+    mergedData.__component = cityBlock.__component;
+    mergedData.use_global = cityBlock.use_global;
+
+    return mergedData;
+}

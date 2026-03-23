@@ -4,10 +4,14 @@ import Button from "./Button.astro";
 interface Props {
     phone?: string;
     hours?: string;
+    phoneLabel?: string;
 }
 
-const { phone = "(213) 584-4010", hours = "8:00 AM - 10:00 PM DAILY" } =
-    Astro.props;
+const { 
+    phone = "(213) 584-4010", 
+    hours = "8:00 AM - 10:00 PM DAILY",
+    phoneLabel = ""
+} = Astro.props;
 
 const phoneLink = `tel:+1${phone.replace(/\D/g, "")}`;
 ---
@@ -98,18 +102,33 @@ const phoneLink = `tel:+1${phone.replace(/\D/g, "")}`;
         align-items: center;
         gap: 8px;
     }
+
+    .logo-link {
+        display: flex;
+        align-items: center;
+    }
+
+    .actions-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .phone-link.text-sm {
+        font-size: 14px;
+    }
 </style>
 
 <!-- Desktop Header -->
 <nav class="header-desktop">
-    <a href="/charlotte/" class="flex items-center">
-        <img src="/charlotte/logo.svg" alt="TVPro Logo" class="logo-img" />
+    <a href="/charlotte/" class="logo-link">
+        <img src="/charlotte/logo.svg" alt="TVPro Logo" class="logo-img" width="82" height="40" />
     </a>
 
     <div class="cta-container">
         <span class="hours-text">{hours}</span>
-        <div class="flex items-center gap-6">
-            <a href={phoneLink} class="phone-link">{phone}</a>
+        <div class="actions-wrapper">
+            <a href={phoneLink} class="phone-link">{phoneLabel || phone}</a>
             <Button data-open-modal="booking-modal" size="small"
                 >Book Now</Button
             >
@@ -130,7 +149,7 @@ const phoneLink = `tel:+1${phone.replace(/\D/g, "")}`;
     </a>
     <div class="cta">
         <span class="hours-text" style="font-size: 10px;">{hours}</span>
-        <a href={phoneLink} class="phone-link text-sm">{phone}</a>
+        <a href={phoneLink} class="phone-link text-sm">{phoneLabel || phone}</a>
         <Button data-open-modal="booking-modal" size="small">Book Now</Button>
     </div>
 </nav>

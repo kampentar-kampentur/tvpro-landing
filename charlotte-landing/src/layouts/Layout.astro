@@ -7,6 +7,7 @@ interface Props {
 	description?: string;
     canonical?: string;
     ogImage?: string;
+    cityData?: any;
 }
 
 const defaultTitle = "TV Mounting Services | TVPro Handy Services";
@@ -15,9 +16,30 @@ const defaultDescription = "TV Pro Handy Services LLC provides expert TV mountin
 const { 
 	title = defaultTitle, 
 	description = defaultDescription,
-    canonical = "https://tvprousa.com/",
-    ogImage = "https://tvprousa.com/og-image.png"
+    canonical = "https://tvprousa.com/charlotte/",
+    ogImage = "/charlotte/og-image.png",
+    cityData = null
 } = Astro.props;
+
+const cityName = cityData?.city_name || "Charlotte";
+const stateCode = cityData?.state_code || "NC";
+
+const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": `TVPro Handy Services - ${cityName}`,
+    "description": description,
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": cityName,
+        "addressRegion": stateCode,
+        "addressCountry": "US"
+    },
+    "url": canonical,
+    "telephone": "(877) 455-5535",
+    "image": ogImage,
+    "priceRange": "$$"
+};
 
 const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if possible
 ---
@@ -29,8 +51,6 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		
         <!-- Icons -->
-		<link rel="icon" type="image/x-icon" href="/charlotte/favicon.ico" />
-        <link rel="icon" type="image/svg+xml" href="/charlotte/logo.svg" />
         <link rel="icon" type="image/png" sizes="32x32" href="/charlotte/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/charlotte/favicon-16x16.png" />
         <link rel="icon" type="image/png" sizes="96x96" href="/charlotte/favicon-96x96.png" />
@@ -42,9 +62,19 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
 		<title>{title}</title>
 		<meta name="description" content={description} />
         <link rel="canonical" href={canonical} />
+        <meta name="apple-mobile-web-app-title" content="TVPro" />
+
+        <!-- LCP Image Preload -->
+        <link
+          rel="preload"
+          as="image"
+          href="/charlotte/videoplaceholder-392.webp"
+          fetchpriority="high"
+        />
 
         <!-- Robots -->
         <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
@@ -52,6 +82,8 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
@@ -59,6 +91,9 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={ogImage} />
+
+        <!-- Structured Data -->
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessSchema)} />
 
 		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
