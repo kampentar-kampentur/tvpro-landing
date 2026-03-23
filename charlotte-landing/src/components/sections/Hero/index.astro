@@ -36,14 +36,14 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
     <div class="hero-content">
         <h1 class="hero-title" set:html={title} />
         <p class="hero-subtitle" set:html={subTitle} />
-        <Button data-open-modal="booking-modal" size="big">Get Started Now</Button>
+        <Button data-open-modal="booking-modal" size="huge" class="hero-cta">Unlock $30 Off</Button>
     </div>
 </section>
 
 <style>
     .hero {
         position: relative;
-        height: 65vh;
+        height: 80vh; /* Increased slightly */
         min-height: 550px;
         display: flex;
         align-items: center;
@@ -80,7 +80,7 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
     .hero-overlay {
         position: absolute;
         inset: 0;
-        background: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.45); /* Slightly more contrast */
     }
 
     .hero-content {
@@ -93,11 +93,12 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
     }
 
     .hero-title {
-        font-size: 36px;
+        font-size: 42px; /* Increased */
         font-weight: 900;
         text-transform: uppercase;
         line-height: 1.1;
         text-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        margin-bottom: 24px;
     }
 
     .br-desktop {
@@ -105,8 +106,8 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
     }
 
     .hero-subtitle {
-        font-size: 1.15rem;
-        margin-bottom: 2.5rem;
+        font-size: 1.25rem; /* Increased */
+        margin-bottom: 3.5rem;
         font-weight: 500;
         opacity: 0.95;
     }
@@ -126,12 +127,39 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
         text-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
     }
 
+    .hero-cta {
+        background: linear-gradient(135deg, var(--blue-main) 0%, #1d4ed8 100%) !important;
+        box-shadow: 0 12px 35px rgba(37, 99, 235, 0.4) !important;
+        transform: scale(1.05);
+        animation: pulse 2.5s infinite;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .hero-cta:hover {
+        transform: scale(1.1) translateY(-5px) !important;
+        box-shadow: 0 20px 45px rgba(37, 99, 235, 0.5) !important;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1.05); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1.05); }
+    }
+
     @media (min-width: 768px) {
+        .hero {
+            height: 90vh; /* More impact on desktop */
+        }
         .hero-bg-image, .hero-bg-wrapper {
             transform: scale(1.4) translate(-6px, 95px);
         }
+        .hero-title {
+            font-size: 64px;
+        }
         .hero-subtitle {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
         }
         .br-desktop {
             display: block;
@@ -140,10 +168,8 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
 
     @media (min-width: 1024px) {
         .hero-title {
-            font-size: 48px;
-        }
-        .hero {
-            height: 70vh;
+            font-size: 82px;
+            margin-bottom: 32px;
         }
     }
     main {
