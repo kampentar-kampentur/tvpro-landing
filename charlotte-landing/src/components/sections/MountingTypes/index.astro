@@ -3,14 +3,38 @@ import MountingCard from "../../ui/MountingCard.astro";
 
 interface Props {
     data?: any;
+    cityName?: string;
 }
 
-const { data } = Astro.props;
+const { data, cityName } = Astro.props;
 
-const title = data?.title || "TV Mounting Types";
-const subTitle =
-    data?.subTitle || "Choose the perfect mount for your home setup";
-const mountingTypes = data?.mountingTypes || [];
+const title = "Total TVs to mount?";
+const subTitle = "Select the number of TVs and get a specialized deal";
+
+const mountingTypes = [
+    {
+        title: "1 TV",
+        description: "(2-Year Warranty)",
+        image: "/chicago/images/tvs/1tv.svg",
+        href: "/chicago/quiz/",
+    },
+    {
+        title: "2 TVs",
+        description: "(Better Deal)",
+        image: "/chicago/images/tvs/2tvs.svg",
+    },
+    {
+        title: "3 TVs",
+        description: "(Bundle Price)",
+        image: "/chicago/images/tvs/3tvs.svg",
+    },
+    {
+        title: "3+ TVs",
+        description: "(Best Price)",
+        image: "/chicago/images/tvs/3plustvs.svg",
+    },
+];
+
 const addons = data?.addons || [];
 ---
 
@@ -24,11 +48,14 @@ const addons = data?.addons || [];
         <div class="cards-grid">
             {
                 mountingTypes.map((type: any) => (
-                    <MountingCard
-                        title={type.title}
-                        description={type.description}
-                        image={type.image}
-                    />
+                    <div class="mounting-card-wrapper">
+                        <MountingCard
+                            title={type.title}
+                            description={type.description}
+                            image={type.image}
+                            href={type.href}
+                        />
+                    </div>
                 ))
             }
         </div>
@@ -55,43 +82,52 @@ const addons = data?.addons || [];
 
 <style>
     .mounting-types {
-        padding: 80px 20px;
+        padding: 60px 20px;
         background-color: #fff;
     }
 
     .container {
-        max-width: 1200px;
+        width: 100%;
         margin: 0 auto;
     }
 
     .section-header {
         text-align: center;
-        margin-bottom: 60px;
+        margin-bottom: 40px;
     }
 
     .section-title {
-        font-size: 36px;
+        font-size: 32px;
         font-weight: 800;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         text-transform: uppercase;
         letter-spacing: -0.02em;
     }
 
     .section-subtitle {
-        font-size: 18px;
+        font-size: 16px;
         color: var(--gray);
     }
 
     .cards-grid {
+        margin-top: 16px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        margin-bottom: 60px;
+        column-gap: 16px;
+        row-gap: 16px;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .mounting-card-wrapper {
+        flex: 1 1 180px;
     }
 
     /* Add-ons Styles */
     .addons-container {
         text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
     }
 
     .addons-title {
@@ -127,7 +163,6 @@ const addons = data?.addons || [];
 
     @media (min-width: 1024px) {
         .cards-grid {
-            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
         }
     }
@@ -135,6 +170,12 @@ const addons = data?.addons || [];
     @media (max-width: 600px) {
         .section-title {
             font-size: 28px;
+        }
+        .cards-grid {
+            gap: 12px;
+        }
+        .mounting-card-wrapper {
+            flex: 1 1 140px;
         }
     }
 </style>

@@ -1,0 +1,191 @@
+---
+import ContactForm from "../../ui/ContactForm.astro";
+
+interface Props {
+    cityName: string;
+    data?: any;
+}
+
+const { cityName, data } = Astro.props;
+
+const title = data?.title || "What we care about?";
+const subTitle = data?.subTitle || "";
+const content = data?.content || `
+At TV Mount Master, we are the trusted experts in wall-mounted TV installations, ensuring your peace of mind with secure TV installation and top-notch service quality.
+
+• When you entrust us with mounting your TV on the wall, you're choosing professionals who recognize the significance of precise installation. We even provide the convenience of same-day service, making the process of pro TV mounting hassle-free.
+
+• Safety is essential when securing your TV, especially if you have kids or guests. We fasten your flat screen securely, so accidents are prevented. Your investment deserves protection, and wall mounting ensures it's part of your home.
+
+• TV mounting can be stressful, but we take care of everything. Our experts handle the whole process, from attaching brackets to mounting on the wall. We find the right solutions, whether you need a swivel, tilt, or custom mount.
+
+• Your well-being is our top concern. Our skilled technicians ensure your bracket is strong and safe. We also manage cables, keeping things organized.
+
+• We give you detailed information about our services, so you can confidently choose us. With over six years of experience, we can mount TVs on various surfaces.
+`;
+
+const processText = (text: string) => {
+    if (!text) return "";
+    return text.split('\n').map(line => {
+        let processed = line
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\[(.*?)\]/g, '<span class="accent">$1</span>');
+        
+        if (processed.startsWith('•')) {
+            return `<li class="bullet-item">${processed.substring(1).trim()}</li>`;
+        }
+        return processed ? `<p>${processed}</p>` : '';
+    }).join('');
+};
+
+const formTitle = data?.formTitle || "Ready to get started?";
+const formSubtitle = data?.formSubtitle || "Leave your details and we'll call you back with a quote.";
+---
+
+<section class="contact-us-section" id="contact">
+    <div class="contact-us-container">
+        <div class="contact-us-grid">
+            <!-- Text Content -->
+            <div class="text-content">
+                <header class="section-header">
+                    <h2 class="section-title" set:html={processText(title)}></h2>
+                    {subTitle && <p class="section-subtitle" set:html={processText(subTitle)}></p>}
+                </header>
+                <div class="content-body" set:html={processText(content)}></div>
+            </div>
+
+            <!-- Form Section -->
+            <div class="form-wrapper">
+                <ContactForm 
+                    id="whatWeCareForm" 
+                    source="what_we_care_block"
+                    formTitle={formTitle}
+                    formSubtitle={formSubtitle}
+                />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .contact-us-section {
+        padding: 100px 20px;
+        background-color: var(--background, #0b0b0f);
+        color: var(--foreground, #fff);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Subtle background glow */
+    .contact-us-section::before {
+        content: '';
+        position: absolute;
+        top: -10%;
+        right: -10%;
+        width: 40%;
+        height: 40%;
+        background: radial-gradient(circle, rgba(13, 100, 160, 0.15) 0%, transparent 70%);
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .contact-us-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .contact-us-grid {
+        display: flex;
+        gap: 80px;
+        align-items: flex-start;
+    }
+
+    .text-content {
+        flex: 1;
+    }
+
+    .section-header {
+        margin-bottom: 40px;
+    }
+
+    .section-title {
+        font-size: 48px;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 24px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+        font-size: 20px;
+        color: var(--blue-main, #0d64a0);
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .content-body {
+        font-size: 18px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .content-body :global(p) {
+        margin-bottom: 24px;
+    }
+
+    .content-body :global(li.bullet-item) {
+        list-style: none;
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 20px;
+    }
+
+    .content-body :global(li.bullet-item::before) {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--blue-main, #0d64a0);
+        font-weight: 800;
+    }
+
+    .form-wrapper {
+        flex: 0 0 450px;
+    }
+
+    @media (max-width: 1024px) {
+        .contact-us-grid {
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 36px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .contact-us-section {
+            padding: 60px 20px;
+        }
+
+        .section-title {
+            font-size: 32px;
+        }
+
+        .content-body {
+            font-size: 16px;
+        }
+    }
+</style>

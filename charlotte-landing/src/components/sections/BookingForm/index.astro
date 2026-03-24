@@ -161,7 +161,7 @@ const { cityName } = Astro.props;
                     submitBtn.textContent = "Sending...";
                     submitBtn.disabled = true;
 
-                    const citySlug = window.location.pathname.split("/").filter(Boolean).pop() || "charlotte";
+                    const citySlug = window.location.pathname.split("/").filter(Boolean).pop() || "chicago";
                     
                     // Get UTM params from sessionStorage
                     let utmParams = {};

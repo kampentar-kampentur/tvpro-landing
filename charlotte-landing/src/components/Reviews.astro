@@ -10,7 +10,7 @@ interface Props {
 const {
     title = "Customer Reviews",
     subTitle = "See what our customers have to say about our professional TV mounting services.",
-    cityName = "Charlotte",
+    cityName = "Chicago",
 } = Astro.props;
 ---
 
@@ -58,6 +58,9 @@ const {
     .ctaButtons {
         display: flex;
         gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
     }
 
     /* Elfsight specific overrides if needed */

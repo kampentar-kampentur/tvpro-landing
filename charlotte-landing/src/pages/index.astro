@@ -7,6 +7,8 @@ import FAQ from "../components/FAQ.astro";
 import Modal from "../components/Modal.astro";
 import Hero from "../components/sections/Hero/index.astro";
 import MountingTypes from "../components/sections/MountingTypes/index.astro";
+import Advantages from "../components/sections/Advantages/index.astro";
+import ExtraServices from "../components/sections/ExtraServices/index.astro";
 import CTA from "../components/sections/CTA/index.astro";
 import BookingForm from "../components/sections/BookingForm/index.astro";
 import VideoReviews from "../components/sections/VideoReviews/index.astro";
@@ -27,7 +29,7 @@ import {
     getFinalBlockData,
 } from "../lib/strapi";
 
-const citySlug = "charlotte";
+const citySlug = "chicago";
 let cityData = null;
 let error = null;
 let reviewsMeta = null;
@@ -41,6 +43,7 @@ let photos = [];
 let reviews = [];
 let projects = [];
 let aboutUsData = null;
+let whatWeCareData = null;
 let ctaOverride = null;
 
 try {
@@ -65,19 +68,21 @@ try {
         getWorkVideos(),
         getGalleryOfWork(),
         getTrustData(),
-        getAboutUs(),
+        getAboutUs().catch(() => null), // Fallback if endpoint doesn't exist
     ]);
 
     cityData = city;
     ctaOverride = city?.cta_override;
-    reviewsMeta = getFinalBlockData(city, recData, 'customer-reviews');
-    mountingData = getFinalBlockData(city, mtData, 'tv-mounting-types');
-    heroData = getFinalBlockData(city, hData, 'hero');
-    videoData = getFinalBlockData(city, vData, 'see-our-work-in-action');
-    galleryData = getFinalBlockData(city, gData, 'gallery-of-work');
-    trustData = getFinalBlockData(city, tData, 'why-customers-choose-us');
-    aboutUsData = getFinalBlockData(city, aData, 'about-us');
-    faqData = getFinalBlockData(city, fData, 'faq');
+    reviewsMeta = getFinalBlockData(city, recData, "customer-reviews");
+    mountingData = getFinalBlockData(city, mtData, "tv-mounting-types");
+    heroData = getFinalBlockData(city, hData, "hero");
+    videoData = getFinalBlockData(city, vData, "see-our-work-in-action");
+    galleryData = getFinalBlockData(city, gData, "gallery-of-work");
+    trustData = getFinalBlockData(city, tData, "why-customers-choose-us");
+    aboutUsData = getFinalBlockData(city, aData, "about-us");
+    whatWeCareData =
+        getFinalBlockData(city, aData, "what-we-care") || aboutUsData;
+    faqData = getFinalBlockData(city, fData, "faq");
     photos = photosData;
 
     // We still keep 'reviews' array for other purposes if needed, but Reviews.astro now uses metadata
@@ -93,10 +98,11 @@ try {
 }
 
 const phone = ctaOverride?.phone || cityData?.phone || "(213) 584-4010";
-const hours = ctaOverride?.workHours || cityData?.hours || "8:00 AM - 10:00 PM DAILY";
+const hours =
+    ctaOverride?.workHours || cityData?.hours || "8:00 AM - 10:00 PM DAILY";
 const email = ctaOverride?.email || "tvprohandyservices@gmail.com";
 const phoneLabel = ctaOverride?.phoneLabel || "";
-const cityName = cityData?.city_name || "Charlotte";
+const cityName = cityData?.city_name || "Chicago";
 ---
 
 <Layout
@@ -118,16 +124,16 @@ const cityName = cityData?.city_name || "Charlotte";
             )
         }
 
+        <MountingTypes data={mountingData} />
+        <Advantages />
+        <ExtraServices />
+        <VideoReviews data={videoData} />
+
         <Reviews
             title={reviewsMeta?.title}
             subTitle={reviewsMeta?.subTitle}
             cityName={cityName}
         />
-
-        <MountingTypes data={mountingData} />
-
-        <VideoReviews data={videoData} />
-
 
         <Gallery galleryOfWorkData={galleryData} galleryPhotos={photos} />
 
