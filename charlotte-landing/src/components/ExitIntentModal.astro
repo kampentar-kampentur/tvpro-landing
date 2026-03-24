@@ -110,18 +110,18 @@ import Checkbox from "./ui/Checkbox.astro";
     }
 </style>
 
-<script is:inline>
+<script>
     // Logic for form submission
     function setupExitForm() {
-        const form = document.getElementById("exit-intent-form");
-        const phoneInput = document.getElementById("exit-intent-phone");
-        const submitBtn = document.getElementById("exitIntentSubmit");
+        const form = document.getElementById("exit-intent-form") as HTMLFormElement;
+        const phoneInput = document.getElementById("exit-intent-phone") as HTMLInputElement;
+        const submitBtn = document.getElementById("exitIntentSubmit") as HTMLButtonElement;
         const PHONE_REGEX =
             /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
 
         if (!form || !phoneInput) return;
 
-        const formatPhone = (value) => {
+        const formatPhone = (value: string) => {
             let digits = value.replace(/\D/g, "");
             if (!digits.startsWith("1") && digits.length > 0)
                 digits = "1" + digits;
@@ -143,7 +143,7 @@ import Checkbox from "./ui/Checkbox.astro";
             phoneInput.value = formatPhone(phoneInput.value);
         });
 
-        form.addEventListener("submit", async (e) => {
+        form.addEventListener("submit", async (e: Event) => {
             e.preventDefault();
 
             const formData = new FormData(form);
@@ -198,13 +198,13 @@ import Checkbox from "./ui/Checkbox.astro";
                         window.location.href = "/see-you-soon";
                     } else {
                         alert("Submission failed. Please try again.");
-                        submitBtn.textContent = originalText;
+                        submitBtn.textContent = originalText || "Claim My $30 Off";
                         submitBtn.disabled = false;
                     }
                 } catch (err) {
                     console.error("Error submitting form:", err);
                     alert("An error occurred. Please try again.");
-                    submitBtn.textContent = originalText;
+                    submitBtn.textContent = originalText || "Claim My $30 Off";
                     submitBtn.disabled = false;
                 }
             }
