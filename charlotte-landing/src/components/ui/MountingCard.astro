@@ -1,27 +1,57 @@
 ---
 import ImageWrapper from "../ImageWrapper.astro";
+import Button from "../Button.astro";
 
 interface Props {
     title: string;
     description: string;
     image: any;
+    href?: string;
+    openModal?: string;
 }
 
-const { title, description, image } = Astro.props;
+const {
+    title,
+    description,
+    image,
+    href,
+    openModal = "booking-modal",
+} = Astro.props;
 ---
 
-<div class="mounting-card" data-open-modal="booking-modal">
+<div class="mounting-card" data-open-modal={!href ? openModal : undefined}>
+    {href && <a href={href} class="card-link-overlay" />}
     <div class="card-image-container">
-        <ImageWrapper media={image} defaultAlt={title} />
+        {
+            typeof image === "string" ? (
+                <img src={image} alt={title} />
+            ) : (
+                <ImageWrapper media={image} defaultAlt={title} />
+            )
+        }
     </div>
     <div class="card-content">
         <h3 class="card-title">{title}</h3>
         <p class="card-description">{description}</p>
-        <button class="book-button">Book Now</button>
+        <Button
+            variant="primary"
+            size="small"
+            class="card-button"
+            href={href}
+            data-open-modal={!href ? openModal : undefined}
+        >
+            {href ? "Start Quiz" : "Book Now"}
+        </Button>
     </div>
 </div>
 
 <style>
+    /* Add-on for link overlay if needed, or just let Button handle it */
+    .card-link-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+    }
     .card-content {
         display: flex;
         flex-direction: column;
@@ -74,6 +104,7 @@ const { title, description, image } = Astro.props;
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+        width: 100%;
     }
 
     .card-title {
@@ -92,25 +123,16 @@ const { title, description, image } = Astro.props;
             height 0.3s ease;
     }
 
-    .book-button {
-        display: none;
-        background: var(--blue-main);
-        color: var(--white);
-        border: none;
-        padding: 10px 24px;
-        border-radius: 999px;
-        font-weight: 600;
-        font-size: 14px;
-        margin-top: 16px;
-        transition: background 0.3s ease;
+    :global(.card-button) {
+        display: none !important;
     }
 
     .mounting-card:hover .card-description {
         display: none;
     }
 
-    .mounting-card:hover .book-button {
-        display: block;
+    .mounting-card:hover :global(.card-button) {
+        display: flex !important;
     }
 
     @media (max-width: 600px) {

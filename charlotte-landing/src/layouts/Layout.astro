@@ -16,13 +16,13 @@ const defaultDescription = "TV Pro Handy Services LLC provides expert TV mountin
 const { 
 	title = defaultTitle, 
 	description = defaultDescription,
-    canonical = "https://tvprousa.com/charlotte/",
-    ogImage = "/charlotte/og-image.png",
+    canonical = "https://tvprousa.com/chicago/",
+    ogImage = "/chicago/og-image.png",
     cityData = null
 } = Astro.props;
 
-const cityName = cityData?.city_name || "Charlotte";
-const stateCode = cityData?.state_code || "NC";
+const cityName = cityData?.city_name || "Chicago";
+const stateCode = cityData?.state_code || "IL";
 
 const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -51,12 +51,12 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		
         <!-- Icons -->
-        <link rel="icon" type="image/png" sizes="32x32" href="/charlotte/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/charlotte/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/charlotte/favicon-96x96.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/charlotte/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/charlotte/web-app-manifest-192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/charlotte/web-app-manifest-512x512.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/chicago/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/chicago/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/chicago/favicon-96x96.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/chicago/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/chicago/web-app-manifest-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/chicago/web-app-manifest-512x512.png" />
 
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
@@ -68,7 +68,7 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
         <link
           rel="preload"
           as="image"
-          href="/charlotte/videoplaceholder-392.webp"
+          href="/chicago/videoplaceholder-392.webp"
           fetchpriority="high"
         />
 

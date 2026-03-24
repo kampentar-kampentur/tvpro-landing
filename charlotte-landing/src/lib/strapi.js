@@ -108,6 +108,14 @@ export async function getAboutUs() {
     const data = await fetchAPI("/about-us", { populate: "*" });
     return flattenStrapiData(data?.data);
 }
+export async function getContactUs() {
+    const data = await fetchAPI("/contact-us", { populate: "*" });
+    return flattenStrapiData(data?.data);
+}
+export async function getWhatWeCare() {
+    const data = await fetchAPI("/what-we-care", { populate: "*" });
+    return flattenStrapiData(data?.data);
+}
 
 /**
  * Helper to get the final block data by merging city-specific overrides with global data.

@@ -5,7 +5,7 @@ export const GET: APIRoute = async () => {
   const now = new Date().toISOString();
 
   const entries = [
-    { url: `${baseUrl}/charlotte/`, priority: 1.0, freq: 'daily' },
+    { url: `${baseUrl}/chicago/`, priority: 1.0, freq: 'daily' },
     { url: `${baseUrl}/privacy-policy/`, priority: 0.3, freq: 'monthly' },
     { url: `${baseUrl}/terms/`, priority: 0.3, freq: 'monthly' },
     { url: `${baseUrl}/sms-consent/`, priority: 0.3, freq: 'monthly' },

@@ -5,7 +5,7 @@ export const GET: APIRoute = ({ site }) => {
 User-agent: *
 Allow: /
 
-Sitemap: https://tvprousa.com/charlotte/sitemap.xml
+Sitemap: https://tvprousa.com/chicago/sitemap.xml
 `.trim();
 
   return new Response(robotsTxt, {
