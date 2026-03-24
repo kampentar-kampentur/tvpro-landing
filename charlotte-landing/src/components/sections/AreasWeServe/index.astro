@@ -1,0 +1,99 @@
+---
+import { getAllCities } from "../../lib/strapi";
+
+// Fetch cities on build time (Astro)
+let cities = [];
+try {
+    cities = await getAllCities();
+} catch (error) {
+    console.error("[AreasWeServe] Failed to fetch cities:", error);
+}
+
+// Filter and sort cities (non-test versions with human-readable names)
+const activeCities = cities
+    .filter((city) => !city.test_version && city.path && city.city_name)
+    .sort((a, b) => a.city_name.localeCompare(b.city_name));
+
+const hasChicago = activeCities.some((c) => c.path === "chicago");
+---
+
+<section class="areas-section">
+    <div class="container">
+        <h2 class="title">Areas We Serve</h2>
+        <div class="grid">
+            {!hasChicago && (
+                <a href="/chicago/" class="city-link">
+                    Chicago, IL
+                </a>
+            )}
+            {
+                activeCities.map((city) => (
+                    <a href={`/${city.path}/`} class="city-link">
+                        {city.city_name}
+                        {city.state_code ? `, ${city.state_code}` : ""}
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .areas-section {
+        padding: 60px 0;
+        background-color: var(--white);
+        border-top: 1px solid var(--gray-extra-light);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--foreground);
+        text-align: left;
+    }
+
+    .grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 12px 24px;
+    }
+
+    .city-link {
+        font-size: 14px;
+        color: var(--gray);
+        text-decoration: none;
+        transition: color 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .city-link:hover {
+        color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+        .areas-section {
+            padding: 40px 0;
+        }
+
+        .title {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            gap: 8px 16px;
+        }
+
+        .city-link {
+            font-size: 13px;
+        }
+    }
+</style>

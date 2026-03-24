@@ -10,6 +10,7 @@ import AboutUs from '@/blocks/AboutUs/AboutUs';
 import FAQ from '@/blocks/FAQ/FAQ';
 import Contacts from '@/blocks/Contacts/Contacts';
 import WorkVideoGallery from '@/blocks/WorkVideoGallery/WorkVideoGallery';
+import AreasWeServe from '@/blocks/AreasWeServe/AreasWeServe';
 
 const blockMap = {
     'blocks.hero': Hero,
@@ -24,6 +25,7 @@ const blockMap = {
     'blocks.faq': FAQ,
     'blocks.contact-us': Contacts,
     'blocks.see-our-work-in-action': WorkVideoGallery,
+    'blocks.areas-we-serve': AreasWeServe
 };
 
 export default function BlockRenderer({ blocks, globalData, cityContext }) {

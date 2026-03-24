@@ -15,6 +15,7 @@ import VideoReviews from "../components/sections/VideoReviews/index.astro";
 import Gallery from "../components/sections/Gallery/index.astro";
 import Trust from "../components/sections/Trust/index.astro";
 import AboutUs from "../components/sections/AboutUs/index.astro";
+import AreasWeServe from "../components/sections/AreasWeServe/index.astro";
 import {
     getCityBySlug,
     getCustomerReviews,
@@ -146,6 +147,8 @@ const cityName = cityData?.city_name || "Chicago";
             subTitle={faqData?.subTitle}
             faqs={faqData?.faqs || []}
         />
+
+        <AreasWeServe />
 
         <!-- <CTA cityName={cityName} /> -->
     </main>
