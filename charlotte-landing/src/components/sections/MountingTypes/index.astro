@@ -22,19 +22,16 @@ const mountingTypes = [
         title: "2 TVs",
         description: "(Better Deal)",
         image: "/chicago/images/tvs/2tvs.svg",
-        href: "/quiz?from=chicago",
     },
     {
         title: "3 TVs",
         description: "(Bundle Price)",
         image: "/chicago/images/tvs/3tvs.svg",
-        href: "/quiz?from=chicago",
     },
     {
         title: "3+ TVs",
         description: "(Best Price)",
         image: "/chicago/images/tvs/3plustvs.svg",
-        href: "/quiz?from=chicago",
     },
 ];
 
@@ -62,25 +59,6 @@ const addons = data?.addons || [];
                 ))
             }
         </div>
-
-        {
-            addons.length > 0 && (
-                <div class="addons-container">
-                    <h4 class="addons-title">Optional Add-ons</h4>
-                    <div class="addons-list">
-                        {addons.map((addon: any) => (
-                            <a
-                                href="/quiz?from=chicago"
-                                class="addon-tag"
-                                style="text-decoration: none;"
-                            >
-                                {addon.label || addon}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            )
-        }
     </div>
 </section>
 
