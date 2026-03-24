@@ -1,19 +1,19 @@
 ---
 interface Props {
-	phone?: string;
-	hours?: string;
-	email?: string;
-	phoneLabel?: string;
+    phone?: string;
+    hours?: string;
+    email?: string;
+    phoneLabel?: string;
 }
 
-const { 
-	phone = "(213) 584-4010", 
-	hours = "8:00 AM - 10:00 PM DAILY",
-	email = "tvprohandyservices@gmail.com",
-	phoneLabel = ""
+const {
+    phone = "(213) 584-4010",
+    hours = "8:00 AM - 10:00 PM DAILY",
+    email = "tvprohandyservices@gmail.com",
+    phoneLabel = "",
 } = Astro.props;
 
-const phoneLink = `tel:+1${phone.replace(/\D/g, '')}`;
+const phoneLink = `tel:${phone.replace(/\D/g, "")}`;
 ---
 
 <style>
@@ -21,7 +21,7 @@ const phoneLink = `tel:+1${phone.replace(/\D/g, '')}`;
         background-color: #fff;
         color: var(--foreground);
         padding: 4rem 2rem;
-        border-top: 1px solid rgba(0,0,0,0.05);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .footer-container {
@@ -65,7 +65,7 @@ const phoneLink = `tel:+1${phone.replace(/\D/g, '')}`;
         font-weight: 700;
         margin-bottom: 1.5rem;
     }
-    
+
     .footer-info {
         display: flex;
         flex-direction: column;
@@ -89,7 +89,7 @@ const phoneLink = `tel:+1${phone.replace(/\D/g, '')}`;
     .legal-links {
         margin-top: 3rem;
         padding-top: 2rem;
-        border-top: 1px solid rgba(0,0,0,0.05);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
         display: flex;
         gap: 2rem;
         font-size: 14px;
@@ -110,11 +110,17 @@ const phoneLink = `tel:+1${phone.replace(/\D/g, '')}`;
 <footer>
     <div class="footer-container">
         <div class="footer-info">
-            <img src="/chicago/logo.svg" alt="TVPro Logo" class="footer-logo" width="82" height="40" />
+            <img
+                src="/chicago/logo.svg"
+                alt="TVPro Logo"
+                class="footer-logo"
+                width="82"
+                height="40"
+            />
             <a href={phoneLink} class="btn-call">Call {phoneLabel || phone}</a>
             <p>Serving Chicago and Surrounding Areas</p>
         </div>
-        
+
         <div class="footer-contact">
             <h3 class="footer-heading">Contact Us</h3>
             <p>Hours: {hours}</p>
