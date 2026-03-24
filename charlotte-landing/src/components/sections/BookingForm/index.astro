@@ -10,26 +10,26 @@ const { cityName } = Astro.props;
 ---
 
 <form class="booking-form">
-    <Input 
-        label="Full Name" 
-        name="name" 
-        placeholder="Enter your name *" 
-        required 
+    <Input
+        label="Full Name"
+        name="name"
+        placeholder="Enter your name *"
+        required
     />
-    <Input 
-        label="Phone Number *" 
-        name="phone" 
+    <Input
+        label="Phone Number *"
+        name="phone"
         type="tel"
-        placeholder="Enter your number *" 
-        required 
+        placeholder="Enter your number *"
+        required
     />
     <div class="discount-banner">
         <p class="discount-label">Installing 2 or more TVs?</p>
         <p class="discount-text">
-            Let the manager know to receive a multi-TVs 
-            <span class="discount-word">DISCOUNT</span>: 
-            <span class="discount-percent">10% OFF</span> for 2 TVs, 
-            <span class="discount-percent">15% OFF</span> for 3, 
+            Let the manager know to receive a multi-TVs
+            <span class="discount-word">DISCOUNT</span>:
+            <span class="discount-percent">10% OFF</span> for 2 TVs,
+            <span class="discount-percent">15% OFF</span> for 3,
             <span class="discount-percent">20% OFF</span> for 4 or more.
         </p>
     </div>
@@ -77,7 +77,7 @@ const { cityName } = Astro.props;
 
     .discount-percent {
         font-weight: bold;
-        color: #FA0004;
+        color: #fa0004;
     }
 
     @media (max-width: 980px) {
@@ -90,7 +90,6 @@ const { cityName } = Astro.props;
             margin: 0;
         }
     }
-
 
     .form-privacy {
         font-size: 12px;
@@ -111,25 +110,28 @@ const { cityName } = Astro.props;
 </style>
 
 <script is:inline>
-    (function() {
+    (function () {
         function setupBookingForm() {
-            const form = document.querySelector('.booking-form');
+            const form = document.querySelector(".booking-form");
             if (!form) return;
 
-            const submitBtn = form.querySelector('.submit-button');
+            const submitBtn = form.querySelector(".submit-button");
             const phoneInput = form.querySelector('input[name="phone"]');
 
-            const PHONE_REGEX = /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
+            const PHONE_REGEX =
+                /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
 
             const formatPhone = (value) => {
                 let digits = value.replace(/\D/g, "");
-                if (!digits.startsWith("1") && digits.length > 0) digits = "1" + digits;
+                if (!digits.startsWith("1") && digits.length > 0)
+                    digits = "1" + digits;
                 digits = digits.slice(0, 11);
 
                 if (digits.length === 0) return "";
                 if (digits.length === 1) return "+1";
                 if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
-                if (digits.length <= 7) return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
+                if (digits.length <= 7)
+                    return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
                 return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
             };
 
@@ -142,9 +144,9 @@ const { cityName } = Astro.props;
                 });
             }
 
-            form.addEventListener('submit', async (e) => {
+            form.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                
+
                 const formData = new FormData(form);
                 const name = formData.get("name")?.toString() || "";
                 let phone = formData.get("phone")?.toString() || "";
@@ -161,12 +163,16 @@ const { cityName } = Astro.props;
                     submitBtn.textContent = "Sending...";
                     submitBtn.disabled = true;
 
-                    const citySlug = window.location.pathname.split("/").filter(Boolean).pop() || "chicago";
-                    
+                    const citySlug =
+                        window.location.pathname
+                            .split("/")
+                            .filter(Boolean)
+                            .pop() || "chicago";
+
                     // Get UTM params from sessionStorage
                     let utmParams = {};
                     try {
-                        const raw = sessionStorage.getItem('utm_params');
+                        const raw = sessionStorage.getItem("utm_params");
                         utmParams = raw ? JSON.parse(raw) : {};
                     } catch (e) {}
 
@@ -175,18 +181,23 @@ const { cityName } = Astro.props;
                             name,
                             phone,
                             city: citySlug,
-                            source: 'booking_form_modal',
-                            ...utmParams
-                        }
+                            source: "booking_form_modal",
+                            ...utmParams,
+                        },
                     };
 
                     try {
-                        const baseUrl = 'https://strapi-dev-e587.up.railway.app';
-                        const response = await fetch(`${baseUrl}/api/book-now`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload)
-                        });
+                        const baseUrl =
+                            import.meta.env.PUBLIC_STRAPI_URL ||
+                            "https://strapi-dev-e587.up.railway.app";
+                        const response = await fetch(
+                            `${baseUrl}/api/book-now`,
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(payload),
+                            },
+                        );
 
                         if (response.ok) {
                             window.location.href = "/see-you-soon";
@@ -206,6 +217,6 @@ const { cityName } = Astro.props;
         }
 
         setupBookingForm();
-        document.addEventListener('astro:page-load', setupBookingForm);
+        document.addEventListener("astro:page-load", setupBookingForm);
     })();
 </script>

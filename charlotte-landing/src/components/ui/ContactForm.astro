@@ -10,48 +10,59 @@ interface Props {
     submitText?: string;
 }
 
-const { 
-    id = "contactForm", 
+const {
+    id = "contactForm",
     source = "contact_form",
     formTitle = "Ready to get started?",
     formSubtitle = "Leave your details and we'll call you back with a quote.",
-    submitText = "Send Request"
+    submitText = "Send Request",
 } = Astro.props;
 ---
 
 <div class="contact-form-container">
     {formTitle && <h3 class="form-title">{formTitle}</h3>}
     {formSubtitle && <p class="form-subtitle">{formSubtitle}</p>}
-    
+
     <form id={id} class="contact-form" data-source={source}>
-        <Input 
-            label="Full Name" 
-            name="name" 
-            placeholder="Your Name" 
+        <Input
+            label="Full Name"
+            name="name"
+            placeholder="Your Name"
             class="contact-input"
         />
-        <Input 
-            label="Phone Number *" 
-            name="phone" 
+        <Input
+            label="Phone Number *"
+            name="phone"
             type="tel"
-            placeholder="+1 (___) ___-____" 
-            required 
+            placeholder="+1 (___) ___-____"
+            required
             id={`${id}Phone`}
             class="contact-input"
         />
         <span id={`${id}PhoneError`} class="phone-error"></span>
-        <Button type="submit" id={`${id}Submit`} class="submit-button" size="huge">{submitText}</Button>
+        <Button
+            type="submit"
+            id={`${id}Submit`}
+            class="submit-button"
+            size="huge">{submitText}</Button
+        >
     </form>
 </div>
 
 <style>
     .contact-form-container {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.03) 100%
+        );
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 40px;
         border-radius: 32px;
         backdrop-filter: blur(20px);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(13, 100, 160, 0.1);
+        box-shadow:
+            0 25px 50px rgba(0, 0, 0, 0.3),
+            0 0 30px rgba(13, 100, 160, 0.1);
         width: 100%;
         max-width: 450px;
     }
@@ -104,7 +115,7 @@ const {
             padding: 30px 20px;
             border-radius: 24px;
         }
-        
+
         .form-title {
             font-size: 20px;
         }
@@ -112,8 +123,9 @@ const {
 </style>
 
 <script is:inline define:vars={{ id }}>
-    (function() {
-        const PHONE_REGEX = /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.\s]?\d{4}$/;
+    (function () {
+        const PHONE_REGEX =
+            /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.\s]?\d{4}$/;
 
         const setupForm = () => {
             const form = document.getElementById(id);
@@ -125,13 +137,15 @@ const {
 
             const formatPhone = (value) => {
                 let digits = value.replace(/\D/g, "");
-                if (!digits.startsWith("1") && digits.length > 0) digits = "1" + digits;
+                if (!digits.startsWith("1") && digits.length > 0)
+                    digits = "1" + digits;
                 digits = digits.slice(0, 11);
 
                 if (digits.length === 0) return "";
                 if (digits.length === 1) return "+1";
                 if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
-                if (digits.length <= 7) return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
+                if (digits.length <= 7)
+                    return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
                 return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
             };
 
@@ -150,20 +164,22 @@ const {
 
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                
+
                 const formData = new FormData(form);
                 const name = formData.get("name")?.toString().trim() || "";
                 let phoneValue = formData.get("phone")?.toString() || "";
 
-                if (!phoneValue.startsWith("+1")) phoneValue = "+1" + phoneValue;
+                if (!phoneValue.startsWith("+1"))
+                    phoneValue = "+1" + phoneValue;
 
                 if (!PHONE_REGEX.test(phoneValue)) {
-                    if (phoneError) phoneError.textContent = "Invalid phone number";
+                    if (phoneError)
+                        phoneError.textContent = "Invalid phone number";
                     return;
                 }
 
                 if (phoneError) phoneError.textContent = "";
-                
+
                 if (submitBtn) {
                     const originalText = submitBtn.textContent;
                     submitBtn.textContent = "Sending...";
@@ -172,12 +188,17 @@ const {
                     // Get UTM params from sessionStorage
                     let utmParams = {};
                     try {
-                        const raw = sessionStorage.getItem('utm_params');
+                        const raw = sessionStorage.getItem("utm_params");
                         utmParams = raw ? JSON.parse(raw) : {};
                     } catch (err) {}
 
-                    const citySlug = window.location.pathname.split("/").filter(Boolean).pop() || "chicago";
-                    const source = form.getAttribute('data-source') || "contact_form";
+                    const citySlug =
+                        window.location.pathname
+                            .split("/")
+                            .filter(Boolean)
+                            .pop() || "chicago";
+                    const source =
+                        form.getAttribute("data-source") || "contact_form";
 
                     const payload = {
                         data: {
@@ -185,17 +206,22 @@ const {
                             phone: phoneValue,
                             city: citySlug,
                             source: source,
-                            ...utmParams
-                        }
+                            ...utmParams,
+                        },
                     };
 
                     try {
-                        const baseUrl = 'https://strapi-dev-e587.up.railway.app';
-                        const response = await fetch(`${baseUrl}/api/book-now`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload)
-                        });
+                        const baseUrl =
+                            import.meta.env.PUBLIC_STRAPI_URL ||
+                            "https://strapi-dev-e587.up.railway.app";
+                        const response = await fetch(
+                            `${baseUrl}/api/book-now`,
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(payload),
+                            },
+                        );
 
                         if (response.ok) {
                             window.location.href = "/see-you-soon";

@@ -7,37 +7,50 @@ import Checkbox from "./ui/Checkbox.astro";
 // This component is included in Layout.astro and handled by global scripts
 ---
 
-<Modal id="ExitIntentModal" title="Wait! Get $30 OFF" subtitle="Don't leave yet! Claim your discount for your first professional TV installation.">
+<Modal
+    id="ExitIntentModal"
+    title="Wait! Get $30 OFF"
+    subtitle="Don't leave yet! Claim your discount for your first professional TV installation."
+>
     <form id="exit-intent-form" class="exit-intent-form">
-        <Input 
-            label="Full Name" 
-            name="name" 
-            placeholder="Your name *" 
-            required 
+        <Input
+            label="Full Name"
+            name="name"
+            placeholder="Your name *"
+            required
             class="exit-input"
         />
-        <Input 
-            label="Phone Number *" 
-            name="phone" 
+        <Input
+            label="Phone Number *"
+            name="phone"
             type="tel"
             id="exit-intent-phone"
-            placeholder="+1 (___) ___-____" 
-            required 
+            placeholder="+1 (___) ___-____"
+            required
             class="exit-input"
         />
-        
+
         <div class="form-footer">
-            <Checkbox 
-                id="exit-terms-checkbox" 
-                name="terms" 
-                required 
+            <Checkbox
+                id="exit-terms-checkbox"
+                name="terms"
+                required
                 label='I agree to receive SMS from TVPro Handy Services LLC regarding appointments and service updates. <p><a href="/privacy-policy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank" style="margin-left: 8px">Terms of Service</a></p>'
             />
-            
-            <Button type="submit" id="exitIntentSubmit" size="big" class="submit-btn">Claim My $30 Off</Button>
+
+            <Button
+                type="submit"
+                id="exitIntentSubmit"
+                size="big"
+                class="submit-btn">Claim My $30 Off</Button
+            >
         </div>
 
-        <button type="button" class="no-thanks" data-close-modal="ExitIntentModal">
+        <button
+            type="button"
+            class="no-thanks"
+            data-close-modal="ExitIntentModal"
+        >
             No thanks, I'll pay full price
         </button>
     </form>
@@ -100,22 +113,25 @@ import Checkbox from "./ui/Checkbox.astro";
 <script is:inline>
     // Logic for form submission
     function setupExitForm() {
-        const form = document.getElementById('exit-intent-form');
-        const phoneInput = document.getElementById('exit-intent-phone');
-        const submitBtn = document.getElementById('exitIntentSubmit');
-        const PHONE_REGEX = /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
+        const form = document.getElementById("exit-intent-form");
+        const phoneInput = document.getElementById("exit-intent-phone");
+        const submitBtn = document.getElementById("exitIntentSubmit");
+        const PHONE_REGEX =
+            /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
 
         if (!form || !phoneInput) return;
 
         const formatPhone = (value) => {
             let digits = value.replace(/\D/g, "");
-            if (!digits.startsWith("1") && digits.length > 0) digits = "1" + digits;
+            if (!digits.startsWith("1") && digits.length > 0)
+                digits = "1" + digits;
             digits = digits.slice(0, 11);
 
             if (digits.length === 0) return "";
             if (digits.length === 1) return "+1";
             if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
-            if (digits.length <= 7) return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
+            if (digits.length <= 7)
+                return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
             return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
         };
 
@@ -127,9 +143,9 @@ import Checkbox from "./ui/Checkbox.astro";
             phoneInput.value = formatPhone(phoneInput.value);
         });
 
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            
+
             const formData = new FormData(form);
             const name = formData.get("name")?.toString() || "";
             let phone = formData.get("phone")?.toString() || "";
@@ -149,28 +165,32 @@ import Checkbox from "./ui/Checkbox.astro";
                 // Get UTM params from sessionStorage
                 let utmParams = {};
                 try {
-                    const raw = sessionStorage.getItem('utm_params');
+                    const raw = sessionStorage.getItem("utm_params");
                     utmParams = raw ? JSON.parse(raw) : {};
                 } catch (e) {}
 
-                const citySlug = window.location.pathname.split("/").filter(Boolean).pop() || "chicago";
+                const citySlug =
+                    window.location.pathname.split("/").filter(Boolean).pop() ||
+                    "chicago";
 
                 const payload = {
                     data: {
                         name,
                         phone,
                         city: citySlug,
-                        source: 'exit_intent_popup',
-                        ...utmParams
-                    }
+                        source: "exit_intent_popup",
+                        ...utmParams,
+                    },
                 };
 
                 try {
-                    const baseUrl = 'https://strapi-dev-e587.up.railway.app';
+                    const baseUrl =
+                        import.meta.env.PUBLIC_STRAPI_URL ||
+                        "https://strapi-dev-e587.up.railway.app";
                     const response = await fetch(`${baseUrl}/api/book-now`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify(payload),
                     });
 
                     if (response.ok) {
@@ -192,5 +212,5 @@ import Checkbox from "./ui/Checkbox.astro";
 
     // Initialize
     setupExitForm();
-    document.addEventListener('astro:page-load', setupExitForm);
+    document.addEventListener("astro:page-load", setupExitForm);
 </script>

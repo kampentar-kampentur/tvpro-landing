@@ -15,8 +15,9 @@ const flattenStrapiData = (data) => {
 
 export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
     const queryString = qs.stringify(urlParamsObject);
+    console.log('PUBLIC_STRAPI_URL', import.meta.env.PUBLIC_STRAPI_URL)
     const requestUrl = `${import.meta.env.PUBLIC_STRAPI_URL || 'https://strapi-dev-e587.up.railway.app'}/api${path}${queryString ? `?${queryString}` : ""}`;
-    
+
     console.log(`[Strapi Fetch] ${requestUrl}`);
 
     const response = await fetch(requestUrl, {
@@ -54,7 +55,7 @@ export async function getCustomerReviews() {
 }
 
 export async function getGalleryPhotos() {
-    const data = await fetchAPI("/galler-photos", { 
+    const data = await fetchAPI("/galler-photos", {
         populate: "*",
         pagination: { pageSize: 100 }
     });
@@ -143,7 +144,7 @@ export function getFinalBlockData(cityData, globalData, blockName) {
     // Merge logic: only override globalData fields if the cityBlock field is NOT empty/null
     // This applies to top-level fields in the block
     const mergedData = { ...globalData };
-    
+
     Object.keys(cityBlock).forEach(key => {
         const val = cityBlock[key];
         // If it's a valid non-empty value, override the global one

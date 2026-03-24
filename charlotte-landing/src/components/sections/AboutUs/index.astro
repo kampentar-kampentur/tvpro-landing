@@ -11,66 +11,92 @@ const { cityName, data } = Astro.props;
 
 const title = data?.title || "What we care about?";
 const subTitle = data?.subTitle || "";
-const mainText = data?.mainTextLeft || "We give you detailed information about our services, so you can confidently choose us. With over six years of experience, we can mount TVs on various surfaces, including drywall, brick, stone, tile, concrete, wood paneling, and exterior surfaces.";
+const mainText =
+    data?.mainTextLeft ||
+    "We give you detailed information about our services, so you can confidently choose us. With over six years of experience, we can mount TVs on various surfaces, including drywall, brick, stone, tile, concrete, wood paneling, and exterior surfaces.";
 const mainTextRight = data?.mainTextRight || "";
 
 // Form text from Strapi if available
 const formTitle = data?.formTitle || "Ready to get started?";
-const formSubtitle = data?.formSubtitle || "Leave your details and we'll call you back with a quote.";
+const formSubtitle =
+    data?.formSubtitle ||
+    "Leave your details and we'll call you back with a quote.";
 const namePlaceholder = data?.namePlaceholder || "Your Name";
 const phonePlaceholder = data?.phonePlaceholder || "+1 (___) ___-____";
 const submitText = data?.submitButtonText || "Send Request";
 
 const processText = (text: string) => {
     if (!text) return "";
-    return text.split('\n').map(line => {
-        return line
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\[(.*?)\]/g, '<span class="accent">$1</span>');
-    }).join('<br />');
+    return text
+        .split("\n")
+        .map((line) => {
+            return line
+                .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                .replace(/\[(.*?)\]/g, '<span class="accent">$1</span>');
+        })
+        .join("<br />");
 };
 ---
 
 <section class="about-us-section" id="about">
     <div class="about-us-container">
         <header class="section-header">
-            <h2 class="section-title" set:html={processText(title)}></h2>
-            {subTitle && <p class="section-subtitle" set:html={processText(subTitle)}></p>}
+            <h2 class="section-title" set:html={processText(title)} />
+            {
+                subTitle && (
+                    <p
+                        class="section-subtitle"
+                        set:html={processText(subTitle)}
+                    />
+                )
+            }
         </header>
 
         <div class="about-us-split">
             <!-- Text Section -->
             <div class="text-section">
                 <div class="section-content">
-                    <p set:html={processText(mainText)}></p>
-                    {mainTextRight && <p set:html={processText(mainTextRight)}></p>}
+                    <p set:html={processText(mainText)} />
+                    {
+                        mainTextRight && (
+                            <p set:html={processText(mainTextRight)} />
+                        )
+                    }
                 </div>
             </div>
 
             <!-- Form Section -->
             <div class="form-section">
                 <div class="form-container">
-                    <h3 class="form-title" set:html={processText(formTitle)}></h3>
-                    <p class="form-subtitle" set:html={processText(formSubtitle)}></p>
-                    
+                    <h3 class="form-title" set:html={processText(formTitle)} />
+                    <p
+                        class="form-subtitle"
+                        set:html={processText(formSubtitle)}
+                    />
+
                     <form id="aboutUsForm" class="contact-form">
-                        <Input 
-                            label="Full Name" 
-                            name="name" 
-                            placeholder={namePlaceholder} 
+                        <Input
+                            label="Full Name"
+                            name="name"
+                            placeholder={namePlaceholder}
                             class="about-input"
                         />
-                        <Input 
-                            label="Phone Number *" 
-                            name="phone" 
+                        <Input
+                            label="Phone Number *"
+                            name="phone"
                             type="tel"
-                            placeholder={phonePlaceholder} 
-                            required 
+                            placeholder={phonePlaceholder}
+                            required
                             id="aboutUsPhone"
                             class="about-input"
                         />
                         <span id="aboutUsPhoneError" class="phone-error"></span>
-                        <Button type="submit" id="aboutUsSubmit" class="submit-button" size="big">{submitText}</Button>
+                        <Button
+                            type="submit"
+                            id="aboutUsSubmit"
+                            class="submit-button"
+                            size="big">{submitText}</Button
+                        >
                     </form>
                 </div>
             </div>
@@ -79,8 +105,9 @@ const processText = (text: string) => {
 </section>
 
 <script is:inline>
-    (function() {
-        const PHONE_REGEX = /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
+    (function () {
+        const PHONE_REGEX =
+            /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
 
         const setupAboutForm = () => {
             const form = document.getElementById("aboutUsForm");
@@ -92,13 +119,15 @@ const processText = (text: string) => {
 
             const formatPhone = (value) => {
                 let digits = value.replace(/\D/g, "");
-                if (!digits.startsWith("1") && digits.length > 0) digits = "1" + digits;
+                if (!digits.startsWith("1") && digits.length > 0)
+                    digits = "1" + digits;
                 digits = digits.slice(0, 11);
 
                 if (digits.length === 0) return "";
                 if (digits.length === 1) return "+1";
                 if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
-                if (digits.length <= 7) return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
+                if (digits.length <= 7)
+                    return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
                 return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
             };
 
@@ -117,7 +146,7 @@ const processText = (text: string) => {
 
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                
+
                 const formData = new FormData(form);
                 const name = formData.get("name")?.toString().trim() || "";
                 let phone = formData.get("phone")?.toString() || "";
@@ -125,12 +154,13 @@ const processText = (text: string) => {
                 if (!phone.startsWith("+1")) phone = "+1" + phone;
 
                 if (!PHONE_REGEX.test(phone)) {
-                    if (phoneError) phoneError.textContent = "Invalid phone number";
+                    if (phoneError)
+                        phoneError.textContent = "Invalid phone number";
                     return;
                 }
 
                 if (phoneError) phoneError.textContent = "";
-                
+
                 if (submitBtn) {
                     const originalText = submitBtn.textContent;
                     submitBtn.textContent = "Sending...";
@@ -139,29 +169,38 @@ const processText = (text: string) => {
                     // Get UTM params from sessionStorage
                     let utmParams = {};
                     try {
-                        const raw = sessionStorage.getItem('utm_params');
+                        const raw = sessionStorage.getItem("utm_params");
                         utmParams = raw ? JSON.parse(raw) : {};
                     } catch (e) {}
 
-                    const citySlug = window.location.pathname.split("/").filter(Boolean).pop() || "chicago";
+                    const citySlug =
+                        window.location.pathname
+                            .split("/")
+                            .filter(Boolean)
+                            .pop() || "chicago";
 
                     const payload = {
                         data: {
                             name,
                             phone,
                             city: citySlug,
-                            source: 'about_us_form',
-                            ...utmParams
-                        }
+                            source: "about_us_form",
+                            ...utmParams,
+                        },
                     };
 
                     try {
-                        const baseUrl = 'https://strapi-dev-e587.up.railway.app';
-                        const response = await fetch(`${baseUrl}/api/book-now`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload)
-                        });
+                        const baseUrl =
+                            import.meta.env.PUBLIC_STRAPI_URL ||
+                            "https://strapi-dev-e587.up.railway.app";
+                        const response = await fetch(
+                            `${baseUrl}/api/book-now`,
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(payload),
+                            },
+                        );
 
                         if (response.ok) {
                             window.location.href = "/see-you-soon";
@@ -246,12 +285,18 @@ const processText = (text: string) => {
     }
 
     .form-container {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.03) 100%
+        );
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 40px;
         border-radius: 32px;
         backdrop-filter: blur(20px);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(13, 100, 160, 0.1);
+        box-shadow:
+            0 25px 50px rgba(0, 0, 0, 0.3),
+            0 0 30px rgba(13, 100, 160, 0.1);
     }
 
     .form-title {
