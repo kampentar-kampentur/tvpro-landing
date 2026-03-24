@@ -7,13 +7,13 @@ interface Props {
     phoneLabel?: string;
 }
 
-const { 
-    phone = "(213) 584-4010", 
+const {
+    phone = "(213) 584-4010",
     hours = "8:00 AM - 10:00 PM DAILY",
-    phoneLabel = ""
+    phoneLabel = "",
 } = Astro.props;
 
-const phoneLink = `tel:+1${phone.replace(/\D/g, "")}`;
+const phoneLink = `tel:${phone.replace(/\D/g, "")}`;
 ---
 
 <style>
@@ -122,7 +122,13 @@ const phoneLink = `tel:+1${phone.replace(/\D/g, "")}`;
 <!-- Desktop Header -->
 <nav class="header-desktop">
     <a href="/chicago/" class="logo-link">
-        <img src="/chicago/logo.svg" alt="TVPro Logo" class="logo-img" width="82" height="40" />
+        <img
+            src="/chicago/logo.svg"
+            alt="TVPro Logo"
+            class="logo-img"
+            width="82"
+            height="40"
+        />
     </a>
 
     <div class="cta-container">

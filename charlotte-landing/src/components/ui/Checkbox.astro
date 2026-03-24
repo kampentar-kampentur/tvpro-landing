@@ -10,79 +10,90 @@ const { id, name, label, required } = Astro.props;
 ---
 
 <div class="checkbox-wrapper">
-  <input type="checkbox" id={id} name={name} required={required} class="checkbox-input" />
+  <input
+    type="checkbox"
+    id={id}
+    name={name}
+    required={required}
+    class="checkbox-input"
+  />
   <label for={id} class="checkbox-label">
     <div class="checkbox-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+      >
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
     </div>
     <span class="label-text">
-        {typeof label === 'string' ? label : <Fragment set:html={label} />}
+      <Fragment set:html={label} < span />
     </span>
+
+    <style>
+      .checkbox-wrapper {
+        display: flex;
+        align-items: flex-start;
+        margin: 12px 0;
+      }
+
+      .checkbox-input {
+        display: none;
+      }
+
+      .checkbox-label {
+        display: flex;
+        gap: 12px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .checkbox-box {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--gray-light);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        margin-top: 2px;
+        background: transparent;
+      }
+
+      .checkbox-box svg {
+        width: 14px;
+        height: 14px;
+        color: white;
+        opacity: 0;
+        transform: scale(0.5);
+        transition: all 0.2s;
+      }
+
+      .checkbox-input:checked + .checkbox-label .checkbox-box {
+        background-color: var(--blue-main);
+        border-color: var(--blue-main);
+      }
+
+      .checkbox-input:checked + .checkbox-label .checkbox-box svg {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .label-text {
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--foreground);
+        opacity: 0.8;
+      }
+
+      .label-text :global(a) {
+        color: var(--blue-main);
+        text-decoration: underline;
+      }
+    </style>
   </label>
 </div>
-
-<style>
-  .checkbox-wrapper {
-    display: flex;
-    align-items: flex-start;
-    margin: 12px 0;
-  }
-
-  .checkbox-input {
-    display: none;
-  }
-
-  .checkbox-label {
-    display: flex;
-    gap: 12px;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .checkbox-box {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--gray-light);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-    margin-top: 2px;
-    background: transparent;
-  }
-
-  .checkbox-box svg {
-    width: 14px;
-    height: 14px;
-    color: white;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.2s;
-  }
-
-  .checkbox-input:checked + .checkbox-label .checkbox-box {
-    background-color: var(--blue-main);
-    border-color: var(--blue-main);
-  }
-
-  .checkbox-input:checked + .checkbox-label .checkbox-box svg {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .label-text {
-    font-size: 13px;
-    line-height: 1.4;
-    color: var(--foreground);
-    opacity: 0.8;
-  }
-
-  .label-text :global(a) {
-    color: var(--blue-main);
-    text-decoration: underline;
-  }
-</style>
