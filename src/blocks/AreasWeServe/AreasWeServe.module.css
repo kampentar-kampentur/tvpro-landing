@@ -1,0 +1,57 @@
+.areasSection {
+    padding: 60px 0;
+    background-color: var(--background-main);
+    border-top: 1px solid var(--border-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--foreground);
+    text-align: left;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px 24px;
+}
+
+.cityLink {
+    font-size: 14px;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+.cityLink:hover {
+    color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .areasSection {
+        padding: 40px 0;
+    }
+    
+    .title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .grid {
+        gap: 8px 16px;
+    }
+    
+    .cityLink {
+        font-size: 13px;
+    }
+}

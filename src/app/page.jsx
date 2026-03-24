@@ -11,6 +11,7 @@ import Certificates from "@/blocks/Certificates";
 import AboutUs from "@/blocks/AboutUs";
 import FAQ from "@/blocks/FAQ";
 import Contacts from "@/blocks/Contacts";
+import AreasWeServe from "@/blocks/AreasWeServe/AreasWeServe";
 
 export default async function Home() {
   return (
@@ -23,10 +24,9 @@ export default async function Home() {
       {/* <TVSizes /> */}
       <MountingTypes />
       <WhyCustomersTrustUs />
-      <OurServices />
-      <AboutUs />
       <FAQ />
       <Contacts />
+      <AreasWeServe />
     </div>
   );
 }
