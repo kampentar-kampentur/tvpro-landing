@@ -532,6 +532,13 @@ const BestQuoteModal = () => {
         }),
       });
       if (response.ok) {
+        // Build return URL: if we're on the quiz page, it's already set by QuizClient.
+        // If we're on a city page, save current path as the return point.
+        if (!window.location.pathname.includes('/quiz')) {
+          sessionStorage.setItem('quiz_return_url', window.location.pathname);
+        }
+        
+        localStorage.setItem('pricingData', JSON.stringify({ totalPrice, structuredCostBreakdown }));
         close();
         setFormData({});
         if (typeof gtag !== 'undefined') {
