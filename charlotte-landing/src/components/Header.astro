@@ -135,7 +135,7 @@ const phoneLink = `tel:${phone.replace(/\D/g, "")}`;
         <span class="hours-text">{hours}</span>
         <div class="actions-wrapper">
             <a href={phoneLink} class="phone-link">{phoneLabel || phone}</a>
-            <Button href="/quiz?from=chicago" size="small">Book Now</Button>
+            <Button data-open-modal="booking-modal" size="small">Book Now</Button>
         </div>
     </div>
 </nav>
@@ -154,6 +154,6 @@ const phoneLink = `tel:${phone.replace(/\D/g, "")}`;
     <div class="cta">
         <span class="hours-text" style="font-size: 10px;">{hours}</span>
         <a href={phoneLink} class="phone-link text-sm">{phoneLabel || phone}</a>
-        <Button href="/quiz?from=chicago" size="small">Book Now</Button>
+        <Button data-open-modal="booking-modal" size="small">Book Now</Button>
     </div>
 </nav>
