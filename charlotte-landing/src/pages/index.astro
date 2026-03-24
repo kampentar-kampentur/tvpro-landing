@@ -1,21 +1,21 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import Reviews from "../components/Reviews.astro";
-import FAQ from "../components/FAQ.astro";
-import Modal from "../components/Modal.astro";
-import Hero from "../components/sections/Hero/index.astro";
-import MountingTypes from "../components/sections/MountingTypes/index.astro";
-import Advantages from "../components/sections/Advantages/index.astro";
-import ExtraServices from "../components/sections/ExtraServices/index.astro";
-import CTA from "../components/sections/CTA/index.astro";
-import BookingForm from "../components/sections/BookingForm/index.astro";
-import VideoReviews from "../components/sections/VideoReviews/index.astro";
-import Gallery from "../components/sections/Gallery/index.astro";
-import Trust from "../components/sections/Trust/index.astro";
-import AboutUs from "../components/sections/AboutUs/index.astro";
-import AreasWeServe from "../components/sections/AreasWeServe/index.astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Reviews from "@/components/Reviews.astro";
+import FAQ from "@/components/FAQ.astro";
+import Modal from "@/components/Modal.astro";
+import Hero from "@/components/sections/Hero/index.astro";
+import MountingTypes from "@/components/sections/MountingTypes/index.astro";
+import Advantages from "@/components/sections/Advantages/index.astro";
+import ExtraServices from "@/components/sections/ExtraServices/index.astro";
+import CTA from "@/components/sections/CTA/index.astro";
+import BookingForm from "@/components/sections/BookingForm/index.astro";
+import VideoReviews from "@/components/sections/VideoReviews/index.astro";
+import Gallery from "@/components/sections/Gallery/index.astro";
+import Trust from "@/components/sections/Trust/index.astro";
+import AboutUs from "@/components/sections/AboutUs/index.astro";
+import AreasWeServe from "@/components/sections/AreasWeServe/index.astro";
 import {
     getCityBySlug,
     getCustomerReviews,
@@ -28,7 +28,7 @@ import {
     getTrustData,
     getAboutUs,
     getFinalBlockData,
-} from "../lib/strapi";
+} from "@/lib/strapi";
 
 const citySlug = "chicago";
 let cityData = null;

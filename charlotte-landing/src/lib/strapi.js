@@ -118,6 +118,13 @@ export async function getWhatWeCare() {
     return flattenStrapiData(data?.data);
 }
 
+export async function getAllCities() {
+    const data = await fetchAPI("/cities", {
+        pagination: { pageSize: 100 },
+    });
+    return flattenStrapiData(data?.data) || [];
+}
+
 /**
  * Helper to get the final block data by merging city-specific overrides with global data.
  * @param {Object} cityData - The city-specific data object (from getCityBySlug).
