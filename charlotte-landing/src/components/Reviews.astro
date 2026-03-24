@@ -12,6 +12,7 @@ const {
     subTitle = "See what our customers have to say about our professional TV mounting services.",
     cityName = "Chicago",
 } = Astro.props;
+
 ---
 
 <style>
@@ -115,17 +116,31 @@ const {
 
 <script>
     function loadElfsight() {
-        if (!window.hasOwnProperty("Elfsight")) {
-            const script = document.createElement("script");
-            script.src = "https://static.elfsight.com/platform/platform.js";
-            script.async = true;
-            document.body.appendChild(script);
+        if (document.querySelector('script[src*="elfsight"]')) return;
+        const script = document.createElement("script");
+        script.src = "https://static.elfsight.com/platform/platform.js";
+        script.async = true;
+        document.body.appendChild(script);
+    }
+
+    function initObserver() {
+        const reviewsSection = document.getElementById("reviews");
+        if (reviewsSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        loadElfsight();
+                        observer.disconnect();
+                    }
+                });
+            }, { rootMargin: "200px" });
+            observer.observe(reviewsSection);
         }
     }
 
-    // Load on page load
-    loadElfsight();
+    // Initialize on page load
+    initObserver();
 
-    // Re-load on Astro view transitions
-    document.addEventListener("astro:page-load", loadElfsight);
+    // Re-initialize on Astro view transitions
+    document.addEventListener("astro:page-load", initObserver);
 </script>

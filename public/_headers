@@ -15,3 +15,7 @@
 # Static JS/CSS (Next.js handles hashing, but we can set headers for sanity)
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Astro Chicago Assets
+/chicago/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

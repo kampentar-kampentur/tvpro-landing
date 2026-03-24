@@ -86,5 +86,6 @@ const finalHeight = height || (media.width && media.height ? Math.round(finalWid
     width={finalWidth} 
     height={finalHeight}
     loading={priority ? "eager" : "lazy"}
+    fetchpriority={priority ? "high" : undefined}
     decoding="async"
 />

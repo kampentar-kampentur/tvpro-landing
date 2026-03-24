@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://tvprousa.com/sitemap.xml
+Sitemap: https://tvprousa.com/chicago/sitemap.xml

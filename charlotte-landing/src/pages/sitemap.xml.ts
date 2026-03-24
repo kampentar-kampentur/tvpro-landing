@@ -2,19 +2,16 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async () => {
   const baseUrl = 'https://tvprousa.com';
-  const now = new Date().toISOString();
+  const lastUpdated = '2026-03-24T00:00:00.000Z';
 
   const entries = [
     { url: `${baseUrl}/chicago/`, priority: 1.0, freq: 'daily' },
-    { url: `${baseUrl}/privacy-policy/`, priority: 0.3, freq: 'monthly' },
-    { url: `${baseUrl}/terms/`, priority: 0.3, freq: 'monthly' },
-    { url: `${baseUrl}/sms-consent/`, priority: 0.3, freq: 'monthly' },
   ];
 
   const urlset = entries.map(entry => `
   <url>
     <loc>${entry.url}</loc>
-    <lastmod>${now}</lastmod>
+    <lastmod>${lastUpdated}</lastmod>
     <changefreq>${entry.freq}</changefreq>
     <priority>${entry.priority.toFixed(1)}</priority>
   </url>`).join('');

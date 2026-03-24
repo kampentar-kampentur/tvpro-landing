@@ -32,6 +32,12 @@ export default async function sitemap() {
             priority: 1,
         },
         {
+            url: `${baseUrl}/chicago/`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 1,
+        },
+        {
             url: `${baseUrl}/privacy-policy/`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

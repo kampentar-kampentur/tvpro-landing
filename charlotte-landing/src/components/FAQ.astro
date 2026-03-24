@@ -80,7 +80,9 @@ const structuredFAQ = {
     </div>
 
     <!-- JSON-LD for SEO -->
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredFAQ)} />
+    {faqs.length > 0 && (
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredFAQ)} />
+    )}
 </section>
 
 <style>

@@ -30,6 +30,9 @@ const services = [
 ---
 
 <section class="services-section">
+    <header class="services-header">
+        <h2 class="services-heading">Additional Services</h2>
+    </header>
     <div class="desktop-grid">
         {
             services.map((service) => (
@@ -40,6 +43,8 @@ const services = [
                                 src={service.image}
                                 alt={service.title}
                                 loading="lazy"
+                                width="160"
+                                height="160"
                             />
                         </div>
                         <div class="text-content">
@@ -62,6 +67,20 @@ const services = [
         width: 100%;
         padding-top: 32px;
         padding-bottom: 32px;
+    }
+
+    .services-header {
+        text-align: center;
+        padding: 0 32px;
+    }
+
+    .services-heading {
+        font-size: 32px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        color: #000;
+        margin-bottom: 0;
     }
 
     .desktop-grid {
