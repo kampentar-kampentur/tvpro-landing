@@ -15,7 +15,7 @@ const flattenStrapiData = (data) => {
 
 export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
     const queryString = qs.stringify(urlParamsObject);
-    console.log('PUBLIC_STRAPI_URL', import.meta.env.PUBLIC_STRAPI_URL)
+    console.log('PUBLIC_STRAPI_URL', import.meta.env)
     const requestUrl = `${import.meta.env.PUBLIC_STRAPI_URL || 'https://strapi-dev-e587.up.railway.app'}/api${path}${queryString ? `?${queryString}` : ""}`;
 
     console.log(`[Strapi Fetch] ${requestUrl}`);
