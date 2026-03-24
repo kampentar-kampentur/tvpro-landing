@@ -194,6 +194,7 @@ import Checkbox from "./ui/Checkbox.astro";
                     });
 
                     if (response.ok) {
+                        sessionStorage.setItem('quiz_return_url', '/chicago/');
                         window.location.href = "/see-you-soon";
                     } else {
                         alert("Submission failed. Please try again.");

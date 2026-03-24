@@ -31,7 +31,16 @@ export default function BookingSuccessPage() {
           structuredCostBreakdown={pricingData?.structuredCostBreakdown || []}
         />
       </div>
-      <Button variant="primary" size="big" className={styles.okButton} onClick={() => window.history.back()}>
+      <Button 
+        variant="primary" 
+        size="big" 
+        className={styles.okButton} 
+        onClick={() => {
+          const returnUrl = sessionStorage.getItem('quiz_return_url') || "/";
+          sessionStorage.removeItem('quiz_return_url'); // Cleanup
+          window.location.href = returnUrl;
+        }}
+      >
         OK
       </Button>
     </div>
