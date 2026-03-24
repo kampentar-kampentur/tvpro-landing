@@ -16,22 +16,25 @@ const mountingTypes = [
         title: "1 TV",
         description: "(2-Year Warranty)",
         image: "/chicago/images/tvs/1tv.svg",
-        href: "/chicago/quiz/",
+        href: "/quiz?from=chicago",
     },
     {
         title: "2 TVs",
         description: "(Better Deal)",
         image: "/chicago/images/tvs/2tvs.svg",
+        href: "/quiz?from=chicago",
     },
     {
         title: "3 TVs",
         description: "(Bundle Price)",
         image: "/chicago/images/tvs/3tvs.svg",
+        href: "/quiz?from=chicago",
     },
     {
         title: "3+ TVs",
         description: "(Best Price)",
         image: "/chicago/images/tvs/3plustvs.svg",
+        href: "/quiz?from=chicago",
     },
 ];
 
@@ -66,12 +69,13 @@ const addons = data?.addons || [];
                     <h4 class="addons-title">Optional Add-ons</h4>
                     <div class="addons-list">
                         {addons.map((addon: any) => (
-                            <button
+                            <a
+                                href="/quiz?from=chicago"
                                 class="addon-tag"
-                                data-open-modal="booking-modal"
+                                style="text-decoration: none;"
                             >
                                 {addon.label || addon}
-                            </button>
+                            </a>
                         ))}
                     </div>
                 </div>

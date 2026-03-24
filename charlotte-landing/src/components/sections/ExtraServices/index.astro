@@ -33,7 +33,7 @@ const services = [
     <div class="desktop-grid">
         {
             services.map((service) => (
-                <article class="service-card" data-open-modal="booking-modal">
+                <a href="/quiz?from=chicago" class="service-card" style="text-decoration: none;">
                     <div class="service-card-inner">
                         <div class="image-wrapper">
                             <img
@@ -49,7 +49,7 @@ const services = [
                             </p>
                         </div>
                     </div>
-                </article>
+                </a>
             ))
         }
     </div>

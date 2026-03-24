@@ -9,19 +9,24 @@ export default function QuizClient() {
   const router = useRouter();
 
   useEffect(() => {
+    // Save 'from' param to sessionStorage for later use (e.g. on success page)
+    const searchParams = new URLSearchParams(window.location.search);
+    const from = searchParams.get('from');
+    if (from) {
+      sessionStorage.setItem('quiz_return_url', from === 'chicago' ? '/chicago/' : '/');
+    }
+
     // Open the quiz modal immediately on mount - ONLY ONCE
     openModal("BestQuote");
-
-    // We use a separate effect or a direct check if we want to monitor closure,
-    // but we must avoid adding unstable functions to dependencies.
   }, []); // Run only on mount
 
   useEffect(() => {
     const checkModal = setInterval(() => {
       const isStillOnQuizPage = window.location.pathname.includes("/quiz");
-      // Check if modal is closed and we are still here
       if (isStillOnQuizPage && !isModalOpen("BestQuote")) {
-        router.push("/");
+        // If modal is closed manually, return to source or home
+        const returnUrl = sessionStorage.getItem('quiz_return_url') || "/";
+        router.push(returnUrl);
       }
     }, 1000);
 
