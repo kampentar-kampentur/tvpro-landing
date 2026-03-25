@@ -8,6 +8,8 @@ interface Props {
     formTitle?: string;
     formSubtitle?: string;
     submitText?: string;
+    namePlaceholder?: string;
+    phonePlaceholder?: string;
 }
 
 const {
@@ -16,7 +18,10 @@ const {
     formTitle = "Ready to get started?",
     formSubtitle = "Leave your details and we'll call you back with a quote.",
     submitText = "Send Request",
+    namePlaceholder = "Your Name",
+    phonePlaceholder = "+1 (___) ___-____",
 } = Astro.props;
+const apiUrl = import.meta.env.PUBLIC_STRAPI_URL || "https://strapi-production-20d6.up.railway.app";
 ---
 
 <div class="contact-form-container">
@@ -25,26 +30,24 @@ const {
 
     <form id={id} class="contact-form" data-source={source}>
         <Input
+            id={`${id}Name`}
             label="Full Name"
             name="name"
-            placeholder="Your Name"
+            placeholder={namePlaceholder}
             class="contact-input"
         />
         <Input
             label="Phone Number *"
             name="phone"
             type="tel"
-            placeholder="+1 (___) ___-____"
+            placeholder={phonePlaceholder}
             required
             id={`${id}Phone`}
             class="contact-input"
         />
         <span id={`${id}PhoneError`} class="phone-error"></span>
-        <Button
-            type="submit"
-            id={`${id}Submit`}
-            class="submit-button"
-            size="huge">{submitText}</Button
+        <Button id={`${id}Submit`} class="submit-button" size="huge" disabled
+            >{submitText}</Button
         >
     </form>
 </div>
@@ -71,28 +74,24 @@ const {
         font-size: 24px;
         font-weight: 700;
         margin-bottom: 8px;
-        color: var(--white, #fff);
+        color: var(--foreground);
     }
 
     .form-subtitle {
         font-size: 14px;
         margin-bottom: 32px;
-        color: var(--white, #fff);
         opacity: 0.7;
         line-height: 1.5;
+        color: var(--foreground);
     }
 
     .contact-form {
         display: flex;
         flex-direction: column;
-        gap: 8px;
     }
 
-    .contact-input {
-        --input-bg: rgba(255, 255, 255, 0.05);
-        --input-border: rgba(255, 255, 255, 0.1);
-        --input-text: #fff;
-        --input-placeholder: rgba(255, 255, 255, 0.4);
+    :global(.contact-input) {
+        margin-bottom: 8px !important;
     }
 
     .phone-error {
@@ -100,13 +99,12 @@ const {
         color: #ff4d4f;
         font-size: 12px;
         margin-top: -4px;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         min-height: 16px;
     }
 
     .submit-button {
         width: 100%;
-        margin-top: 12px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
@@ -122,123 +120,179 @@ const {
     }
 </style>
 
-<script is:inline define:vars={{ id }}>
+<script is:inline define:vars={{ id, apiUrl }}>
     (function () {
-        const PHONE_REGEX =
-            /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.\s]?\d{4}$/;
+        console.log("ContactForm script initialized for ID:", id);
+        
+        function formatUSPhone(raw) {
+            if (!raw) return "";
+            let digits = raw.replace(/\D/g, "");
+            if (digits.length > 10 && digits.startsWith("1")) {
+                digits = digits.slice(1);
+            }
+            if (digits.length === 0) return "";
+            if (digits.length <= 3) return `(${digits}`;
+            if (digits.length <= 6)
+                return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+            return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+        }
+
+        const validatePhone = (phone) => {
+            const digits = phone.replace(/\D/g, "");
+            return (
+                digits.length === 10 ||
+                (digits.length === 11 && digits.startsWith("1"))
+            );
+        };
+
+        const getUtmParams = () => {
+            const params = new URLSearchParams(window.location.search);
+            const utmKeys = [
+                "utm_source",
+                "utm_medium",
+                "utm_campaign",
+                "utm_term",
+                "utm_content",
+            ];
+            const utms = {};
+            utmKeys.forEach((key) => {
+                const val = params.get(key);
+                if (val) utms[key] = val;
+            });
+            return utms;
+        };
 
         const setupForm = () => {
+            console.log(`[Form:${id}] setting up listeners...`);
+
             const form = document.getElementById(id);
+            const nameInput = document.getElementById(`${id}Name`);
             const phoneInput = document.getElementById(`${id}Phone`);
             const phoneError = document.getElementById(`${id}PhoneError`);
             const submitBtn = document.getElementById(`${id}Submit`);
+            let isSubmitting = false;
 
-            if (!form || !phoneInput) return;
+            if (!form || !phoneInput || !submitBtn) {
+                 console.error(`[Form:${id}] Missing elements:`, { form, phoneInput, submitBtn });
+                 return;
+            }
 
-            const formatPhone = (value) => {
-                let digits = value.replace(/\D/g, "");
-                if (!digits.startsWith("1") && digits.length > 0)
-                    digits = "1" + digits;
-                digits = digits.slice(0, 11);
+            const updateButtonState = () => {
+                const name = nameInput?.value?.trim() || "";
+                const phone = phoneInput.value;
+                const isPhoneValid = validatePhone(phone);
+                const isValid = name.length > 0 && isPhoneValid;
+                
+                console.log(`[Form:${id}] State Check:`, { name, phone, isValid, isSubmitting });
 
-                if (digits.length === 0) return "";
-                if (digits.length === 1) return "+1";
-                if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
-                if (digits.length <= 7)
-                    return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
-                return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+                submitBtn.disabled = isSubmitting || !isValid;
+                
+                if (submitBtn.disabled && !isSubmitting) {
+                    submitBtn.style.opacity = "0.5";
+                    submitBtn.style.cursor = "not-allowed";
+                } else if (isSubmitting) {
+                    submitBtn.style.opacity = "0.7";
+                    submitBtn.style.cursor = "wait";
+                } else {
+                    submitBtn.style.opacity = "1";
+                    submitBtn.style.cursor = "pointer";
+                }
             };
 
-            phoneInput.addEventListener("focus", () => {
-                if (!phoneInput.value) phoneInput.value = "+1 ";
+            // Listen for any input changes in the form
+            form.addEventListener("input", (e) => {
+                if (e.target === phoneInput) {
+                    const digits = phoneInput.value.replace(/\D/g, "");
+                    phoneInput.value = formatUSPhone(digits);
+                }
+                updateButtonState();
             });
 
-            phoneInput.addEventListener("input", (e) => {
-                const cursor = phoneInput.selectionStart;
-                const oldLen = phoneInput.value.length;
-                phoneInput.value = formatPhone(phoneInput.value);
-                const newLen = phoneInput.value.length;
-                let nextPos = (cursor || 0) + (newLen - oldLen);
-                phoneInput.setSelectionRange(nextPos, nextPos);
-            });
+            form.addEventListener("change", updateButtonState);
 
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
+            const handleSubmit = async (e) => {
+                if (e) e.preventDefault();
+                if (submitBtn.disabled) return;
 
-                const formData = new FormData(form);
-                const name = formData.get("name")?.toString().trim() || "";
-                let phoneValue = formData.get("phone")?.toString() || "";
+                const name = nameInput?.value?.trim() || "";
+                const phone = phoneInput.value;
 
-                if (!phoneValue.startsWith("+1"))
-                    phoneValue = "+1" + phoneValue;
-
-                if (!PHONE_REGEX.test(phoneValue)) {
+                if (!name || !validatePhone(phone)) {
                     if (phoneError)
-                        phoneError.textContent = "Invalid phone number";
+                        phoneError.textContent =
+                            "Please provide a valid name and phone number.";
                     return;
                 }
 
                 if (phoneError) phoneError.textContent = "";
 
-                if (submitBtn) {
-                    const originalText = submitBtn.textContent;
-                    submitBtn.textContent = "Sending...";
-                    submitBtn.disabled = true;
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = "Sending...";
+                isSubmitting = true;
+                updateButtonState();
 
-                    // Get UTM params from sessionStorage
-                    let utmParams = {};
-                    try {
-                        const raw = sessionStorage.getItem("utm_params");
-                        utmParams = raw ? JSON.parse(raw) : {};
-                    } catch (err) {}
+                try {
+                    const path = window.location.pathname;
+                    const pathParts = path.split("/").filter((part) => part !== "");
+                    const city = pathParts[0] || "chicago";
 
-                    const citySlug =
-                        window.location.pathname
-                            .split("/")
-                            .filter(Boolean)
-                            .pop() || "chicago";
-                    const source =
-                        form.getAttribute("data-source") || "contact_form";
-
-                    const payload = {
-                        data: {
-                            name,
-                            phone: phoneValue,
-                            city: citySlug,
-                            source: source,
-                            ...utmParams,
-                        },
-                    };
-
-                    try {
-                        const baseUrl =
-                            import.meta.env.PUBLIC_STRAPI_URL ||
-                            "https://strapi-dev-e587.up.railway.app";
-                        const response = await fetch(
-                            `${baseUrl}/api/book-now`,
-                            {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(payload),
+                    const response = await fetch(`${apiUrl}/api/book-now`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            data: {
+                                name,
+                                phone,
+                                source:
+                                    form.getAttribute("data-source") ||
+                                    "contact_form",
+                                city,
+                                ...getUtmParams(),
                             },
-                        );
+                        }),
+                    });
 
-                        if (response.ok) {
-                            window.location.href = "/see-you-soon";
-                        } else {
-                            console.error("Submission failed");
-                            alert("Submission failed. Please try again.");
-                            submitBtn.textContent = originalText;
-                            submitBtn.disabled = false;
+                    if (response.ok) {
+                        if (typeof dataLayer !== "undefined") {
+                            dataLayer.push({
+                                event: "form_send_ok",
+                                "user_data.phone_number": phone.replace(/\D/g, ""),
+                            });
                         }
-                    } catch (err) {
-                        console.error("Error submitting form:", err);
+                        if (typeof gtag !== "undefined") {
+                            gtag("event", "conversion", {
+                                send_to: "AW-17416148778/aAZCCNeF9vsaEKqu1fBA",
+                            });
+                        }
+
+                        window.location.href = "/see-you-soon";
+                    } else {
+                        const errorData = await response.json();
+                        console.error("Form submission error:", errorData);
                         alert("An error occurred. Please try again.");
                         submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
+                        isSubmitting = false;
+                        updateButtonState();
                     }
+                } catch (error) {
+                    console.error("Failed to send form:", error);
+                    alert("Failed to send request. Please check your connection.");
+                    submitBtn.textContent = originalText;
+                    isSubmitting = false;
+                    updateButtonState();
+                }
+            };
+
+            submitBtn.addEventListener("click", handleSubmit);
+
+            form.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    if (!submitBtn.disabled) handleSubmit();
                 }
             });
+
+            updateButtonState();
         };
 
         setupForm();

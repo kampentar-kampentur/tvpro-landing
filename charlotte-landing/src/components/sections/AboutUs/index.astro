@@ -1,6 +1,5 @@
 ---
-import Button from "../../Button.astro";
-import Input from "../../ui/Input.astro";
+import ContactForm from "../../ui/ContactForm.astro";
 
 interface Props {
     cityName: string;
@@ -21,8 +20,6 @@ const formTitle = data?.formTitle || "Ready to get started?";
 const formSubtitle =
     data?.formSubtitle ||
     "Leave your details and we'll call you back with a quote.";
-const namePlaceholder = data?.namePlaceholder || "Your Name";
-const phonePlaceholder = data?.phonePlaceholder || "+1 (___) ___-____";
 const submitText = data?.submitButtonText || "Send Request";
 
 const processText = (text: string) => {
@@ -67,163 +64,17 @@ const processText = (text: string) => {
 
             <!-- Form Section -->
             <div class="form-section">
-                <div class="form-container">
-                    <h3 class="form-title" set:html={processText(formTitle)} />
-                    <p
-                        class="form-subtitle"
-                        set:html={processText(formSubtitle)}
-                    />
-
-                    <form id="aboutUsForm" class="contact-form">
-                        <Input
-                            label="Full Name"
-                            name="name"
-                            placeholder={namePlaceholder}
-                            class="about-input"
-                        />
-                        <Input
-                            label="Phone Number *"
-                            name="phone"
-                            type="tel"
-                            placeholder={phonePlaceholder}
-                            required
-                            id="aboutUsPhone"
-                            class="about-input"
-                        />
-                        <span id="aboutUsPhoneError" class="phone-error"></span>
-                        <Button
-                            type="submit"
-                            id="aboutUsSubmit"
-                            class="submit-button"
-                            size="big">{submitText}</Button
-                        >
-                    </form>
-                </div>
+                <ContactForm
+                    id="aboutUsForm"
+                    source="about_us_form"
+                    formTitle={formTitle}
+                    formSubtitle={formSubtitle}
+                    submitText={submitText}
+                />
             </div>
         </div>
     </div>
 </section>
-
-<script is:inline>
-    (function () {
-        const PHONE_REGEX =
-            /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
-
-        const setupAboutForm = () => {
-            const form = document.getElementById("aboutUsForm");
-            const phoneInput = document.getElementById("aboutUsPhone");
-            const phoneError = document.getElementById("aboutUsPhoneError");
-            const submitBtn = document.getElementById("aboutUsSubmit");
-
-            if (!form || !phoneInput) return;
-
-            const formatPhone = (value) => {
-                let digits = value.replace(/\D/g, "");
-                if (!digits.startsWith("1") && digits.length > 0)
-                    digits = "1" + digits;
-                digits = digits.slice(0, 11);
-
-                if (digits.length === 0) return "";
-                if (digits.length === 1) return "+1";
-                if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
-                if (digits.length <= 7)
-                    return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
-                return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
-            };
-
-            phoneInput.addEventListener("focus", () => {
-                if (!phoneInput.value) phoneInput.value = "+1 ";
-            });
-
-            phoneInput.addEventListener("input", (e) => {
-                const cursor = phoneInput.selectionStart;
-                const oldLen = phoneInput.value.length;
-                phoneInput.value = formatPhone(phoneInput.value);
-                const newLen = phoneInput.value.length;
-                let nextPos = (cursor || 0) + (newLen - oldLen);
-                phoneInput.setSelectionRange(nextPos, nextPos);
-            });
-
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
-
-                const formData = new FormData(form);
-                const name = formData.get("name")?.toString().trim() || "";
-                let phone = formData.get("phone")?.toString() || "";
-
-                if (!phone.startsWith("+1")) phone = "+1" + phone;
-
-                if (!PHONE_REGEX.test(phone)) {
-                    if (phoneError)
-                        phoneError.textContent = "Invalid phone number";
-                    return;
-                }
-
-                if (phoneError) phoneError.textContent = "";
-
-                if (submitBtn) {
-                    const originalText = submitBtn.textContent;
-                    submitBtn.textContent = "Sending...";
-                    submitBtn.disabled = true;
-
-                    // Get UTM params from sessionStorage
-                    let utmParams = {};
-                    try {
-                        const raw = sessionStorage.getItem("utm_params");
-                        utmParams = raw ? JSON.parse(raw) : {};
-                    } catch (e) {}
-
-                    const citySlug =
-                        window.location.pathname
-                            .split("/")
-                            .filter(Boolean)
-                            .pop() || "chicago";
-
-                    const payload = {
-                        data: {
-                            name,
-                            phone,
-                            city: citySlug,
-                            source: "about_us_form",
-                            ...utmParams,
-                        },
-                    };
-
-                    try {
-                        const baseUrl =
-                            import.meta.env.PUBLIC_STRAPI_URL ||
-                            "https://strapi-dev-e587.up.railway.app";
-                        const response = await fetch(
-                            `${baseUrl}/api/book-now`,
-                            {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(payload),
-                            },
-                        );
-
-                        if (response.ok) {
-                            window.location.href = "/see-you-soon";
-                        } else {
-                            console.error("Submission failed");
-                            alert("Submission failed. Please try again.");
-                            submitBtn.textContent = originalText;
-                            submitBtn.disabled = false;
-                        }
-                    } catch (err) {
-                        console.error("Error submitting form:", err);
-                        alert("An error occurred. Please try again.");
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                    }
-                }
-            });
-        };
-
-        setupAboutForm();
-        document.addEventListener("astro:page-load", setupAboutForm);
-    })();
-</script>
 
 <style>
     .about-us-section {
@@ -284,59 +135,8 @@ const processText = (text: string) => {
         flex: 0 0 450px;
     }
 
-    .form-container {
-        background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.08) 0%,
-            rgba(255, 255, 255, 0.03) 100%
-        );
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 40px;
-        border-radius: 32px;
-        backdrop-filter: blur(20px);
-        box-shadow:
-            0 25px 50px rgba(0, 0, 0, 0.3),
-            0 0 30px rgba(13, 100, 160, 0.1);
-    }
-
-    .form-title {
-        font-size: 24px;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: var(--foreground);
-    }
-
-    .form-subtitle {
-        font-size: 14px;
-        margin-bottom: 32px;
-        opacity: 0.7;
-        line-height: 1.5;
-    }
-
     .accent {
         color: var(--blue-main);
-    }
-
-    .about-input {
-        --input-bg: rgba(255, 255, 255, 0.05);
-        --input-border: rgba(255, 255, 255, 0.1);
-        --input-text: #fff;
-        --input-placeholder: rgba(255, 255, 255, 0.4);
-        margin-bottom: 12px;
-    }
-
-    .phone-error {
-        display: block;
-        color: #ff4d4f;
-        font-size: 12px;
-        margin-top: -4px;
-        margin-bottom: 12px;
-        min-height: 16px;
-    }
-
-    .submit-button {
-        width: 100%;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
     @media (max-width: 992px) {

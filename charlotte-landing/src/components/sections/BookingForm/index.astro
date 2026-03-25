@@ -37,7 +37,7 @@ const { cityName } = Astro.props;
         No spam. Your data is used strictly for scheduling your appointment.
     </p>
 
-    <Button type="submit" class="submit-button" size="big">Send Request</Button>
+    <Button type="submit" class="submit-button" size="big" disabled>Send Request</Button>
 </form>
 
 <style>
@@ -114,106 +114,137 @@ const { cityName } = Astro.props;
         const form = document.querySelector(".booking-form") as HTMLFormElement;
         if (!form) return;
 
-        const submitBtn = form.querySelector(".submit-button") as HTMLButtonElement;
+        const nameInput = form.querySelector('input[name="name"]') as HTMLInputElement;
         const phoneInput = form.querySelector('input[name="phone"]') as HTMLInputElement;
+        const submitBtn = form.querySelector(".submit-button") as HTMLButtonElement;
+        let isSubmitting = false;
 
-        const PHONE_REGEX =
-            /^(?:\+1\s?)?\(?[2-9]\d{2}\)?[-.\s]?[2-9]\d{2}[-.s]?\d{4}$/;
+        if (!nameInput || !phoneInput || !submitBtn) return;
 
-        const formatPhone = (value: string) => {
-            let digits = value.replace(/\D/g, "");
-            if (!digits.startsWith("1") && digits.length > 0)
-                digits = "1" + digits;
-            digits = digits.slice(0, 11);
-
-            if (digits.length === 0) return "";
-            if (digits.length === 1) return "+1";
-            if (digits.length <= 4) return `+1 (${digits.slice(1)}`;
-            if (digits.length <= 7)
-                return `+1 (${digits.slice(1, 4)}) ${digits.slice(4)}`;
-            return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
-        };
-
-        if (phoneInput) {
-            phoneInput.addEventListener("focus", () => {
-                if (!phoneInput.value) phoneInput.value = "+1 ";
-            });
-            phoneInput.addEventListener("input", () => {
-                phoneInput.value = formatPhone(phoneInput.value);
-            });
+        function formatUSPhone(raw: string) {
+            if (!raw) return '';
+            let digits = raw.replace(/\D/g, '');
+            if (digits.length > 10 && digits.startsWith('1')) {
+                digits = digits.slice(1);
+            }
+            if (digits.length === 0) return '';
+            if (digits.length <= 3) return `(${digits}`;
+            if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+            return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
         }
 
-        form.addEventListener("submit", async (e: Event) => {
-            e.preventDefault();
+        const validatePhone = (phone: string) => {
+            const digits = phone.replace(/\D/g, '');
+            return digits.length === 10 || (digits.length === 11 && digits.startsWith('1'));
+        };
 
-            const formData = new FormData(form);
-            const name = formData.get("name")?.toString() || "";
-            let phone = formData.get("phone")?.toString() || "";
+        const getUtmParams = () => {
+            const params = new URLSearchParams(window.location.search);
+            const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+            const utms: Record<string, string> = {};
+            utmKeys.forEach(key => {
+                const val = params.get(key);
+                if (val) utms[key] = val;
+            });
+            return utms;
+        };
 
-            if (!phone.startsWith("+1")) phone = "+1" + phone;
+        const updateButtonState = () => {
+            const name = nameInput.value.trim();
+            const phone = phoneInput.value;
+            const isValid = name.length > 0 && validatePhone(phone);
+            submitBtn.disabled = isSubmitting || !isValid;
+        };
 
-            if (!PHONE_REGEX.test(phone)) {
-                alert("Invalid phone number");
+        form.addEventListener("input", (e) => {
+            if (e.target === phoneInput) {
+                const digits = phoneInput.value.replace(/\D/g, '');
+                phoneInput.value = formatUSPhone(digits);
+            }
+            updateButtonState();
+        });
+
+        form.addEventListener("change", updateButtonState);
+
+        const handleSubmit = async (e?: Event) => {
+            if (e) e.preventDefault();
+            if (submitBtn.disabled) return;
+
+            const name = nameInput.value.trim();
+            const phone = phoneInput.value;
+
+            if (!name || !validatePhone(phone)) {
                 return;
             }
 
-            if (submitBtn) {
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = "Sending...";
-                submitBtn.disabled = true;
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = "Sending...";
+            isSubmitting = true;
+            updateButtonState();
 
-                const citySlug =
-                    window.location.pathname
-                        .split("/")
-                        .filter(Boolean)
-                        .pop() || "chicago";
+            try {
+                // @ts-ignore
+                const apiUrl = import.meta.env.PUBLIC_STRAPI_URL || "https://strapi-production-20d6.up.railway.app";
+                const path = window.location.pathname;
+                const pathParts = path.split('/').filter(part => part !== "");
+                const city = pathParts[0] || 'chicago';
 
-                // Get UTM params from sessionStorage
-                let utmParams = {};
-                try {
-                    const raw = sessionStorage.getItem("utm_params");
-                    utmParams = raw ? JSON.parse(raw) : {};
-                } catch (e) {}
+                const response = await fetch(`${apiUrl}/api/book-now`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        data: {
+                            name,
+                            phone,
+                            source: 'booking_form_modal',
+                            city,
+                            ...getUtmParams(),
+                        }
+                    }),
+                });
 
-                const payload = {
-                    data: {
-                        name,
-                        phone,
-                        city: citySlug,
-                        source: "booking_form_modal",
-                        ...utmParams,
-                    },
-                };
-
-                try {
-                    const baseUrl =
-                        import.meta.env.PUBLIC_STRAPI_URL ||
-                        "https://strapi-dev-e587.up.railway.app";
-                    const response = await fetch(
-                        `${baseUrl}/api/book-now`,
-                        {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload),
-                        },
-                    );
-
-                    if (response.ok) {
-                        sessionStorage.setItem('quiz_return_url', '/chicago/');
-                        window.location.href = "/see-you-soon";
-                    } else {
-                        alert("Submission failed. Please try again.");
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
+                if (response.ok) {
+                    if (typeof dataLayer !== 'undefined') {
+                        // @ts-ignore
+                        dataLayer.push({
+                            event: 'form_send_ok',
+                            'user_data.phone_number': phone.replace(/\D/g, ''),
+                        });
                     }
-                } catch (err) {
-                    console.error("Error submitting form:", err);
+                    if (typeof gtag !== 'undefined') {
+                        // @ts-ignore
+                        gtag('event', 'conversion', { 'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA' });
+                    }
+
+                    sessionStorage.setItem('quiz_return_url', '/chicago/');
+                    window.location.href = "/see-you-soon";
+                } else {
+                    const errorData = await response.json();
+                    console.error("Form submission error:", errorData);
                     alert("An error occurred. Please try again.");
                     submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
+                    isSubmitting = false;
+                    updateButtonState();
                 }
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                alert("An error occurred. Please try again.");
+                submitBtn.textContent = originalText;
+                isSubmitting = false;
+                updateButtonState();
+            }
+        };
+
+        submitBtn.addEventListener("click", handleSubmit);
+        
+        form.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                if (!submitBtn.disabled) handleSubmit();
             }
         });
+
+        updateButtonState();
     }
 
     setupBookingForm();
