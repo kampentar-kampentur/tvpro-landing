@@ -11,7 +11,17 @@ interface Props {
 }
 
 const defaultTitle = "TV Mounting Services | TVPro Handy Services";
-const defaultDescription = "TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.";
+const defaultDescription = `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
+
+Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
+
+
+✅ Transparent pricing, no hidden fees
+✅ Evening & weekend availability
+✅ 1-year warranty on all installations
+✅ Trusted by homeowners, businesses, and designers
+
+Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`;
 
 const { 
 	title = defaultTitle, 
@@ -58,7 +68,7 @@ const localBusinessSchema = {
     }
 };
 
-const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if possible
+const clarityId = import.meta.env.PUBLIC_CLARITY_PROJECT_ID;
 ---
 
 <!doctype html>
@@ -127,14 +137,17 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
         <link rel="dns-prefetch" href="https://img.youtube.com" />
 
         <!-- Analytics & Tracking Scripts -->
-        <script is:inline>
-            // Microsoft Clarity
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "qqsc062vks"); // Static ID for now
+        {clarityId && (
+            <script is:inline set:html={`
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "${clarityId}");
+            `}/>
+        )}
 
+        <script is:inline set:html={`
             // Delayed Marketing Scripts (GTM, WhatConverts, etc.)
             (function() {
               var fired = false;
@@ -164,14 +177,6 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
                   workizScript.async = true;
                   workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
                   document.head.appendChild(workizScript);
-                })();
-
-                // 3. Thumbtack Star Widget
-                (function() {
-                  var ttScript = document.createElement('script');
-                  ttScript.async = true;
-                  ttScript.src = "https://www.thumbtack.com/profile/widgets/scripts/?service_pk=538968360070111254&widget_id=review&type=star";
-                  document.head.appendChild(ttScript);
                 })();
 
                 // 4. LeadConnector Chat Widget
@@ -205,12 +210,12 @@ const clarityId = "NEXT_PUBLIC_CLARITY_PROJECT_ID"; // Replace with actual if po
                 })();
               }
 
-              timeoutId = setTimeout(loadScripts, 3000); // 3s delay for critical performance
+              timeoutId = setTimeout(loadScripts, 1000); // 1s delay (synced with Next.js)
               ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
                 window.addEventListener(e, loadScripts, { passive: true, once: true });
               });
             })();
-        </script>
+        `}/>
 
 	</head>
 	<body>
