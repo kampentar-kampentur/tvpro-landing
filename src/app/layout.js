@@ -216,23 +216,6 @@ export default async function RootLayout({ children }) {
                     workizScript.async = true;
                     workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
                     
-                    workizScript.onload = function() {
-                      console.log('Marketing scripts: WhatConverts core script loaded');
-                      try {
-                        // WhatConverts Chat initialization
-                        if (window.$wc_leads && window.$wc_leads.track && typeof window.$wc_leads.track.chat === 'function') {
-                          window.$wc_leads.track.chat({
-                            'First Name': 'Joe',
-                            'Last Name': 'Smith',
-                            'Email Address': 'joe.smith@example.com',
-                            'Phone Number': '+18883437185',
-                            'Chat Log': 'Visitor - Startup initialization'
-                          });
-                          console.log('Marketing scripts: WhatConverts Chat initialized');
-                        }
-                      } catch(e) { console.error('WhatConverts Chat Init Error:', e); }
-                    };
-                    
                     document.head.appendChild(workizScript);
                   } catch(e) { console.error('WhatConverts Error:', e); }
                 })();
