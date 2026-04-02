@@ -155,6 +155,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <script async src="https://ob.sornavellon.com/i/525465f0a01f5537af7992a76b9c7bf2.js" className="ct_clicktrue"></script>
         {/* Preload LCP Image */}
         <link
           rel="preload"
@@ -296,6 +297,7 @@ export default async function RootLayout({ children }) {
 
       </head>
       <body className={redHatDisplay.variable}>
+        <noscript><iframe src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch=" width="0" height="0" style={{ display: 'none' }}></iframe></noscript>
         <CTAProvider initialCTA={cta}>
           <ModalProvider>
             <EngagementTracker />
