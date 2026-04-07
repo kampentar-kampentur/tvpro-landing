@@ -133,26 +133,34 @@ export default function GalleryGrid({ filters }) {
   }, [activeFilter]);
 
   // Modal Handlers
-  const handleOpenModal = (index, currentImages) => {
+  const handleOpenModal = (index, currentImages, e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setModalImages(currentImages);
     setModalIndex(index);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setIsModalOpen(false);
   };
 
   const photoItems = modalImages ? modalImages.filter(item => item.image) : [];
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     const currentPhotoIndex = photoItems.findIndex(item => item === modalImages[modalIndex]);
     const nextPhotoIndex = (currentPhotoIndex + 1) % photoItems.length;
     const nextItemIndex = modalImages.indexOf(photoItems[nextPhotoIndex]);
     setModalIndex(nextItemIndex);
   };
 
-  const handlePrev = () => {
+  const handlePrev = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     const currentPhotoIndex = photoItems.findIndex(item => item === modalImages[modalIndex]);
     const prevPhotoIndex = (currentPhotoIndex - 1 + photoItems.length) % photoItems.length;
     const prevItemIndex = modalImages.indexOf(photoItems[prevPhotoIndex]);
@@ -168,11 +176,11 @@ export default function GalleryGrid({ filters }) {
   const onTouchMove = (e) => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
-  const onTouchEnd = () => {
+  const onTouchEnd = (e) => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
-    if (distance > minSwipeDistance) handleNext();
-    if (distance < -minSwipeDistance) handlePrev();
+    if (distance > minSwipeDistance) handleNext(e);
+    if (distance < -minSwipeDistance) handlePrev(e);
   };
 
   const currentItem = modalImages[modalIndex];

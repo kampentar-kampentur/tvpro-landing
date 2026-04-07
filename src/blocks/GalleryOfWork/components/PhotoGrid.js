@@ -14,7 +14,7 @@ const PhotoGrid = ({ images, onPhotoClick }) => {
           videoUrl={image.videoUrl}
           video={image.video}
           currentIndex={index}
-          onClick={() => onPhotoClick(index, images)}
+          onClick={(e) => onPhotoClick(index, images, e)}
         />
       ))}
     </div>

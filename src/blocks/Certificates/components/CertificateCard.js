@@ -24,17 +24,23 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
 
-  const handleOpen = () => {
+  const handleOpen = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setModalIndex(currentIndex);
     setOpen(true);
   };
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     const nextIndex = (modalIndex + 1) % certificates.length;
     setModalIndex(nextIndex);
   };
 
-  const handlePrev = () => {
+  const handlePrev = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     const prevIndex = (modalIndex - 1 + certificates.length) % certificates.length;
     setModalIndex(prevIndex);
   };
@@ -51,16 +57,16 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
 
-  const onTouchEnd = () => {
+  const onTouchEnd = (e) => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
     if (isLeftSwipe) {
-      handleNext();
+      handleNext(e);
     }
     if (isRightSwipe) {
-      handlePrev();
+      handlePrev(e);
     }
   };
 
@@ -84,9 +90,6 @@ const CertificateCard = ({ image, className, certificates, currentIndex }) => {
       </div>
       <Modal isOpen={open} onClose={() => setOpen(false)}>
         <div className={styles.modalContainer}>
-          <div className={styles.imageContainer}>
-            <ImageWrapper media={image} defaultAlt="Professional Certification" width={400} />
-          </div>
           <button className={styles.arrowLeft} onClick={handlePrev}>
             <ArrowLeftIcon />
           </button>

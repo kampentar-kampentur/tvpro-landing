@@ -16,6 +16,8 @@ import PinterestDefault from "@/assets/socialIcons/pinterest.svg"
 import PinterestHover from "@/assets/socialIcons/pinterestHover.svg"
 import XDefault from "@/assets/socialIcons/X.svg"
 import XHover from "@/assets/socialIcons/XHover.svg"
+import LinkedinDefault from "@/assets/socialIcons/LinkedinDefault.svg";
+import LinkedinHover from "@/assets/socialIcons/LinkedinHover.svg";
 import Text from "@/ui/Text/Text";
 import ContactsDetails from "./components/ContactsDetails";
 
@@ -50,6 +52,7 @@ export default async function Contacts({ data = {} }) {
     thumbtack: data?.thumbtack || defaultContact?.thumbtack,
     pinterest: data?.pinterest || defaultContact?.pinterest,
     x: data?.x || defaultContact?.x,
+    linkedin: data?.linkedin || defaultContact?.linkedin,
   };
   return (
     <section className={styles.contacts} id="contact">
@@ -129,6 +132,13 @@ export default async function Contacts({ data = {} }) {
                 <XDefault className={styles.defaultIcon} />
                 <XHover className={styles.hoverIcon} />
                 <span className="sr-only">X</span>
+              </a>
+            )}
+            {contact.linkedin && (
+              <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className={styles.socialIconLink} aria-label="Linkedin">
+                <LinkedinDefault className={styles.defaultIcon} />
+                <LinkedinHover className={styles.hoverIcon} />
+                <span className="sr-only">Linkedin</span>
               </a>
             )}
           </div>
