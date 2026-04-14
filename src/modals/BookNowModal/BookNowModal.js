@@ -92,6 +92,7 @@ const BookNowModal = () => {
             });
 
             if (response.ok) {
+                sessionStorage.setItem('form_submitted', 'true');
                 close();
                 setFormData({ name: '', phone: '' });
 

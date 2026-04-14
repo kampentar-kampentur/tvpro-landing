@@ -217,6 +217,7 @@ const { cityName } = Astro.props;
                     }
 
                     sessionStorage.setItem('quiz_return_url', '/chicago/');
+                    sessionStorage.setItem('form_submitted', 'true');
                     window.location.href = "/see-you-soon";
                 } else {
                     const errorData = await response.json();

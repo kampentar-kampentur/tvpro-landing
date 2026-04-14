@@ -538,6 +538,7 @@ const BestQuoteModal = () => {
           sessionStorage.setItem('quiz_return_url', window.location.pathname);
         }
         
+        sessionStorage.setItem('form_submitted', 'true');
         localStorage.setItem('pricingData', JSON.stringify({ totalPrice, structuredCostBreakdown }));
         close();
         setFormData({});

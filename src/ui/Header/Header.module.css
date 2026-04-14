@@ -157,7 +157,7 @@ button.menuButton {
     height: 58px;
     display: inline-flex !important;
     position: fixed;
-    bottom: 84px;
+    bottom: 20px;
     right: 20px;
     z-index: 1000;
     border-radius: 50%;

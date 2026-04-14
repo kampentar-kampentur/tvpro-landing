@@ -230,6 +230,7 @@ const apiUrl = import.meta.env.PUBLIC_STRAPI_URL || "https://strapi-production-2
                         }
 
                         sessionStorage.setItem('quiz_return_url', '/chicago/');
+                        sessionStorage.setItem('form_submitted', 'true');
                         window.location.href = "/see-you-soon";
                     } else {
                         const errorData = await response.json();

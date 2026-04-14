@@ -79,6 +79,7 @@ const ExitIntentModal = () => {
             });
 
             if (response.ok) {
+                sessionStorage.setItem('form_submitted', 'true');
                 close();
                 router.push('/see-you-soon');
             }

@@ -103,6 +103,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   const handleSubmit = async (...args) => {
     try {
       await onSubmit(...args)
+      sessionStorage.setItem('form_submitted', 'true');
       if (typeof sendGTMEvent !== 'undefined') {
         sendGTMEvent({
           event: `form_step_${currentStepIndex + 1}_send`,

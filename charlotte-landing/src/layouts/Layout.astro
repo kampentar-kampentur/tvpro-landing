@@ -261,7 +261,10 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
 
                 function openModal(id) {
                     const modal = document.getElementById(id);
-                    if (modal && !hasTriggered && !sessionStorage.getItem('exit_popup_triggered')) {
+                    const isTriggered = sessionStorage.getItem('exit_popup_triggered');
+                    const isFormSubmitted = sessionStorage.getItem('form_submitted');
+                    
+                    if (modal && !hasTriggered && !isTriggered && !isFormSubmitted) {
                         modal.classList.add('open');
                         document.body.style.overflow = 'hidden';
                         hasTriggered = true;

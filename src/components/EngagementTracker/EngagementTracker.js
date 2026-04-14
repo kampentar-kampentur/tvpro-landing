@@ -16,8 +16,12 @@ const EngagementTracker = () => {
     }, [modals]);
 
     const triggerPopup = useCallback(() => {
-        // Capping: One per session
-        if (hasTriggered.current || sessionStorage.getItem('exit_popup_triggered')) return;
+        // Capping: One per session or if form already submitted
+        if (
+            hasTriggered.current || 
+            sessionStorage.getItem('exit_popup_triggered') || 
+            sessionStorage.getItem('form_submitted')
+        ) return;
 
         // Don't trigger if any modal is already open
         if (isAnyModalOpen.current) return;
