@@ -69,6 +69,7 @@ const localBusinessSchema = {
 };
 
 const clarityId = import.meta.env.PUBLIC_CLARITY_PROJECT_ID;
+const gtmId = import.meta.env.PUBLIC_GTM_ID;
 ---
 
 <!doctype html>
@@ -164,11 +165,13 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_PROJECT_ID;
                 });
                 
                 // 1. Google Tag Manager
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
+                if ("${gtmId}") {
+                  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                  })(window,document,'script','dataLayer',"${gtmId}");
+                }
 
                 // 2. WhatConverts Chat & Tracking
                 (function() {
@@ -222,10 +225,12 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_PROJECT_ID;
 	<body>
 		<noscript><iframe src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch=" width="0" height="0" style="display:none"></iframe></noscript>
 		<!-- Google Tag Manager (noscript) -->
-		<noscript>
-			<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QVX2Z6S"
-				height="0" width="0" style="display:none;visibility:hidden"></iframe>
-		</noscript>
+		{gtmId && (
+			<noscript>
+				<iframe src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+					height="0" width="0" style="display:none;visibility:hidden"></iframe>
+			</noscript>
+		)}
 
 		<slot />
 

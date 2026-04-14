@@ -197,13 +197,18 @@ export default async function RootLayout({ children }) {
                 
                 // 1. GTM
                 (function() {
+                  const gtmId = '${process.env.NEXT_PUBLIC_GTM_ID}';
+                  if (!gtmId || gtmId === 'undefined') {
+                    console.log('Marketing scripts: GTM skipped (no ID)');
+                    return;
+                  }
                   try {
                     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                    })(window,document,'script','dataLayer','GTM-5QVX2Z6S');
-                    console.log('Marketing scripts: GTM loaded');
+                    })(window,document,'script','dataLayer',gtmId);
+                    console.log('Marketing scripts: GTM loaded (' + gtmId + ')');
                   } catch(e) { console.error('GTM Error:', e); }
                 })();
 
@@ -297,6 +302,16 @@ export default async function RootLayout({ children }) {
 
       </head>
       <body className={redHatDisplay.variable}>
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <noscript>
+            <iframe 
+              src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+              height="0" 
+              width="0" 
+              style={{ display: 'none', visibility: 'hidden' }}
+            ></iframe>
+          </noscript>
+        )}
         <noscript><iframe src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch=" width="0" height="0" style={{ display: 'none' }}></iframe></noscript>
         <CTAProvider initialCTA={cta}>
           <ModalProvider>
