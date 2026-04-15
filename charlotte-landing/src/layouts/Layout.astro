@@ -70,6 +70,7 @@ const localBusinessSchema = {
 
 const clarityId = import.meta.env.PUBLIC_CLARITY_PROJECT_ID;
 const gtmId = import.meta.env.PUBLIC_GTM_ID;
+const pixelId = import.meta.env.PUBLIC_FB_PIXEL_ID;
 ---
 
 <!doctype html>
@@ -172,6 +173,20 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
                   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
                   })(window,document,'script','dataLayer',"${gtmId}");
                 }
+                
+                // 2. Meta Pixel (Facebook)
+                if ("${pixelId}") {
+                  !function(f,b,e,v,n,t,s)
+                  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                  n.queue=[];t=b.createElement(e);t.async=!0;
+                  t.src=v;s=b.getElementsByTagName(e)[0];
+                  s.parentNode.insertBefore(t,s)}(window, document,'script',
+                  'https://connect.facebook.net/en_US/fbevents.js');
+                  fbq('init', "${pixelId}");
+                  fbq('track', 'PageView');
+                }
 
                 // 2. WhatConverts Chat & Tracking
                 (function() {
@@ -229,6 +244,12 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
 			<noscript>
 				<iframe src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
 					height="0" width="0" style="display:none;visibility:hidden"></iframe>
+			</noscript>
+		)}
+		{pixelId && (
+			<noscript>
+				<img height="1" width="1" style="display:none"
+					src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`} />
 			</noscript>
 		)}
 

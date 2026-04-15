@@ -212,6 +212,28 @@ export default async function RootLayout({ children }) {
                   } catch(e) { console.error('GTM Error:', e); }
                 })();
 
+                // 2. Meta Pixel (Facebook)
+                (function() {
+                  const pixelId = '${process.env.NEXT_PUBLIC_FB_PIXEL_ID}';
+                  if (!pixelId || pixelId === 'undefined') {
+                    console.log('Marketing scripts: Meta Pixel skipped (no ID)');
+                    return;
+                  }
+                  try {
+                    !function(f,b,e,v,n,t,s)
+                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                    n.queue=[];t=b.createElement(e);t.async=!0;
+                    t.src=v;s=b.getElementsByTagName(e)[0];
+                    s.parentNode.insertBefore(t,s)}(window, document,'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+                    fbq('init', pixelId);
+                    fbq('track', 'PageView');
+                    console.log('Marketing scripts: Meta Pixel loaded (' + pixelId + ')');
+                  } catch(e) { console.error('Meta Pixel Error:', e); }
+                })();
+
                 // 2. WhatConverts Chat & Tracking
                 (function() {
                   try {
@@ -310,6 +332,16 @@ export default async function RootLayout({ children }) {
               width="0" 
               style={{ display: 'none', visibility: 'hidden' }}
             ></iframe>
+          </noscript>
+        )}
+        {process.env.NEXT_PUBLIC_FB_PIXEL_ID && (
+          <noscript>
+            <img 
+              height="1" 
+              width="1" 
+              style={{ display: 'none' }}
+              src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FB_PIXEL_ID}&ev=PageView&noscript=1`}
+            />
           </noscript>
         )}
         <noscript><iframe src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch=" width="0" height="0" style={{ display: 'none' }}></iframe></noscript>
