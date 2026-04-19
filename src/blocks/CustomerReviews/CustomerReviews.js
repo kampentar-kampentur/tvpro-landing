@@ -34,8 +34,7 @@ export default async function CustomerReviews({ data = {} }) {
       <div className={styles.ctaContainer}>
         <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
         <div className={styles.ctaButtons}>
-          <QuoteButton variant="secondary" modalName="BookNow">Leave Yours Here!</QuoteButton>
-          <QuoteButton />
+          <QuoteButton size="big" />
         </div>
       </div>
     </section>
