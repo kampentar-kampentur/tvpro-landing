@@ -13,7 +13,7 @@ async function getAboutUs() {
 }
 
 // Default export with data prop
-export default async function AboutUs({ data = {} }) {
+export default async function AboutUs({ data = {}, cityContext }) {
   const defaultAboutUsData = await getAboutUs();
 
   // Merge: Use prop data if available, otherwise fallback to default
@@ -28,15 +28,15 @@ export default async function AboutUs({ data = {} }) {
   return (
     <section className={`block ${styles.aboutUs}`} id="about">
       <header className={styles.aboutUsHeader}>
-        <h2 className="blockHeading"><Text text={aboutUsData.title} /></h2>
-        <p className="subText"><Text text={aboutUsData.subTitle} /></p>
+        <h2 className="blockHeading"><Text text={aboutUsData.title} cityContext={cityContext} /></h2>
+        <p className="subText"><Text text={aboutUsData.subTitle} cityContext={cityContext} /></p>
       </header>
       <div className={styles.contentContainer}>
         <p className={styles.mainText}>
-          <Text text={aboutUsData.mainTextLeft} />
+          <Text text={aboutUsData.mainTextLeft} cityContext={cityContext} />
         </p>
         <p className={styles.mainText}>
-          <Text text={aboutUsData.mainTextRight} />
+          <Text text={aboutUsData.mainTextRight} cityContext={cityContext} />
         </p>
       </div>
     </section>

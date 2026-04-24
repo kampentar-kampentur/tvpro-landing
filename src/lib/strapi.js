@@ -64,9 +64,34 @@ export async function getCityBySlug(slug) {
 
 export async function getAllCities() {
     const data = await fetchAPI("/cities", {
-        pagination: { pageSize: 100 },
+        pagination: { pageSize: 200 },
     });
     return flattenStrapiData(data?.data) || [];
+}
+
+/**
+ * Fetches the page layout from a metro city.
+ * Used when a suburb has no own page layout.
+ * @param {string} metroSlug - slug of the parent metro city (e.g. "houston")
+ * @returns {Array} - array of page blocks
+ */
+export async function getMetroCityLayout(metroSlug) {
+    if (!metroSlug) return null;
+
+    try {
+        const data = await fetchAPI("/cities", {
+            filters: { path: metroSlug },
+            populate: {
+                page: { populate: "*" },
+            },
+        });
+
+        const metroCity = flattenStrapiData(data?.data[0]);
+        return metroCity?.page || null;
+    } catch (error) {
+        console.error(`[Strapi] Failed to fetch metro city layout for "${metroSlug}":`, error);
+        return null;
+    }
 }
 
 export async function getGlobalConfig() {

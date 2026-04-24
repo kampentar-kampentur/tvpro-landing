@@ -91,10 +91,10 @@ export default async function Hero({ data = {}, cityContext }) {
       <div className={`block ${styles.hero}`}>
         <div className={`blockContainer ${styles.heroContainer}`}>
           <h1 className={styles.mainHeading}>
-            <Text text={heroData.title} />
+            <Text text={heroData.title} cityContext={cityContext} />
           </h1>
           <p className="subText">
-            <Text text={heroData.subTitle} />
+            <Text text={heroData.subTitle} cityContext={cityContext} />
           </p>
           <HeroCTA className={styles.heroButton} />
           {/* <div className={styles.badgesWrapper}> */}

@@ -15,7 +15,7 @@ export default async function sitemap() {
 
     // 2. Map cities to sitemap entries
     const cityEntries = cities
-        .filter(city => !city.test_version && city.path)
+        .filter(city => !city.test_version && city.path && !city.metro_city_slug)
         .map((city) => ({
             url: `${baseUrl}/${city.path}/`,
             lastModified: new Date(),

@@ -12,7 +12,7 @@ async function getFAQ() {
 }
 
 // Default export with data prop
-export default async function FAQ({ data = {} }) {
+export default async function FAQ({ data = {}, cityContext }) {
   const defaultFaqData = await getFAQ();
 
   // Merge: Use prop data if available, otherwise fallback to default
@@ -48,8 +48,8 @@ export default async function FAQ({ data = {} }) {
         />
       </Head>
       <header className={styles.faqHeader}>
-        <h2><Text text={faqData.title} /></h2>
-        {faqData.subTitle && <p className="subText"><Text text={faqData.subTitle} /></p>}
+        <h2><Text text={faqData.title} cityContext={cityContext} /></h2>
+        {faqData.subTitle && <p className="subText"><Text text={faqData.subTitle} cityContext={cityContext} /></p>}
       </header>
       <div className={styles.faqContent}>
         {faqData.faqs && faqData.faqs.map((item, index) => (

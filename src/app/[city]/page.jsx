@@ -1,4 +1,4 @@
-import { getCityBySlug, getAllCities, getGlobalConfig } from '@/lib/strapi';
+import { getCityBySlug, getAllCities, getGlobalConfig, getMetroCityLayout } from '@/lib/strapi';
 import BlockRenderer from '@/components/BlockRenderer';
 import { notFound } from 'next/navigation';
 import { CityCTASetter } from '@/providers/CTAProvider';
@@ -33,7 +33,10 @@ export async function generateMetadata({ params }) {
 
     if (!cityData) return {};
 
-    const { seo, city_name, state_code } = cityData;
+    const { seo, city_name, state_code, metro_city_slug } = cityData;
+    const isSuburb = !!metro_city_slug;
+    const canonicalSlug = isSuburb ? metro_city_slug : citySlug;
+
     const displayName = city_name ? `${city_name}${state_code ? `, ${state_code}` : ''}` : 'TVPro Handy Services';
 
     const title = seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`;
@@ -44,6 +47,19 @@ export async function generateMetadata({ params }) {
     return {
         title,
         description,
+        robots: isSuburb
+            ? { index: false, follow: true, googleBot: { index: false, follow: true } }
+            : {
+                index: true,
+                follow: true,
+                googleBot: {
+                    index: true,
+                    follow: true,
+                    'max-video-preview': -1,
+                    'max-image-preview': 'large',
+                    'max-snippet': -1,
+                }
+            },
         address: {
             "@type": "PostalAddress",
             "addressLocality": city_name || "Houston",
@@ -51,7 +67,7 @@ export async function generateMetadata({ params }) {
             "addressCountry": "US",
         },
         alternates: {
-            canonical: `https://tvprousa.com/${citySlug}/`,
+            canonical: `https://tvprousa.com/${canonicalSlug}/`,
         },
         openGraph: {
             title,
@@ -65,7 +81,7 @@ export async function generateMetadata({ params }) {
                 },
             ],
             type: 'website',
-            url: `https://tvprousa.com/${citySlug}/`,
+            url: `https://tvprousa.com/${canonicalSlug}/`,
         },
         twitter: {
             card: 'summary_large_image',
@@ -89,12 +105,21 @@ export default async function CityPage({ params }) {
         return notFound();
     }
 
+    const { metro_city_slug } = cityData;
+    const isSuburb = !!metro_city_slug;
+
     // 3. Fallback Logic
     // If city has no page, use global default layout
     // Note: strapi.js populate depth needs to be sufficient
-    const layout = cityData.page && cityData.page.length > 0
-        ? cityData.page
-        : globalData.default_layout || [];
+    let layout;
+    if (cityData.page && cityData.page.length > 0) {
+        layout = cityData.page;
+    } else if (isSuburb) {
+        const metroLayout = await getMetroCityLayout(metro_city_slug);
+        layout = metroLayout || globalData.default_layout || [];
+    } else {
+        layout = globalData.default_layout || [];
+    }
 
     const jsonLd = {
         "@context": "https://schema.org",
@@ -107,7 +132,9 @@ export default async function CityPage({ params }) {
             "addressRegion": cityData.state_code || "TX",
             "addressCountry": "US"
         },
-        "url": `https://tvprousa.com/${citySlug}`,
+        "url": isSuburb
+            ? `https://tvprousa.com/${metro_city_slug}`
+            : `https://tvprousa.com/${citySlug}`,
         "telephone": "(877) 455-5535"
     };
 
