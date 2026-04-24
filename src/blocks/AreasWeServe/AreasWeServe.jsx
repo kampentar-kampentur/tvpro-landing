@@ -12,7 +12,7 @@ export default async function AreasWeServe() {
 
     // Filter and sort cities
     const activeCities = cities
-        .filter(city => !city.test_version && city.path && city.city_name)
+        .filter(city => !city.test_version && city.path && city.city_name && !city.metro_city_slug)
         .sort((a, b) => a.city_name.localeCompare(b.city_name));
 
     // Ensure Chicago is included (if not already in Strapi with a path)
