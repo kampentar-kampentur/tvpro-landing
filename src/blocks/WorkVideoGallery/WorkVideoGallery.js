@@ -4,6 +4,7 @@ import Text from "@/ui/Text/Text";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Image from "next/image";
 import VideoCardClient from "./VideoCardClient";
+import localData from "./videoGalleryData.json";
 
 const VideoCard = ({ video, index = 0, length }) => {
     // Optimization: Use mqdefault (320x180) for all grid thumbnails to save data.
@@ -49,27 +50,13 @@ const VideoCard = ({ video, index = 0, length }) => {
     );
 };
 
-async function getWorkVideoGalleryData() {
-    try {
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/see-our-work-in-action?populate[videoItem][populate][selfHostedVideo][populate]=*`,
-            { cache: 'force-cache' }
-        );
-        const json = await res.json();
-        return json.data;
-    } catch (error) {
-        console.error("Error fetching WorkVideoGallery data:", error);
-        return null;
-    }
-}
-
-export default async function WorkVideoGallery({ data = {} }) {
-    const videoGalleryData = await getWorkVideoGalleryData();
+export default function WorkVideoGallery({ data = {} }) {
+    const videoGalleryData = localData.data;
     const displayData = {
         ...videoGalleryData,
         ...data,
-        videoItem: data.videoItem?.length > 0 ? data.videoItem : videoGalleryData.videoItem
-    }
+        videoItem: data.videoItem?.length > 0 ? data.videoItem : (videoGalleryData?.videoItem || [])
+    };
     const title = displayData.title || "See Our Work in Action";
     const subTitle = displayData.subTitle || "Documentation of our high-quality professional installations.";
 

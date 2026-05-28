@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import styles from "./CustomerReviews.module.css";
 
 export default function CustomerReviewsClient() {
   const ref = useRef(null);
@@ -26,7 +27,7 @@ export default function CustomerReviewsClient() {
   }, []);
 
   return (
-    <div ref={ref} style={{ minHeight: 100 }}>
+    <div ref={ref} className={styles.widgetContainer}>
       {showWidget && ElfsightWidget ? <ElfsightWidget /> : null}
     </div>
   );

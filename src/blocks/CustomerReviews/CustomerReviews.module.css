@@ -59,3 +59,14 @@
   animation: hide-elfsight 0.001s !important;
   animation-fill-mode: both !important;
 }
+
+.widgetContainer {
+  min-height: 550px;
+}
+
+@media (max-width: 768px) {
+  .widgetContainer {
+    min-height: 600px;
+  }
+}
+
