@@ -4,7 +4,9 @@ import CustomerReviewsClient from "./CustomerReviewsClient";
 import styles from "./CustomerReviews.module.css";
 
 async function getCustomerReviews() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/customer-review?populate=*`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/customer-review?populate=*`,
+  );
   const json = await res.json();
   return json.data;
 }
@@ -22,22 +24,26 @@ export default async function CustomerReviews({ data = {} }) {
   };
 
   return (
-    <section className={`block ${styles.customerReviews}`}>
+    <section className={`block ${styles.customerReviews}`} id="reviews">
       <header className={styles.customerReviewsHeader}>
         <h2 className="blockHeading">
           <Text text={customerReviewsData.title} />
         </h2>
-        <p className="subText"><Text text={customerReviewsData.subTitle} /></p>
+        <p className="subText">
+          <Text text={customerReviewsData.subTitle} />
+        </p>
       </header>
 
       <CustomerReviewsClient />
       <div className={styles.ctaContainer}>
-        <p className={styles.ctaText}>Ready to mount your TV? Book your service now — fast, easy, and professional.</p>
+        <p className={styles.ctaText}>
+          Ready to mount your TV? Book your service now — fast, easy, and
+          professional.
+        </p>
         <div className={styles.ctaButtons}>
           <QuoteButton size="big" />
         </div>
       </div>
     </section>
   );
-};
-
+}
