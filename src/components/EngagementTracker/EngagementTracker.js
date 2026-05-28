@@ -45,6 +45,9 @@ const EngagementTracker = () => {
             idleTimer.current = setTimeout(triggerPopup, 40000); // 40 seconds
         };
 
+        // Track mount time to prevent scroll triggers during initial load/reflow
+        const mountTime = Date.now();
+
         // --- 3. Scroll Depth & Behavior (Mobile) ---
         const handleScroll = () => {
             resetIdleTimer();
@@ -54,8 +57,11 @@ const EngagementTracker = () => {
             const clientHeight = document.documentElement.clientHeight;
             const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
+            // Prevent triggering during the first 2 seconds of mount to avoid layout reflows/hash scrolling issues
+            const isInitialReflow = Date.now() - mountTime < 2000;
+
             // Trigger if scrolled deep (>70%) and scrolls UP (searching for navigation/exit)
-            if (scrollPercent > 70 && scrollTop < lastScrollPos.current) {
+            if (!isInitialReflow && scrollPercent > 70 && scrollTop < lastScrollPos.current) {
                 triggerPopup();
             }
             lastScrollPos.current = scrollTop;

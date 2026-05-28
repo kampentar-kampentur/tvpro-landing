@@ -1,11 +1,12 @@
 .expandingWrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     position: relative;
     box-sizing: border-box;
     margin-top: 52px;
     width: 100%;
+    aspect-ratio: 16 / 9;
 }
 
 .expandingContainer {

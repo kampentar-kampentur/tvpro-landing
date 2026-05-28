@@ -15,7 +15,7 @@ async function getGalleryOfWork() {
 }
 
 async function getGalleryPhotos() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*&pagination[limit]=100`);
   const json = await res.json();
 
   return json.data;
@@ -52,7 +52,7 @@ export default async function GalleryOfWork({ data = {} }) {
           cardsPerPage={4}
         />
       </div> */}
-        <GalleryGrid filters={galleryOfWorkData.types} />
+        <GalleryGrid filters={galleryOfWorkData.types} initialPhotos={galleryPhotos} />
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
           <div className={styles.ctaButtons}>

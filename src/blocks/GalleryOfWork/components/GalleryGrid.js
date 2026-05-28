@@ -21,9 +21,15 @@ const ArrowRightIcon = (props) => (
   </svg>
 );
 
-export default function GalleryGrid({ filters }) {
+export default function GalleryGrid({ filters, initialPhotos = [] }) {
   const [activeFilter, setActiveFilter] = useState(filters?.[0]?.type || "");
-  const [galleryPhotos, setGalleryPhotos] = useState([]);
+  const [galleryPhotos, setGalleryPhotos] = useState(() => {
+    const defaultFilter = filters?.[0]?.type || "";
+    if (initialPhotos && initialPhotos.length > 0) {
+      return initialPhotos.filter(photo => photo.type === defaultFilter);
+    }
+    return [];
+  });
   const [loading, setLoading] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -41,6 +47,20 @@ export default function GalleryGrid({ filters }) {
   const cacheRef = useRef({});
   const timerRef = useRef(null);
   const transitionTimeoutRef = useRef(null);
+  const isFirstMount = useRef(true);
+
+  // Pre-populate cache with initialPhotos on first render
+  if (Object.keys(cacheRef.current).length === 0 && initialPhotos && initialPhotos.length > 0) {
+    initialPhotos.forEach(photo => {
+      const type = photo.type;
+      if (type) {
+        if (!cacheRef.current[type]) {
+          cacheRef.current[type] = [];
+        }
+        cacheRef.current[type].push(photo);
+      }
+    });
+  }
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -75,6 +95,12 @@ export default function GalleryGrid({ filters }) {
   useEffect(() => {
     if (!activeFilter) return;
 
+    // Skip the transition and fetch on the first mount if we already have initial photos
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+
     const performUpdate = async () => {
       // 1. Capture and freeze current height
       if (containerRef.current) {
@@ -100,7 +126,7 @@ export default function GalleryGrid({ filters }) {
         setLoading(true);
         try {
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*&filters[type]=${encodeURIComponent(activeFilter)}`
+            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*&filters[type]=${encodeURIComponent(activeFilter)}&pagination[limit]=100`
           );
           const json = await res.json();
           nextData = json.data || [];
