@@ -21,6 +21,7 @@ export default async function Home() {
       <CustomerReviews />
       <GalleryOfWork />
       <Certificates />
+      <AboutUs />
       {/* <TVSizes /> */}
       <MountingTypes />
       <WhyCustomersTrustUs />
