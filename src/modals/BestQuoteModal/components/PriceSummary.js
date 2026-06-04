@@ -20,7 +20,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
   );
 
   return (
-    <div className={`${styles.priceSummaryContainer} ${currentStepIndex === 3 ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
+    <div className={`${styles.priceSummaryContainer} ${currentStepIndex === 4 ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
       <div className={styles.scrollableContent}>
         {!structuredCostBreakdown.filter(({ type }) => type !== "discount").length &&
           <div className={styles.tvSizeGroup}>
@@ -68,7 +68,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
       </div>
 
 
-      {currentStepIndex === 3 && (
+      {currentStepIndex === 4 && (
         <>
           <Button className={styles.bookBtn} disabled={!isFormValid || isSubmitting} onClick={onSubmit} size="big">
             {isSubmitting ? 'Booking...' : 'Book'}
