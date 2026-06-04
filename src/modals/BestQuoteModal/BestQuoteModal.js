@@ -540,6 +540,26 @@ const BestQuoteModal = () => {
         
         sessionStorage.setItem('form_submitted', 'true');
         localStorage.setItem('pricingData', JSON.stringify({ totalPrice, structuredCostBreakdown }));
+
+        if (typeof dataLayer !== 'undefined') {
+          dataLayer.push({
+            event: 'quiz_send_ok',
+            name: formData.contactInfo?.name || '',
+            phone: formData.contactInfo?.phone?.replace(/\D/g, '') || '',
+            'user_data.phone_number': formData.contactInfo?.phone?.replace(/\D/g, '') || '',
+            zip: formData.contactInfo?.zipApt?.zip || '',
+            apt: formData.contactInfo?.zipApt?.apt || '',
+            address: formData.contactInfo?.address || '',
+            totalPrice: totalPrice,
+            tvSelection: formData['tv-size']?.tvSelection || '',
+            extraTechnicians: formData['tv-size']?.extraTechnicans || '',
+            mountType: formData.mounting?.mountType || '',
+            wallType: formData.wall?.wallType || '',
+            wires: formData.wall?.wires || '',
+            utm_params: getUtmParams()
+          });
+        }
+
         close();
         setFormData({});
         if (typeof gtag !== 'undefined') {

@@ -60,3 +60,15 @@
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+.textFieldContainer.invalid {
+  border-color: #ff4d4f;
+}
+
+.errorText {
+  color: #ff4d4f;
+  font-size: 11px;
+  line-height: 14px;
+  margin-top: 4px;
+  text-align: left;
+}

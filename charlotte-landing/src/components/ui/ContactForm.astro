@@ -210,6 +210,19 @@ const apiUrl = import.meta.env.PUBLIC_STRAPI_URL || "https://strapi-production-2
 
             form.addEventListener("change", updateButtonState);
 
+            phoneInput.addEventListener("blur", () => {
+                const phone = phoneInput.value;
+                if (phone && !validatePhone(phone)) {
+                    if (phoneError) phoneError.textContent = "Please enter a valid phone number.";
+                    phoneInput.closest('.form-group')?.classList.add('invalid');
+                }
+            });
+
+            phoneInput.addEventListener("focus", () => {
+                if (phoneError) phoneError.textContent = "";
+                phoneInput.closest('.form-group')?.classList.remove('invalid');
+            });
+
             const handleSubmit = async (e) => {
                 if (e) e.preventDefault();
                 if (submitBtn.disabled) return;

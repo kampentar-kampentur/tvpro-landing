@@ -166,6 +166,17 @@ const { cityName } = Astro.props;
 
         form.addEventListener("change", updateButtonState);
 
+        phoneInput.addEventListener("blur", () => {
+            const phone = phoneInput.value;
+            if (phone && !validatePhone(phone)) {
+                phoneInput.closest('.form-group')?.classList.add('invalid');
+            }
+        });
+
+        phoneInput.addEventListener("focus", () => {
+            phoneInput.closest('.form-group')?.classList.remove('invalid');
+        });
+
         const handleSubmit = async (e?: Event) => {
             if (e) e.preventDefault();
             if (submitBtn.disabled) return;

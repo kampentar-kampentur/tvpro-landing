@@ -1,5 +1,6 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import styles from './TextField.module.css';
+import { validatePhone } from '../../utils/phoneValidation';
 
 // Map field names to HTML autocomplete tokens
 const AUTOCOMPLETE_MAP = {
@@ -62,6 +63,7 @@ const TextField = ({ field, value = '', onChange, className }) => {
   const autoCompleteValue = field.autoComplete || AUTOCOMPLETE_MAP[field.name] || 'on';
   const fieldId = `field-${field.name}`;
   const inputRef = useRef(null);
+  const [error, setError] = useState('');
 
   const handlePhoneChange = useCallback((e) => {
     const input = e.target;
@@ -77,6 +79,7 @@ const TextField = ({ field, value = '', onChange, className }) => {
 
     // Store raw digits
     onChange(digits);
+    if (error) setError('');
 
     // Figure out where the cursor should go in the new formatted string
     const digitsBefore = digitIndexAtCursor(rawInput, cursorBefore);
@@ -89,13 +92,33 @@ const TextField = ({ field, value = '', onChange, className }) => {
         inputRef.current.setSelectionRange(newCursor, newCursor);
       }
     });
-  }, [onChange]);
+  }, [onChange, error]);
+
+  const handleBlur = useCallback(() => {
+    if (isTel && value) {
+      const isValid = validatePhone(value);
+      if (!isValid) {
+        setError('Please enter a valid phone number');
+      }
+    }
+  }, [isTel, value]);
+
+  const handleFocus = useCallback(() => {
+    if (error) setError('');
+  }, [error]);
 
   // Display the formatted value
   const displayValue = isTel ? formatUSPhone(value) : value;
 
+  const containerClassName = [
+    styles.textFieldContainer,
+    hasValue ? styles.hasValue : '',
+    error ? styles.invalid : '',
+    className || ''
+  ].filter(Boolean).join(' ');
+
   return (
-    <div className={(hasValue ? `${styles.textFieldContainer} ${styles.hasValue}` : styles.textFieldContainer) + " " + className}>
+    <div className={containerClassName}>
       {field.textLabel && hasValue && (
         <label htmlFor={fieldId} className={styles.textLabel}>{field.textLabel}</label>
       )}
@@ -106,6 +129,8 @@ const TextField = ({ field, value = '', onChange, className }) => {
             className={styles.textInput}
             value={displayValue}
             onChange={handlePhoneChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
             placeholder={field.placeholder}
             type="tel"
             name={field.name}
@@ -141,6 +166,7 @@ const TextField = ({ field, value = '', onChange, className }) => {
           />
         )}
       </div>
+      {error && <span className={styles.errorText}>{error}</span>}
     </div>
   );
 };
