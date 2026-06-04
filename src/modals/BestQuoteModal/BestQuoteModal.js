@@ -756,7 +756,7 @@ const BestQuoteModal = () => {
               </p>
             </div>
           )}
-          {isMobile && currentStepIndex === 3 && (
+          {isMobile && currentStepIndex === 4 && (
             <div className={styles.mobileBookSection}>
               <Button
                 className={styles.mobileBookBtn}
