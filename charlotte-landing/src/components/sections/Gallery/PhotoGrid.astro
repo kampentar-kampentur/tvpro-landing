@@ -7,6 +7,17 @@ interface Props {
 }
 
 const { filters = [], photos = [] } = Astro.props;
+
+const sortedPhotos = [...photos].sort((a, b) => {
+    const orderA = a.order !== null && a.order !== undefined ? a.order : Infinity;
+    const orderB = b.order !== null && b.order !== undefined ? b.order : Infinity;
+
+    if (orderA !== orderB) {
+        return orderA - orderB;
+    }
+
+    return new Date(b.createdAt) - new Date(a.createdAt);
+});
 ---
 
 <div class="photo-grid-container" id="photo-grid-root">
@@ -27,7 +38,7 @@ const { filters = [], photos = [] } = Astro.props;
     <!-- The Grid -->
     <div class="photo-grid" id="photo-grid">
         {
-            photos.map((photo, index) => (
+            sortedPhotos.map((photo, index) => (
                 <PhotoCard photo={photo} index={index} className="photo-cell" />
             ))
         }

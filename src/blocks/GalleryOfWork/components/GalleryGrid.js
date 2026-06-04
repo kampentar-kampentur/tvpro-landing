@@ -21,12 +21,27 @@ const ArrowRightIcon = (props) => (
   </svg>
 );
 
+const sortPhotos = (photos) => {
+  if (!photos) return [];
+  return [...photos].sort((a, b) => {
+    const orderA = a.order !== null && a.order !== undefined ? a.order : Infinity;
+    const orderB = b.order !== null && b.order !== undefined ? b.order : Infinity;
+
+    if (orderA !== orderB) {
+      return orderA - orderB;
+    }
+
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+};
+
 export default function GalleryGrid({ filters, initialPhotos = [] }) {
   const [activeFilter, setActiveFilter] = useState(filters?.[0]?.type || "");
   const [galleryPhotos, setGalleryPhotos] = useState(() => {
     const defaultFilter = filters?.[0]?.type || "";
     if (initialPhotos && initialPhotos.length > 0) {
-      return initialPhotos.filter(photo => photo.type === defaultFilter);
+      const filtered = initialPhotos.filter(photo => photo.type === defaultFilter);
+      return sortPhotos(filtered);
     }
     return [];
   });
@@ -60,6 +75,10 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
         cacheRef.current[type].push(photo);
       }
     });
+    // Sort cached photos
+    for (const key in cacheRef.current) {
+      cacheRef.current[key] = sortPhotos(cacheRef.current[key]);
+    }
   }
 
   const startTimer = useCallback(() => {
@@ -130,7 +149,7 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
           );
           const json = await res.json();
           nextData = json.data || [];
-          cacheRef.current[activeFilter] = nextData;
+          cacheRef.current[activeFilter] = sortPhotos(nextData);
         } catch (error) {
           console.error("Gallery fetch error:", error);
         } finally {
@@ -140,7 +159,7 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
       console.log(nextData);
 
       // 5. Apply Data
-      setGalleryPhotos(nextData);
+      setGalleryPhotos(sortPhotos(nextData));
       setGridKey(`${activeFilter}-${Date.now()}`);
 
       // 6. Fade In
