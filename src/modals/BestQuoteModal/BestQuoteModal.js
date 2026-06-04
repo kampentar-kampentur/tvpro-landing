@@ -137,7 +137,7 @@ const BestQuoteScheme = {
             {
               "value": "fullMotion75-86",
               "label": "Full-Motion Mount (75\"–86\")",
-              "subtitle": "heavy duty",
+              "subtitle": "",
               "cost": 79,
               "costLabel": "+$79",
               "description": "specially designed for larger screens: sturdy arms with full rotation and extendability."
@@ -161,7 +161,7 @@ const BestQuoteScheme = {
             {
               "value": "fixed100",
               "label": "Fixed Mount (100\")",
-              "subtitle": "large format",
+              "subtitle": "",
               "cost": 72,
               "costLabel": "+$72",
               "description": "heavy-duty fixed bracket for massive screens up to 100 inches."
@@ -169,7 +169,7 @@ const BestQuoteScheme = {
             {
               "value": "fullMotion100",
               "label": "Full-Motion Mount (100\")",
-              "subtitle": "large format",
+              "subtitle": "",
               "cost": 199,
               "costLabel": "+$199",
               "description": "premium heavy-duty full-motion bracket supporting up to 100 inches."
@@ -177,7 +177,7 @@ const BestQuoteScheme = {
             {
               "value": "tilting100",
               "label": "Tilt Mount (100\")",
-              "subtitle": "large format",
+              "subtitle": "",
               "cost": 89,
               "costLabel": "+$89",
               "description": "tilting mount designed for larger screens up to 100 inches."
@@ -516,8 +516,8 @@ const BestQuoteScheme = {
           "isRequired": true,
           "label": "Do you need Soundbar Installation?",
           "options": [
-            { "value": "no", "label": "No", "cost": 0, "costLabel": "+$0" },
-            { "value": "yes", "label": "Yes", "cost": 69, "costLabel": "+$69", "description": "Professional soundbar mounting and setup." }
+            { "value": "no", "label": "No soundbar installation", "cost": 0, "costLabel": "+$0" },
+            { "value": "yes", "label": "Soundbar Installation", "cost": 69, "costLabel": "+$69", "description": "Professional soundbar mounting and setup." }
           ]
         },
         {
