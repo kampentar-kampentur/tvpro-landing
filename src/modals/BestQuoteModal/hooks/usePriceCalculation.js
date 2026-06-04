@@ -35,8 +35,12 @@ export const usePriceCalculation = (
           }
         } else if (fieldConfig.type === "radio") {
           const selectedOption = fieldConfig.options?.find(opt => opt.value === fieldValue);
-          if (selectedOption) {
-            items.push({ label: selectedOption.label, cost: (selectedOption.cost || 0), fieldName: fieldConfig.name });
+          if (selectedOption && !selectedOption.hideFromBreakdown) {
+            items.push({
+              label: selectedOption.breakdownLabel || selectedOption.label,
+              cost: (selectedOption.cost || 0),
+              fieldName: fieldConfig.name
+            });
           }
         } else if (fieldConfig.type === "checkboxGroup" && Array.isArray(fieldValue)) {
           fieldValue.forEach(item => {
