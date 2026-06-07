@@ -15,818 +15,937 @@ import { getUtmParams } from "@/lib/utmTracker";
 import Link from "next/link";
 
 const BestQuoteScheme = {
-  "steps": [
+  steps: [
     {
-      "id": "tv-size",
-      "title": "TV Size",
-      "fields": [
+      id: "tv-size",
+      title: "TV Size",
+      fields: [
         {
-          "name": "tvSelection",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Choose TV size",
-          "options": [
+          name: "tvSelection",
+          type: "radio",
+          isRequired: true,
+          label: "Choose TV size",
+          options: [
             {
-              "value": "upTo31",
-              "label": "Up to 31\"",
-              "cost": 69,
+              value: "upTo31",
+              label: 'Up to 31"',
+              cost: 69,
             },
             {
-              "value": "32-59",
-              "label": "32\"-59\"",
-              "cost": 125,
+              value: "32-59",
+              label: '32"-59"',
+              cost: 125,
             },
             {
-              "value": "60-69",
-              "label": "60\"-69\"",
-              "cost": 144,
+              value: "60-69",
+              label: '60"-69"',
+              cost: 144,
             },
             {
-              "value": "70-85",
-              "label": "70\"-85\"",
-              "cost": 149,
+              value: "70-85",
+              label: '70"-85"',
+              cost: 149,
             },
             {
-              "value": "over-86",
-              "label": "Over 86\"",
-              "cost": 189,
+              value: "over-86",
+              label: 'Over 86"',
+              cost: 189,
             },
             {
-              "value": "frameTvUpTo60",
-              "label": "Frame TV",
-              "subtitle": "Up to 60″",
-              "cost": 174,
+              value: "frameTvUpTo60",
+              label: "Frame TV",
+              subtitle: "Up to 60″",
+              cost: 174,
             },
             {
-              "value": "frameTvOver65",
-              "label": "Frame TV",
-              "subtitle": "Over 65″",
-              "cost": 184,
+              value: "frameTvOver65",
+              label: "Frame TV",
+              subtitle: "Over 65″",
+              cost: 184,
             },
             {
-              "value": "projectorsNScreens",
-              "label": "Projectors",
-              "cost": 189,
-              "costLabel": "From $189"
-            },
-          ]
-        },
-        {
-          "name": "extraTechnicans",
-          "type": "radio",
-          "label": "Number of Technicians for Over 61″",
-          "isRequired": true,
-          "showIf": {
-            "field": "tvSelection",
-            "condition": "equalsAny",
-            "values": ["over-86", "60-69", "70-85", "frameTvUpTo60", "frameTvOver65", "projectorsNScreens"]
-          },
-          "options": [
-            { "value": "no", "label": "1 Tech", "cost": 0, "costLabel": "+$0", "subtitle": "+ your help", "description": "One technician will handle the entire installation. Your assistance will be needed only at the very end — for a couple of minutes — to help lift and hang the TV onto the mount." },
-            { "value": "yes", "label": "2 Tech", "cost": 59, "costLabel": "+$59", "subtitle": "Full service", "description": "Two professional technicians will complete the entire installation from start to finish — no help required. Sit back and enjoy a fully managed, hassle-free service." },
-          ]
-        }
-      ]
-    },
-    {
-      "id": "mounting",
-      "title": "Mount Type",
-      "showIf": {
-        "field": "tv-size.tvSelection",
-        "condition": "notEqualsAny",
-        "values": ["frameTvUpTo60", "frameTvOver65", "projectorsNScreens"]
-      },
-      "fields": [
-        {
-          "name": "mountType",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Choose mount type",
-          "options": [
-            {
-              "value": "alreadyThere",
-              "label": "Already there",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "Already have your own mount? Perfect! We’ll safely install your TV on your existing bracket at no extra cost."
-            },
-            {
-              "value": "fixed",
-              "label": "Fixed Mount (32\"–86\")",
-              "subtitle": "1.5” from wall",
-              "cost": 44,
-              "costLabel": "+$44",
-              "description": "Clean and reliable: keeps your TV close to the wall for a sleek, modern look"
-            },
-            {
-              "value": "tilting",
-              "label": "Tilt Mount (32\"–86\")",
-              "subtitle": "up to 15° tilt",
-              "cost": 52,
-              "costLabel": "+$52",
-              "description": "Adjust the vertical angle to reduce glare and get the perfect view from any seating position."
-            },
-            {
-              "value": "fullMotion",
-              "label": "Full-Motion Mount (<70\")",
-              "subtitle": "extends up to 15”",
-              "cost": 69,
-              "costLabel": "+$69",
-              "description": "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room."
-            },
-            {
-              "value": "fullMotion75-86",
-              "label": "Full-Motion Mount (75\"–86\")",
-              "subtitle": "",
-              "cost": 79,
-              "costLabel": "+$79",
-              "description": "specially designed for larger screens: sturdy arms with full rotation and extendability."
-            },
-            {
-              "value": "corner",
-              "label": "Corner Mount",
-              "subtitle": "fits TVs up to 75”",
-              "cost": 69,
-              "costLabel": "+$69",
-              "description": "the ideal solution for corner setups: saves space while keeping your room stylish and functional."
-            },
-            {
-              "value": "ceilingMount",
-              "label": "Ceiling Mount",
-              "subtitle": "",
-              "cost": 69,
-              "costLabel": "+$69",
-              "description": "a unique option when walls are occupied or for a bold interior design: mount your TV directly to the ceiling."
-            },
-            {
-              "value": "fixed100",
-              "label": "Fixed Mount (100\")",
-              "subtitle": "",
-              "cost": 72,
-              "costLabel": "+$72",
-              "description": "heavy-duty fixed bracket for massive screens up to 100 inches."
-            },
-            {
-              "value": "fullMotion100",
-              "label": "Full-Motion Mount (100\")",
-              "subtitle": "",
-              "cost": 199,
-              "costLabel": "+$199",
-              "description": "premium heavy-duty full-motion bracket supporting up to 100 inches."
-            },
-            {
-              "value": "tilting100",
-              "label": "Tilt Mount (100\")",
-              "subtitle": "",
-              "cost": 89,
-              "costLabel": "+$89",
-              "description": "tilting mount designed for larger screens up to 100 inches."
-            },
-            {
-              "value": "ultraSlim",
-              "label": "Ultra Slim 0.3",
-              "subtitle": "ultra thin profile",
-              "cost": 79,
-              "costLabel": "+$79",
-              "description": "ultra low profile mount: keeps the TV extremely close to the wall for a picture-frame effect."
-            },
-          ]
-        },
-      ]
-    },
-    {
-      "id": "wall",
-      "title": "Wall Type",
-      "fields": [
-        {
-          "name": "wallType",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Choose wall type",
-          "showIf": {
-            "field": "tv-size.tvSelection",
-            "condition": "notEqualsAny",
-            "values": ["projectorsNScreens"]
-          },
-          "options": [
-            {
-              "value": "drywall",
-              "label": "Drywall",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "standard wall type, quick and simple installation."
-            },
-            {
-              "value": "decorAccent",
-              "label": "Accent Wall",
-              "cost": 30,
-              "costLabel": "+$30",
-              "description": "decorative accent wall requiring extra care and precise mounting."
-            },
-            {
-              "value": "metalStuds",
-              "label": "Metal Studs",
-              "cost": 30,
-              "costLabel": "+$30",
-              "description": "metal framing studs requiring specialized hardware for safe installation."
-            },
-            {
-              "value": "stoneBrickConcrete",
-              "label": "Stone / Brick / Concrete",
-              "cost": 49,
-              "costLabel": "+$49",
-              "description": "strong and durable surface, requires special tools and anchors for a secure mount."
-            },
-            {
-              "value": "tile",
-              "label": "Tile",
-              "cost": 69,
-              "costLabel": "+$69",
-              "description": "perfect for kitchens, bathrooms, or decorative walls. We use diamond drill bits to carefully protect your tiles while ensuring a safe and reliable mount."
-            },
-            {
-              "value": "ceiling",
-              "label": "Ceiling",
-              "cost": 39,
-              "costLabel": "+$39",
-              "description": "mounting directly onto a ceiling structure."
+              value: "projectorsNScreens",
+              label: "Projectors",
+              cost: 189,
+              costLabel: "From $189",
             },
           ],
         },
         {
-          "name": "wallTypeProjector",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Choose wall type",
-          "showIf": {
-            "field": "tv-size.tvSelection",
-            "condition": "equals",
-            "value": "projectorsNScreens"
+          name: "extraTechnicans",
+          type: "radio",
+          label: "Number of Technicians for Over 61″",
+          isRequired: true,
+          showIf: {
+            field: "tvSelection",
+            condition: "equalsAny",
+            values: [
+              "over-86",
+              "60-69",
+              "70-85",
+              "frameTvUpTo60",
+              "frameTvOver65",
+              "projectorsNScreens",
+            ],
           },
-          "options": [
+          options: [
             {
-              "value": "drywall",
-              "label": "Drywall",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "standard wall type, quick and simple installation."
+              value: "no",
+              label: "1 Tech",
+              cost: 0,
+              costLabel: "+$0",
+              subtitle: "+ your help",
+              description:
+                "One technician will handle the entire installation. Your assistance will be needed only at the very end — for a couple of minutes — to help lift and hang the TV onto the mount.",
             },
             {
-              "value": "metalStuds",
-              "label": "Metal Studs",
-              "cost": 30,
-              "costLabel": "+$30",
-              "description": "metal framing studs requiring specialized hardware for safe installation."
-            },
-            {
-              "value": "stoneBrickConcrete",
-              "label": "Stone / Brick / Concrete",
-              "cost": 49,
-              "costLabel": "+$49",
-              "description": "strong and durable surface, requires special tools and anchors for a secure mount."
-            }
-          ]
-        },
-        {
-          "name": "fireplace",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Is the TV being mounted above a fireplace?",
-          "showIf": {
-            "field": "wallType",
-            "condition": "equalsAny",
-            "values": ["drywall", "decorAccent", "metalStuds", "stoneBrickConcrete", "tile"]
-          },
-          "options": [
-            {
-              "value": "yes",
-              "label": "Yes",
-              "breakdownLabel": "Above Fireplace",
-              "cost": 32,
-              "costLabel": "+$32",
-              "description": "Above Fireplace installation."
-            },
-            {
-              "value": "no",
-              "label": "No",
-              "hideFromBreakdown": true,
-              "cost": 0,
-              "costLabel": "+$0"
-            }
-          ]
-        },
-        // Wires: Drywall / Accent Wall / Metal Studs + Regular TV + NOT above fireplace
-        {
-          "name": "wires",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you want to hide the wires?",
-          "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
-          "showIf": {
-            "all": [
-              {
-                "field": "tv-size.tvSelection",
-                "condition": "notEqualsAny",
-                "values": ["frameTvUpTo60", "frameTvOver65"]
-              },
-              {
-                "any": [
-                  {
-                    "all": [
-                      {
-                        "field": "wallType",
-                        "condition": "equalsAny",
-                        "values": ['drywall', 'decorAccent', 'metalStuds']
-                      },
-                      {
-                        "field": "fireplace",
-                        "condition": "equals",
-                        "value": "no"
-                      }
-                    ]
-                  },
-                  {
-                    "field": "wallTypeProjector",
-                    "condition": "equalsAny",
-                    "values": ['drywall', 'metalStuds']
-                  }
-                ]
-              }
-            ]
-          },
-          "options": [
-            {
-              "value": "open",
-              "label": "Exposed",
-              "subtitle": "no extra charge",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "standard setup with visible wires, quick and simple."
-            },
-            {
-              "value": "cableChannelDrywall",
-              "label": "Cable Channel",
-              "cost": 43,
-              "costLabel": "+$43",
-              "description": "a sleek plastic channel to neatly hide and organize wires along the wall."
-            },
-            {
-              "value": "wallDrywall",
-              "label": "Put it in the wall",
-              "cost": 93,
-              "costLabel": "+$93",
-              "description": "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look."
-            },
-            {
-              "value": "socketDrywall",
-              "label": "In wall with socket",
-              "cost": 129,
-              "costLabel": "+$129",
-              "description": "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish."
-            },
-          ],
-        },
-        // Wires: Drywall / Accent Wall / Metal Studs + Frame TV + NOT above fireplace
-        {
-          "name": "wires",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you want to hide the wires?",
-          "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
-          "showIf": {
-            "all": [
-              {
-                "field": "wallType",
-                "condition": "equalsAny",
-                "values": ['drywall', 'decorAccent', 'metalStuds']
-              },
-              {
-                "field": "tv-size.tvSelection",
-                "condition": "equalsAny",
-                "values": ["frameTvUpTo60", "frameTvOver65"]
-              },
-              {
-                "field": "fireplace",
-                "condition": "equals",
-                "value": "no"
-              }
-            ]
-          },
-          "options": [
-            {
-              "value": "open",
-              "label": "Exposed",
-              "subtitle": "no extra charge",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "standard setup with visible wires, quick and simple."
-            },
-            {
-              "value": "cableChannelDrywall",
-              "label": "Cable Channel",
-              "cost": 43,
-              "costLabel": "+$43",
-              "description": "a sleek plastic channel to neatly hide and organize wires along the wall."
-            },
-            {
-              "value": "wallDrywall",
-              "label": "Put it in the wall",
-              "cost": 93,
-              "costLabel": "+$93",
-              "description": "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look."
-            },
-            {
-              "value": "socketDrywall",
-              "label": "Recessed box Installation",
-              "cost": 149,
-              "costLabel": "+$149",
-              "description": "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish."
-            },
-          ],
-        },
-        // Wires: Drywall / Accent Wall / Metal Studs + Regular TV + ABOVE fireplace
-        {
-          "name": "wires",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you want to hide the wires?",
-          "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall.",
-          "showIf": {
-            "all": [
-              {
-                "field": "wallType",
-                "condition": "equalsAny",
-                "values": ["drywall", "decorAccent", "metalStuds"]
-              },
-              {
-                "field": "tv-size.tvSelection",
-                "condition": "notEqualsAny",
-                "values": ["frameTvUpTo60", "frameTvOver65"]
-              },
-              {
-                "field": "fireplace",
-                "condition": "equals",
-                "value": "yes"
-              }
-            ]
-          },
-          "options": [
-            {
-              "value": "open",
-              "label": "Exposed",
-              "subtitle": "no extra charge",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "standard setup with visible wires, quick and simple."
-            },
-            {
-              "value": "cableChannelDrywall",
-              "label": "Cable Channel",
-              "cost": 43,
-              "costLabel": "+$43",
-              "description": "a sleek plastic channel to neatly hide and organize wires along the wall."
-            },
-            {
-              "value": "wallFireplace",
-              "label": "In-Wall Concealment",
-              "cost": 109,
-              "costLabel": "+$109",
-              "description": "wires run behind the wall with clean cover plates for a seamless look."
-            },
-            {
-              "value": "socketFireplace",
-              "label": "In Wall with Socket",
-              "cost": 149,
-              "costLabel": "+$149",
-              "description": "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish."
-            },
-          ],
-        },
-        // Wires: Drywall / Accent Wall / Metal Studs + Frame TV + ABOVE fireplace
-        {
-          "name": "wires",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you want to hide the wires?",
-          "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall.",
-          "showIf": {
-            "all": [
-              {
-                "field": "wallType",
-                "condition": "equalsAny",
-                "values": ["drywall", "decorAccent", "metalStuds"]
-              },
-              {
-                "field": "tv-size.tvSelection",
-                "condition": "equalsAny",
-                "values": ["frameTvUpTo60", "frameTvOver65"]
-              },
-              {
-                "field": "fireplace",
-                "condition": "equals",
-                "value": "yes"
-              }
-            ]
-          },
-          "options": [
-            {
-              "value": "open",
-              "label": "Exposed",
-              "subtitle": "no extra charge",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "standard setup with visible wires, quick and simple."
-            },
-            {
-              "value": "cableChannelDrywall",
-              "label": "Cable Channel",
-              "cost": 43,
-              "costLabel": "+$43",
-              "description": "a sleek plastic channel to neatly hide and organize wires along the wall."
-            },
-            {
-              "value": "wallFireplace",
-              "label": "Put it in the wall",
-              "cost": 109,
-              "costLabel": "+$109",
-              "description": "wires run behind the wall with clean cover plates for a seamless look."
-            },
-            {
-              "value": "socketFireplace",
-              "label": "Recessed box Installation",
-              "cost": 149,
-              "costLabel": "+$149",
-              "description": "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish."
-            },
-          ],
-        },
-        // Wires: Hard Surface (Stone/Brick/Concrete, Tile, Ceiling) + Regular TV
-        {
-          "name": "wires",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you want to hide the wires?",
-          "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
-          "showIf": {
-            "all": [
-              {
-                "field": "tv-size.tvSelection",
-                "condition": "notEqualsAny",
-                "values": ["frameTvUpTo60", "frameTvOver65"]
-              },
-              {
-                "any": [
-                  {
-                    "field": "wallType",
-                    "condition": "equals",
-                    "value": "ceiling"
-                  },
-                  {
-                    "all": [
-                      {
-                        "field": "wallType",
-                        "condition": "equalsAny",
-                        "values": ["stoneBrickConcrete", "tile"]
-                      },
-                      {
-                        "field": "fireplace",
-                        "condition": "equalsAny",
-                        "values": ["yes", "no"]
-                      }
-                    ]
-                  },
-                  {
-                    "field": "wallTypeProjector",
-                    "condition": "equals",
-                    "value": "stoneBrickConcrete"
-                  }
-                ]
-              }
-            ]
-          },
-          "options": [
-            {
-              "value": "open",
-              "label": "Exposed",
-              "subtitle": "no extra charge",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "visible wires, fast and simple setup."
-            },
-            {
-              "value": "cableChannelBrick",
-              "label": "Cable channel",
-              "cost": 52,
-              "costLabel": "+$52",
-              "description": "neat surface channel to keep cables organized on brick, concrete, or tile."
-            },
-            {
-              "value": "wallBrick",
-              "label": "In-Wall Concealment",
-              "cost": 249,
-              "costLabel": "+$249",
-              "description": "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish."
-            },
-            {
-              "value": "socketBrick",
-              "label": "In-Wall with Socket",
-              "cost": 289,
-              "costLabel": "+$289",
-              "description": "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing."
-            },
-          ],
-        },
-        // Wires: Hard Surface (Stone/Brick/Concrete, Tile, Ceiling) + Frame TV
-        {
-          "name": "wires",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you want to hide the wires?",
-          "description": "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
-          "showIf": {
-            "all": [
-              {
-                "field": "tv-size.tvSelection",
-                "condition": "equalsAny",
-                "values": ["frameTvUpTo60", "frameTvOver65"]
-              },
-              {
-                "any": [
-                  {
-                    "field": "wallType",
-                    "condition": "equals",
-                    "value": "ceiling"
-                  },
-                  {
-                    "all": [
-                      {
-                        "field": "wallType",
-                        "condition": "equalsAny",
-                        "values": ["stoneBrickConcrete", "tile"]
-                      },
-                      {
-                        "field": "fireplace",
-                        "condition": "equalsAny",
-                        "values": ["yes", "no"]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "options": [
-            {
-              "value": "open",
-              "label": "Exposed",
-              "subtitle": "no extra charge",
-              "cost": 0,
-              "costLabel": "+$0",
-              "description": "visible wires, fast and simple setup."
-            },
-            {
-              "value": "cableChannelBrick",
-              "label": "Cable channel",
-              "cost": 52,
-              "costLabel": "+$52",
-              "description": "neat surface channel to keep cables organized on brick, concrete, or tile."
-            },
-            {
-              "value": "wallBrick",
-              "label": "Put it in the wall",
-              "cost": 249,
-              "costLabel": "+$249",
-              "description": "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish."
-            },
-            {
-              "value": "socketBrick",
-              "label": "Recessed box Installation",
-              "cost": 289,
-              "costLabel": "+$289",
-              "description": "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing."
+              value: "yes",
+              label: "2 Tech",
+              cost: 59,
+              costLabel: "+$59",
+              subtitle: "Full service",
+              description:
+                "Two professional technicians will complete the entire installation from start to finish — no help required. Sit back and enjoy a fully managed, hassle-free service.",
             },
           ],
         },
       ],
     },
     {
-      "id": "additionalServices",
-      "title": "Additional Services",
-      "fields": [
+      id: "mounting",
+      title: "Mount Type",
+      showIf: {
+        field: "tv-size.tvSelection",
+        condition: "notEqualsAny",
+        values: ["frameTvUpTo60", "frameTvOver65", "projectorsNScreens"],
+      },
+      fields: [
         {
-          "name": "soundbar",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you need Soundbar Installation?",
-          "showIf": {
-            "field": "tv-size.tvSelection",
-            "condition": "notEqualsAny",
-            "values": ["projectorsNScreens"]
-          },
-          "options": [
-            { "value": "no", "label": "No", "hideFromBreakdown": true, "cost": 0, "costLabel": "+$0" },
-            { "value": "yes", "label": "Yes", "breakdownLabel": "Soundbar Installation", "cost": 69, "costLabel": "+$69", "description": "Professional soundbar mounting and setup." }
-          ]
-        },
-        {
-          "name": "soundbarMount",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Choose soundbar mount type",
-          "showIf": {
-            "all": [
-              {
-                "field": "soundbar",
-                "condition": "equals",
-                "value": "yes"
-              },
-              {
-                "field": "tv-size.tvSelection",
-                "condition": "notEqualsAny",
-                "values": ["projectorsNScreens"]
-              }
-            ]
-          },
-          "options": [
-            { "value": "alreadyThere", "label": "Already there / Not required", "cost": 0, "costLabel": "+$0" },
-            { "value": "wallMount", "label": "Soundbar Wall Mount", "cost": 19, "costLabel": "+$19", "description": "Mount your soundbar directly to the wall under the TV." },
-            { "value": "attachTvMount", "label": "Soundbar Attach TV mount", "cost": 39, "costLabel": "+$39", "description": "Mount your soundbar directly to the TV bracket for a floating look." }
-          ]
-        },
-        {
-          "name": "screenInstallation",
-          "type": "radio",
-          "isRequired": true,
-          "label": "Do you need Projector Screen Installation?",
-          "showIf": {
-            "field": "tv-size.tvSelection",
-            "condition": "equals",
-            "value": "projectorsNScreens"
-          },
-          "options": [
-            { "value": "no", "label": "No", "hideFromBreakdown": true, "cost": 0, "costLabel": "+$0" },
-            { "value": "yes", "label": "Yes", "breakdownLabel": "Screen Installation", "cost": 69, "costLabel": "+$69", "description": "Professional screen installation." }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "contactInfo",
-      "title": "Address",
-      "fields": [
-        {
-          "name": "temp",
-          "type": "radio",
-          "label": "Service Address",
-          "options": []
-        },
-        {
-          "name": "name",
-          "type": "text",
-          "textLabel": "Enter your name",
-          "placeholder": "Enter your name *",
-          "isRequired": true
-        },
-        {
-          "name": "phone",
-          "type": "tel",
-          "textLabel": "Enter your phone",
-          "placeholder": "Enter your number *",
-          "isRequired": true
-        },
-        {
-          "name": "address",
-          "type": "text",
-          "textLabel": "Enter your address",
-          "placeholder": "Address",
-        },
-        {
-          "name": "zipApt",
-          "type": "splited",
-          "textLabel": "Enter your zip code and apartment/unit",
-          "fields": [
+          name: "mountType",
+          type: "radio",
+          isRequired: true,
+          label: "Choose mount type",
+          options: [
             {
-              "name": "zip",
-              "type": "text",
-              "placeholder": "Zip Code *",
-              "isRequired": true,
-              "minLength": 5,
-              "maxLength": 5
+              value: "alreadyThere",
+              label: "Already there",
+              cost: 0,
+              costLabel: "+$0",
+              description:
+                "Already have your own mount? Perfect! We’ll safely install your TV on your existing bracket at no extra cost.",
             },
             {
-              "name": "apt",
-              "type": "text",
-              "placeholder": "Apt/Unit",
-              "isRequired": false
-            }
-          ]
+              value: "fixed",
+              label: 'Fixed Mount (32"–86")',
+              subtitle: "1.5” from wall",
+              cost: 44,
+              costLabel: "+$44",
+              description:
+                "Clean and reliable: keeps your TV close to the wall for a sleek, modern look",
+            },
+            {
+              value: "tilting",
+              label: 'Tilt Mount (32"–86")',
+              subtitle: "up to 15° tilt",
+              cost: 52,
+              costLabel: "+$52",
+              description:
+                "Adjust the vertical angle to reduce glare and get the perfect view from any seating position.",
+            },
+            {
+              value: "fullMotion",
+              label: 'Full-Motion Mount (<70")',
+              subtitle: "extends up to 15”",
+              cost: 69,
+              costLabel: "+$69",
+              description:
+                "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room.",
+            },
+            {
+              value: "fullMotion75-86",
+              label: 'Full-Motion Mount (75"–86")',
+              subtitle: "",
+              cost: 79,
+              costLabel: "+$79",
+              description:
+                "specially designed for larger screens: sturdy arms with full rotation and extendability.",
+            },
+            {
+              value: "corner",
+              label: "Corner Mount",
+              subtitle: "fits TVs up to 75”",
+              cost: 69,
+              costLabel: "+$69",
+              description:
+                "the ideal solution for corner setups: saves space while keeping your room stylish and functional.",
+            },
+            {
+              value: "ceilingMount",
+              label: "Ceiling Mount",
+              subtitle: "",
+              cost: 69,
+              costLabel: "+$69",
+              description:
+                "a unique option when walls are occupied or for a bold interior design: mount your TV directly to the ceiling.",
+            },
+            {
+              value: "fixed100",
+              label: 'Fixed Mount (100")',
+              subtitle: "",
+              cost: 72,
+              costLabel: "+$72",
+              description:
+                "heavy-duty fixed bracket for massive screens up to 100 inches.",
+            },
+            {
+              value: "fullMotion100",
+              label: 'Full-Motion Mount (100")',
+              subtitle: "",
+              cost: 199,
+              costLabel: "+$199",
+              description:
+                "premium heavy-duty full-motion bracket supporting up to 100 inches.",
+            },
+            {
+              value: "tilting100",
+              label: 'Tilt Mount (100")',
+              subtitle: "",
+              cost: 89,
+              costLabel: "+$89",
+              description:
+                "tilting mount designed for larger screens up to 100 inches.",
+            },
+            {
+              value: "ultraSlim",
+              label: "Ultra Slim 0.3",
+              subtitle: "ultra thin profile",
+              cost: 79,
+              costLabel: "+$79",
+              description:
+                "ultra low profile mount: keeps the TV extremely close to the wall for a picture-frame effect.",
+            },
+          ],
         },
-      ]
-    }
+      ],
+    },
+    {
+      id: "wall",
+      title: "Wall Type",
+      fields: [
+        {
+          name: "wallType",
+          type: "radio",
+          isRequired: true,
+          label: "Choose wall type",
+          showIf: {
+            field: "tv-size.tvSelection",
+            condition: "notEqualsAny",
+            values: ["projectorsNScreens"],
+          },
+          options: [
+            {
+              value: "drywall",
+              label: "Drywall",
+              cost: 0,
+              costLabel: "+$0",
+              description: "standard wall type, quick and simple installation.",
+            },
+            {
+              value: "decorAccent",
+              label: "Accent Wall",
+              cost: 30,
+              costLabel: "+$30",
+              description:
+                "decorative accent wall requiring extra care and precise mounting.",
+            },
+            {
+              value: "metalStuds",
+              label: "Metal Studs",
+              cost: 30,
+              costLabel: "+$30",
+              description:
+                "metal framing studs requiring specialized hardware for safe installation.",
+            },
+            {
+              value: "stoneBrickConcrete",
+              label: "Stone / Brick / Concrete",
+              cost: 49,
+              costLabel: "+$49",
+              description:
+                "strong and durable surface, requires special tools and anchors for a secure mount.",
+            },
+            {
+              value: "tile",
+              label: "Tile",
+              cost: 69,
+              costLabel: "+$69",
+              description:
+                "perfect for kitchens, bathrooms, or decorative walls. We use diamond drill bits to carefully protect your tiles while ensuring a safe and reliable mount.",
+            },
+            {
+              value: "ceiling",
+              label: "Ceiling",
+              cost: 39,
+              costLabel: "+$39",
+              description: "mounting directly onto a ceiling structure.",
+            },
+          ],
+        },
+        {
+          name: "wallTypeProjector",
+          type: "radio",
+          isRequired: true,
+          label: "Choose wall type",
+          showIf: {
+            field: "tv-size.tvSelection",
+            condition: "equals",
+            value: "projectorsNScreens",
+          },
+          options: [
+            {
+              value: "drywall",
+              label: "Drywall",
+              cost: 0,
+              costLabel: "+$0",
+              description: "standard wall type, quick and simple installation.",
+            },
+            {
+              value: "metalStuds",
+              label: "Metal Studs",
+              cost: 30,
+              costLabel: "+$30",
+              description:
+                "metal framing studs requiring specialized hardware for safe installation.",
+            },
+            {
+              value: "stoneBrickConcrete",
+              label: "Stone / Brick / Concrete",
+              cost: 49,
+              costLabel: "+$49",
+              description:
+                "strong and durable surface, requires special tools and anchors for a secure mount.",
+            },
+          ],
+        },
+        {
+          name: "fireplace",
+          type: "radio",
+          isRequired: true,
+          label: "Is the TV being mounted above a fireplace?",
+          showIf: {
+            field: "wallType",
+            condition: "equalsAny",
+            values: [
+              "drywall",
+              "decorAccent",
+              "metalStuds",
+              "stoneBrickConcrete",
+              "tile",
+            ],
+          },
+          options: [
+            {
+              value: "yes",
+              label: "Yes",
+              breakdownLabel: "Above Fireplace",
+              cost: 32,
+              costLabel: "+$32",
+              description: "Above Fireplace installation.",
+            },
+            {
+              value: "no",
+              label: "No",
+              hideFromBreakdown: true,
+              cost: 0,
+              costLabel: "+$0",
+            },
+          ],
+        },
+        // Wires: Drywall / Accent Wall / Metal Studs + Regular TV + NOT above fireplace
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+          showIf: {
+            all: [
+              {
+                field: "tv-size.tvSelection",
+                condition: "notEqualsAny",
+                values: ["frameTvUpTo60", "frameTvOver65"],
+              },
+              {
+                any: [
+                  {
+                    all: [
+                      {
+                        field: "wallType",
+                        condition: "equalsAny",
+                        values: ["drywall", "decorAccent", "metalStuds"],
+                      },
+                      {
+                        field: "fireplace",
+                        condition: "equals",
+                        value: "no",
+                      },
+                    ],
+                  },
+                  {
+                    field: "wallTypeProjector",
+                    condition: "equalsAny",
+                    values: ["drywall", "metalStuds"],
+                  },
+                ],
+              },
+            ],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description:
+                "standard setup with visible wires, quick and simple.",
+            },
+            {
+              value: "cableChannelDrywall",
+              label: "Cable Channel",
+              cost: 43,
+              costLabel: "+$43",
+              description:
+                "a sleek plastic channel to neatly hide and organize wires along the wall.",
+            },
+            {
+              value: "wallDrywall",
+              label: "Put it in the wall",
+              cost: 93,
+              costLabel: "+$93",
+              description:
+                "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look.",
+            },
+            {
+              value: "socketDrywall",
+              label: "In wall with socket",
+              cost: 129,
+              costLabel: "+$129",
+              description:
+                "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+            },
+          ],
+        },
+        // Wires: Drywall / Accent Wall / Metal Studs + Frame TV + NOT above fireplace
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+          showIf: {
+            all: [
+              {
+                field: "wallType",
+                condition: "equalsAny",
+                values: ["drywall", "decorAccent", "metalStuds"],
+              },
+              {
+                field: "tv-size.tvSelection",
+                condition: "equalsAny",
+                values: ["frameTvUpTo60", "frameTvOver65"],
+              },
+              {
+                field: "fireplace",
+                condition: "equals",
+                value: "no",
+              },
+            ],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description:
+                "standard setup with visible wires, quick and simple.",
+            },
+            {
+              value: "cableChannelDrywall",
+              label: "Cable Channel",
+              cost: 43,
+              costLabel: "+$43",
+              description:
+                "a sleek plastic channel to neatly hide and organize wires along the wall.",
+            },
+            {
+              value: "wallDrywall",
+              label: "Put it in the wall",
+              cost: 93,
+              costLabel: "+$93",
+              description:
+                "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look.",
+            },
+            {
+              value: "socketDrywall",
+              label: "Recessed box Installation",
+              cost: 149,
+              costLabel: "+$149",
+              description:
+                "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+            },
+          ],
+        },
+        // Wires: Drywall / Accent Wall / Metal Studs + Regular TV + ABOVE fireplace
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall.",
+          showIf: {
+            all: [
+              {
+                field: "wallType",
+                condition: "equalsAny",
+                values: ["drywall", "decorAccent", "metalStuds"],
+              },
+              {
+                field: "tv-size.tvSelection",
+                condition: "notEqualsAny",
+                values: ["frameTvUpTo60", "frameTvOver65"],
+              },
+              {
+                field: "fireplace",
+                condition: "equals",
+                value: "yes",
+              },
+            ],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description:
+                "standard setup with visible wires, quick and simple.",
+            },
+            {
+              value: "cableChannelDrywall",
+              label: "Cable Channel",
+              cost: 43,
+              costLabel: "+$43",
+              description:
+                "a sleek plastic channel to neatly hide and organize wires along the wall.",
+            },
+            {
+              value: "wallFireplace",
+              label: "In-Wall Concealment",
+              cost: 109,
+              costLabel: "+$109",
+              description:
+                "wires run behind the wall with clean cover plates for a seamless look.",
+            },
+            {
+              value: "socketFireplace",
+              label: "In Wall with Socket",
+              cost: 149,
+              costLabel: "+$149",
+              description:
+                "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+            },
+          ],
+        },
+        // Wires: Drywall / Accent Wall / Metal Studs + Frame TV + ABOVE fireplace
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall.",
+          showIf: {
+            all: [
+              {
+                field: "wallType",
+                condition: "equalsAny",
+                values: ["drywall", "decorAccent", "metalStuds"],
+              },
+              {
+                field: "tv-size.tvSelection",
+                condition: "equalsAny",
+                values: ["frameTvUpTo60", "frameTvOver65"],
+              },
+              {
+                field: "fireplace",
+                condition: "equals",
+                value: "yes",
+              },
+            ],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description:
+                "standard setup with visible wires, quick and simple.",
+            },
+            {
+              value: "cableChannelDrywall",
+              label: "Cable Channel",
+              cost: 43,
+              costLabel: "+$43",
+              description:
+                "a sleek plastic channel to neatly hide and organize wires along the wall.",
+            },
+            {
+              value: "wallFireplace",
+              label: "Put it in the wall",
+              cost: 109,
+              costLabel: "+$109",
+              description:
+                "wires run behind the wall with clean cover plates for a seamless look.",
+            },
+            {
+              value: "socketFireplace",
+              label: "Recessed box Installation",
+              cost: 149,
+              costLabel: "+$149",
+              description:
+                "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+            },
+          ],
+        },
+        // Wires: Hard Surface (Stone/Brick/Concrete, Tile, Ceiling) + Regular TV
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+          showIf: {
+            all: [
+              {
+                field: "tv-size.tvSelection",
+                condition: "notEqualsAny",
+                values: ["frameTvUpTo60", "frameTvOver65"],
+              },
+              {
+                any: [
+                  {
+                    field: "wallType",
+                    condition: "equals",
+                    value: "ceiling",
+                  },
+                  {
+                    all: [
+                      {
+                        field: "wallType",
+                        condition: "equalsAny",
+                        values: ["stoneBrickConcrete", "tile"],
+                      },
+                      {
+                        field: "fireplace",
+                        condition: "equalsAny",
+                        values: ["yes", "no"],
+                      },
+                    ],
+                  },
+                  {
+                    field: "wallTypeProjector",
+                    condition: "equals",
+                    value: "stoneBrickConcrete",
+                  },
+                ],
+              },
+            ],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description: "visible wires, fast and simple setup.",
+            },
+            {
+              value: "cableChannelBrick",
+              label: "Cable channel",
+              cost: 52,
+              costLabel: "+$52",
+              description:
+                "neat surface channel to keep cables organized on brick, concrete, or tile.",
+            },
+            {
+              value: "wallBrick",
+              label: "In-Wall Concealment",
+              cost: 249,
+              costLabel: "+$249",
+              description:
+                "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish.",
+            },
+            {
+              value: "socketBrick",
+              label: "In-Wall with Socket",
+              cost: 289,
+              costLabel: "+$289",
+              description:
+                "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing.",
+            },
+          ],
+        },
+        // Wires: Hard Surface (Stone/Brick/Concrete, Tile, Ceiling) + Frame TV
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+          showIf: {
+            all: [
+              {
+                field: "tv-size.tvSelection",
+                condition: "equalsAny",
+                values: ["frameTvUpTo60", "frameTvOver65"],
+              },
+              {
+                any: [
+                  {
+                    field: "wallType",
+                    condition: "equals",
+                    value: "ceiling",
+                  },
+                  {
+                    all: [
+                      {
+                        field: "wallType",
+                        condition: "equalsAny",
+                        values: ["stoneBrickConcrete", "tile"],
+                      },
+                      {
+                        field: "fireplace",
+                        condition: "equalsAny",
+                        values: ["yes", "no"],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description: "visible wires, fast and simple setup.",
+            },
+            {
+              value: "cableChannelBrick",
+              label: "Cable channel",
+              cost: 52,
+              costLabel: "+$52",
+              description:
+                "neat surface channel to keep cables organized on brick, concrete, or tile.",
+            },
+            {
+              value: "wallBrick",
+              label: "Put it in the wall",
+              cost: 249,
+              costLabel: "+$249",
+              description:
+                "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish.",
+            },
+            {
+              value: "socketBrick",
+              label: "Recessed box Installation",
+              cost: 289,
+              costLabel: "+$289",
+              description:
+                "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing.",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "additionalServices",
+      title: "Additional Services",
+      fields: [
+        {
+          name: "soundbar",
+          type: "radio",
+          isRequired: true,
+          label: "Do you need Soundbar Installation?",
+          showIf: {
+            field: "tv-size.tvSelection",
+            condition: "notEqualsAny",
+            values: ["projectorsNScreens"],
+          },
+          options: [
+            {
+              value: "no",
+              label: "No",
+              hideFromBreakdown: true,
+              cost: 0,
+              costLabel: "+$0",
+            },
+            {
+              value: "yes",
+              label: "Yes",
+              breakdownLabel: "Soundbar Installation",
+              cost: 69,
+              costLabel: "+$69",
+              description: "Professional soundbar mounting and setup.",
+            },
+          ],
+        },
+        {
+          name: "soundbarMount",
+          type: "radio",
+          isRequired: true,
+          label: "Choose soundbar mount type",
+          showIf: {
+            all: [
+              {
+                field: "soundbar",
+                condition: "equals",
+                value: "yes",
+              },
+              {
+                field: "tv-size.tvSelection",
+                condition: "notEqualsAny",
+                values: ["projectorsNScreens"],
+              },
+            ],
+          },
+          options: [
+            {
+              value: "alreadyThere",
+              label: "Already there / Not required",
+              cost: 0,
+              costLabel: "+$0",
+            },
+            {
+              value: "wallMount",
+              label: "Soundbar Wall Mount",
+              cost: 19,
+              costLabel: "+$19",
+              description:
+                "Mount your soundbar directly to the wall under the TV.",
+            },
+            {
+              value: "attachTvMount",
+              label: "Soundbar Attach TV mount",
+              cost: 39,
+              costLabel: "+$39",
+              description:
+                "Mount your soundbar directly to the TV bracket for a floating look.",
+            },
+          ],
+        },
+        {
+          name: "screenInstallation",
+          type: "radio",
+          isRequired: true,
+          label: "Do you need Projector Screen Installation?",
+          showIf: {
+            field: "tv-size.tvSelection",
+            condition: "equals",
+            value: "projectorsNScreens",
+          },
+          options: [
+            {
+              value: "no",
+              label: "No",
+              hideFromBreakdown: true,
+              cost: 0,
+              costLabel: "+$0",
+            },
+            {
+              value: "yes",
+              label: "Yes",
+              breakdownLabel: "Screen Installation",
+              cost: 69,
+              costLabel: "+$69",
+              description: "Professional screen installation.",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "contactInfo",
+      title: "Address",
+      fields: [
+        {
+          name: "temp",
+          type: "radio",
+          label: "Service Address",
+          options: [],
+        },
+        {
+          name: "name",
+          type: "text",
+          textLabel: "Enter your name",
+          placeholder: "Enter your name *",
+          isRequired: true,
+        },
+        {
+          name: "phone",
+          type: "tel",
+          textLabel: "Enter your phone",
+          placeholder: "Enter your number *",
+          isRequired: true,
+        },
+        {
+          name: "address",
+          type: "text",
+          textLabel: "Enter your address",
+          placeholder: "Address",
+        },
+        {
+          name: "zipApt",
+          type: "splited",
+          textLabel: "Enter your zip code and apartment/unit",
+          fields: [
+            {
+              name: "zip",
+              type: "text",
+              placeholder: "Zip Code *",
+              isRequired: true,
+              minLength: 5,
+              maxLength: 5,
+            },
+            {
+              name: "apt",
+              type: "text",
+              placeholder: "Apt/Unit",
+              isRequired: false,
+            },
+          ],
+        },
+      ],
+    },
   ],
-  "priceCalculation": {
-    "baseCost": 0,
-    "dynamicCosts": [
+  priceCalculation: {
+    baseCost: 0,
+    dynamicCosts: [
       "tv-size.tvSelection",
       "tv-size.extraTechnicans",
       "mounting.mountType",
@@ -834,9 +953,9 @@ const BestQuoteScheme = {
       "wall.fireplace",
       "wall.wires",
       "additionalServices.soundbar",
-      "additionalServices.soundbarMount"
-    ]
-  }
+      "additionalServices.soundbarMount",
+    ],
+  },
 };
 
 const BestQuoteModal = () => {
@@ -873,7 +992,8 @@ const BestQuoteModal = () => {
     setIsSubmitting(true);
     console.log("formData", formData);
 
-    const wallTypeResolved = formData.wall?.wallType || formData.wall?.wallTypeProjector || "";
+    const wallTypeResolved =
+      formData.wall?.wallType || formData.wall?.wallTypeProjector || "";
     const submissionData = {
       ...formData,
       wall: {
@@ -990,14 +1110,6 @@ const BestQuoteModal = () => {
           {(isMobile && currentStepIndex === 0) || (
             <div className={styles.discountBanner}>
               <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
-              <p className={styles.discountText}>
-                Let the manager know to receive a multi-TVs{" "}
-                <span className={styles.discountWord}>DISCOUNT</span>:{" "}
-                <span className={styles.discountPercent}>10% OFF</span> for 2
-                TVs, <span className={styles.discountPercent}>15% OFF</span> for
-                3, <span className={styles.discountPercent}>20% OFF</span> for 4
-                or more.
-              </p>
             </div>
           )}
           {isMobile && currentStepIndex === 4 && (
