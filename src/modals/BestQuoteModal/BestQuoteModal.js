@@ -1110,6 +1110,10 @@ const BestQuoteModal = () => {
           {(isMobile && currentStepIndex === 0) || (
             <div className={styles.discountBanner}>
               <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
+              <p className={styles.discountText}>
+                Let the manager know to receive a multi-TVs{" "}
+                <span className={styles.discountPercent}>DISCOUNT</span>.
+              </p>
             </div>
           )}
           {isMobile && currentStepIndex === 4 && (
