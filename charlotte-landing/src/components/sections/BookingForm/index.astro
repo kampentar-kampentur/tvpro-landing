@@ -25,13 +25,6 @@ const { cityName } = Astro.props;
     />
     <div class="discount-banner">
         <p class="discount-label">Installing 2 or more TVs?</p>
-        <p class="discount-text">
-            Let the manager know to receive a multi-TVs
-            <span class="discount-word">DISCOUNT</span>:
-            <span class="discount-percent">10% OFF</span> for 2 TVs,
-            <span class="discount-percent">15% OFF</span> for 3,
-            <span class="discount-percent">20% OFF</span> for 4 or more.
-        </p>
     </div>
     <p class="form-privacy">
         No spam. Your data is used strictly for scheduling your appointment.
@@ -248,7 +241,7 @@ const { cityName } = Astro.props;
         };
 
         submitBtn.addEventListener("click", handleSubmit);
-        
+
         form.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
                 e.preventDefault();
