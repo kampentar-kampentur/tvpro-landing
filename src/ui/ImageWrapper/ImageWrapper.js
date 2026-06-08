@@ -10,7 +10,8 @@ export default function ImageWrapper({
     height,
     sizes = "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw",
     priority = false,
-    preferFormat // optional: 'large', 'medium', 'small', 'thumbnail'
+    preferFormat, // optional: 'large', 'medium', 'small', 'thumbnail'
+    style
 }) {
     if (!media) return null;
 
@@ -52,5 +53,6 @@ export default function ImageWrapper({
         alt={media.alternativeText || media.caption || defaultAlt || ""}
         priority={priority}
         sizes={sizes}
+        style={style}
     />;
 }

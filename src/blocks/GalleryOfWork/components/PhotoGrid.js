@@ -13,6 +13,7 @@ const PhotoGrid = ({ images, onPhotoClick }) => {
           image={image.image}
           videoUrl={image.videoUrl}
           video={image.video}
+          objectPosition={image.objectPosition || image.position || image.alignment || image.object_position}
           currentIndex={index}
           onClick={(e) => onPhotoClick(index, images, e)}
         />
