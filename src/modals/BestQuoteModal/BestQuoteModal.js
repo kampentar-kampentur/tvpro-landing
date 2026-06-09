@@ -4,7 +4,7 @@ import { useModalState, useModal } from "@/providers/ModalProvider";
 import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import PriceSummary from "./components/PriceSummary";
 import LogoSVG from "@/assets/logo.svg";
@@ -136,7 +136,7 @@ const BestQuoteScheme = {
             },
             {
               value: "fixed",
-              label: 'Fixed Mount (32"–86")',
+              label: "Fixed Mount",
               subtitle: "1.5” from wall",
               cost: 44,
               costLabel: "+$44",
@@ -145,7 +145,7 @@ const BestQuoteScheme = {
             },
             {
               value: "tilting",
-              label: 'Tilt Mount (32"–86")',
+              label: "Tilt Mount",
               subtitle: "up to 15° tilt",
               cost: 52,
               costLabel: "+$52",
@@ -154,21 +154,12 @@ const BestQuoteScheme = {
             },
             {
               value: "fullMotion",
-              label: 'Full-Motion Mount (<70")',
+              label: "Full-Motion Mount",
               subtitle: "extends up to 15”",
               cost: 69,
               costLabel: "+$69",
               description:
                 "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room.",
-            },
-            {
-              value: "fullMotion75-86",
-              label: 'Full-Motion Mount (75"–86")',
-              subtitle: "",
-              cost: 79,
-              costLabel: "+$79",
-              description:
-                "specially designed for larger screens: sturdy arms with full rotation and extendability.",
             },
             {
               value: "corner",
@@ -187,33 +178,6 @@ const BestQuoteScheme = {
               costLabel: "+$69",
               description:
                 "a unique option when walls are occupied or for a bold interior design: mount your TV directly to the ceiling.",
-            },
-            {
-              value: "fixed100",
-              label: 'Fixed Mount (100")',
-              subtitle: "",
-              cost: 72,
-              costLabel: "+$72",
-              description:
-                "heavy-duty fixed bracket for massive screens up to 100 inches.",
-            },
-            {
-              value: "fullMotion100",
-              label: 'Full-Motion Mount (100")',
-              subtitle: "",
-              cost: 199,
-              costLabel: "+$199",
-              description:
-                "premium heavy-duty full-motion bracket supporting up to 100 inches.",
-            },
-            {
-              value: "tilting100",
-              label: 'Tilt Mount (100")',
-              subtitle: "",
-              cost: 89,
-              costLabel: "+$89",
-              description:
-                "tilting mount designed for larger screens up to 100 inches.",
             },
             {
               value: "ultraSlim",
@@ -969,6 +933,82 @@ const BestQuoteModal = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
+  const tvSelection = formData["tv-size"]?.tvSelection;
+
+  const currentScheme = useMemo(() => {
+    let fixedCost = 44;
+    let tiltCost = 52;
+    let fullMotionCost = 69;
+
+    if (tvSelection === "over-86") {
+      fixedCost = 72;
+      tiltCost = 89;
+      fullMotionCost = 199;
+    } else if (tvSelection === "70-85") {
+      fixedCost = 44;
+      tiltCost = 52;
+      fullMotionCost = 79;
+    }
+
+    const updatedSteps = BestQuoteScheme.steps.map((step) => {
+      if (step.id === "mounting") {
+        return {
+          ...step,
+          fields: step.fields.map((field) => {
+            if (field.name === "mountType") {
+              return {
+                ...field,
+                options: field.options.map((opt) => {
+                  if (opt.value === "fixed") {
+                    return {
+                      ...opt,
+                      cost: fixedCost,
+                      costLabel: `+$${fixedCost}`,
+                    };
+                  }
+                  if (opt.value === "tilting") {
+                    return {
+                      ...opt,
+                      cost: tiltCost,
+                      costLabel: `+$${tiltCost}`,
+                    };
+                  }
+                  if (opt.value === "fullMotion") {
+                    return {
+                      ...opt,
+                      cost: fullMotionCost,
+                      costLabel: `+$${fullMotionCost}`,
+                      subtitle:
+                        tvSelection === "over-86"
+                          ? ""
+                          : tvSelection === "70-85"
+                          ? "75\"–86\""
+                          : "<70\"",
+                      description:
+                        tvSelection === "over-86"
+                          ? "premium heavy-duty full-motion bracket supporting up to 100 inches."
+                          : tvSelection === "70-85"
+                          ? "specially designed for larger screens: sturdy arms with full rotation and extendability."
+                          : "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room.",
+                    };
+                  }
+                  return opt;
+                }),
+              };
+            }
+            return field;
+          }),
+        };
+      }
+      return step;
+    });
+
+    return {
+      ...BestQuoteScheme,
+      steps: updatedSteps,
+    };
+  }, [tvSelection]);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 1024);
     checkMobile();
@@ -1095,7 +1135,7 @@ const BestQuoteModal = () => {
       <div className={styles.bestQuote}>
         <main className={styles.bestQuoteMain}>
           <Form
-            scheme={BestQuoteScheme}
+            scheme={currentScheme}
             value={formData}
             onChange={setFormData}
             onPriceChange={handlePriceChange}

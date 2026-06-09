@@ -27,7 +27,8 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     isLastMainStep,
     goToNextStep,
     goToPreviousStep,
-    goToStep
+    goToStep,
+    visibleStepIndices
   } = useFormNavigation(scheme, onStepChange, value);
 
   const renderedSteps = useDynamicSteps(currentStepConfig, value);
@@ -223,6 +224,15 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     }
   };
 
+  const currentStepPosition = visibleStepIndices ? visibleStepIndices.indexOf(currentStepIndex) : 0;
+  const isContactStep = stepToRender?.id === "contactInfo";
+  
+  // Calculate progress excluding the contactInfo step
+  const progressStepsCount = visibleStepIndices ? visibleStepIndices.length - 1 : 1;
+  const progressPercent = progressStepsCount > 0
+    ? Math.min(100, Math.round(((currentStepPosition + 1) / progressStepsCount) * 100))
+    : 100;
+
   return (
     <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
       {/* <h2 className={styles.bestQuoteTitle}>{stepToRender?.title}</h2> */}
@@ -245,6 +255,13 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         onClose={onClose}
         onBack={onBack || handleBack}
       />
+      {showProgress && !isContactStep && (
+        <div className={styles.progressWrapper}>
+          <div className={styles.progressFill} style={{ width: `${progressPercent}%` }}>
+            <span className={styles.progressPercent}>{progressPercent}%</span>
+          </div>
+        </div>
+      )}
       {/* <div style={{flexGrow: 1}}></div> */}
       {/* <FormNavigation
         canGoBack={canGoBack}

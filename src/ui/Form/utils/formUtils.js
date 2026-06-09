@@ -81,6 +81,8 @@ export const shouldRenderField = (showIfCondition, currentFormData, currentStepI
   if (fieldValue === undefined || fieldValue === null) {
     if (condition === "equals" && resolvedTargetValue === null) return true;
     if (condition === "notEquals" && resolvedTargetValue === null) return false;
+    if (condition === "notEquals" && resolvedTargetValue !== undefined && resolvedTargetValue !== null) return true;
+    if (condition === "notEqualsAny") return true;
     return false;
   }
 
