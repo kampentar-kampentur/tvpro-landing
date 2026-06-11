@@ -34,7 +34,7 @@ async function getCTA() {
 }
 
 // Default export with data prop
-export default async function Contacts({ data = {} }) {
+export default async function Contacts({ data = {}, cityContext }) {
   const [defaultContact, cta] = await Promise.all([getContactUs(), getCTA()]);
 
   // Merge: Use prop data if available, otherwise fallback to default
@@ -54,6 +54,11 @@ export default async function Contacts({ data = {} }) {
     x: data?.x || defaultContact?.x,
     linkedin: data?.linkedin || defaultContact?.linkedin,
   };
+
+  const mapQuery = cityContext?.city_name
+    ? `${cityContext.city_name}, ${cityContext.state_code || ""}`
+    : "Houston, TX";
+
   return (
     <section className={styles.contacts} id="contact">
       <div className={`blockContainer ${styles.contactsContainer}`}>
@@ -64,16 +69,17 @@ export default async function Contacts({ data = {} }) {
             <ContactsDetails />
           </div>
 
-          {/* <iframe
-            title="Location map of TVPro Handy Services"
-            width="300"
-            height="300"
-            style={{border:0}}
+          <iframe
+            title={`Location map of TVPro Handy Services in ${mapQuery}`}
+            width="100%"
+            height="350"
+            style={{ border: 0 }}
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME&q=place_id:ChIJuVr9LojYwQERHVjQfs1s2O8">
-          </iframe> */}
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=11&ie=UTF8&iwloc=&output=embed`}
+          >
+          </iframe>
         </div>
         <div className={styles.socialNetworksSection}>
           <h3 className={styles.detailTitle}>Social Networks</h3>
