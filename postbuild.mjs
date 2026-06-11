@@ -39,7 +39,10 @@ async function processFile(file, beasties) {
 
     // создаём noscript fallback
     const noscript = document.createElement("noscript");
-    noscript.innerHTML = `<link rel="stylesheet" href="${href}">`;
+    const noscriptLink = document.createElement("link");
+    noscriptLink.setAttribute("rel", "stylesheet");
+    noscriptLink.setAttribute("href", href);
+    noscript.appendChild(noscriptLink);
 
     link.replaceWith(preload, noscript);
   });
