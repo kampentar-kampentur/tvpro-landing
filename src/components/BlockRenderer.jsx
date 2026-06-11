@@ -1,3 +1,4 @@
+import React from 'react';
 import Hero from '@/blocks/Hero/Hero';
 import TVSizes from '@/blocks/TVSizes/TVSizes';
 import GalleryOfWork from '@/blocks/GalleryOfWork/GalleryOfWork';
@@ -11,6 +12,7 @@ import FAQ from '@/blocks/FAQ/FAQ';
 import Contacts from '@/blocks/Contacts/Contacts';
 import WorkVideoGallery from '@/blocks/WorkVideoGallery/WorkVideoGallery';
 import AreasWeServe from '@/blocks/AreasWeServe/AreasWeServe';
+import SEOBreadcrumbs from '@/ui/SEOBreadcrumbs/SEOBreadcrumbs';
 
 const blockMap = {
     'blocks.hero': Hero,
@@ -45,10 +47,23 @@ export default function BlockRenderer({ blocks, globalData, cityContext }) {
             ? { ...globalBlockData, ...block }
             : block;
 
-        return <Component
-            key={`${block.__component}-${index}`}
-            data={finalizedData}
-            cityContext={cityContext}
-        />;
+        const renderedBlock = (
+            <Component
+                key={`${block.__component}-${index}`}
+                data={finalizedData}
+                cityContext={cityContext}
+            />
+        );
+
+        if (block.__component === 'blocks.hero' && cityContext?.city_name) {
+            return (
+                <React.Fragment key={`${block.__component}-${index}-fragment`}>
+                    {renderedBlock}
+                    <SEOBreadcrumbs cityContext={cityContext} />
+                </React.Fragment>
+            );
+        }
+
+        return renderedBlock;
     });
 }
