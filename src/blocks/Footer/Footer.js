@@ -28,6 +28,9 @@ const Footer = () => {
           <div className={styles.copyright}>
             <p>© {currentYear} TV PRO Handy Services</p>
             <p>All Rights Reserved</p>
+            <Link href="/html-sitemap/" className={styles.sitemapLink}>
+              Sitemap
+            </Link>
           </div>
         </div>
 
