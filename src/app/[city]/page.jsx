@@ -40,7 +40,7 @@ export async function generateMetadata({ params }) {
     const displayName = city_name ? `${city_name}${state_code ? `, ${state_code}` : ''}` : 'TVPro Handy Services';
 
     const title = seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`;
-    const description = seo?.metaDescription || `Expert TV mounting and home theater installation services in ${displayName}. Secure mounting on all surfaces, wire hiding, and same-day service.`;
+    const description = seo?.metaDescription || `Expert TV mounting & home theater installation in ${displayName}. Secure mounting on all surfaces, clean wire hiding & same-day service.`;
 
     const ogImageUrl = seo?.shareImage?.url || 'https://tvprousa.com/og-image.png';
 

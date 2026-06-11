@@ -21,17 +21,7 @@ const redHatDisplay = Red_Hat_Display({
 
 export const metadata = {
   title: "TV Mounting Services | TVPro Handy Services",
-  description: `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
-
-Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
-
-
-✅ Transparent pricing, no hidden fees
-✅ Evening & weekend availability
-✅ 1-year warranty on all installations
-✅ Trusted by homeowners, businesses, and designers
-
-Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
+  description: "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
   robots: {
     index: true,
     follow: true,
@@ -100,16 +90,7 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
   },
   openGraph: {
     title: 'TV Mounting Services | TVPro Handy Services',
-    description: `TV Pro Handy Services LLC provides expert television mounting service, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
-
-Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
-
-✅ Transparent pricing, no hidden fees
-✅ Evening & weekend availability
-✅ 1-year warranty on all installations
-✅ Trusted by homeowners, businesses, and designers
-
-Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
+    description: "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
     url: 'https://tvprousa.com',
     images: [
       {
@@ -127,16 +108,7 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
   twitter: {
     card: 'summary_large_image',
     title: 'TVPro Handy Services',
-    description: `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
-
-Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
-
-✅ Transparent pricing, no hidden fees
-✅ Evening & weekend availability
-✅ 1-year warranty on all installations
-✅ Trusted by homeowners, businesses, and designers
-
-Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
+    description: "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
     images: ['https://tvprousa.com/og-image.png'],
   },
   verification: {
