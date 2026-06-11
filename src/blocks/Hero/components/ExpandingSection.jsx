@@ -130,10 +130,10 @@ export default function ExpandingSection({
     };
 
     return (
-        <section ref={containerRef} className={`${styles.expandingWrapper} ${className}`}>
+        <div ref={containerRef} className={`${styles.expandingWrapper} ${className}`}>
             <div className={styles.expandingContainer} style={containerStyle}>
                 {children}
             </div>
-        </section>
+        </div>
     );
 } 

@@ -24,11 +24,11 @@ export default function HeaderActions() {
                     htmlFor="menu-toggle"
                     className={`${styles.menuButton} ${styles.menuLabel} ${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}
                 >
-                    <div className={styles.hamburger}>
+                    <span className={styles.hamburger}>
                         <span className={styles.line}></span>
                         <span className={styles.line}></span>
                         <span className={styles.line}></span>
-                    </div>
+                    </span>
                     <span className="sr-only">Menu</span>
                 </label>
             </div>
