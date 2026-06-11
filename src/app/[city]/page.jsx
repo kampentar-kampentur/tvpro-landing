@@ -126,6 +126,8 @@ export default async function CityPage({ params }) {
         "@type": "LocalBusiness",
         "name": `TVPro Handy Services - ${cityData.city_name || 'TV Mounting'}`,
         "description": cityData.seo?.metaDescription || "Professional TV Mounting Services",
+        "image": "https://tvprousa.com/logo.svg",
+        "priceRange": "$$",
         "address": {
             "@type": "PostalAddress",
             "addressLocality": cityData.city_name || "Houston",
@@ -133,9 +135,25 @@ export default async function CityPage({ params }) {
             "addressCountry": "US"
         },
         "url": isSuburb
-            ? `https://tvprousa.com/${metro_city_slug}`
-            : `https://tvprousa.com/${citySlug}`,
-        "telephone": "(877) 455-5535"
+            ? `https://tvprousa.com/${metro_city_slug}/`
+            : `https://tvprousa.com/${citySlug}/`,
+        "telephone": cityData.cta_override?.phone || "(877) 455-5535",
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday"
+                ],
+                "opens": "08:00",
+                "closes": "20:00"
+            }
+        ]
     };
 
     return (

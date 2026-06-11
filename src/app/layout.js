@@ -345,6 +345,43 @@ export default async function RootLayout({ children }) {
           </noscript>
         )}
         <noscript><iframe src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch=" width="0" height="0" style={{ display: 'none' }}></iframe></noscript>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "TVPro Handy Services",
+              "description": "TVPro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide.",
+              "url": "https://tvprousa.com/",
+              "telephone": cta?.phone || "(877) 455-5535",
+              "image": "https://tvprousa.com/logo.svg",
+              "priceRange": "$$",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Houston",
+                "addressRegion": "TX",
+                "addressCountry": "US"
+              },
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday"
+                  ],
+                  "opens": "08:00",
+                  "closes": "20:00"
+                }
+              ]
+            })
+          }}
+        />
         <CTAProvider initialCTA={cta}>
           <ModalProvider>
             <EngagementTracker />

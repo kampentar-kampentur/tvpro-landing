@@ -82,8 +82,12 @@ export default async function Hero({ data = {}, cityContext }) {
             "name": "TV Wall Mounting Demo by TVPro Handy Services",
             "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
             "uploadDate": "2025-07-25",
-            "contentUrl": "https://tvprousa.com/mainVideo2.mp4",
-            "embedUrl": "https://tvprousa.com",
+            "duration": "PT9.5S",
+            "thumbnailUrl": [
+              "https://tvprousa.com/videoplaceholder-800.webp"
+            ],
+            "contentUrl": "https://tvprousa.com/optimized/mainVideo2-720p.mp4",
+            "embedUrl": "https://tvprousa.com/",
           }),
         }}
       />
