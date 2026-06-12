@@ -1,0 +1,206 @@
+/* ─────────────────────────────────────────────────────────────
+   TechCard — built in the exact DNA of TrustCard + ServiceCard:
+   white box, 1px #e7e7eb border, 20px radius, 30-40px padding,
+   NO photo overlay tricks, NO glassmorphism on images.
+   ───────────────────────────────────────────────────────────── */
+
+.techCard {
+  background-color: var(--white);
+  border: 1px solid #e7e7eb;
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+@media (hover: hover) {
+  .techCard:hover {
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow:
+      0px 5px 11px 0px #0000001f,
+      0px 19px 19px 0px #00000017,
+      0px 44px 26px 0px #00000014,
+      0px 78px 31px 0px #0000000a,
+      0px 121px 34px 0px #00000005;
+  }
+
+  .techCard:hover .photo {
+    transform: scale(1.04);
+  }
+}
+
+/* ── Avatar photo — circular, like a real team block ── */
+.photoWrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+/* ── Top row: avatar + name block ── */
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.role {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--gray); /* same as TrustCard .description */
+  margin: 0;
+}
+
+/* ── Stat pill — unique per technician ──
+   Styled like OptionalAddons .button chip
+   ── */
+.statPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  background-color: rgba(14, 14, 19, 0.05);
+  border: 1px solid rgba(14, 14, 19, 0.1);
+  border-radius: 36px;  /* exact match OptionalAddons */
+  padding: 6px 14px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+.statStar {
+  color: #f6b80d;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* ── Bio — same style as TrustCard .description ── */
+.bio {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--gray);
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* ── Skill tags row ── */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* Tag chip — exact copy of OptionalAddons .button */
+.tag {
+  background-color: rgba(14, 14, 19, 0.05);
+  border: 1px solid rgba(14, 14, 19, 0.1);
+  border-radius: 36px;
+  padding: 6px 14px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+/* ── Active dot — top-right corner, primary color pulsing dot ── */
+.activeDot {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pulse {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--green); /* Primary brand color (#0d64a0) */
+  border-radius: 50%;
+  position: relative;
+}
+
+.pulse::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--green);
+  animation: dotPulse 2s infinite ease-in-out;
+}
+
+@keyframes dotPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .techCard {
+    padding: 24px 20px;
+    gap: 12px;
+  }
+
+  .name {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .bio {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .photoWrapper {
+    width: 56px;
+    height: 56px;
+  }
+}

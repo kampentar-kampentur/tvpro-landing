@@ -13,6 +13,7 @@ import Contacts from '@/blocks/Contacts/Contacts';
 import WorkVideoGallery from '@/blocks/WorkVideoGallery/WorkVideoGallery';
 import AreasWeServe from '@/blocks/AreasWeServe/AreasWeServe';
 import SEOBreadcrumbs from '@/ui/SEOBreadcrumbs/SEOBreadcrumbs';
+import OurTeam from '@/blocks/OurTeam/OurTeam';
 
 const blockMap = {
     'blocks.hero': Hero,
@@ -27,7 +28,8 @@ const blockMap = {
     'blocks.faq': FAQ,
     'blocks.contact-us': Contacts,
     'blocks.see-our-work-in-action': WorkVideoGallery,
-    'blocks.areas-we-serve': AreasWeServe
+    'blocks.areas-we-serve': AreasWeServe,
+    'blocks.our-team': OurTeam
 };
 
 export default function BlockRenderer({ blocks, globalData, cityContext }) {
