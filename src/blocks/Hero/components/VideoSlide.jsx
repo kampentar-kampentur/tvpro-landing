@@ -21,16 +21,8 @@ export default function VideoSlide({ isActive, onEnd, data, index = 1 }) {
     useEffect(() => {
         if (isActive) {
             setShouldRender(true);
-            return;
         }
-
-        if (index === 0) {
-            const timer = setTimeout(() => {
-                setShouldRender(true);
-            }, 2000); // 2s delay for the heavy video payload
-            return () => clearTimeout(timer);
-        }
-    }, [isActive, index]);
+    }, [isActive]);
 
     useEffect(() => {
         if (isActive && videoRef.current) {
