@@ -21,7 +21,6 @@
 
 .sitemapLink {
   display: inline-block;
-  margin-top: 6px;
   color: var(--text-secondary);
   text-decoration: underline;
   font-size: 14px;
@@ -30,6 +29,20 @@
 
 .sitemapLink:hover {
   color: var(--green);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.separator {
+  color: var(--text-secondary);
+  opacity: 0.6;
+  font-size: 12px;
 }
 
 .contactInfo {

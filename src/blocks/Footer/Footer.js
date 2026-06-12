@@ -28,9 +28,23 @@ const Footer = () => {
           <div className={styles.copyright}>
             <p>© {currentYear} TV PRO Handy Services</p>
             <p>All Rights Reserved</p>
-            <Link href="/html-sitemap/" className={styles.sitemapLink}>
-              Sitemap
-            </Link>
+            <div className={styles.footerLinks}>
+              <Link href="/html-sitemap/" className={styles.sitemapLink}>
+                Sitemap
+              </Link>
+              <span className={styles.separator}> • </span>
+              <Link href="/privacy-policy/" className={styles.sitemapLink}>
+                Privacy
+              </Link>
+              <span className={styles.separator}> • </span>
+              <Link href="/terms/" className={styles.sitemapLink}>
+                Terms
+              </Link>
+              <span className={styles.separator}> • </span>
+              <Link href="/cookie-policy/" className={styles.sitemapLink}>
+                Cookie Policy
+              </Link>
+            </div>
           </div>
         </div>
 

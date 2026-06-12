@@ -48,6 +48,12 @@ export default async function sitemap() {
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/cookie-policy/`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.5,
         }
     ];
 

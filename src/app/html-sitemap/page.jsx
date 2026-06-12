@@ -59,6 +59,9 @@ export default async function SitemapPage() {
           <Link href="/contact/" title="Go to Contact Us page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
             Contact Us
           </Link>
+          <Link href="/cookie-policy/" title="Go to Cookie Policy page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
+            Cookie Policy
+          </Link>
         </div>
       </section>
 
