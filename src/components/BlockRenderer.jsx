@@ -35,7 +35,30 @@ const blockMap = {
 export default function BlockRenderer({ blocks, globalData, cityContext }) {
     if (!blocks) return null;
 
-    return blocks.map((block, index) => {
+    // Auto-inject OurTeam block if not defined in Strapi
+    let processedBlocks = [...blocks];
+    const hasOurTeam = processedBlocks.some(block => block.__component === 'blocks.our-team');
+    if (!hasOurTeam) {
+        // Find best insertion slot: before FAQ, after Customer Reviews, before Contact Us, or at the end
+        const faqIndex = processedBlocks.findIndex(block => block.__component === 'blocks.faq');
+        if (faqIndex !== -1) {
+            processedBlocks.splice(faqIndex, 0, { __component: 'blocks.our-team' });
+        } else {
+            const reviewsIndex = processedBlocks.findIndex(block => block.__component === 'blocks.customer-reviews');
+            if (reviewsIndex !== -1) {
+                processedBlocks.splice(reviewsIndex + 1, 0, { __component: 'blocks.our-team' });
+            } else {
+                const contactIndex = processedBlocks.findIndex(block => block.__component === 'blocks.contact-us');
+                if (contactIndex !== -1) {
+                    processedBlocks.splice(contactIndex, 0, { __component: 'blocks.our-team' });
+                } else {
+                    processedBlocks.push({ __component: 'blocks.our-team' });
+                }
+            }
+        }
+    }
+
+    return processedBlocks.map((block, index) => {
         const Component = blockMap[block.__component];
         if (!Component) {
             console.warn(`Component not found for: ${block.__component}`);
