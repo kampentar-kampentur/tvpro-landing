@@ -1,6 +1,7 @@
 import { getAllCities } from "@/lib/strapi";
 import Link from "next/link";
 import styles from "./sitemap.module.css";
+import buttonStyles from "@/ui/Button/Button.module.css";
 
 export const dynamic = "force-static";
 
@@ -49,11 +50,15 @@ export default async function SitemapPage() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Main Pages</h2>
         <div className={styles.linkGrid}>
-          <div className={styles.linkCard}>
-            <Link href="/" title="Go to Home page">
-              Home
-            </Link>
-          </div>
+          <Link href="/" title="Go to Home page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
+            Home
+          </Link>
+          <Link href="/about/" title="Go to About Us page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
+            About Us
+          </Link>
+          <Link href="/contact/" title="Go to Contact Us page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
+            Contact Us
+          </Link>
         </div>
       </section>
 
@@ -66,11 +71,14 @@ export default async function SitemapPage() {
                 ? `${city.city_name}${city.state_code ? `, ${city.state_code}` : ""}`
                 : city.path;
               return (
-                <div key={city.id || city.path} className={styles.linkCard}>
-                  <Link href={`/${city.path}/`} title={`Go to ${displayName} page`}>
-                    {displayName}
-                  </Link>
-                </div>
+                <Link
+                  key={city.id || city.path}
+                  href={`/${city.path}/`}
+                  title={`Go to ${displayName} page`}
+                  className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}
+                >
+                  {displayName}
+                </Link>
               );
             })}
           </div>
