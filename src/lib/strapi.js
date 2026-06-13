@@ -106,3 +106,47 @@ export async function getGlobalConfig() {
         ]
     };
 }
+
+export async function getAllBlogPosts() {
+    try {
+        const data = await fetchAPI("/blog-posts", {
+            pagination: { pageSize: 200 },
+            fields: ["title", "slug", "excerpt", "category", "readTime", "publishedAt", "featured"],
+            populate: {
+                cover: { fields: ["url", "alternativeText", "width", "height"] },
+                author: { fields: ["name", "role"], populate: { avatar: { fields: ["url"] } } },
+            },
+            sort: ["publishedAt:desc"],
+        });
+        return flattenStrapiData(data?.data) || [];
+    } catch (error) {
+        console.error("[Strapi] getAllBlogPosts failed:", error.message);
+        return [];
+    }
+}
+
+export async function getBlogPost(slug) {
+    try {
+        const data = await fetchAPI("/blog-posts", {
+            filters: { slug: { $eq: slug } },
+            populate: {
+                cover: { fields: ["url", "alternativeText", "width", "height"] },
+                author: { fields: ["name", "role"], populate: { avatar: { fields: ["url"] } } },
+                content: "*",
+                seo: { fields: ["seo_title", "seo_description"] },
+            },
+        });
+        if (!data?.data || data.data.length === 0) return null;
+        return flattenStrapiData(data.data[0]);
+    } catch (error) {
+        console.error(`[Strapi] getBlogPost("${slug}") failed:`, error.message);
+        return null;
+    }
+}
+
+export function getStrapiMediaUrl(url) {
+    if (!url) return null;
+    if (url.startsWith("http")) return url;
+    const base = process.env.NEXT_PUBLIC_SRTAPI_URL || "https://strapi-dev-e587.up.railway.app";
+    return `${base}${url}`;
+}

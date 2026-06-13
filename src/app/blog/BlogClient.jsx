@@ -63,7 +63,7 @@ export default function BlogClient() {
       {/* Featured Post */}
       {showFeatured && (
         <section className={`block ${styles.featuredSection}`}>
-          <div className={styles.featuredCard}>
+          <Link href={`/blog/${featuredPost.slug}/`} className={styles.featuredCard}>
             <div className={styles.featuredImageWrapper}>
               <img
                 src={featuredPost.image}
@@ -95,7 +95,7 @@ export default function BlogClient() {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         </section>
       )}
 
@@ -104,7 +104,12 @@ export default function BlogClient() {
         {gridPosts.length > 0 ? (
           <div className={styles.grid}>
             {gridPosts.map((post) => (
-              <article key={post.id} className={styles.card}>
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}/`}
+                className={styles.card}
+                aria-label={`Read article: ${post.title}`}
+              >
                 <div className={styles.cardImageWrapper}>
                   <img
                     src={post.image}
@@ -128,7 +133,7 @@ export default function BlogClient() {
                     <span>{post.date}</span>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         ) : (
