@@ -159,16 +159,13 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
             )}
 
             {/* Bottom CTA */}
-            <div className={styles.ctaBottomWrapper}>
-                <div className={styles.ctaBottomBlock}>
-                    <h2 className={styles.ctaBottomHeading}>Ready for a Professional Installation?</h2>
-                    <p className={styles.ctaBottomText}>
-                        Get a free, no-obligation quote from TVPro&apos;s certified technicians today.
-                    </p>
-                    <QuoteButton size="big" modalName="BookNow">
-                        Get The Best Quote
-                    </QuoteButton>
-                </div>
+            <div className={`block ${styles.ctaBottomWrapper}`} style={{ paddingTop: 0 }}>
+                <p className={styles.ctaBottomText}>
+                    Ready for a professional installation? Get a free, no-obligation quote today.
+                </p>
+                <QuoteButton size="big" modalName="BookNow">
+                    Get The Best Quote
+                </QuoteButton>
             </div>
         </div>
     );

@@ -318,41 +318,18 @@
 
 /* ─── Bottom CTA ──────────────────────────── */
 .ctaBottomWrapper {
-    border-top: 1px solid var(--gray-extra-light);
-    background: var(--white);
-}
-
-.ctaBottomBlock {
-    max-width: 1220px;
-    margin: 0 auto;
-    padding: 80px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     gap: 16px;
-}
-
-.ctaBottomHeading {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--foreground);
-    margin: 0;
+    text-align: center;
+    margin-top: 40px;
 }
 
 .ctaBottomText {
+    font-weight: 500;
     font-size: 16px;
-    color: var(--gray-medium);
-    max-width: 480px;
-    margin: 0 0 8px;
-}
-
-@media (max-width: 1024px) {
-    .ctaBottomBlock {
-        padding: 50px 16px;
-    }
-
-    .ctaBottomHeading {
-        font-size: 24px;
-    }
+    line-height: 24px;
+    color: var(--foreground);
+    margin: 0;
 }

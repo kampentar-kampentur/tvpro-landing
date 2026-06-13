@@ -75,6 +75,9 @@ export default async function SitemapPage() {
           <Link href="/about/" title="Go to About Us page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
             About Us
           </Link>
+          <Link href="/our-team/" title="Go to Our Team page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
+            Our Team
+          </Link>
           <Link href="/contact/" title="Go to Contact Us page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
             Contact Us
           </Link>

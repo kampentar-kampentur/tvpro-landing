@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { technicians } from "./data/technicians";
 import TechCard from "./components/TechCard";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import Button from "@/ui/Button";
 import styles from "./OurTeam.module.css";
 
 export default function OurTeam({ data = {}, cityContext }) {
@@ -49,7 +50,12 @@ export default function OurTeam({ data = {}, cityContext }) {
 
       <div className={styles.footer}>
         <p className={styles.footerText}>{footerText}</p>
-        <QuoteButton size="big">Book Your Technician Today</QuoteButton>
+        <div className={styles.buttonsGroup}>
+          <QuoteButton size="big">Book Your Technician Today</QuoteButton>
+          <Button variant="secondary" size="big" href="/our-team/">
+            Meet All Specialists
+          </Button>
+        </div>
       </div>
     </section>
   );

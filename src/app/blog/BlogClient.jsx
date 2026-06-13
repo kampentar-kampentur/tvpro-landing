@@ -156,16 +156,13 @@ export default function BlogClient({ initialPosts = [] }) {
       </section>
 
       {/* CTA Bottom Section */}
-      <div className={styles.ctaWrapper}>
-        <div className={styles.ctaBlock}>
-          <h2 className={styles.ctaHeading}>Ready to Upgrade Your Home Theater?</h2>
-          <p className={styles.ctaDescription}>
-            Get professional mounting and setup services from our highly-rated technicians today.
-          </p>
-          <QuoteButton size="big" modalName="BookNow">
-            Get The Best Quote
-          </QuoteButton>
-        </div>
+      <div className={`block ${styles.ctaWrapper}`} style={{ paddingTop: 0 }}>
+        <p className={styles.ctaText}>
+          Ready to upgrade your home theater? Book your service with our certified specialists.
+        </p>
+        <QuoteButton size="big" modalName="BookNow">
+          Get The Best Quote
+        </QuoteButton>
       </div>
     </div>
   );
