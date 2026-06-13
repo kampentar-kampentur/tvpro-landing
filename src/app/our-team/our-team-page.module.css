@@ -1,0 +1,71 @@
+.teamPage {
+  background-color: var(--background);
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 40px;
+  padding-bottom: 0px;
+  padding-top: 8px;
+}
+
+.title {
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  color: var(--gray-medium);
+  max-width: 600px;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .header {
+    text-align: center;
+  }
+  .subtitle {
+    margin: 0 auto;
+  }
+}
+
+.gridSection {
+  padding-top: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .header {
+    margin-bottom: 48px;
+  }
+}
+
+.ctaWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  margin-top: 32px;
+}
+
+.ctaText {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--foreground);
+}
