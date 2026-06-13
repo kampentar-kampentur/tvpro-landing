@@ -71,9 +71,8 @@ export default async function Contacts({ data = {}, cityContext }) {
 
           <iframe
             title={`Location map of TVPro Handy Services in ${mapQuery}`}
-            width="100%"
             height="350"
-            style={{ border: 0 }}
+            style={{ border: 0, width: "100%" }}
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
