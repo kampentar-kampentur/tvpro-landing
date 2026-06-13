@@ -14,25 +14,30 @@ const flattenStrapiData = (data) => {
 };
 
 export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
-    // ... headers logic
-    const queryString = qs.stringify(urlParamsObject);
-    const requestUrl = `${process.env.NEXT_PUBLIC_SRTAPI_URL || 'https://strapi-dev-e587.up.railway.app'}/api${path}${queryString ? `?${queryString}` : ""}`;
+    try {
+        const queryString = qs.stringify(urlParamsObject);
+        const requestUrl = `${process.env.NEXT_PUBLIC_SRTAPI_URL || 'https://strapi-dev-e587.up.railway.app'}/api${path}${queryString ? `?${queryString}` : ""}`;
 
-    const response = await fetch(requestUrl, {
-        headers: { "Content-Type": "application/json" },
-        ...options,
-    });
+        const response = await fetch(requestUrl, {
+            headers: { "Content-Type": "application/json" },
+            signal: AbortSignal.timeout(3000), // 3 seconds timeout to prevent hanging the build
+            ...options,
+        });
 
-    if (!response.ok) {
-        let errorDetails = "";
-        try {
-            const errData = await response.json();
-            errorDetails = JSON.stringify(errData, null, 2);
-            console.error(`Strapi error details for ${path}:`, errorDetails);
-        } catch (e) { }
-        throw new Error(`Error fetching ${path}: ${response.statusText} - ${errorDetails}`);
+        if (!response.ok) {
+            let errorDetails = "";
+            try {
+                const errData = await response.json();
+                errorDetails = JSON.stringify(errData, null, 2);
+                console.error(`Strapi error details for ${path}:`, errorDetails);
+            } catch (e) { }
+            throw new Error(`Error fetching ${path}: ${response.statusText} - ${errorDetails}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.warn(`[Strapi] fetchAPI failed for ${path}:`, error.message || error);
+        return null;
     }
-    return await response.json();
 }
 
 export async function getCity(slug, version = null) {
@@ -112,10 +117,7 @@ export async function getAllBlogPosts() {
         const data = await fetchAPI("/blog-posts", {
             pagination: { pageSize: 200 },
             fields: ["title", "slug", "excerpt", "category", "readTime", "publishedAt", "featured"],
-            populate: {
-                cover: { fields: ["url", "alternativeText", "width", "height"] },
-                author: { fields: ["name", "role"], populate: { avatar: { fields: ["url"] } } },
-            },
+            populate: ["cover", "author", "author.avatar"],
             sort: ["publishedAt:desc"],
         });
         return flattenStrapiData(data?.data) || [];
@@ -129,12 +131,7 @@ export async function getBlogPost(slug) {
     try {
         const data = await fetchAPI("/blog-posts", {
             filters: { slug: { $eq: slug } },
-            populate: {
-                cover: { fields: ["url", "alternativeText", "width", "height"] },
-                author: { fields: ["name", "role"], populate: { avatar: { fields: ["url"] } } },
-                content: "*",
-                seo: { fields: ["seo_title", "seo_description"] },
-            },
+            populate: ["cover", "author", "author.avatar"],
         });
         if (!data?.data || data.data.length === 0) return null;
         return flattenStrapiData(data.data[0]);

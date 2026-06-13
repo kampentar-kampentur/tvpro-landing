@@ -39,8 +39,24 @@
     padding-top: 16px !important;
     padding-bottom: 0px !important;
   }
+  .breadcrumbs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  .breadcrumbs::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
   .step {
     font-size: 12px;
+  }
+  .step.current {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .chevron {
     width: 12px;

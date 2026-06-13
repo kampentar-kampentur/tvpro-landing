@@ -135,11 +135,41 @@ export const mockBlogContent = {
       children: [{ type: "text", text: "Above-Fireplace Mounting" }]
     },
     {
+      type: "image",
+      image: {
+        url: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&h=600&q=80",
+        alternativeText: "TV mounted above fireplace",
+        caption: "Example of a properly angled TV over a fireplace.",
+        width: 1200,
+        height: 600
+      }
+    },
+    {
       type: "paragraph",
       children: [
         { type: "text", text: "Mounting above a fireplace is " },
         { type: "text", text: "not recommended", bold: true },
         { type: "text", text: " as the standard position — it places the screen 15–20 inches too high and causes significant neck strain. If you must go above a fireplace, use a full-motion articulating arm mount that allows you to tilt the screen down at least 15°." }
+      ]
+    },
+    {
+      type: "heading", level: 2,
+      children: [{ type: "text", text: "Cable Management Code Example" }]
+    },
+    {
+      type: "paragraph",
+      children: [{ type: "text", text: "If you're integrating smart home features, here's a snippet for configuring your TV's power state in a JSON file:" }]
+    },
+    {
+      type: "code",
+      children: [{ type: "text", text: "{\n  \"device\": \"Living Room TV\",\n  \"status\": \"on\",\n  \"brightness\": 80,\n  \"input\": \"HDMI 1\"\n}" }]
+    },
+    {
+      type: "paragraph",
+      children: [
+        { type: "text", text: "For more details on smart home integration, check out our " },
+        { type: "link", url: "https://tvprousa.com/services", children: [{ type: "text", text: "installation services" }] },
+        { type: "text", text: "." }
       ]
     },
     {

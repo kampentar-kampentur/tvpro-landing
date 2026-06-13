@@ -9,7 +9,7 @@
 
 /* ─── Cover Image ─────────────────────────── */
 .coverWrapper {
-    padding-top: 0;
+    padding-top: 8px;
     padding-bottom: 0;
 }
 
@@ -203,8 +203,6 @@
 
 /* CTA Side Card */
 .ctaSideCard {
-    background: linear-gradient(135deg, #0d64a0 0%, #0a4d7d 100%);
-    border-color: transparent;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -213,13 +211,13 @@
 .ctaSideHeading {
     font-size: 17px;
     font-weight: 700;
-    color: #fff;
+    color: var(--foreground);
     line-height: 1.35;
 }
 
 .ctaSideText {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--gray);
     line-height: 1.55;
     margin: 0;
 }
@@ -258,7 +256,9 @@
     flex-direction: column;
     text-decoration: none;
     color: inherit;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
     overflow: hidden;
 }
 

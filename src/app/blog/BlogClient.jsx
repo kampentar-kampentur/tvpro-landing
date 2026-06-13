@@ -8,16 +8,28 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import styles from "./blog.module.css";
 
-export default function BlogClient() {
+export default function BlogClient({ initialPosts = [] }) {
   const [activeCategory, setActiveCategory] = useState("All");
 
+  // Merge: start with all Strapi posts (initialPosts).
+  // Then add mock posts from blog-data only if their slug doesn't exist in Strapi.
+  const posts = [...initialPosts];
+  for (const mock of blogPosts) {
+    if (!posts.find(p => p.slug === mock.slug)) {
+      posts.push(mock);
+    }
+  }
+
+  // Generate categories dynamically
+  const categoriesList = ["All", ...new Set(posts.map(post => post.category).filter(Boolean))];
+
   const filteredPosts = activeCategory === "All"
-    ? blogPosts
-    : blogPosts.filter(post => post.category === activeCategory);
+    ? posts
+    : posts.filter(post => post.category === activeCategory);
 
   // We consider the featured post to be the one marked featured.
   // We'll show the featured card layout only when the "All" category is selected and we have a featured post.
-  const featuredPost = blogPosts.find(post => post.featured);
+  const featuredPost = posts.find(post => post.featured);
   const showFeatured = activeCategory === "All" && featuredPost;
 
   // The grid posts are either all posts except the featured one (if shown), or the filtered posts.
@@ -45,7 +57,7 @@ export default function BlogClient() {
 
       {/* Categories Filter */}
       <div className={`block ${styles.filterContainer}`} style={{ paddingTop: 0, paddingBottom: 0 }}>
-        {categories.map((category) => (
+        {categoriesList.map((category) => (
           <Button
             key={category}
             variant="secondary"

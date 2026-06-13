@@ -116,7 +116,17 @@ function renderBlock(node, index) {
 }
 
 export default function RichTextRenderer({ content }) {
-    if (!content || !Array.isArray(content)) return null;
+    if (!content) return null;
+
+    if (typeof content === "string") {
+        return (
+            <div className={styles.richText} style={{ whiteSpace: "pre-line" }}>
+                {content}
+            </div>
+        );
+    }
+
+    if (!Array.isArray(content)) return null;
     return (
         <div className={styles.richText}>
             {content.map((node, i) => renderBlock(node, i))}
