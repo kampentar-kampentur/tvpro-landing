@@ -16,6 +16,7 @@ export default function Navbar() {
           <li><Link href="/#reviews">Reviews</Link></li>
           <li><Link href="/#gallery">Gallery</Link></li>
           <li><Link href="/#about">About Us</Link></li>
+          <li><Link href="/blog/">Blog</Link></li>
           <li><Link href="/#faq">FAQ</Link></li>
           <li><Link href="/#contact">Contact</Link></li>
         </ul>

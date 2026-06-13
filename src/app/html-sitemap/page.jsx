@@ -1,4 +1,5 @@
-import { getAllCities } from "@/lib/strapi";
+import { getAllCities, getAllBlogPosts } from "@/lib/strapi";
+import { blogPosts } from "@/lib/blog-data";
 import Link from "next/link";
 import styles from "./sitemap.module.css";
 import buttonStyles from "@/ui/Button/Button.module.css";
@@ -21,6 +22,13 @@ export default async function SitemapPage() {
     console.error("[Sitemap Page Error] Failed to fetch cities:", error);
   }
 
+  let strapiPosts = [];
+  try {
+    strapiPosts = await getAllBlogPosts();
+  } catch (error) {
+    console.error("[Sitemap Page Error] Failed to fetch blog posts:", error);
+  }
+
   // Filter cities from Strapi
   const activeCities = cities.filter(
     (city) => !city.test_version && city.path && !city.metro_city_slug
@@ -40,6 +48,14 @@ export default async function SitemapPage() {
   // Sort all cities alphabetically by name
   activeCities.sort((a, b) => (a.city_name || "").localeCompare(b.city_name || ""));
 
+  // Merge Strapi + Mock posts
+  const posts = [...strapiPosts];
+  for (const mock of blogPosts) {
+    if (!posts.find((p) => p.slug === mock.slug)) {
+      posts.push(mock);
+    }
+  }
+
   return (
     <div className={styles.sitemapContainer}>
       <header className={styles.sitemapHeader}>
@@ -52,6 +68,9 @@ export default async function SitemapPage() {
         <div className={styles.linkGrid}>
           <Link href="/" title="Go to Home page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
             Home
+          </Link>
+          <Link href="/blog/" title="Go to Blog page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
+            Blog
           </Link>
           <Link href="/about/" title="Go to About Us page" className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}>
             About Us
@@ -84,6 +103,24 @@ export default async function SitemapPage() {
                 </Link>
               );
             })}
+          </div>
+        </section>
+      )}
+
+      {posts.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Blog Articles</h2>
+          <div className={styles.linkGrid}>
+            {posts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}/`}
+                title={`Read article: ${post.title}`}
+                className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}
+              >
+                {post.title}
+              </Link>
+            ))}
           </div>
         </section>
       )}

@@ -1,4 +1,5 @@
-import { getAllCities } from '@/lib/strapi';
+import { getAllCities, getAllBlogPosts } from '@/lib/strapi';
+import { blogPosts } from '@/lib/blog-data';
 
 export const dynamic = 'force-static';
 
@@ -13,7 +14,15 @@ export default async function sitemap() {
         console.error('[Sitemap Error] Failed to fetch cities:', error);
     }
 
-    // 2. Map cities to sitemap entries
+    // 2. Fetch all blog posts from Strapi
+    let strapiPosts = [];
+    try {
+        strapiPosts = await getAllBlogPosts();
+    } catch (error) {
+        console.error('[Sitemap Error] Failed to fetch blog posts:', error);
+    }
+
+    // 3. Map cities to sitemap entries
     const cityEntries = cities
         .filter(city => !city.test_version && city.path && !city.metro_city_slug)
         .map((city) => ({
@@ -23,13 +32,48 @@ export default async function sitemap() {
             priority: 1,
         }));
 
-    // 3. Static routes
+    // 4. Map blog posts (merging Strapi + fallback mock posts)
+    const postSlugs = new Set();
+    const blogEntries = [];
+
+    // Add Strapi blog posts
+    for (const post of strapiPosts) {
+        if (post.slug) {
+            postSlugs.add(post.slug);
+            blogEntries.push({
+                url: `${baseUrl}/blog/${post.slug}/`,
+                lastModified: post.publishedAt ? new Date(post.publishedAt) : new Date(),
+                changeFrequency: 'weekly',
+                priority: 0.7,
+            });
+        }
+    }
+
+    // Add fallback mock posts
+    for (const mock of blogPosts) {
+        if (!postSlugs.has(mock.slug)) {
+            blogEntries.push({
+                url: `${baseUrl}/blog/${mock.slug}/`,
+                lastModified: new Date(),
+                changeFrequency: 'weekly',
+                priority: 0.7,
+            });
+        }
+    }
+
+    // 5. Static routes
     const staticEntries = [
         {
             url: `${baseUrl}/`,
             lastModified: new Date(),
             changeFrequency: 'daily',
             priority: 1,
+        },
+        {
+            url: `${baseUrl}/blog/`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
         },
         {
             url: `${baseUrl}/chicago/`,
@@ -57,5 +101,5 @@ export default async function sitemap() {
         }
     ];
 
-    return [...staticEntries, ...cityEntries];
+    return [...staticEntries, ...cityEntries, ...blogEntries];
 }

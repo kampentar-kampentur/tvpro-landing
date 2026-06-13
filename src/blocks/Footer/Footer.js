@@ -29,6 +29,10 @@ const Footer = () => {
             <p>© {currentYear} TV PRO Handy Services</p>
             <p>All Rights Reserved</p>
             <div className={styles.footerLinks}>
+              <Link href="/blog/" className={styles.sitemapLink}>
+                Blog
+              </Link>
+              <span className={styles.separator}> • </span>
               <Link href="/html-sitemap/" className={styles.sitemapLink}>
                 Sitemap
               </Link>
