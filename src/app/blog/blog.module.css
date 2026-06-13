@@ -1,0 +1,327 @@
+.blogPage {
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+}
+
+/* Page Header */
+.blogHeader {
+    text-align: left;
+    margin-bottom: 40px;
+    padding-bottom: 0px;
+    padding-top: 8px;
+}
+
+.title {
+    margin-bottom: 16px;
+}
+
+.subtitle {
+    color: var(--gray-medium);
+    max-width: 600px;
+    margin: 0;
+}
+
+@media (max-width: 1024px) {
+    .blogHeader {
+        text-align: center;
+    }
+    .subtitle {
+        margin: 0 auto;
+    }
+}
+
+/* Categories Filtering */
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+}
+
+.filterChip {
+    background: transparent;
+    color: var(--foreground);
+    border: 2px solid rgba(14, 14, 19, 0.2);
+    flex-shrink: 0;
+}
+
+.filterChip.activeFilter {
+    background-color: rgba(14, 14, 19, 0.1);
+    border: 1px solid var(--foreground);
+}
+
+@media (max-width: 1024px) {
+    .filterContainer.filterContainer {
+        flex-wrap: nowrap;
+        overflow: auto;
+        justify-content: flex-start;
+    }
+}
+
+/* Featured Post (only on Desktop >= 1024px) */
+.featuredSection {
+    margin-bottom: 48px;
+    padding: 0 20px;
+}
+
+.featuredCard {
+    background-color: var(--white);
+    border: 1px solid var(--gray-extra-light);
+    border-radius: 20px;
+    padding: 8px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.featuredImageWrapper {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.featuredImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.featuredContent {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 16px;
+}
+
+.categoryBadge {
+    background-color: rgba(14, 14, 19, 0.05);
+    border: 1px solid rgba(14, 14, 19, 0.1);
+    border-radius: 36px;
+    padding: 4px 12px;
+    font-weight: 500;
+    color: var(--foreground);
+}
+
+.featuredTitle {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 36px;
+    margin-bottom: 16px;
+    color: var(--foreground);
+}
+
+.featuredExcerpt {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--gray);
+    margin-bottom: 24px;
+}
+
+.authorContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.authorAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.authorName {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground);
+}
+
+.authorRole {
+    font-size: 12px;
+    color: var(--gray);
+}
+
+@media (hover: hover) {
+    .featuredCard:hover {
+        border-color: #fff;
+        box-shadow:
+            0px 5px 11px 0px #0000001f,
+            0px 19px 19px 0px #00000017,
+            0px 44px 26px 0px #00000014,
+            0px 78px 31px 0px #0000000a,
+            0px 121px 34px 0px #00000005;
+    }
+    .featuredCard:hover .featuredImage {
+        transform: scale(1.03);
+    }
+}
+
+@media (max-width: 1024px) {
+    .featuredSection {
+        display: none; /* Hide featured layout on mobile and fallback to standard cards */
+    }
+}
+
+/* Grid Layout */
+.gridSection {
+    padding: 0 20px 60px 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+@media (max-width: 1024px) {
+    .gridSection {
+        padding: 0 16px 40px 16px;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* Card Styling */
+.card {
+    background-color: var(--white);
+    border: 1px solid var(--gray-extra-light);
+    border-radius: 20px;
+    padding: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.cardImageWrapper {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+@media (max-width: 1024px) {
+    .card {
+        border-radius: 20px;
+    }
+    .cardImageWrapper {
+        border-radius: 12px;
+    }
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.cardContent {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.cardTitle {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    margin-bottom: 12px;
+    color: var(--foreground);
+}
+
+.cardExcerpt {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--gray);
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+@media (max-width: 1024px) {
+    .cardTitle {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+    }
+    .cardContent {
+        padding: 20px 16px;
+    }
+}
+
+@media (hover: hover) {
+    .card:hover {
+        border-color: #fff;
+        box-shadow:
+            0px 5px 11px 0px #0000001f,
+            0px 19px 19px 0px #00000017,
+            0px 44px 26px 0px #00000014,
+            0px 78px 31px 0px #0000000a,
+            0px 121px 34px 0px #00000005;
+    }
+    .card:hover .cardImage {
+        transform: scale(1.03);
+    }
+}
+
+/* CTA Container at the bottom */
+.ctaWrapper {
+    border-top: 1px solid var(--gray-extra-light);
+    background: var(--white);
+}
+
+.ctaBlock {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.ctaHeading {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--foreground);
+}
+
+.ctaDescription {
+    font-size: 16px;
+    color: var(--gray-medium);
+    margin-bottom: 32px;
+    max-width: 500px;
+}
+
+@media (max-width: 1024px) {
+    .ctaBlock {
+        padding: 50px 16px;
+    }
+    .ctaHeading {
+        font-size: 24px;
+    }
+}
