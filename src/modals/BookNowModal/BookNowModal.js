@@ -88,6 +88,8 @@ const BookNowModal = () => {
             source: "book-now-modal",
             city,
             ...getUtmParams(),
+            submittedAt: new Date().toISOString(),
+            timestamp: Date.now(),
           },
         }),
       });

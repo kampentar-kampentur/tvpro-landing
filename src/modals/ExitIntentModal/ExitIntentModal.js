@@ -73,7 +73,9 @@ const ExitIntentModal = () => {
                         phone: formData.phone,
                         source: 'exit_intent_popup',
                         ...getUtmParams(),
-                        city
+                        city,
+                        submittedAt: new Date().toISOString(),
+                        timestamp: Date.now(),
                     }
                 }),
             });

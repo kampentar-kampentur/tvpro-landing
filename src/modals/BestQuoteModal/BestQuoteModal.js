@@ -1046,6 +1046,8 @@ const BestQuoteModal = () => {
         apt: formData.contactInfo.zipApt.apt,
       },
       ...getUtmParams(),
+      submittedAt: new Date().toISOString(),
+      timestamp: Date.now(),
     };
     if (submissionData.wall?.wallTypeProjector) {
       delete submissionData.wall.wallTypeProjector;
