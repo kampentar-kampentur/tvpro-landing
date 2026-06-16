@@ -27,8 +27,11 @@ function getInitials(name) {
  *   cityName — string for the active dot title attr
  */
 const TechCard = ({ tech, cityName = "your area" }) => {
-  const ratingNum = tech.rating.replace(" ★", "").trim();  // "5.0"
-  const jobsShort = tech.jobsCount.replace(" done", "").trim(); // "180+"
+  const ratingStr = String(tech.rating || "5.0");
+  const ratingNum = ratingStr.replace(" ★", "").trim();
+
+  const jobsStr = String(tech.jobsCount || tech.reviewCount || "0");
+  const jobsShort = jobsStr.replace(" done", "").trim();
 
   // Подготавливаем media-объект для ImageWrapper (на случай если это локальная строка-заглушка)
   const mediaObj = typeof tech.photo === 'string' ? { url: tech.photo } : tech.photo;
@@ -44,7 +47,7 @@ const TechCard = ({ tech, cityName = "your area" }) => {
       {/* Avatar + name */}
       <div className={styles.topRow}>
         <div className={styles.photoWrapper}>
-          {mediaObj ? (
+          {mediaObj && mediaObj.url ? (
             <ImageWrapper
               media={mediaObj}
               defaultAlt={tech.name}
@@ -72,17 +75,49 @@ const TechCard = ({ tech, cityName = "your area" }) => {
         {ratingNum} &middot; {jobsShort} jobs
       </span>
 
-      {/* Bio */}
-      <p className={styles.bio}>{tech.bio}</p>
+      {/* Premium Content */}
+      {tech.headline && <p className={styles.headline}>{tech.headline}</p>}
+      
+      {tech.bestFor && (
+        <p className={styles.textBlock}>
+          <span className={styles.label}>Best for: </span>
+          {tech.bestFor}
+        </p>
+      )}
+
+      {tech.whyRemember && (
+        <p className={styles.textBlock}>
+          <span className={styles.label}>Why customers remember him: </span>
+          {tech.whyRemember}
+        </p>
+      )}
+
+      {tech.signature && (
+        <p className={styles.textBlock}>
+          <span className={styles.label}>Signature challenge: </span>
+          {tech.signature}
+        </p>
+      )}
+
+      {tech.motto && <p className={styles.motto}>“{tech.motto.replace(/^["“”]|["“”]$/g, '').trim()}”</p>}
+
+      {tech.bio && !tech.whyRemember && <p className={styles.bio}>{tech.bio}</p>}
 
       {/* Skill tags */}
-      <div className={styles.tags}>
-        {tech.tags.map((tag, i) => (
-          <span key={i} className={styles.tag}>
-            {tag}
-          </span>
-        ))}
-      </div>
+      {tech.badges && (
+        <div className={styles.tags}>
+          {tech.badges.split(/[,·]+/).map(b => b.trim()).filter(Boolean).map((tag, i) => (
+            <span key={i} className={styles.tag}>{tag}</span>
+          ))}
+        </div>
+      )}
+      {!tech.badges && tech.tags && tech.tags.length > 0 && (
+        <div className={styles.tags}>
+          {tech.tags.map((tag, i) => (
+            <span key={i} className={styles.tag}>{tag}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

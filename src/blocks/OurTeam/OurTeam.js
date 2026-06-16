@@ -49,7 +49,7 @@ export default async function OurTeam({ data = {}, cityContext }) {
           photoObj = { id: t.photo.data.id, ...t.photo.data.attributes };
         } else if (t.photo.data) {
           photoObj = { id: t.photo.data.id, ...t.photo.data };
-        } else {
+        } else if (t.photo.url) {
           photoObj = t.photo;
         }
       }
