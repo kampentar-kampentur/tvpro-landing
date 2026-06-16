@@ -14,15 +14,15 @@ export default function CareersCTA({ data }) {
   const buttonText = data?.buttonText || "Apply Now";
 
   return (
-    <section className={styles.section}>
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <h2 className={styles.title}>{title}</h2>
-          <p className={styles.subTitle}>{subTitle}</p>
-          <Button variant="primary" onClick={() => open()} className={styles.button}>
-            {buttonText}
-          </Button>
-        </div>
+    <section className="block">
+      <header className={styles.header}>
+        <h2 className="blockHeading">{title}</h2>
+        <p className="subText">{subTitle}</p>
+      </header>
+      <div className={styles.buttonWrapper}>
+        <Button variant="primary" onClick={() => open()} size="big">
+          {buttonText}
+        </Button>
       </div>
     </section>
   );

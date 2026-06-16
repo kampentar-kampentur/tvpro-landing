@@ -20,6 +20,7 @@ export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
 
         const response = await fetch(requestUrl, {
             headers: { "Content-Type": "application/json" },
+            cache: "no-store",
             signal: AbortSignal.timeout(3000), // 3 seconds timeout to prevent hanging the build
             ...options,
         });
@@ -102,7 +103,7 @@ export async function getMetroCityLayout(metroSlug) {
 export async function getGlobalConfig() {
     try {
         const [ourTeamRes, careersCTARes] = await Promise.all([
-            fetchAPI("/our-team", { populate: ["technicians", "technicians.photo"] }),
+            fetchAPI("/our-team", { populate: "*" }),
             fetchAPI("/careers-cta", { populate: "*" })
         ]);
 
