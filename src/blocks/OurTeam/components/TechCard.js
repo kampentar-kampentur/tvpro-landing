@@ -1,4 +1,22 @@
 import styles from "./TechCard.module.css";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
+
+// Генерация цвета из имени (детерминировано)
+function nameToHSL(name) {
+  if (!name) return 'hsl(0, 55%, 45%)';
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const h = Math.abs(hash) % 360;
+  return `hsl(${h}, 55%, 45%)`;
+}
+
+// Инициалы: "Artur H." → "AH"
+function getInitials(name) {
+  if (!name) return '??';
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
 
 /**
  * TechCard — built in the DNA of TrustCard / ServiceCard.
@@ -12,6 +30,9 @@ const TechCard = ({ tech, cityName = "your area" }) => {
   const ratingNum = tech.rating.replace(" ★", "").trim();  // "5.0"
   const jobsShort = tech.jobsCount.replace(" done", "").trim(); // "180+"
 
+  // Подготавливаем media-объект для ImageWrapper (на случай если это локальная строка-заглушка)
+  const mediaObj = typeof tech.photo === 'string' ? { url: tech.photo } : tech.photo;
+
   return (
     <div className={styles.techCard}>
 
@@ -23,14 +44,21 @@ const TechCard = ({ tech, cityName = "your area" }) => {
       {/* Avatar + name */}
       <div className={styles.topRow}>
         <div className={styles.photoWrapper}>
-          <img
-            src={tech.photo}
-            alt={tech.name}
-            className={styles.photo}
-            loading="lazy"
-            width={72}
-            height={72}
-          />
+          {mediaObj ? (
+            <ImageWrapper
+              media={mediaObj}
+              defaultAlt={tech.name}
+              className={styles.photo}
+              sizes="72px"
+            />
+          ) : (
+            <div 
+              className={styles.avatarInitials} 
+              style={{ backgroundColor: nameToHSL(tech.name) }}
+            >
+              {getInitials(tech.name)}
+            </div>
+          )}
         </div>
         <div className={styles.nameBlock}>
           <h3 className={styles.name}>{tech.name}</h3>

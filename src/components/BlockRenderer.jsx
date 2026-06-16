@@ -14,6 +14,7 @@ import WorkVideoGallery from '@/blocks/WorkVideoGallery/WorkVideoGallery';
 import AreasWeServe from '@/blocks/AreasWeServe/AreasWeServe';
 import SEOBreadcrumbs from '@/ui/SEOBreadcrumbs/SEOBreadcrumbs';
 import OurTeam from '@/blocks/OurTeam/OurTeam';
+import CareersCTA from '@/blocks/CareersCTA/CareersCTA';
 
 const blockMap = {
     'blocks.hero': Hero,
@@ -29,7 +30,8 @@ const blockMap = {
     'blocks.contact-us': Contacts,
     'blocks.see-our-work-in-action': WorkVideoGallery,
     'blocks.areas-we-serve': AreasWeServe,
-    'blocks.our-team': OurTeam
+    'blocks.our-team': OurTeam,
+    'blocks.careers-cta': CareersCTA
 };
 
 export default function BlockRenderer({ blocks, globalData, cityContext }) {
@@ -55,6 +57,18 @@ export default function BlockRenderer({ blocks, globalData, cityContext }) {
                     processedBlocks.push({ __component: 'blocks.our-team' });
                 }
             }
+        }
+    }
+
+    // Auto-inject CareersCTA block for demonstration if not present
+    const hasCareersCTA = processedBlocks.some(block => block.__component === 'blocks.careers-cta');
+    if (!hasCareersCTA) {
+        // Inject right after OurTeam or at the end
+        const teamIndex = processedBlocks.findIndex(block => block.__component === 'blocks.our-team');
+        if (teamIndex !== -1) {
+            processedBlocks.splice(teamIndex + 1, 0, { __component: 'blocks.careers-cta' });
+        } else {
+            processedBlocks.push({ __component: 'blocks.careers-cta' });
         }
     }
 

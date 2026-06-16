@@ -13,8 +13,12 @@ import FAQ from "@/blocks/FAQ";
 import Contacts from "@/blocks/Contacts";
 import AreasWeServe from "@/blocks/AreasWeServe/AreasWeServe";
 import OurTeam from "@/blocks/OurTeam/OurTeam";
+import CareersCTA from "@/blocks/CareersCTA/CareersCTA";
+import { getGlobalConfig } from "@/lib/strapi";
 
 export default async function Home() {
+  const globalConfig = await getGlobalConfig();
+
   return (
     <div className={styles.tvproMain}>
       <Hero />
@@ -27,6 +31,7 @@ export default async function Home() {
       <MountingTypes />
       <WhyCustomersTrustUs />
       <OurTeam />
+      <CareersCTA data={globalConfig?.["careers-cta"] || {}} />
       <FAQ />
       <Contacts />
       <AreasWeServe />

@@ -100,16 +100,27 @@ export async function getMetroCityLayout(metroSlug) {
 }
 
 export async function getGlobalConfig() {
-    // Return mock or fetch
-    return {
-        default_layout: [
-            {
-                __component: "blocks.hero",
-                id: "default-hero",
-                use_global: true
-            }
-        ]
-    };
+    try {
+        const [ourTeamRes, careersCTARes] = await Promise.all([
+            fetchAPI("/our-team", { populate: ["technicians", "technicians.photo"] }),
+            fetchAPI("/careers-cta", { populate: "*" })
+        ]);
+
+        return {
+            "our-team": flattenStrapiData(ourTeamRes?.data),
+            "careers-cta": flattenStrapiData(careersCTARes?.data),
+            default_layout: [
+                {
+                    __component: "blocks.hero",
+                    id: "default-hero",
+                    use_global: true
+                }
+            ]
+        };
+    } catch (error) {
+        console.error("[Strapi] getGlobalConfig failed:", error);
+        return { default_layout: [] };
+    }
 }
 
 export async function getAllBlogPosts() {
@@ -146,4 +157,17 @@ export function getStrapiMediaUrl(url) {
     if (url.startsWith("http")) return url;
     const base = process.env.NEXT_PUBLIC_SRTAPI_URL || "https://strapi-dev-e587.up.railway.app";
     return `${base}${url}`;
+}
+
+export async function getAllTechnicians() {
+    try {
+        const data = await fetchAPI("/technicians", {
+            pagination: { pageSize: 200 },
+            populate: ["photo"],
+        });
+        return flattenStrapiData(data?.data) || [];
+    } catch (error) {
+        console.error("[Strapi] getAllTechnicians failed:", error.message);
+        return [];
+    }
 }

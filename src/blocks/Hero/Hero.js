@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
+import { resolveSpintaxLine } from "@/lib/spintax";
+import { RAW_TICKER_LINES } from "@/lib/tickerData";
 // import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 // import dynamic from "next/dynamic";
 import HeroCTA from "./components/HeroCTA";
@@ -53,10 +55,15 @@ export default async function Hero({ data = {}, cityContext }) {
     subTitle: data?.subTitle || defaultHeroData?.subTitle || '',
   };
 
-  // For running lines, we might just replace the array entirely if provided
-  const heroLinesData = data?.runningLines && data.runningLines.length > 0
-    ? data.runningLines
-    : defaultLinesData;
+  // Выбираем источник строк: data из Strapi > глобальные из Strapi > fallback tickerData
+  const rawLines =
+    data?.runningLines?.length > 0 ? data.runningLines
+    : defaultLinesData?.length > 0 ? defaultLinesData
+    : RAW_TICKER_LINES;
+
+  // Разворачиваем спинтакс {A|B|C} → случайный вариант (серверный рендер при SSG).
+  // Каждая страница города получает свой вариант → уникализация HTML.
+  const heroLinesData = rawLines.map(resolveSpintaxLine);
 
   const carouselSlides = [
     { type: 'video', data: { src720: '/optimized/mainVideo2-720p.mp4' } },

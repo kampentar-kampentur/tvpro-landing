@@ -1,34 +1,98 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import { technicians } from "./data/technicians";
+import React from "react";
+import { technicians as localTechnicians } from "./data/technicians";
 import TechCard from "./components/TechCard";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Button from "@/ui/Button";
 import styles from "./OurTeam.module.css";
+import { getGlobalConfig, getAllTechnicians, getStrapiMediaUrl } from "@/lib/strapi";
 
-export default function OurTeam({ data = {}, cityContext }) {
-  const [selectedTechs, setSelectedTechs] = useState([]);
+async function getOurTeamData() {
+  try {
+    const globalConfig = await getGlobalConfig();
+    return globalConfig["our-team"] || {};
+  } catch (e) {
+    return {};
+  }
+}
+
+export default async function OurTeam({ data = {}, cityContext }) {
+  const defaultTeamData = await getOurTeamData();
+  
+  // Аккуратно мержим данные, чтобы null из локального блока не затирал глобальные значения
+  const teamData = { ...defaultTeamData };
+  if (data?.title) teamData.title = data.title;
+  if (data?.subTitle) teamData.subTitle = data.subTitle;
+  if (data?.footerText) teamData.footerText = data.footerText;
+  if (data?.technicians) teamData.technicians = data.technicians;
 
   const cityName = cityContext?.city_name || "your area";
   const stateCode = cityContext?.state_code ? `, ${cityContext.state_code}` : "";
   const displayLocation = `${cityName}${stateCode}`;
 
-  useEffect(() => {
-    const shuffled = [...technicians].sort(() => 0.5 - Math.random());
-    setSelectedTechs(shuffled.slice(0, 6));
-  }, []);
+  let strapiTechs = [];
+  
+  // 1. Проверяем, не переопределены ли техники вручную в блоке
+  if (teamData?.technicians && Array.isArray(teamData.technicians) && teamData.technicians.length > 0) {
+    strapiTechs = teamData.technicians;
+  } else {
+    // 2. Если нет, берем всех из новой коллекции Technician
+    strapiTechs = await getAllTechnicians();
+  }
+
+  if (strapiTechs && strapiTechs.length > 0) {
+    strapiTechs = strapiTechs.map(t => {
+      let photoObj = null;
+      if (t.photo) {
+        if (typeof t.photo === 'string') {
+          photoObj = { url: t.photo };
+        } else if (t.photo.data?.attributes) {
+          photoObj = { id: t.photo.data.id, ...t.photo.data.attributes };
+        } else if (t.photo.data) {
+          photoObj = { id: t.photo.data.id, ...t.photo.data };
+        } else {
+          photoObj = t.photo;
+        }
+      }
+
+      return {
+        ...t,
+        photo: photoObj,
+        // Если теги из Strapi пришли строкой "Frame TV, Fireplace", разбиваем в массив
+        tags: typeof t.tags === 'string' ? t.tags.split(',').map(tag => tag.trim()) : (t.tags || [])
+      };
+    });
+  }
+  
+  const allTechs = strapiTechs.length > 0 ? strapiTechs : localTechnicians;
+
+  const cityTechs = allTechs.filter(t => 
+    t.city?.toLowerCase() === cityName?.toLowerCase()
+  );
+  
+  let selectedTechs = [];
+  // Если для города есть свои техники — показываем их (максимум 6)
+  // Если меньше 3 — добираем рандомных из других городов
+  if (cityTechs.length >= 3) {
+    const shuffled = [...cityTechs].sort(() => 0.5 - Math.random());
+    selectedTechs = shuffled.slice(0, 6);
+  } else {
+    // Fallback: берём техников из других городов, кроме уже выбранных
+    const others = allTechs.filter(t => t.city?.toLowerCase() !== cityName?.toLowerCase());
+    const shuffledOthers = [...others].sort(() => 0.5 - Math.random());
+    const combined = [...cityTechs, ...shuffledOthers].slice(0, 6);
+    selectedTechs = combined.sort(() => 0.5 - Math.random());
+  }
 
   const title =
-    data?.title ||
+    teamData?.title ||
     `Meet Our TV Mounting Specialists in ${displayLocation}`;
 
   const subTitle =
-    data?.subTitle ||
+    teamData?.subTitle ||
     "Every technician is background-checked, insured, and certified — ready to deliver a flawless installation in your home.";
 
   const footerText =
-    data?.footerText ||
+    teamData?.footerText ||
     "Ready to mount your TV? Book your service with one of our local specialists.";
 
   return (
