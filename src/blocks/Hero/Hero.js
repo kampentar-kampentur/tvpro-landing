@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
-import { resolveSpintaxLine } from "@/lib/spintax";
+import { resolveSpintaxLine, resolveSpintax } from "@/lib/spintax";
 import { RAW_TICKER_LINES } from "@/lib/tickerData";
 // import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 // import dynamic from "next/dynamic";
@@ -21,7 +21,7 @@ async function getHero() {
     const json = await res.json();
     return json.data;
   } catch (error) {
-    console.error("Hero fetch failed:", error);
+    print("Hero fetch failed:", error);
     return null;
   }
 }
@@ -31,7 +31,7 @@ async function getHeroRunningLines() {
     const json = await res.json();
     return json.data;
   } catch (error) {
-    console.error("Hero lines fetch failed:", error);
+    print("Hero lines fetch failed:", error);
     return [];
   }
 }
@@ -51,8 +51,8 @@ export default async function Hero({ data = {}, cityContext }) {
     ...defaultHeroData,
     ...data,
     // Explicitly handle nested or specific fields if needed
-    title: data?.title || defaultHeroData?.title || '',
-    subTitle: data?.subTitle || defaultHeroData?.subTitle || '',
+    title: resolveSpintax(data?.title || defaultHeroData?.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultHeroData?.subTitle || ''),
   };
 
   // Выбираем источник строк: data из Strapi > глобальные из Strapi > fallback tickerData

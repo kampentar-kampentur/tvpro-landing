@@ -6,6 +6,7 @@ import Button from "@/ui/Button/Button";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import GalleryGrid from "./components/GalleryGrid";
 import Text from "@/ui/Text/Text";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getGalleryOfWork() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/gallery-of-work?populate=*`);
@@ -22,17 +23,16 @@ async function getGalleryPhotos() {
 }
 
 // Default export with data prop
-export default async function GalleryOfWork({ data = {} }) {
+export default async function GalleryOfWork({ data = {}, cityContext }) {
   const defaultGalleryOfWorkData = await getGalleryOfWork();
   const galleryPhotos = await getGalleryPhotos();
-  console.log(defaultGalleryOfWorkData);
 
   // Merge: Use prop data if available, otherwise fallback to default
   const galleryOfWorkData = {
     ...defaultGalleryOfWorkData,
     ...data,
-    title: data?.title || defaultGalleryOfWorkData.title,
-    subTitle: data?.subTitle || defaultGalleryOfWorkData.subTitle,
+    title: resolveSpintax(data?.title || defaultGalleryOfWorkData.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultGalleryOfWorkData.subTitle || ''),
     types: (data?.types && data.types.length > 0) ? data.types : defaultGalleryOfWorkData.types
   };
 
@@ -41,17 +41,12 @@ export default async function GalleryOfWork({ data = {} }) {
       <div className="block">
         <header className={styles.galleryOfWorkHeader}>
           <h2 className="blockHeading">
-            <Text text={galleryOfWorkData.title} />
+            <Text text={galleryOfWorkData.title} cityContext={cityContext} />
           </h2>
-          <p className="subText"><Text text={galleryOfWorkData.subTitle} /></p>
+          <p className="subText">
+            <Text text={galleryOfWorkData.subTitle} cityContext={cityContext} />
+          </p>
         </header>
-        {/* <div className={styles.sliderWrap}>
-        <SliderGallery
-          CardComponent={PhotoCard}
-          cardData={galleryPhotos}
-          cardsPerPage={4}
-        />
-      </div> */}
         <GalleryGrid filters={galleryOfWorkData.types} initialPhotos={galleryPhotos} />
         <div className={styles.ctaContainer}>
           <p className={styles.ctaText}>Like what you see?</p>
@@ -62,5 +57,5 @@ export default async function GalleryOfWork({ data = {} }) {
       </div>
     </section>
   );
-};
+}
 

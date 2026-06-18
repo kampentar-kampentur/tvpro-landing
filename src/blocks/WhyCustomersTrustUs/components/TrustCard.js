@@ -5,8 +5,9 @@ import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import { useState, useRef, useEffect } from "react";
 import InfoCircle from '@/assets/icons/InfoCircle.svg'
 import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg'
+import Text from "@/ui/Text/Text";
 
-const TrustCard = ({ image, title, description }) => {
+const TrustCard = ({ image, title, description, cityContext }) => {
   const [isInfoShow, setIsInfoShow] = useState(false)
   const cardRef = useRef(null)
 
@@ -43,8 +44,8 @@ const TrustCard = ({ image, title, description }) => {
         />
       </div>
       <div>
-        <h3 className={styles.title}>{title}</h3>
-        <p className={styles.description}>{description}</p>
+        <h3 className={styles.title}><Text text={title} cityContext={cityContext} /></h3>
+        <p className={styles.description}><Text text={description} cityContext={cityContext} /></p>
         {description && (
           isInfoShow ?
             <InfoCircleActive onClick={handleInfoClick} className={styles.info} /> :

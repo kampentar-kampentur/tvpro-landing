@@ -2,6 +2,7 @@ import styles from "./Certificates.module.css";
 import { SliderGallery } from "@/ui/SliderGallery/SliderGallery";
 import CertificateCard from "./components/CertificateCard";
 import Text from "@/ui/Text/Text";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getCertificates() {
   try {
@@ -34,15 +35,15 @@ async function getCertificates() {
 }
 
 // Default export with data prop
-export default async function Certificates({ data = {} }) {
+export default async function Certificates({ data = {}, cityContext }) {
   const defaultCertificatesData = await getCertificates();
 
   // Merge: Use prop data if available, otherwise fallback to default
   const certificatesData = {
     ...defaultCertificatesData,
     ...data,
-    title: data?.title || defaultCertificatesData.title,
-    subTitle: data?.subTitle || defaultCertificatesData.subTitle,
+    title: resolveSpintax(data?.title || defaultCertificatesData.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultCertificatesData.subTitle || ''),
     certificates: (data?.certificates && data.certificates.length > 0) ? data.certificates : defaultCertificatesData.certificates
   };
 
@@ -50,9 +51,11 @@ export default async function Certificates({ data = {} }) {
     <section className={`block ${styles.certificates}`}>
       <header className={styles.certificatesHeader}>
         <h2 className="blockHeading">
-          <Text text={certificatesData.title} />
+          <Text text={certificatesData.title} cityContext={cityContext} />
         </h2>
-        <p className="subText"><Text text={certificatesData.subTitle} /></p>
+        <p className="subText">
+          <Text text={certificatesData.subTitle} cityContext={cityContext} />
+        </p>
       </header>
       <div className={styles.sliderWrap}>
         <SliderGallery
@@ -68,4 +71,4 @@ export default async function Certificates({ data = {} }) {
       </div>
     </section>
   );
-};
+}

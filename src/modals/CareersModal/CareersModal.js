@@ -56,6 +56,12 @@ export default function CareersModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (step < 3) {
+      nextStep();
+      return;
+    }
+
     if (!formData.name || !validatePhone(formData.phone)) {
       alert("Please provide a valid name and phone number.");
       return;
@@ -100,7 +106,7 @@ export default function CareersModal() {
           <Button onClick={handleClose} className={styles.button}>Close</Button>
         </div>
       ) : (
-        <form className={styles.form} onSubmit={step === 3 ? handleSubmit : (e) => e.preventDefault()}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.progress}>
             <div className={styles.progressBar} style={{ width: `${(step / 3) * 100}%` }}></div>
           </div>
@@ -192,7 +198,7 @@ export default function CareersModal() {
               <Button variant="secondary" onClick={prevStep} type="button" className={styles.btnSecondary}>Back</Button>
             )}
             {step < 3 ? (
-              <Button variant="primary" onClick={nextStep} type="button" className={styles.btnPrimary}>Next Step</Button>
+              <Button variant="primary" type="submit" className={styles.btnPrimary}>Next Step</Button>
             ) : (
               <Button variant="primary" type="submit" disabled={isSubmitting} className={styles.btnPrimary}>
                 {isSubmitting ? "Submitting..." : "Submit Application"}

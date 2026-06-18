@@ -5,6 +5,8 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Button from "@/ui/Button";
 import styles from "./OurTeam.module.css";
 import { getGlobalConfig, getAllTechnicians, getStrapiMediaUrl } from "@/lib/strapi";
+import Text from "@/ui/Text/Text";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getOurTeamData() {
   try {
@@ -83,23 +85,26 @@ export default async function OurTeam({ data = {}, cityContext }) {
     selectedTechs = combined.sort(() => 0.5 - Math.random());
   }
 
-  const title =
+  const title = resolveSpintax(
     teamData?.title ||
-    `Meet Our TV Mounting Specialists in ${displayLocation}`;
+    `Meet Our TV Mounting Specialists in ${displayLocation}`
+  );
 
-  const subTitle =
+  const subTitle = resolveSpintax(
     teamData?.subTitle ||
-    "Every technician is background-checked, insured, and certified — ready to deliver a flawless installation in your home.";
+    "Every technician is background-checked, insured, and certified — ready to deliver a flawless installation in your home."
+  );
 
-  const footerText =
+  const footerText = resolveSpintax(
     teamData?.footerText ||
-    "Ready to mount your TV? Book your service with one of our local specialists.";
+    "Ready to mount your TV? Book your service with one of our local specialists."
+  );
 
   return (
     <section className={`block ${styles.ourTeam}`} id="team">
       <header className={styles.header}>
-        <h2 className="blockHeading">{title}</h2>
-        <p className="subText">{subTitle}</p>
+        <h2 className="blockHeading"><Text text={title} cityContext={cityContext} /></h2>
+        <p className="subText"><Text text={subTitle} cityContext={cityContext} /></p>
       </header>
 
       <div className={styles.sliderTrack}>
@@ -113,7 +118,9 @@ export default async function OurTeam({ data = {}, cityContext }) {
       </div>
 
       <div className={styles.footer}>
-        <p className={styles.footerText}>{footerText}</p>
+        <p className={styles.footerText}>
+          <Text text={footerText} cityContext={cityContext} />
+        </p>
         <div className={styles.buttonsGroup}>
           <QuoteButton size="big">Book Your Technician Today</QuoteButton>
           <Button variant="secondary" size="big" href="/our-team/">

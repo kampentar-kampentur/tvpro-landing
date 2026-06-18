@@ -3,8 +3,9 @@ import React from "react";
 import styles from "./CareersCTA.module.css";
 import Button from "@/ui/Button";
 import { useModalState } from "@/providers/ModalProvider";
+import Text from "@/ui/Text/Text";
 
-export default function CareersCTA({ data }) {
+export default function CareersCTA({ data, cityContext }) {
   const { open } = useModalState("CareersForm");
 
   const title = data?.title || "Join Our Team of Expert Technicians";
@@ -16,8 +17,8 @@ export default function CareersCTA({ data }) {
   return (
     <section className="block">
       <header className={styles.header}>
-        <h2 className="blockHeading">{title}</h2>
-        <p className="subText">{subTitle}</p>
+        <h2 className="blockHeading"><Text text={title} cityContext={cityContext} /></h2>
+        <p className="subText"><Text text={subTitle} cityContext={cityContext} /></p>
       </header>
       <div className={styles.buttonWrapper}>
         <Button variant="primary" onClick={() => open()} size="big">

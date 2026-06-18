@@ -5,11 +5,12 @@ import styles from "../OurServices.module.css";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import ObjectRenderer from "@/modals/BestQuoteModal/components/ObjDeb";
+import Text from "@/ui/Text/Text";
 
 const INTERVAL_TIME = 5000; // 5 seconds
 const ANIMATION_DURATION = 600; // ms
 
-export default function OurServicesInteractive({ servicesData }) {
+export default function OurServicesInteractive({ servicesData, cityContext }) {
   const [activeServiceId, setActiveServiceId] = useState(null);
   const [displayedServiceId, setDisplayedServiceId] = useState(null);
   const [animating, setAnimating] = useState(false);
@@ -75,7 +76,9 @@ export default function OurServicesInteractive({ servicesData }) {
             style={{ '--interval-time': `${INTERVAL_TIME / 1000}s` }}
           >
             <span className={styles.progress}></span>
-            <span className={styles.categoryButtonText}>{service.label || service.title}</span>
+            <span className={styles.categoryButtonText}>
+              <Text text={service.label || service.title} cityContext={cityContext} />
+            </span>
           </button>
         ))}
       </div>
@@ -93,9 +96,11 @@ export default function OurServicesInteractive({ servicesData }) {
               <ImageWrapper media={service.image} defaultAlt={service.title} sizes="(max-width: 768px) 100vw, 800px" />
             </div>
             <div className={styles.detailsContent}>
-              <h3 className={styles.detailsTitle}>{service.title}</h3>
+              <h3 className={styles.detailsTitle}>
+                <Text text={service.title} cityContext={cityContext} />
+              </h3>
               <p className={styles.detailsDescription}>
-                {service.description}
+                <Text text={service.description} cityContext={cityContext} />
               </p>
               <QuoteButton modalName="BookNow">Book Now</QuoteButton>
             </div>
@@ -103,5 +108,5 @@ export default function OurServicesInteractive({ servicesData }) {
         )
       ))}
     </>
-  )
+  );
 }

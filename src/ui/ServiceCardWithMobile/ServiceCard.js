@@ -1,14 +1,15 @@
 'use client'
 
 import styles from "./ServiceCard.module.css";
-import SendIcon from "@/assets/icons/send.svg"
+import SendIcon from "@/assets/icons/send.svg";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import { useState } from "react";
-import InfoCircle from '@/assets/icons/InfoCircle.svg'
-import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg'
+import InfoCircle from '@/assets/icons/InfoCircle.svg';
+import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg';
+import Text from "@/ui/Text/Text";
 
-export default function ServiceCard({ image, title, description, buttonText, modalName, price }) {
+export default function ServiceCard({ image, title, description, buttonText, modalName, price, cityContext }) {
   const [isInfoShow, setIsInfoShow] = useState(false)
   function handleInfoClick(e) {
     e.preventDefault()
@@ -23,8 +24,12 @@ export default function ServiceCard({ image, title, description, buttonText, mod
       </div>
 
       <div className={styles.textWrapper}>
-        <h3 className={styles.title}>{title.split(" - ")[0]}</h3>
-        <span className={styles.description}>{description}</span>
+        <h3 className={styles.title}>
+          <Text text={(title || '').split(" - ")[0]} cityContext={cityContext} />
+        </h3>
+        <span className={styles.description}>
+          <Text text={description} cityContext={cityContext} />
+        </span>
       </div>
       <QuoteButton className={styles.hiddenButton} variant="primary" size="small" modalName={modalName || "BestQuote"}>
         {buttonText}

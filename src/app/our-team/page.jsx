@@ -1,7 +1,7 @@
 import React from "react";
 import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import TechCard from "@/blocks/OurTeam/components/TechCard";
-import { technicians } from "@/blocks/OurTeam/data/technicians";
+import { getAllTechnicians } from "@/lib/strapi";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import styles from "./our-team-page.module.css";
 
@@ -13,11 +13,18 @@ export const metadata = {
   },
 };
 
-export default function OurTeamPage() {
+export default async function OurTeamPage() {
   const breadcrumbItems = [
     { name: "Home", url: "/" },
     { name: "Our Team", url: "/our-team/" }
   ];
+
+  let strapiTechs = [];
+  try {
+    strapiTechs = await getAllTechnicians();
+  } catch (e) {
+    console.error("Failed to fetch technicians:", e);
+  }
 
   return (
     <div className={styles.teamPage}>
@@ -35,13 +42,25 @@ export default function OurTeamPage() {
       {/* Grid of All Specialists */}
       <section className={`block ${styles.gridSection}`}>
         <div className={styles.grid}>
-          {technicians.map((tech) => (
-            <TechCard
-              key={tech.id}
-              tech={tech}
-              cityName="your area"
-            />
-          ))}
+          {strapiTechs.map((tech) => {
+            // Check if there is a photo object inside attributes or directly in tech
+            const photoUrl = tech.photo?.url || tech.photo?.data?.attributes?.url;
+
+            const techData = {
+              ...tech,
+              photo: photoUrl || "/images/tech/placeholder.png", // fallback image
+              // parse tags if it's a string, just like in OurTeam.js
+              tags: typeof tech.tags === 'string' ? tech.tags.split(',').map(tag => tag.trim()) : (tech.tags || [])
+            };
+
+            return (
+              <TechCard
+                key={tech.id}
+                tech={techData}
+                cityName="your area"
+              />
+            );
+          })}
         </div>
       </section>
 

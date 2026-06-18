@@ -4,6 +4,7 @@ import PlusIcon from "@/assets/icons/plus.svg";
 import MinusIcon from "@/assets/icons/minus.svg";
 import Text from "@/ui/Text/Text";
 import Head from "next/head";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getFAQ() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/faq?populate=*`);
@@ -11,17 +12,38 @@ async function getFAQ() {
   return json.data;
 }
 
+// Helper to interpolate city variables in JSON-LD strings
+function interpolateVariables(str, cityContext) {
+  if (!str) return '';
+  let res = str;
+  if (cityContext) {
+    if (cityContext.city_name) {
+      res = res.replace(/\{\{city\}\}/g, cityContext.city_name);
+    }
+    if (cityContext.state_code) {
+      res = res.replace(/\{\{state\}\}/g, cityContext.state_code);
+    }
+  }
+  return res;
+}
+
 // Default export with data prop
 export default async function FAQ({ data = {}, cityContext }) {
   const defaultFaqData = await getFAQ();
 
   // Merge: Use prop data if available, otherwise fallback to default
+  const rawFaqs = (data?.faqs && data.faqs.length > 0) ? data.faqs : (defaultFaqData.faqs || []);
+  const faqs = rawFaqs.map(item => ({
+    question: resolveSpintax(item.question || ''),
+    answer: resolveSpintax(item.answer || ''),
+  }));
+
   const faqData = {
     ...defaultFaqData,
     ...data,
-    title: data?.title || defaultFaqData.title,
-    subTitle: data?.subTitle || defaultFaqData.subTitle,
-    faqs: (data?.faqs && data.faqs.length > 0) ? data.faqs : defaultFaqData.faqs,
+    title: resolveSpintax(data?.title || defaultFaqData.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultFaqData.subTitle || ''),
+    faqs,
   };
 
   const structuredFAQ = {
@@ -29,10 +51,10 @@ export default async function FAQ({ data = {}, cityContext }) {
     "@type": "FAQPage",
     "mainEntity": (faqData.faqs || []).map(({ question, answer }) => ({
       "@type": "Question",
-      "name": question,
+      "name": interpolateVariables(question, cityContext),
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": answer,
+        "text": interpolateVariables(answer, cityContext),
       },
     })),
   };
@@ -62,19 +84,23 @@ export default async function FAQ({ data = {}, cityContext }) {
               defaultChecked={index === 0}
             />
             <label htmlFor={`faq-toggle-${index}`} className={styles.faqQuestionContainer}>
-              <span role="heading" aria-level="3" className={styles.faqQuestion}><Text text={item.question} /></span>
+              <span role="heading" aria-level="3" className={styles.faqQuestion}>
+                <Text text={item.question} cityContext={cityContext} />
+              </span>
               <span className={styles.icon}>
                 <PlusIcon width="24" height="24" className={styles.plusIcon} />
                 <MinusIcon width="24" height="24" className={styles.minusIcon} />
               </span>
             </label>
             <div className={styles.faqAnswerWrapper}>
-              <p className={styles.faqAnswer}><Text text={item.answer} /></p>
+              <p className={styles.faqAnswer}>
+                <Text text={item.answer} cityContext={cityContext} />
+              </p>
             </div>
           </div>
         ))}
       </div>
     </section>
   );
-};
+}
 

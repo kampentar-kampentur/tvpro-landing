@@ -20,6 +20,7 @@ import LinkedinDefault from "@/assets/socialIcons/LinkedinDefault.svg";
 import LinkedinHover from "@/assets/socialIcons/LinkedinHover.svg";
 import Text from "@/ui/Text/Text";
 import ContactsDetails from "./components/ContactsDetails";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getContactUs() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/contact-us`);
@@ -41,8 +42,8 @@ export default async function Contacts({ data = {}, cityContext }) {
   const contact = {
     ...defaultContact,
     ...data,
-    title: data?.title || defaultContact?.title,
-    subTitle: data?.subTitle || defaultContact?.subTitle,
+    title: resolveSpintax(data?.title || defaultContact?.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultContact?.subTitle || ''),
     // Social links - priority to prop data if present
     facebook: data?.facebook || defaultContact?.facebook,
     instagram: data?.instagram || defaultContact?.instagram,
@@ -62,8 +63,8 @@ export default async function Contacts({ data = {}, cityContext }) {
   return (
     <section className={styles.contacts} id="contact">
       <div className={`blockContainer ${styles.contactsContainer}`}>
-        <h2 className={styles.heading}><Text text={contact.title} /></h2>
-        <p className={styles.subHeading}><Text text={contact.subTitle} /></p>
+        <h2 className={styles.heading}><Text text={contact.title} cityContext={cityContext} /></h2>
+        <p className={styles.subHeading}><Text text={contact.subTitle} cityContext={cityContext} /></p>
         <div className={styles.mapWrap}>
           <div className={styles.contactDetailsSection}>
             <ContactsDetails />
