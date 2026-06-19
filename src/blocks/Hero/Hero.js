@@ -13,8 +13,21 @@ import Text from "@/ui/Text/Text";
 // import SevenDaysImg from "@/assets/badges/7days.webp"
 // import InsuredImg from "@/assets/badges/insured.webp"
 // import ExpandingSection from "./components/ExpandingSection";
-// import HeroCarousel from "./components/HeroCarousel";
 import HeroClientContainer from "./components/HeroClientContainer";
+const getRandomLines = (rawLines, count = 6) => {
+  if (!rawLines || rawLines.length === 0) return [];
+  const result = [...rawLines];
+  const length = result.length;
+  const iterations = Math.min(count, length);
+  
+  for (let i = 0; i < iterations; i++) {
+    const randomIndex = i + Math.floor(Math.random() * (length - i));
+    [result[i], result[randomIndex]] = [result[randomIndex], result[i]];
+  }
+  
+  return result.slice(0, iterations);
+};
+
 async function getHero() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
@@ -61,9 +74,12 @@ export default async function Hero({ data = {}, cityContext }) {
     : defaultLinesData?.length > 0 ? defaultLinesData
     : RAW_TICKER_LINES;
 
+  // Перемешиваем массив и выбираем ровно 6 случайных элементов методом Fisher-Yates
+  const shuffledLines = getRandomLines(rawLines, 6);
+
   // Разворачиваем спинтакс {A|B|C} → случайный вариант (серверный рендер при SSG).
   // Каждая страница города получает свой вариант → уникализация HTML.
-  const heroLinesData = rawLines.map(resolveSpintaxLine);
+  const heroLinesData = shuffledLines.map(resolveSpintaxLine);
 
   const carouselSlides = [
     { type: 'video', data: { src720: '/optimized/mainVideo2-720p.mp4' } },
