@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build:next": "next build",
+    "build:next": "node scripts/generate-variants.js && next build && node postbuild.mjs",
     "build:astro": "cd charlotte-landing && npm install && npm run build",
     "combine": "rm -rf out/chicago && mkdir -p out/chicago && cp -r charlotte-landing/dist/* out/chicago/",
     "build": "npm run build:next",
