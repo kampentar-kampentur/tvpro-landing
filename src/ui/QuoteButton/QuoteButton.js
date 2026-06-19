@@ -5,7 +5,7 @@ import { useModal } from "@/providers/ModalProvider";
 import { useRouter } from 'next/navigation';
 import { useCTA } from "@/providers/CTAProvider";
 
-export default function QuoteButton({ children, modalName = "BestQuote", onClick: existingOnClick, ...props }) {
+export default function QuoteButton({ children, modalName = "BestQuote", modalProps = {}, onClick: existingOnClick, ...props }) {
     const { openModal } = useModal();
     const cta = useCTA();
 
@@ -13,7 +13,7 @@ export default function QuoteButton({ children, modalName = "BestQuote", onClick
         if (existingOnClick) {
             existingOnClick(e);
         }
-        openModal(modalName)
+        openModal(modalName, modalProps)
     }
 
     // if("BookNow" === modalName) {

@@ -922,8 +922,238 @@ const BestQuoteScheme = {
   },
 };
 
+const NewQuizScheme = {
+  steps: [
+    {
+      id: "tv-count",
+      title: "How many TVs?",
+      fields: [
+        {
+          name: "tvCount",
+          type: "radio",
+          isRequired: true,
+          label: "How many TVs?",
+          options: [
+            { value: "1", label: "1 TV" },
+            { value: "2", label: "2 TVs" },
+            { value: "3", label: "3 TVs" },
+            { value: "4+", label: "4+ TVs" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "tv-size",
+      title: "TV Size",
+      fields: [
+        {
+          name: "tvSelection",
+          type: "radio",
+          isRequired: true,
+          label: "What size TV do you have?",
+          showIf: {
+            field: "tv-count.tvCount",
+            condition: "equals",
+            value: "1"
+          },
+          options: [
+            { value: "under31", label: 'Under 31"', cost: 69 },
+            { value: "32-59", label: '32"-59"', cost: 125 },
+            { value: "60-85", label: '60"-85"', cost: 144 },
+            { value: "over-86", label: '86"+', cost: 189 },
+            { value: "notSure", label: "Not Sure", cost: 125 }
+          ]
+        },
+        {
+          name: "tvSelectionMulti",
+          type: "radio",
+          isRequired: true,
+          label: "What size are your TVs?",
+          showIf: {
+            field: "tv-count.tvCount",
+            condition: "notEquals",
+            value: "1"
+          },
+          options: [
+            { value: "under31", label: 'Under 31"', cost: 69 },
+            { value: "32-59", label: '32"-59"', cost: 125 },
+            { value: "60-85", label: '60"-85"', cost: 144 },
+            { value: "over-86", label: '86"+', cost: 189 },
+            { value: "mixed", label: "Mixed Sizes", cost: 135 },
+            { value: "notSure", label: "Not Sure", cost: 125 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "mounting",
+      title: "Mount Type",
+      fields: [
+        {
+          name: "mountType",
+          type: "radio",
+          isRequired: true,
+          label: "Choose mount type",
+          options: [
+            {
+              value: "alreadyThere",
+              label: "Already there",
+              cost: 0,
+              description: "Already have your own mount? Perfect! We’ll safely install your TV on your existing bracket at no extra cost."
+            },
+            {
+              value: "fixed",
+              label: "Fixed Mount",
+              subtitle: "1.5” from wall",
+              cost: 44,
+              description: "Clean and reliable: keeps your TV close to the wall for a sleek, modern look"
+            },
+            {
+              value: "tilting",
+              label: "Tilt Mount",
+              subtitle: "up to 15° tilt",
+              cost: 52,
+              description: "Adjust the vertical angle to reduce glare and get the perfect view from any seating position."
+            },
+            {
+              value: "fullMotion",
+              label: "Full-Motion Mount",
+              subtitle: "extends up to 15”",
+              cost: 69,
+              description: "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room."
+            },
+            {
+              value: "ceilingMount",
+              label: "Ceiling Mount",
+              subtitle: "",
+              cost: 69,
+              description: "a unique option when walls are occupied or for a bold interior design: mount your TV directly to the ceiling."
+            },
+            {
+              value: "ultraSlim",
+              label: "Ultra Slim 0.3",
+              subtitle: "ultra thin profile",
+              cost: 79,
+              description: "ultra low profile mount: keeps the TV extremely close to the wall for a picture-frame effect."
+            },
+            {
+              value: "needHelp",
+              label: "Need help choosing",
+              subtitle: "Consult with technician",
+              cost: 0,
+              description: "Not sure which mount fits your space? Our professional technician will bring different types and help you choose the best one on-site."
+            },
+            { 
+              value: "different", 
+              label: "Different mounts",
+              subtitle: "For multiple TVs",
+              cost: 0,
+              description: "If you need different types of mounts for your TVs, we will configure each on-site during installation.",
+              showIf: {
+                field: "tv-count.tvCount",
+                condition: "notEquals",
+                value: "1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "wall",
+      title: "Wall Type",
+      fields: [
+        {
+          name: "wallType",
+          type: "radio",
+          isRequired: true,
+          label: "What type of wall?",
+          options: [
+            { value: "drywall", label: "Drywall", cost: 0 },
+            { value: "stoneBrickConcrete", label: "Brick / Stone / Concrete", cost: 49 },
+            { value: "ceiling", label: "Ceiling", cost: 39 },
+            { value: "tile", label: "Tile", cost: 69 },
+            { value: "metalStuds", label: "Metal Studs", cost: 30 },
+            { 
+              value: "mixed", 
+              label: "Mixed Wall Types", 
+              cost: 39,
+              showIf: {
+                field: "tv-count.tvCount",
+                condition: "notEquals",
+                value: "1"
+              }
+            },
+            { value: "notSure", label: "Not Sure", cost: 0 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "wires",
+      title: "Cable Concealment",
+      fields: [
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Would you like your wires hidden?",
+          options: [
+            { value: "yes", label: "Yes, hide all wires", cost: 109 },
+            { value: "no", label: "No, standard installation", cost: 0 },
+            { value: "notSure", label: "Not Sure", cost: 0 }
+          ]
+        }
+      ]
+    },
+    {
+      id: "contactInfo",
+      title: "Address",
+      fields: [
+        {
+          name: "temp",
+          type: "radio",
+          label: "Contact Details",
+          options: [],
+        },
+        {
+          name: "name",
+          type: "text",
+          textLabel: "Enter your name",
+          placeholder: "Name",
+          isRequired: false
+        },
+        {
+          name: "phone",
+          type: "tel",
+          textLabel: "Enter your phone",
+          placeholder: "Phone Number *",
+          isRequired: true
+        },
+        {
+          name: "zip",
+          type: "text",
+          textLabel: "Enter your zip code",
+          placeholder: "Zip Code",
+          isRequired: false
+        }
+      ]
+    }
+  ],
+  priceCalculation: {
+    baseCost: 0,
+    dynamicCosts: [
+      "tv-size.tvSelection",
+      "tv-size.tvSelectionMulti",
+      "mounting.mountType",
+      "wall.wallType",
+      "wires.wires"
+    ]
+  }
+};
+
 const BestQuoteModal = () => {
-  const { isOpen, close } = useModalState("BestQuote");
+  const { isOpen, close, data } = useModalState("BestQuote");
   const { openModal } = useModal();
   const router = useRouter();
   const [formData, setFormData] = useState({});
@@ -931,11 +1161,17 @@ const BestQuoteModal = () => {
   const [structuredCostBreakdown, setStructuredCostBreakdown] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [totalSteps, setTotalSteps] = useState(5);
   const [isMobile, setIsMobile] = useState(false);
 
+  const isNewQuiz = !!data?.props?.isNewQuiz;
   const tvSelection = formData["tv-size"]?.tvSelection;
 
   const currentScheme = useMemo(() => {
+    if (isNewQuiz) {
+      return NewQuizScheme;
+    }
+
     let fixedCost = 44;
     let tiltCost = 52;
     let fullMotionCost = 69;
@@ -1007,7 +1243,9 @@ const BestQuoteModal = () => {
       ...BestQuoteScheme,
       steps: updatedSteps,
     };
-  }, [tvSelection]);
+  }, [tvSelection, isNewQuiz]);
+
+  const isLastStep = currentScheme && currentScheme.steps ? currentStepIndex === (currentScheme.steps.length - 1) : false;
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 1024);
@@ -1016,39 +1254,66 @@ const BestQuoteModal = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const isFormValid = !!(
-    formData.contactInfo?.name &&
-    validatePhone(formData.contactInfo?.phone) &&
-    formData.contactInfo?.zipApt?.zip
-  );
+  const isFormValid = isNewQuiz
+    ? !!(formData.contactInfo?.phone && validatePhone(formData.contactInfo?.phone))
+    : !!(
+        formData.contactInfo?.name &&
+        validatePhone(formData.contactInfo?.phone) &&
+        formData.contactInfo?.zipApt?.zip
+      );
 
   useEffect(() => {
     if (!isOpen) {
       setFormData({});
+      setCurrentStepIndex(0);
+      setTotalSteps(5);
+    } else if (data?.props?.tvCount) {
+      if (isNewQuiz) {
+        setFormData({ "tv-count": { tvCount: data.props.tvCount } });
+        setCurrentStepIndex(1);
+      } else {
+        setFormData({ tvCount: data.props.tvCount });
+        setCurrentStepIndex(0);
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, data, isNewQuiz]);
   async function onSubmit(e) {
     e?.preventDefault?.();
     setIsSubmitting(true);
     console.log("formData", formData);
 
-    const wallTypeResolved =
-      formData.wall?.wallType || formData.wall?.wallTypeProjector || "";
+    const wallTypeResolved = isNewQuiz
+      ? (formData.wall?.wallType || "")
+      : (formData.wall?.wallType || formData.wall?.wallTypeProjector || "");
+
+    const tvCountResolved = data?.props?.tvCount || formData["tv-count"]?.tvCount || formData.tvCount || "";
+
+    const contactInfoResolved = isNewQuiz
+      ? {
+          name: formData.contactInfo?.name || "",
+          phone: formData.contactInfo?.phone || "",
+          zip: formData.contactInfo?.zip || "",
+          apt: "",
+        }
+      : {
+          ...formData.contactInfo,
+          zip: formData.contactInfo?.zipApt?.zip || "",
+          apt: formData.contactInfo?.zipApt?.apt || "",
+        };
+
     const submissionData = {
       ...formData,
+      tvCount: tvCountResolved,
       wall: {
         ...formData.wall,
         wallType: wallTypeResolved,
       },
-      contactInfo: {
-        ...formData.contactInfo,
-        zip: formData.contactInfo.zipApt.zip,
-        apt: formData.contactInfo.zipApt.apt,
-      },
+      contactInfo: contactInfoResolved,
       ...getUtmParams(),
       submittedAt: new Date().toISOString(),
       timestamp: Date.now(),
     };
+
     if (submissionData.wall?.wallTypeProjector) {
       delete submissionData.wall.wallTypeProjector;
     }
@@ -1081,15 +1346,15 @@ const BestQuoteModal = () => {
         if (typeof dataLayer !== "undefined") {
           dataLayer.push({
             event: "quiz_send_ok",
-            name: formData.contactInfo?.name || "",
-            phone: formData.contactInfo?.phone?.replace(/\D/g, "") || "",
+            name: submissionData.contactInfo?.name || "",
+            phone: submissionData.contactInfo?.phone?.replace(/\D/g, "") || "",
             "user_data.phone_number":
-              formData.contactInfo?.phone?.replace(/\D/g, "") || "",
-            zip: formData.contactInfo?.zipApt?.zip || "",
-            apt: formData.contactInfo?.zipApt?.apt || "",
-            address: formData.contactInfo?.address || "",
+              submissionData.contactInfo?.phone?.replace(/\D/g, "") || "",
+            zip: submissionData.contactInfo?.zip || "",
+            apt: submissionData.contactInfo?.apt || "",
+            address: submissionData.contactInfo?.address || "",
             totalPrice: totalPrice,
-            tvSelection: formData["tv-size"]?.tvSelection || "",
+            tvSelection: formData["tv-size"]?.tvSelection || formData["tv-size"]?.tvSelectionMulti || "",
             extraTechnicians: formData["tv-size"]?.extraTechnicans || "",
             mountType: formData.mounting?.mountType || "",
             wallType: wallTypeResolved,
@@ -1137,15 +1402,19 @@ const BestQuoteModal = () => {
       <div className={styles.bestQuote}>
         <main className={styles.bestQuoteMain}>
           <Form
+            key={isOpen ? `open-${isNewQuiz}-${data?.props?.tvCount || "none"}` : "closed"}
             scheme={currentScheme}
             value={formData}
             onChange={setFormData}
             onPriceChange={handlePriceChange}
             onSubmit={onSubmit}
-            onStepChange={setCurrentStepIndex}
+            onStepChange={(stepIdx, subStepIdx, total) => {
+              setCurrentStepIndex(stepIdx);
+              setTotalSteps(total || 5);
+            }}
             disableSubmitBtn={isSubmitting}
             isMobile={isMobile}
-            currentStepIndex={currentStepIndex}
+            initialStepIndex={currentStepIndex}
             onClose={close}
           />
           <div className={styles.space}></div>
@@ -1158,7 +1427,7 @@ const BestQuoteModal = () => {
               </p>
             </div>
           )}
-          {isMobile && currentStepIndex === 4 && (
+          {isMobile && isLastStep && (
             <div className={styles.mobileBookSection}>
               <Button
                 className={styles.mobileBookBtn}
@@ -1195,6 +1464,7 @@ const BestQuoteModal = () => {
                 isFormValid={isFormValid}
                 isSubmitting={isSubmitting}
                 onSubmit={onSubmit}
+                isLastStep={isLastStep}
               />
             </div>
           </div>

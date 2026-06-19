@@ -9,8 +9,8 @@ const shouldRenderStep = (step, formData) => {
   return shouldRenderField(step.showIf, formData, 'tv-size', null);
 };
 
-export const useFormNavigation = (scheme, onStepChange, formData) => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+export const useFormNavigation = (scheme, onStepChange, formData, initialStepIndex = 0) => {
+  const [currentStepIndex, setCurrentStepIndex] = useState(initialStepIndex);
   const [currentSubStepIndex, setCurrentSubStepIndex] = useState(0);
 
   // Get visible steps based on showIf conditions

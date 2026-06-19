@@ -23,7 +23,6 @@ const CheckboxGroupField = ({ field, value = [], onChange }) => {
           key={option.value}
           type="checkbox"
           label={option.label}
-          subLabel={option.cost ? `$${option.cost}` : undefined}
           checked={value.includes(option.value)}
           onChange={(e) => handleOptionChange(option.value, e.target.checked)}
         />

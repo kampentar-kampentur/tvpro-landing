@@ -131,3 +131,9 @@
   color: var(--text-secondary);
   padding-right: 40px;
 }
+
+@media (min-width: 1024px) {
+  .contactInfoField {
+    width: 100% !important;
+  }
+}

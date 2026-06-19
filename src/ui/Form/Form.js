@@ -29,7 +29,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     goToPreviousStep,
     goToStep,
     visibleStepIndices
-  } = useFormNavigation(scheme, onStepChange, value);
+  } = useFormNavigation(scheme, onStepChange, value, initialStepIndex);
 
   const renderedSteps = useDynamicSteps(currentStepConfig, value);
 
@@ -254,6 +254,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         currentStepIndex={currentStepIndex}
         onClose={onClose}
         onBack={onBack || handleBack}
+        onNext={() => handleNext(value)}
       />
       {showProgress && !isContactStep && (
         <div className={styles.progressWrapper}>

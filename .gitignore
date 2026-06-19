@@ -50,4 +50,4 @@ dist*/
 
 # video processing
 scripts/input/
-scripts/output/
+scripts/output/.env.local

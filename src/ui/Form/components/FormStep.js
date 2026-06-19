@@ -47,6 +47,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
                     value={fieldCurrentValue}
                     onChange={handleFieldChange}
                     step={step}
+                    stepId={step.id}
                     formData={formData}
                     isMobile={isMobile}
                   />
@@ -70,6 +71,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
                     value={fieldCurrentValue}
                     onChange={handleFieldChange}
                     step={step}
+                    stepId={step.id}
                     formData={formData}
                     isMobile={isMobile}
                   />
@@ -99,7 +101,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "tel":
             case "number":
               return (
-                <div key={field.name} className={`${styles.option} ${styles.textOption}`}>
+                <div key={field.name} className={`${styles.option} ${styles.textOption} ${step.id === 'contactInfo' ? styles.contactInfoField : ''}`}>
                   <span style={{ display: "flex" }}>
                     {currentStepIndex > 0 && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>

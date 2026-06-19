@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styles from './PriceSummary.module.css';
 import Button from '@/ui/Button';
 
-const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, isFormValid, isSubmitting, onSubmit, darkMode = false }) => {
+const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, isFormValid, isSubmitting, onSubmit, darkMode = false, isLastStep = false }) => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -20,7 +20,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
   );
 
   return (
-    <div className={`${styles.priceSummaryContainer} ${currentStepIndex === 4 ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
+    <div className={`${styles.priceSummaryContainer} ${isLastStep ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
       <div className={styles.scrollableContent}>
         {!structuredCostBreakdown.filter(({ type }) => type !== "discount").length &&
           <div className={styles.tvSizeGroup}>
@@ -68,7 +68,7 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
       </div>
 
 
-      {currentStepIndex === 4 && (
+      {isLastStep && (
         <>
           <Button className={styles.bookBtn} disabled={!isFormValid || isSubmitting} onClick={onSubmit} size="big">
             {isSubmitting ? 'Booking...' : 'Book'}
