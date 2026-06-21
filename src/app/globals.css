@@ -399,3 +399,13 @@ a {
   height: 100%;
   width: 100%;
 }
+
+/* Global Dark Theme overrides */
+.dark-theme {
+  --background: #0e0e13;
+  --foreground: #f6f6f8;
+  --white: #171721;
+  --gray-light: #2c2c35;
+  --gray-extra-light: #22222d;
+  --gray: #a1a1a9;
+}

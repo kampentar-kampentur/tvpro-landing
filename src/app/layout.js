@@ -117,9 +117,20 @@ export const metadata = {
 };
 
 async function getCTA() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
-  const json = await res.json();
-  return json.data;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error("[Layout] getCTA fetch failed, using fallbacks:", error.message);
+    return {
+      phone: "(877) 455-5535",
+      phoneLabel: "Call Us",
+      workHours: "Mon-Sun 7:00 AM - 10:00 PM",
+      homeLink: "/"
+    };
+  }
 }
 
 export default async function RootLayout({ children }) {

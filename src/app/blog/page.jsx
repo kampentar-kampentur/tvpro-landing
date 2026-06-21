@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { getAllBlogPosts, getStrapiMediaUrl } from "@/lib/strapi";
 import BlogClient from "./BlogClient";
+import styles from "./blog.module.css";
 
 export const metadata = {
   title: "TV Mounting & Home Theater Blog | TVPro",
@@ -35,5 +37,9 @@ export default async function BlogPage() {
     };
   });
 
-  return <BlogClient initialPosts={normalizedStrapiPosts} />;
+  return (
+    <Suspense fallback={<div className={styles.loading}>Loading blog...</div>}>
+      <BlogClient initialPosts={normalizedStrapiPosts} />
+    </Suspense>
+  );
 }

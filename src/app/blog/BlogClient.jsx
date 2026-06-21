@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { categories, blogPosts } from "@/lib/blog-data";
 import Button from "@/ui/Button";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
@@ -9,10 +10,21 @@ import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import styles from "./blog.module.css";
 
 export default function BlogClient({ initialPosts = [] }) {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const query = searchParams ? searchParams.get("q") : "";
 
-  // Merge: start with all Strapi posts (initialPosts).
-  // Then add mock posts from blog-data only if their slug doesn't exist in Strapi.
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [reSearchVal, setReSearchVal] = useState("");
+
+  // Update re-search input when query changes
+  useEffect(() => {
+    if (query) {
+      setReSearchVal(query);
+    }
+  }, [query]);
+
+  // Merge Strapi and Mock posts
   const posts = [...initialPosts];
   for (const mock of blogPosts) {
     if (!posts.find(p => p.slug === mock.slug)) {
@@ -23,16 +35,24 @@ export default function BlogClient({ initialPosts = [] }) {
   // Generate categories dynamically
   const categoriesList = ["All", ...new Set(posts.map(post => post.category).filter(Boolean))];
 
-  const filteredPosts = activeCategory === "All"
-    ? posts
-    : posts.filter(post => post.category === activeCategory);
+  // Filtering logic
+  let filteredPosts = [];
+  if (query) {
+    const qLower = query.toLowerCase();
+    filteredPosts = posts.filter(post => 
+      post.title.toLowerCase().includes(qLower) || 
+      post.excerpt.toLowerCase().includes(qLower)
+    );
+  } else {
+    filteredPosts = activeCategory === "All"
+      ? posts
+      : posts.filter(post => post.category === activeCategory);
+  }
 
-  // We consider the featured post to be the one marked featured.
-  // We'll show the featured card layout only when the "All" category is selected and we have a featured post.
+  // Featured post logic (only when not searching and on "All" category)
   const featuredPost = posts.find(post => post.featured);
-  const showFeatured = activeCategory === "All" && featuredPost;
+  const showFeatured = !query && activeCategory === "All" && featuredPost;
 
-  // The grid posts are either all posts except the featured one (if shown), or the filtered posts.
   const gridPosts = showFeatured
     ? filteredPosts.filter(post => post.id !== featuredPost.id)
     : filteredPosts;
@@ -42,35 +62,63 @@ export default function BlogClient({ initialPosts = [] }) {
     { name: "Blog", url: "/blog/" }
   ];
 
+  if (query) {
+    breadcrumbItems.push({ name: `Search: ${query}`, url: `/blog/?q=${encodeURIComponent(query)}` });
+  }
+
+  const handleReSearchSubmit = (e) => {
+    e.preventDefault();
+    if (reSearchVal.trim()) {
+      router.push(`/blog/?q=${encodeURIComponent(reSearchVal.trim())}`);
+    }
+  };
+
+  // Fallback recommended articles (top 3 posts)
+  const recommendedPosts = posts.slice(0, 3);
+
   return (
     <div className={styles.blogPage}>
+      {/* Inject noindex dynamically when in search mode to prevent Google index bloating */}
+      {query && <meta name="robots" content="noindex, follow" />}
+
       {/* Breadcrumbs */}
       <SEOBreadcrumbs items={breadcrumbItems} />
 
       {/* Header */}
-      <header className={`block ${styles.blogHeader}`}>
-        <h1 className={`blockHeading ${styles.title}`}>TVPro Handy Insights & Guides</h1>
-        <p className={`subText ${styles.subtitle}`}>
-          Expert tips, installation guides, and smart home advice from our certified technicians.
-        </p>
-      </header>
+      {query ? (
+        <header className={`block ${styles.blogHeader}`}>
+          <h1 className={`blockHeading ${styles.title}`}>Search Results for "{query}"</h1>
+          <p className={`subText ${styles.subtitle}`}>
+            Found {filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"} matching your query.
+          </p>
+        </header>
+      ) : (
+        <header className={`block ${styles.blogHeader}`}>
+          <h1 className={`blockHeading ${styles.title}`}>TVPro Handy Insights & Guides</h1>
+          <p className={`subText ${styles.subtitle}`}>
+            Expert tips, installation guides, and smart home advice from our certified technicians.
+          </p>
+        </header>
+      )}
 
-      {/* Categories Filter */}
-      <div className={`block ${styles.filterContainer}`} style={{ paddingTop: 0, paddingBottom: 0 }}>
-        {categoriesList.map((category) => (
-          <Button
-            key={category}
-            variant="secondary"
-            size="small"
-            onClick={() => setActiveCategory(category)}
-            className={`${styles.filterChip} ${
-              activeCategory === category ? styles.activeFilter : ""
-            }`}
-          >
-            {category}
-          </Button>
-        ))}
-      </div>
+      {/* Categories Filter (Hidden during active search) */}
+      {!query && (
+        <div className={`block ${styles.filterContainer}`} style={{ paddingTop: 0, paddingBottom: 0 }}>
+          {categoriesList.map((category) => (
+            <Button
+              key={category}
+              variant="secondary"
+              size="small"
+              onClick={() => setActiveCategory(category)}
+              className={`${styles.filterChip} ${
+                activeCategory === category ? styles.activeFilter : ""
+              }`}
+            >
+              {category}
+            </Button>
+          ))}
+        </div>
+      )}
 
       {/* Featured Post */}
       {showFeatured && (
@@ -149,8 +197,40 @@ export default function BlogClient({ initialPosts = [] }) {
             ))}
           </div>
         ) : (
-          <div style={{ textAlign: "center", padding: "40px", color: "var(--gray)" }}>
-            No articles found in this category.
+          <div className={styles.noResultsContainer}>
+            <p className={styles.noResultsText}>
+              Sorry, we couldn't find any articles matching "{query}".
+            </p>
+            <form onSubmit={handleReSearchSubmit} className={styles.reSearchForm}>
+              <input 
+                type="text" 
+                placeholder="Try search another term..." 
+                value={reSearchVal}
+                onChange={(e) => setReSearchVal(e.target.value)}
+                className={styles.reSearchInput}
+              />
+              <Button type="submit" variant="primary">Search</Button>
+            </form>
+            
+            {/* Recommended Articles Section */}
+            <div className={styles.recommendedWrapper}>
+              <h3 className={styles.recommendedTitle}>Recommended Articles</h3>
+              <div className={styles.recommendedGrid}>
+                {recommendedPosts.map((post) => (
+                  <Link 
+                    key={post.slug} 
+                    href={`/blog/${post.slug}/`}
+                    className={styles.recommendedCard}
+                  >
+                    <img src={post.image} alt={post.title} className={styles.recommendedImage} />
+                    <div className={styles.recommendedCardContent}>
+                      <span className={styles.categoryBadge}>{post.category}</span>
+                      <h4 className={styles.recommendedCardTitle}>{post.title}</h4>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </section>

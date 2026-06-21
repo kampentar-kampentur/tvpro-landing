@@ -310,3 +310,117 @@
     color: var(--foreground);
     margin: 0;
 }
+
+/* No Results state & Search View styles */
+.noResultsContainer {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--white);
+    border: 1px solid var(--gray-light);
+    border-radius: 12px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.noResultsText {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--foreground);
+    margin-bottom: 24px;
+}
+
+.reSearchForm {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto 48px;
+}
+
+.reSearchInput {
+    flex: 1;
+    border: 1px solid var(--gray-light);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+    background: var(--white);
+    color: var(--foreground);
+    transition: border-color 0.2s;
+}
+
+.reSearchInput:focus {
+    border-color: var(--green);
+}
+
+.recommendedWrapper {
+    border-top: 1px solid var(--gray-light);
+    padding-top: 40px;
+    text-align: left;
+}
+
+.recommendedTitle {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--foreground);
+}
+
+.recommendedGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .recommendedGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.recommendedCard {
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--gray-light);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--background);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recommendedCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.recommendedImage {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+}
+
+.recommendedCardContent {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.recommendedCardTitle {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    color: var(--foreground);
+}
+
+.loading {
+    padding: 80px;
+    text-align: center;
+    color: var(--gray);
+}
+
+

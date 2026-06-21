@@ -282,3 +282,229 @@ button.menuButton {
     justify-content: center;
   }
 }
+
+/* TVPro Blog Phase 1 Enhancements */
+.headerContainer {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.announcementBar {
+  background: var(--green); /* branding accent blue/green */
+  color: var(--white);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 36px;
+  z-index: 1001;
+}
+
+.announcementContent {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.announcementLink {
+  color: var(--white);
+  text-decoration: underline;
+  font-weight: 700;
+  transition: opacity 0.2s;
+}
+
+.announcementLink:hover {
+  opacity: 0.9;
+}
+
+.closeAnnouncement {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.blogHeaderOverride {
+  position: relative !important;
+}
+
+.blogWidgets {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-right: 16px;
+}
+
+/* Dropdown Styles */
+.dropdownContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownButton {
+  background: none;
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.2s;
+}
+
+.dropdownButton:hover {
+  border-color: var(--gray);
+}
+
+.arrow {
+  font-size: 9px;
+  transition: transform 0.2s;
+}
+
+.dropdownContainer:hover .arrow {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 10;
+  min-width: 190px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.dropdownContainer:hover .dropdownMenu {
+  display: block;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdownItem:hover {
+  background-color: var(--background);
+}
+
+.count {
+  font-size: 12px;
+  color: var(--gray);
+}
+
+/* Search Bar Styles */
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+  width: 32px;
+  height: 32px;
+  color: var(--foreground); /* ensures high contrast */
+}
+
+.searchIconBtn:hover {
+  background-color: var(--gray-extra-light);
+  color: var(--green); /* slight highlight on hover */
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 36px;
+  padding: 4px 8px 4px 14px;
+  position: absolute;
+  right: 0;
+  z-index: 5;
+  width: 240px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 0;
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+}
+
+.searchSubmitBtn, .searchCloseBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  transition: color 0.2s;
+}
+
+.searchSubmitBtn:hover, .searchCloseBtn:hover {
+  color: var(--green);
+}
+
+.searchCloseBtn {
+  color: var(--gray);
+}
+
+@media (max-width: 1024px) {
+  .searchContainer {
+    position: static;
+  }
+  
+  .searchForm {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    top: 80px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+}
