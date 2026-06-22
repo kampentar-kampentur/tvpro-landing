@@ -265,9 +265,6 @@ export default async function BlogPostPage({ params }) {
 
     return (
         <>
-            {coverUrl && (
-                <link rel="preload" as="image" href={coverUrl} fetchPriority="high" />
-            )}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -85,11 +85,7 @@ export default async function BlogPage() {
   const featuredImageUrl = featuredPost?.image;
 
   return (
-    <>
-      {featuredImageUrl && (
-        <link rel="preload" as="image" href={featuredImageUrl} fetchPriority="high" />
-      )}
-      <Suspense fallback={<div className={styles.loading}>Loading blog...</div>}>
+    <Suspense fallback={<div className={styles.loading}>Loading blog...</div>}>
         <BlogClient 
           initialPosts={normalizedStrapiPosts} 
           cities={activeCities} 
@@ -98,6 +94,5 @@ export default async function BlogPage() {
           postsPerPage={POSTS_PER_PAGE}
         />
       </Suspense>
-    </>
   );
 }

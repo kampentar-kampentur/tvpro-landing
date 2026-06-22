@@ -161,9 +161,11 @@ export default function BlogClient({
               date: formattedDate || post.date || "",
               readTime: post.readTime ? `${post.readTime} min read` : "5 min read",
               image: imgUrl,
+              coverMedia: post.cover || { url: imgUrl },
               author: {
                 name: post.author?.name || "TVPro Specialist",
                 role: post.author?.role || "Certified Installer",
+                avatarMedia: post.author?.avatar || { url: "/author-placeholder.jpg" }
               }
             };
           });
@@ -185,10 +187,28 @@ export default function BlogClient({
   }, [query]);
 
   // Merge Strapi and Mock posts
-  const posts = [...initialPosts];
+  const posts = [];
+  for (const p of initialPosts) {
+    posts.push({
+      ...p,
+      coverMedia: p.coverMedia || (p.image ? { url: p.image } : { url: "/blog-placeholder.jpg" }),
+      author: {
+        ...p.author,
+        avatarMedia: p.author?.avatarMedia || (p.author?.avatar ? { url: p.author.avatar } : { url: "/author-placeholder.jpg" })
+      }
+    });
+  }
   for (const mock of blogPosts) {
     if (!posts.find(p => p.slug === mock.slug)) {
-      posts.push(mock);
+      posts.push({
+        ...mock,
+        coverMedia: mock.image ? { url: mock.image } : { url: "/blog-placeholder.jpg" },
+        author: {
+          name: mock.author?.name || "TVPro Specialist",
+          role: mock.author?.role || "Certified Installer",
+          avatarMedia: mock.author?.avatar ? { url: mock.author.avatar } : { url: "/author-placeholder.jpg" }
+        }
+      });
     }
   }
 
@@ -592,7 +612,7 @@ export default function BlogClient({
                 </svg>
                 <span>{activePromo.usp}</span>
               </div>
-              <QuoteButton size="medium" modalName={activePromo.modal} className={styles.promoCtaBtn}>
+              <QuoteButton size="small" modalName={activePromo.modal} className={styles.promoCtaBtn}>
                 {activePromo.cta}
               </QuoteButton>
             </div>

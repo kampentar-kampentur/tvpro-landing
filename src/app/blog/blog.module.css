@@ -535,13 +535,6 @@
     .sidebar {
         position: sticky;
         top: 100px;
-        max-height: calc(100vh - 120px);
-        overflow-y: auto;
-        /* Hide scrollbar but keep scroll behavior */
-        scrollbar-width: none;
-    }
-    .sidebar::-webkit-scrollbar {
-        display: none;
     }
 }
 
@@ -748,6 +741,8 @@
     width: 100% !important;
     text-align: center;
     margin-top: 8px;
+    align-self: stretch;
+    flex-shrink: 0;
 }
 
 /* Sorting Toolbar & Controls */

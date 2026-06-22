@@ -14,7 +14,7 @@ export default function Header({ cta: parentCta }) {
   const { openModal } = useModal();
   const pathname = usePathname();
   const isBlog = pathname && pathname.startsWith("/blog");
-  const [hideAnnouncement, setHideAnnouncement] = useState(true);
+  const [hideAnnouncement, setHideAnnouncement] = useState(false);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -23,23 +23,10 @@ export default function Header({ cta: parentCta }) {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    const updateHeight = () => {
-      if (containerRef.current) {
-        const height = containerRef.current.offsetHeight;
-        document.documentElement.style.setProperty("--header-height", `${height}px`);
-      }
-    };
-
-    updateHeight();
-
-    if (typeof window !== "undefined" && typeof ResizeObserver !== "undefined") {
-      const observer = new ResizeObserver(updateHeight);
-      observer.observe(containerRef.current);
-      return () => observer.disconnect();
-    }
-  }, [hideAnnouncement, pathname]);
+    if (typeof window === "undefined") return;
+    const height = isBlog && !hideAnnouncement ? 116 : 80;
+    document.documentElement.style.setProperty("--header-height", `${height}px`);
+  }, [hideAnnouncement, isBlog]);
 
   const handleCloseAnnouncement = () => {
     sessionStorage.setItem("hide_announcement_bar", "true");
