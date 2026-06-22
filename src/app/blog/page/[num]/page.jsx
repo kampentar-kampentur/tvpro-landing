@@ -28,11 +28,26 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
     const { num } = await params;
+    const title = `TV Mounting & Home Theater Blog - Page ${num} | TVPro`;
+    const description = `Read TV mounting tips and guides. Page ${num} of our professional articles archive.`;
     return {
-        title: `TV Mounting & Home Theater Blog - Page ${num} | TVPro`,
-        description: `Read TV mounting tips and guides. Page ${num} of our professional articles archive.`,
+        title,
+        description,
         alternates: {
             canonical: `https://tvprousa.com/blog/page/${num}/`,
+        },
+        openGraph: {
+            title,
+            description,
+            type: "website",
+            url: `https://tvprousa.com/blog/page/${num}/`,
+            images: [{ url: "https://tvprousa.com/og-image.png", width: 1200, height: 630, alt: "TVPro Blog" }],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
+            images: ["https://tvprousa.com/og-image.png"],
         },
     };
 }

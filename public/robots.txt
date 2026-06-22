@@ -6,6 +6,7 @@ Disallow: /see-you-soon/
 Disallow: /booking-success/
 Disallow: /book-now/
 Disallow: /blog/?q=
+Disallow: /variants/
 
 User-agent: Googlebot
 Allow: /
