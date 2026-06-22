@@ -6,6 +6,7 @@ import { useModal } from "@/providers/ModalProvider";
 const EngagementTracker = () => {
     const { openModal, modals } = useModal();
     const hasTriggered = useRef(false);
+    const hasRealInteraction = useRef(false); // Track real human interactions
     const idleTimer = useRef(null);
     const lastScrollPos = useRef(0);
     const isAnyModalOpen = useRef(false);
@@ -16,6 +17,12 @@ const EngagementTracker = () => {
     }, [modals]);
 
     const triggerPopup = useCallback(() => {
+        // Prevent triggering if no real human interaction has occurred yet (blocks bots/Lighthouse)
+        if (!hasRealInteraction.current) {
+            console.log("Exit intent blocked: No real user interaction detected.");
+            return;
+        }
+
         // Prevent triggering on speed test agents, headless browsers, and crawlers
         if (typeof window !== 'undefined') {
             const ua = window.navigator.userAgent || "";
@@ -41,6 +48,20 @@ const EngagementTracker = () => {
     }, [openModal]);
 
     useEffect(() => {
+        // Mark real human interaction on first physical action
+        const markInteraction = () => {
+            hasRealInteraction.current = true;
+            // Clean up interaction listeners since we only need to detect the first interaction
+            interactionEvents.forEach(event => {
+                document.removeEventListener(event, markInteraction);
+            });
+        };
+
+        const interactionEvents = ['mousemove', 'mousedown', 'keydown', 'touchstart'];
+        interactionEvents.forEach(event => {
+            document.addEventListener(event, markInteraction, { passive: true });
+        });
+
         // --- 1. Exit Intent (Desktop) ---
         const handleMouseOut = (e) => {
             if (e.clientY <= 0) {
@@ -91,12 +112,15 @@ const EngagementTracker = () => {
         window.addEventListener('scroll', handleScroll);
 
         activityEvents.forEach(event => {
-            document.addEventListener(event, resetIdleTimer);
+            document.addEventListener(event, resetIdleTimer, { passive: true });
         });
 
         resetIdleTimer();
 
         return () => {
+            interactionEvents.forEach(event => {
+                document.removeEventListener(event, markInteraction);
+            });
             document.removeEventListener('mouseout', handleMouseOut);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('scroll', handleScroll);
@@ -112,20 +136,20 @@ const EngagementTracker = () => {
     if (typeof window !== "undefined") {
         const ua = window.navigator.userAgent || "";
         const isBot = /lighthouse|chrome-lighthouse|speedinsights|googlebot|headless/i.test(ua) || navigator.webdriver;
-        debugInfo = `isBot=${String(isBot)} | webdriver=${String(navigator.webdriver)} | UA=${ua}`;
+        debugInfo = `isBot=${String(isBot)} | hasRealInteraction=${String(hasRealInteraction.current)} | webdriver=${String(navigator.webdriver)} | UA=${ua}`;
     }
 
     return (
-        <div style={{
+        <div id="debug-bot-detection" style={{
             position: 'fixed',
             top: 0,
             left: 0,
             right: 0,
             background: 'rgba(255, 0, 0, 0.95)',
             color: 'white',
-            zIndex: 99999999,
+            zIndex: 2147483647,
             padding: '20px',
-            fontSize: '28px',
+            fontSize: '24px',
             fontWeight: 'bold',
             fontFamily: 'monospace',
             pointerEvents: 'none',
