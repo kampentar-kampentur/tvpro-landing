@@ -7,8 +7,50 @@ import RichTextRenderer from "@/ui/RichTextRenderer/RichTextRenderer";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import styles from "./post.module.css";
 
+const StarIcon = ({ filled, onClick, onMouseEnter, onMouseLeave }) => (
+    <svg 
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        width="28" 
+        height="28" 
+        viewBox="0 0 24 24" 
+        fill={filled ? "var(--green)" : "none"}
+        stroke={filled ? "var(--green)" : "var(--gray-light)"}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ cursor: "pointer", transition: "color 0.2s, fill 0.2s, transform 0.1s" }}
+    >
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+);
+
 export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, slug }) {
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [hasVoted, setHasVoted] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const savedRating = localStorage.getItem(`blog_rated_${slug}`);
+            if (savedRating) {
+                setRating(parseInt(savedRating, 10));
+                setHasVoted(true);
+            }
+        }
+    }, [slug]);
+
+    const handleRatingClick = (val) => {
+        if (hasVoted) return;
+        setRating(val);
+        setHasVoted(true);
+        if (typeof window !== "undefined") {
+            localStorage.setItem(`blog_rated_${slug}`, val.toString());
+            console.log(`User rated blog post "${slug}" with ${val} stars.`);
+        }
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -46,6 +88,79 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
         { name: "Blog", url: "/blog/" },
         { name: post.title, url: `/blog/${slug}/` },
     ];
+
+    // Parse H2 and H3 headings for the Table of Contents (TOC)
+    const headings = React.useMemo(() => {
+        const list = [];
+        if (post && Array.isArray(post.content)) {
+            post.content.forEach((node) => {
+                if (node.type === "heading" && (node.level === 2 || node.level === 3)) {
+                    const text = node.children?.map(c => c.text).join("") || "";
+                    const id = text
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s-]/g, "")
+                        .replace(/\s+/g, "-")
+                        .trim();
+                    if (text && id) {
+                        list.push({ id, text, level: node.level });
+                    }
+                }
+            });
+        }
+        return list;
+    }, [post]);
+
+    const [activeId, setActiveId] = useState("");
+    const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
+
+    // Active heading tracking via IntersectionObserver
+    useEffect(() => {
+        if (headings.length === 0) return;
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "-100px 0px -70% 0px",
+            threshold: 0,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveId(entry.target.id);
+                }
+            });
+        }, observerOptions);
+
+        headings.forEach((heading) => {
+            const el = document.getElementById(heading.id);
+            if (el) observer.observe(el);
+        });
+
+        return () => {
+            headings.forEach((heading) => {
+                const el = document.getElementById(heading.id);
+                if (el) observer.unobserve(el);
+            });
+        };
+    }, [headings]);
+
+    const handleHeadingClick = (e, id) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+            const headerOffset = 90; // offset for sticky header
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+            
+            window.history.pushState(null, "", `#${id}`);
+            setActiveId(id);
+        }
+    };
 
     return (
         <div className={styles.postPage}>
@@ -108,6 +223,28 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
                         )}
                     </div>
 
+                    {/* Mobile Expanded TOC (before heading H1) */}
+                    {headings.length > 0 && (
+                        <div className={styles.mobileExpandedTocContainer}>
+                            <div className={styles.mobileExpandedTocHeading}>Table of Contents</div>
+                            <ul className={styles.mobileExpandedTocList}>
+                                {headings.map((heading) => (
+                                    <li 
+                                        key={`exp-${heading.id}`} 
+                                        className={`${styles.mobileExpandedTocItem} ${heading.level === 3 ? styles.mobileExpandedTocItemH3 : ""} ${activeId === heading.id ? styles.mobileExpandedTocActive : ""}`}
+                                    >
+                                        <a 
+                                            href={`#${heading.id}`}
+                                            onClick={(e) => handleHeadingClick(e, heading.id)}
+                                        >
+                                            {heading.text}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
                     {/* H1 */}
                     <h1 className={styles.postTitle}>{post.title}</h1>
 
@@ -143,9 +280,47 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
                         <p className={styles.lead}>{post.excerpt}</p>
                     )}
 
+                    {/* Mobile TOC Accordion */}
+                    {headings.length > 0 && (
+                        <div className={styles.mobileTocContainer}>
+                            <button 
+                                className={styles.mobileTocButton}
+                                onClick={() => setIsMobileTocOpen(!isMobileTocOpen)}
+                                aria-expanded={isMobileTocOpen}
+                            >
+                                <span>Table of Contents</span>
+                                <span className={`${styles.chevron} ${isMobileTocOpen ? styles.chevronOpen : ""}`}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </span>
+                            </button>
+                            <div className={`${styles.mobileTocCollapse} ${isMobileTocOpen ? styles.mobileTocCollapseOpen : ""}`}>
+                                <ul className={styles.mobileTocList}>
+                                    {headings.map((heading) => (
+                                        <li 
+                                            key={heading.id} 
+                                            className={`${styles.mobileTocItem} ${heading.level === 3 ? styles.mobileTocItemH3 : ""} ${activeId === heading.id ? styles.mobileTocActive : ""}`}
+                                        >
+                                            <a 
+                                                href={`#${heading.id}`}
+                                                onClick={(e) => {
+                                                    handleHeadingClick(e, heading.id);
+                                                    setIsMobileTocOpen(false);
+                                                }}
+                                            >
+                                                {heading.text}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Rich Text Body */}
                     {post.content ? (
-                        <RichTextRenderer content={post.content} />
+                        <RichTextRenderer content={post.content} category={post.category} />
                     ) : (
                         <p className={styles.noContent}>Content coming soon.</p>
                     )}
@@ -158,10 +333,66 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
                             ))}
                         </div>
                     )}
+
+                    {/* Was This Article Helpful Widget */}
+                    <div className={styles.ratingWidget}>
+                        {hasVoted ? (
+                            <div className={styles.ratingThanks}>
+                                <div className={styles.thanksIcon}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 className={styles.thanksHeading}>Thank you for your feedback!</h4>
+                                    <p className={styles.thanksSub}>You rated this article {rating} out of 5 stars.</p>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className={styles.ratingPrompt}>
+                                <h4 className={styles.ratingHeading}>Was this article helpful?</h4>
+                                <p className={styles.ratingSub}>Your rating helps us improve our content.</p>
+                                <div className={styles.starRow}>
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <StarIcon 
+                                            key={star}
+                                            filled={hoverRating ? star <= hoverRating : star <= rating}
+                                            onClick={() => handleRatingClick(star)}
+                                            onMouseEnter={() => setHoverRating(star)}
+                                            onMouseLeave={() => setHoverRating(0)}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </article>
 
                 {/* Sidebar */}
                 <aside className={styles.sidebar}>
+                    {/* Sidebar TOC Widget */}
+                    {headings.length > 0 && (
+                        <div className={`${styles.sideCard} ${styles.tocCard}`}>
+                            <div className={styles.tocHeading}>Table of Contents</div>
+                            <ul className={styles.tocList}>
+                                {headings.map((heading) => (
+                                    <li 
+                                        key={heading.id} 
+                                        className={`${styles.tocItem} ${heading.level === 3 ? styles.tocItemH3 : ""} ${activeId === heading.id ? styles.tocActive : ""}`}
+                                    >
+                                        <a 
+                                            href={`#${heading.id}`}
+                                            onClick={(e) => handleHeadingClick(e, heading.id)}
+                                        >
+                                            {heading.text}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
                     {/* Author Card */}
                     {post.author && (
                         <div className={styles.sideCard}>
@@ -178,6 +409,9 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
                                     <div className={styles.authorRole}>{post.author.role}</div>
                                 </div>
                             </div>
+                            {post.author.bio && (
+                                <p className={styles.authorBio}>{post.author.bio}</p>
+                            )}
                         </div>
                     )}
 

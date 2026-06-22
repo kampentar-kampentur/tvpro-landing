@@ -115,7 +115,9 @@ function renderBlock(node, index) {
     }
 }
 
-export default function RichTextRenderer({ content }) {
+import InlineCTA from "@/ui/InlineCTA";
+
+export default function RichTextRenderer({ content, category }) {
     if (!content) return null;
 
     if (typeof content === "string") {
@@ -127,9 +129,43 @@ export default function RichTextRenderer({ content }) {
     }
 
     if (!Array.isArray(content)) return null;
+
+    // Count paragraphs to find a natural midpoint/insertion point
+    let paragraphCount = 0;
+    const targetParagraphIndex = 3; // Inject after the 3rd paragraph
+    
+    // Find the absolute block index of the target paragraph
+    let insertAfterBlockIndex = -1;
+    for (let i = 0; i < content.length; i++) {
+        if (content[i].type === "paragraph") {
+            paragraphCount++;
+            if (paragraphCount === targetParagraphIndex) {
+                insertAfterBlockIndex = i;
+            }
+        }
+    }
+
+    // If we have fewer than 3 paragraphs, inject it in the middle of blocks
+    if (insertAfterBlockIndex === -1 && content.length > 0) {
+        insertAfterBlockIndex = Math.floor(content.length / 2);
+    }
+
+    const renderedBlocks = [];
+    content.forEach((node, i) => {
+        const block = renderBlock(node, i);
+        if (block) {
+            renderedBlocks.push(block);
+        }
+        if (i === insertAfterBlockIndex) {
+            renderedBlocks.push(
+                <InlineCTA key="inline-cta" category={category} />
+            );
+        }
+    });
+
     return (
         <div className={styles.richText}>
-            {content.map((node, i) => renderBlock(node, i))}
+            {renderedBlocks}
         </div>
     );
 }

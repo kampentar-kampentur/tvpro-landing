@@ -136,9 +136,37 @@ export default async function BlogPostPage({ params }) {
     };
 
     // Get related posts (same category, excluding self, max 3)
-    const allMock = blogPosts.filter(
-        (p) => p.slug !== slug && p.category === post.category
-    ).slice(0, 3);
+    const allStrapiPosts = await getAllBlogPosts();
+    const relatedStrapi = allStrapiPosts
+        .filter((p) => p.slug !== slug && p.category === post.category)
+        .map((p) => ({
+            title: p.title,
+            slug: p.slug,
+            excerpt: p.excerpt,
+            category: p.category,
+            readTime: p.readTime ? `${p.readTime} min read` : undefined,
+            image: p.cover?.url ? getStrapiMediaUrl(p.cover.url) : null,
+        }));
+
+    const relatedMock = blogPosts
+        .filter((p) => p.slug !== slug && p.category === post.category)
+        .map((p) => ({
+            title: p.title,
+            slug: p.slug,
+            excerpt: p.excerpt,
+            category: p.category,
+            readTime: p.readTime,
+            image: p.image,
+        }));
+
+    const mergedRelated = [...relatedStrapi];
+    for (const mock of relatedMock) {
+        if (mergedRelated.length >= 3) break;
+        if (!mergedRelated.find((r) => r.slug === mock.slug)) {
+            mergedRelated.push(mock);
+        }
+    }
+    const finalRelated = mergedRelated.slice(0, 3);
 
     return (
         <>
@@ -150,7 +178,7 @@ export default async function BlogPostPage({ params }) {
                 post={post}
                 coverUrl={coverUrl}
                 avatarUrl={avatarUrl}
-                relatedPosts={allMock}
+                relatedPosts={finalRelated}
                 slug={slug}
             />
         </>
