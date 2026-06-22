@@ -7,6 +7,34 @@
     min-height: 100vh;
 }
 
+/* Circular Scroll Progress Widget */
+.scrollProgressCircle {
+    position: fixed;
+    bottom: 92px; /* placed above the chat widget on the bottom left */
+    left: 20px;
+    width: 58px;
+    height: 58px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: default;
+    user-select: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    background-color: var(--white);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scrollProgressPercent {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--foreground);
+    font-family: inherit;
+    letter-spacing: -0.2px;
+}
+
 /* ─── Cover Image ─────────────────────────── */
 .coverWrapper {
     padding-top: 8px;

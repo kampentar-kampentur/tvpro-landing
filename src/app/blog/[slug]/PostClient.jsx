@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import RichTextRenderer from "@/ui/RichTextRenderer/RichTextRenderer";
@@ -7,6 +8,39 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import styles from "./post.module.css";
 
 export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, slug }) {
+    const [scrollProgress, setScrollProgress] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+            const clientHeight = document.documentElement.clientHeight || window.innerHeight || 0;
+
+            const totalScroll = scrollHeight - clientHeight;
+            if (totalScroll > 0) {
+                const percentage = (scrollTop / totalScroll) * 100;
+                setScrollProgress(Math.min(100, Math.max(0, percentage)));
+            } else {
+                setScrollProgress(0);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener("resize", handleScroll, { passive: true });
+        
+        // Run once on load
+        handleScroll();
+
+        // Fallback to let dynamic heights render
+        const timer = setTimeout(handleScroll, 200);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleScroll);
+            clearTimeout(timer);
+        };
+    }, []);
+
     const breadcrumbItems = [
         { name: "Home", url: "/" },
         { name: "Blog", url: "/blog/" },
@@ -15,6 +49,36 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
 
     return (
         <div className={styles.postPage}>
+            {/* Circular Scroll Progress Widget */}
+            <div className={styles.scrollProgressCircle}>
+                <svg width="58" height="58" viewBox="0 0 58 58">
+                    {/* Background circle track */}
+                    <circle 
+                        cx="29" 
+                        cy="29" 
+                        r="25" 
+                        stroke="var(--gray-extra-light)" 
+                        strokeWidth="3" 
+                        fill="var(--white)" 
+                    />
+                    {/* Foreground fill circle */}
+                    <circle 
+                        cx="29" 
+                        cy="29" 
+                        r="25" 
+                        stroke="var(--green)" 
+                        strokeWidth="3.5" 
+                        fill="transparent"
+                        strokeDasharray={157.08}
+                        strokeDashoffset={157.08 - (157.08 * scrollProgress) / 100}
+                        strokeLinecap="round"
+                        transform="rotate(-90 29 29)"
+                    />
+                </svg>
+                <div className={styles.scrollProgressPercent}>
+                    {Math.round(scrollProgress)}%
+                </div>
+            </div>
             {/* Breadcrumbs */}
             <SEOBreadcrumbs items={breadcrumbItems} />
 

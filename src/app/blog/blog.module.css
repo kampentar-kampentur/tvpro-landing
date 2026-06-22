@@ -2,6 +2,7 @@
     background-color: var(--background);
     color: var(--foreground);
     min-height: 100vh;
+    padding-top: 20px;
 }
 
 /* Page Header */
@@ -412,12 +413,14 @@
     background: var(--background);
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
 }
 
 .recommendedCard:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .recommendedImage {
@@ -798,7 +801,9 @@
     background-repeat: no-repeat;
     background-position: right 14px center;
     background-size: 12px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .sortSelect:focus {
@@ -833,5 +838,3 @@
         width: 60%;
     }
 }
-
-
