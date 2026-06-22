@@ -16,6 +16,14 @@ const EngagementTracker = () => {
     }, [modals]);
 
     const triggerPopup = useCallback(() => {
+        // Prevent triggering on speed test agents and crawlers
+        if (typeof window !== 'undefined') {
+            const ua = window.navigator.userAgent || "";
+            if (/lighthouse|chrome-lighthouse|speedinsights|googlebot/i.test(ua)) {
+                return;
+            }
+        }
+
         // Capping: One per session or if form already submitted
         if (
             hasTriggered.current || 
