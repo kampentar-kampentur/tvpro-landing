@@ -91,7 +91,7 @@ export const metadata = {
   openGraph: {
     title: 'TV Mounting Services | TVPro Handy Services',
     description: "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
-    url: 'https://tvprousa.com',
+    url: 'https://tvprousa.com/',
     images: [
       {
         url: 'https://tvprousa.com/og-image.png',
@@ -371,7 +371,7 @@ export default async function RootLayout({ children }) {
             <UtmCapture />
             <Modals />
             <Header cta={cta} />
-            <main style={{ paddingTop: 80, flexGrow: 1 }}>
+            <main style={{ paddingTop: 'var(--header-height, 80px)', flexGrow: 1 }}>
               {children}
             </main>
             <Footer cta={cta} />

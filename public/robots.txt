@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /quiz/
+Disallow: /see-you-soon/
+Disallow: /booking-success/
+Disallow: /book-now/
+Disallow: /blog/?q=
+
+User-agent: Googlebot
+Allow: /
+
 Sitemap: https://tvprousa.com/sitemap.xml
-Sitemap: https://tvprousa.com/chicago/sitemap.xml

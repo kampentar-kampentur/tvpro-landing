@@ -651,3 +651,30 @@
         text-align: center;
     }
 }
+
+.locationsList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.locationLink {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground);
+    text-decoration: none;
+    padding: 6px 0;
+    transition: color 0.2s ease;
+}
+
+.locationLink:hover {
+    color: var(--green);
+}
+
+.locationPinIcon {
+    color: var(--green);
+    flex-shrink: 0;
+}

@@ -2,7 +2,6 @@
     background-color: var(--background);
     color: var(--foreground);
     min-height: 100vh;
-    padding-top: 20px;
 }
 
 /* Page Header */
@@ -790,7 +789,7 @@
     background-color: var(--white);
     border: 1px solid #e7e7eb;
     border-radius: 12px;
-    padding: 8px 36px 8px 16px;
+    padding: 14px 36px 14px 16px;
     font-size: 14px;
     font-weight: 500;
     color: var(--foreground);
@@ -810,16 +809,56 @@
     border-color: var(--foreground);
 }
 
-/* Load More Pagination */
-.loadMoreContainer {
+/* Pagination Styling */
+.paginationContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 8px;
     margin-top: 48px;
     margin-bottom: 24px;
 }
 
-.loadMoreBtn {
-    min-width: 200px;
+.paginationLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 8px;
+    border: 1px solid #e7e7eb;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--foreground);
+    text-decoration: none;
+    background-color: var(--white);
+    transition: all 0.2s ease;
+}
+
+.paginationLink:hover {
+    border-color: var(--foreground);
+    background-color: rgba(14, 14, 19, 0.02);
+}
+
+.paginationActive {
+    background-color: var(--foreground);
+    color: var(--white);
+    border-color: var(--foreground);
+}
+
+.paginationDisabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background-color: #f7f7fa;
+}
+
+.paginationArrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
 }
 
 @media (max-width: 640px) {
@@ -837,4 +876,38 @@
     .sortSelect {
         width: 60%;
     }
+}
+
+.locationsWidget {
+    background-color: var(--white);
+    border: 1px solid var(--gray-extra-light);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.locationsList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.locationLink {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground);
+    text-decoration: none;
+    padding: 6px 0;
+    transition: color 0.2s ease;
+}
+
+.locationLink:hover {
+    color: var(--green);
+}
+
+.locationPinIcon {
+    color: var(--green);
+    flex-shrink: 0;
 }

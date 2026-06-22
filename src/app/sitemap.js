@@ -23,13 +23,15 @@ export default async function sitemap() {
     }
 
     // 3. Map cities to sitemap entries
+    // priority: 0.9 — ниже homepage (1.0), но выше blog (0.8)
+    // Suburb-страницы (metro_city_slug) уже отфильтрованы → они noindex и не нужны в sitemap
     const cityEntries = cities
         .filter(city => !city.test_version && city.path && !city.metro_city_slug)
         .map((city) => ({
             url: `${baseUrl}/${city.path}/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
-            priority: 1,
+            priority: 0.9,
         }));
 
     // 4. Map blog posts (merging Strapi + fallback mock posts)
@@ -62,48 +64,61 @@ export default async function sitemap() {
     }
 
     // 5. Static routes
+    // Иерархия приоритетов:
+    // 1.0 → Homepage (единственная)
+    // 0.9 → City pages (основные города, локальный SEO)
+    // 0.8 → Blog index, About, Our Team, Contact
+    // 0.7 → Blog posts
+    // 0.5 → Legal / Cookie policy
     const staticEntries = [
         {
             url: `${baseUrl}/`,
             lastModified: new Date(),
             changeFrequency: 'daily',
-            priority: 1,
+            priority: 1.0,
         },
         {
             url: `${baseUrl}/blog/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
-            priority: 0.9,
+            priority: 0.8,
         },
-        {
-            url: `${baseUrl}/chicago/`,
-            lastModified: new Date(),
-            changeFrequency: 'daily',
-            priority: 1,
-        },
+        // NOTE: /chicago/ покрывается через cityEntries — не дублируем
         {
             url: `${baseUrl}/our-team/`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
-            priority: 0.8,
+            priority: 0.6,
         },
         {
             url: `${baseUrl}/about/`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
-            priority: 0.8,
+            priority: 0.6,
         },
         {
             url: `${baseUrl}/contact/`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
-            priority: 0.8,
+            priority: 0.7,
         },
         {
             url: `${baseUrl}/cookie-policy/`,
             lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
+            changeFrequency: 'yearly',
+            priority: 0.3,
+        },
+        {
+            url: `${baseUrl}/privacy-policy/`,
+            lastModified: new Date(),
+            changeFrequency: 'yearly',
+            priority: 0.3,
+        },
+        {
+            url: `${baseUrl}/terms/`,
+            lastModified: new Date(),
+            changeFrequency: 'yearly',
+            priority: 0.3,
         }
     ];
 

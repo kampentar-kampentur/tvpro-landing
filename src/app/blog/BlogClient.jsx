@@ -7,6 +7,7 @@ import { categories, blogPosts } from "@/lib/blog-data";
 import Button from "@/ui/Button";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import styles from "./blog.module.css";
 
 const promoOffers = {
@@ -47,7 +48,23 @@ const promoOffers = {
   }
 };
 
-export default function BlogClient({ initialPosts = [], category = null }) {
+export default function BlogClient({ 
+  initialPosts = [], 
+  category = null, 
+  cities = [], 
+  currentPage = 1, 
+  totalPages = 1, 
+  postsPerPage = 9 
+}) {
+  const defaultCities = [
+    { name: "Chicago", state: "IL", path: "chicago" },
+    { name: "Houston", state: "TX", path: "houston" },
+    { name: "Dallas", state: "TX", path: "dallas" },
+    { name: "Miami", state: "FL", path: "miami" },
+    { name: "Austin", state: "TX", path: "austin" },
+    { name: "Charlotte", state: "NC", path: "charlotte" }
+  ];
+  const displayCities = cities && cities.length > 0 ? cities : defaultCities;
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams ? searchParams.get("q") : "";
@@ -188,9 +205,9 @@ export default function BlogClient({ initialPosts = [], category = null }) {
       : posts.filter(post => post.category === activeCategory);
   }
 
-  // Featured post logic (only when not searching and on "All" category)
+  // Featured post logic (only when not searching, on "All" category, and on first page)
   const featuredPost = posts.find(post => post.featured);
-  const showFeatured = !query && activeCategory === "All" && featuredPost;
+  const showFeatured = !query && activeCategory === "All" && featuredPost && currentPage === 1;
 
   const gridPosts = showFeatured
     ? filteredPosts.filter(post => post.id !== featuredPost.id)
@@ -208,8 +225,15 @@ export default function BlogClient({ initialPosts = [], category = null }) {
     return 0;
   });
 
-  const displayedPosts = sortedPosts.slice(0, visibleCount);
-  const hasMore = sortedPosts.length > visibleCount;
+  // Slice posts for current page
+  let displayedPosts = [];
+  if (query) {
+    displayedPosts = sortedPosts;
+  } else {
+    const startIndex = (currentPage - 1) * postsPerPage;
+    displayedPosts = sortedPosts.slice(startIndex, startIndex + postsPerPage);
+  }
+  const hasMore = false; // Disabled in favor of server pagination
 
   const trendingPosts = posts.slice(0, 5);
   const activePromo = promoOffers[activeCategory] || promoOffers["default"];
@@ -272,11 +296,13 @@ export default function BlogClient({ initialPosts = [], category = null }) {
         <section className={`block ${styles.featuredSection}`}>
           <Link href={`/blog/${featuredPost.slug}/`} className={styles.featuredCard}>
             <div className={styles.featuredImageWrapper}>
-              <img
-                src={featuredPost.image}
-                alt={featuredPost.title}
+              <ImageWrapper
+                media={featuredPost.coverMedia}
+                defaultAlt={featuredPost.title}
                 className={styles.featuredImage}
-                loading="eager"
+                width={800}
+                height={500}
+                priority={true}
               />
             </div>
             <div className={styles.featuredContent}>
@@ -291,10 +317,12 @@ export default function BlogClient({ initialPosts = [], category = null }) {
               <p className={styles.featuredExcerpt}>{featuredPost.excerpt}</p>
               
               <div className={styles.authorContainer}>
-                <img
-                  src={featuredPost.author.avatar}
-                  alt={featuredPost.author.name}
+                <ImageWrapper
+                  media={featuredPost.author.avatarMedia}
+                  defaultAlt={featuredPost.author.name}
                   className={styles.authorAvatar}
+                  width={40}
+                  height={40}
                 />
                 <div>
                   <div className={styles.authorName}>{featuredPost.author.name}</div>
@@ -360,11 +388,12 @@ export default function BlogClient({ initialPosts = [], category = null }) {
                       aria-label={`Read article: ${post.title}`}
                     >
                       <div className={styles.cardImageWrapper}>
-                        <img
-                          src={post.image}
-                          alt={post.title}
+                        <ImageWrapper
+                          media={post.coverMedia}
+                          defaultAlt={post.title}
                           className={styles.cardImage}
-                          loading="lazy"
+                          width={400}
+                          height={250}
                         />
                       </div>
                       <div className={styles.cardContent}>
@@ -385,15 +414,58 @@ export default function BlogClient({ initialPosts = [], category = null }) {
                     </Link>
                   ))}
                 </div>
-                {hasMore && (
-                  <div className={styles.loadMoreContainer}>
-                    <Button
-                      onClick={() => setVisibleCount((prev) => prev + 6)}
-                      variant="secondary"
-                      className={styles.loadMoreBtn}
+                {totalPages > 1 && !query && (
+                  <div className={styles.paginationContainer}>
+                    {/* Previous page link */}
+                    <Link
+                      href={
+                        currentPage === 2
+                          ? (category ? `/blog/category/${slugify(category)}/` : `/blog/`)
+                          : (category
+                              ? `/blog/category/${slugify(category)}/page/${currentPage - 1}/`
+                              : `/blog/page/${currentPage - 1}/`)
+                      }
+                      className={`${styles.paginationLink} ${currentPage === 1 ? styles.paginationDisabled : ""}`}
+                      aria-label="Previous page"
                     >
-                      Load More Articles
-                    </Button>
+                      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                      </svg>
+                    </Link>
+
+                    {/* Page numbers */}
+                    {Array.from({ length: totalPages }, (_, i) => {
+                      const pageNum = i + 1;
+                      const pageUrl = pageNum === 1
+                        ? (category ? `/blog/category/${slugify(category)}/` : `/blog/`)
+                        : (category
+                            ? `/blog/category/${slugify(category)}/page/${pageNum}/`
+                            : `/blog/page/${pageNum}/`);
+                      return (
+                        <Link
+                          key={pageNum}
+                          href={pageUrl}
+                          className={`${styles.paginationLink} ${currentPage === pageNum ? styles.paginationActive : ""}`}
+                        >
+                          {pageNum}
+                        </Link>
+                      );
+                    })}
+
+                    {/* Next page link */}
+                    <Link
+                      href={
+                        category
+                          ? `/blog/category/${slugify(category)}/page/${currentPage + 1}/`
+                          : `/blog/page/${currentPage + 1}/`
+                      }
+                      className={`${styles.paginationLink} ${currentPage === totalPages ? styles.paginationDisabled : ""}`}
+                      aria-label="Next page"
+                    >
+                      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </Link>
                   </div>
                 )}
               </>
@@ -423,7 +495,13 @@ export default function BlogClient({ initialPosts = [], category = null }) {
                         href={`/blog/${post.slug}/`}
                         className={styles.recommendedCard}
                       >
-                        <img src={post.image} alt={post.title} className={styles.recommendedImage} />
+                        <ImageWrapper 
+                          media={post.coverMedia} 
+                          defaultAlt={post.title} 
+                          className={styles.recommendedImage} 
+                          width={400}
+                          height={250}
+                        />
                         <div className={styles.recommendedCardContent}>
                           <span className={styles.categoryBadge}>{post.category}</span>
                           <h4 className={styles.recommendedCardTitle}>{post.title}</h4>
@@ -446,7 +524,13 @@ export default function BlogClient({ initialPosts = [], category = null }) {
                   {/* Top 1 */}
                   <Link href={`/blog/${trendingPosts[0].slug}/`} className={styles.trendingHeroCard}>
                     <div className={styles.trendingHeroImageWrapper}>
-                      <img src={trendingPosts[0].image} alt={trendingPosts[0].title} className={styles.trendingHeroImage} />
+                      <ImageWrapper 
+                        media={trendingPosts[0].coverMedia} 
+                        defaultAlt={trendingPosts[0].title} 
+                        className={styles.trendingHeroImage} 
+                        width={400}
+                        height={250}
+                      />
                     </div>
                     <div className={styles.trendingHeroContent}>
                       <span className={styles.trendingCategory}>{trendingPosts[0].category}</span>
@@ -458,7 +542,13 @@ export default function BlogClient({ initialPosts = [], category = null }) {
                   <div className={styles.trendingList}>
                     {trendingPosts.slice(1).map((tPost) => (
                       <Link key={tPost.slug} href={`/blog/${tPost.slug}/`} className={styles.trendingListItem}>
-                        <img src={tPost.image} alt={tPost.title} className={styles.trendingListImage} />
+                        <ImageWrapper 
+                          media={tPost.coverMedia} 
+                          defaultAlt={tPost.title} 
+                          className={styles.trendingListImage} 
+                          width={64}
+                          height={48}
+                        />
                         <div className={styles.trendingListContent}>
                           <span className={styles.trendingCategory}>{tPost.category}</span>
                           <h5 className={styles.trendingListTitle}>{tPost.title}</h5>
@@ -466,6 +556,27 @@ export default function BlogClient({ initialPosts = [], category = null }) {
                       </Link>
                     ))}
                   </div>
+                </div>
+              </div>
+            )}
+            {/* Locations Widget */}
+            {displayCities && displayCities.length > 0 && (
+              <div className={styles.locationsWidget}>
+                <h3 className={styles.widgetTitle}>Our Service Locations</h3>
+                <div className={styles.locationsList}>
+                  {displayCities.map((city) => (
+                    <Link
+                      key={city.path}
+                      href={`/${city.path}/`}
+                      className={styles.locationLink}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.locationPinIcon}>
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      <span>{city.name}, {city.state || "US"}</span>
+                    </Link>
+                  ))}
                 </div>
               </div>
             )}

@@ -134,6 +134,16 @@ export default async function CityPage({ params }) {
             "addressRegion": cityData.state_code || "TX",
             "addressCountry": "US"
         },
+        // areaServed — ключевой geo-сигнал для Google Local
+        // Для suburb'а указываем metro-город (реальный центр обслуживания)
+        "areaServed": {
+            "@type": "City",
+            "name": isSuburb
+                ? (cityData.metro_city_name || cityData.city_name)
+                : cityData.city_name,
+            "addressRegion": cityData.state_code || "TX",
+            "addressCountry": "US"
+        },
         "url": isSuburb
             ? `https://tvprousa.com/${metro_city_slug}/`
             : `https://tvprousa.com/${citySlug}/`,
@@ -150,9 +160,13 @@ export default async function CityPage({ params }) {
                     "Saturday",
                     "Sunday"
                 ],
-                "opens": "08:00",
-                "closes": "20:00"
+                "opens": "07:00",
+                "closes": "22:00"
             }
+        ],
+        "sameAs": [
+            "https://www.facebook.com/tvprousa",
+            "https://www.instagram.com/tvprousa"
         ]
     };
 

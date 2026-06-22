@@ -1,23 +1,45 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
 import { useCTA } from "@/providers/CTAProvider";
+import { useModal } from "@/providers/ModalProvider";
 import styles from "./Header.module.css";
 import LogoSVG from "@/assets/logo.svg"
 import HeaderActions from './HeaderActions';
 
 export default function Header({ cta: parentCta }) {
   const cta = useCTA();
+  const { openModal } = useModal();
   const pathname = usePathname();
   const isBlog = pathname && pathname.startsWith("/blog");
   const [hideAnnouncement, setHideAnnouncement] = useState(true);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const isHidden = sessionStorage.getItem("hide_announcement_bar") === "true";
     setHideAnnouncement(isHidden);
   }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const updateHeight = () => {
+      if (containerRef.current) {
+        const height = containerRef.current.offsetHeight;
+        document.documentElement.style.setProperty("--header-height", `${height}px`);
+      }
+    };
+
+    updateHeight();
+
+    if (typeof window !== "undefined" && typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(updateHeight);
+      observer.observe(containerRef.current);
+      return () => observer.disconnect();
+    }
+  }, [hideAnnouncement, pathname]);
 
   const handleCloseAnnouncement = () => {
     sessionStorage.setItem("hide_announcement_bar", "true");
@@ -25,12 +47,18 @@ export default function Header({ cta: parentCta }) {
   };
 
   return (
-    <div className={styles.headerContainer}>
+    <div ref={containerRef} className={styles.headerContainer}>
       {isBlog && !hideAnnouncement && (
         <div className={styles.announcementBar}>
           <div className={styles.announcementContent}>
             <span>Professional TV Mounting & Home Theater Installation Services.</span>
-            <Link href="/book-now/" className={styles.announcementLink}>Book Online</Link>
+            <button 
+              onClick={() => openModal("BookNow")} 
+              className={styles.announcementLink}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            >
+              Book Online
+            </button>
           </div>
           <button 
             onClick={handleCloseAnnouncement} 

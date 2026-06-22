@@ -18,7 +18,7 @@
   --gray-extra-light: #e7e7eb;
   /* extra light gray (button disabled, border hover) */
   --text-secondary: var(--gray);
-
+  --header-height: 80px;
 }
 
 /* Chat Widget Engagement Enhancements */

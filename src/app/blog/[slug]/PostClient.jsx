@@ -5,6 +5,7 @@ import Link from "next/link";
 import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import RichTextRenderer from "@/ui/RichTextRenderer/RichTextRenderer";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import styles from "./post.module.css";
 
 const StarIcon = ({ filled, onClick, onMouseEnter, onMouseLeave }) => (
@@ -26,7 +27,16 @@ const StarIcon = ({ filled, onClick, onMouseEnter, onMouseLeave }) => (
     </svg>
 );
 
-export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, slug }) {
+export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avatarMedia, relatedPosts, slug, cities = [] }) {
+    const defaultCities = [
+        { name: "Chicago", state: "IL", path: "chicago" },
+        { name: "Houston", state: "TX", path: "houston" },
+        { name: "Dallas", state: "TX", path: "dallas" },
+        { name: "Miami", state: "FL", path: "miami" },
+        { name: "Austin", state: "TX", path: "austin" },
+        { name: "Charlotte", state: "NC", path: "charlotte" }
+    ];
+    const displayCities = cities && cities.length > 0 ? cities : defaultCities;
     const [scrollProgress, setScrollProgress] = useState(0);
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
@@ -150,7 +160,7 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
         if (element) {
             const headerOffset = 90; // offset for sticky header
             const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
             window.scrollTo({
                 top: offsetPosition,
@@ -198,15 +208,16 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
             <SEOBreadcrumbs items={breadcrumbItems} />
 
             {/* Cover Image */}
-            {coverUrl && (
+            {coverMedia && (
                 <div className={`block ${styles.coverWrapper}`}>
                     <div className={styles.coverInner}>
-                        <img
-                            src={coverUrl}
-                            alt={post.cover?.alternativeText || post.title}
+                        <ImageWrapper
+                            media={coverMedia}
+                            defaultAlt={post.cover?.alternativeText || post.title}
                             className={styles.coverImage}
-                            loading="eager"
-                            fetchPriority="high"
+                            width={1200}
+                            height={675}
+                            priority={true}
                         />
                     </div>
                 </div>
@@ -397,11 +408,13 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
                     {post.author && (
                         <div className={styles.sideCard}>
                             <div className={styles.authorHeader}>
-                                {avatarUrl && (
-                                    <img
-                                        src={avatarUrl}
-                                        alt={post.author.name}
+                                {avatarMedia && (
+                                    <ImageWrapper
+                                        media={avatarMedia}
+                                        defaultAlt={post.author.name}
                                         className={styles.authorAvatar}
+                                        width={40}
+                                        height={40}
                                     />
                                 )}
                                 <div>
@@ -425,6 +438,28 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
                             Get a Free Quote
                         </QuoteButton>
                     </div>
+
+                    {/* Locations Widget */}
+                    {displayCities && displayCities.length > 0 && (
+                        <div className={styles.sideCard}>
+                            <div className={styles.tocHeading}>Our Service Locations</div>
+                            <div className={styles.locationsList}>
+                                {displayCities.map((city) => (
+                                    <Link
+                                        key={city.path}
+                                        href={`/${city.path}/`}
+                                        className={styles.locationLink}
+                                    >
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.locationPinIcon}>
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                        <span>{city.name}, {city.state || "US"}</span>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </aside>
             </div>
 
@@ -435,13 +470,14 @@ export default function PostClient({ post, coverUrl, avatarUrl, relatedPosts, sl
                     <div className={styles.relatedGrid}>
                         {relatedPosts.map((related) => (
                             <Link key={related.slug} href={`/blog/${related.slug}/`} className={styles.relatedCard}>
-                                {related.image && (
+                                {related.coverMedia && (
                                     <div className={styles.relatedImageWrapper}>
-                                        <img
-                                            src={related.image}
-                                            alt={related.title}
+                                        <ImageWrapper
+                                            media={related.coverMedia}
+                                            defaultAlt={related.title}
                                             className={styles.relatedImage}
-                                            loading="lazy"
+                                            width={400}
+                                            height={250}
                                         />
                                     </div>
                                 )}

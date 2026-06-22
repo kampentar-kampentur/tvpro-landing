@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getBlogPost, getAllBlogPosts, getStrapiMediaUrl } from "@/lib/strapi";
+import { getBlogPost, getAllBlogPosts, getAllCities, getStrapiMediaUrl } from "@/lib/strapi";
 import { blogPosts, mockBlogContent } from "@/lib/blog-data";
 import PostClient from "./PostClient";
 
@@ -58,6 +58,9 @@ export async function generateMetadata({ params }) {
             url: `${SITE_URL}/blog/${slug}/`,
             images: [{ url: coverUrl, width: 1200, height: 630, alt: title }],
             publishedTime: post.publishedAt || post.date,
+            modifiedTime: post.updatedAt || post.publishedAt || post.date,
+            section: post.category || "General",
+            tags: Array.isArray(post.tags) ? post.tags : (post.keywords ? (Array.isArray(post.keywords) ? post.keywords : [post.keywords]) : []),
             authors: [post.author?.name || ORG_NAME],
         },
         twitter: {
@@ -86,6 +89,24 @@ async function resolvePost(slug) {
     }
 
     return null;
+}
+
+// Helper: Estimate word count from rich text or string content
+function estimateWordCount(content) {
+    if (!content) return 0;
+    if (typeof content === "string") {
+        return content.trim().split(/\s+/).filter(Boolean).length;
+    }
+    if (Array.isArray(content)) {
+        let text = "";
+        const extractText = (node) => {
+            if (node.text) text += " " + node.text;
+            if (node.children) node.children.forEach(extractText);
+        };
+        content.forEach(extractText);
+        return text.trim().split(/\s+/).filter(Boolean).length;
+    }
+    return 0;
 }
 
 // Helper: Extract FAQ Q&A pairs from post content (headings ending in '?')
@@ -139,12 +160,18 @@ export default async function BlogPostPage({ params }) {
         ? getStrapiMediaUrl(post.author.avatar.url)
         : post.author?.avatar || null;
 
-    // Build structured data for Google (Article schema)
+    // Estimate word count
+    const wordCount = estimateWordCount(post.content);
+
+    // Build structured data for Google (BlogPosting schema)
     const jsonLd = {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "BlogPosting",
         headline: post.title,
         description: post.excerpt,
+        url: `${SITE_URL}/blog/${slug}/`,
+        articleSection: post.category || "General",
+        wordCount: wordCount || undefined,
         image: coverUrl ? [coverUrl] : undefined,
         datePublished: post.publishedAt || post.date,
         dateModified: post.updatedAt || post.publishedAt || post.date,
@@ -154,13 +181,14 @@ export default async function BlogPostPage({ params }) {
         author: {
             "@type": "Person",
             name: post.author?.name || ORG_NAME,
+            url: `${SITE_URL}/our-team/`,
         },
         publisher: {
             "@type": "Organization",
             name: ORG_NAME,
             logo: {
                 "@type": "ImageObject",
-                url: `${SITE_URL}/logo.png`,
+                url: `${SITE_URL}/og-image.png`,
             },
         },
         mainEntityOfPage: {
@@ -195,6 +223,7 @@ export default async function BlogPostPage({ params }) {
             category: p.category,
             readTime: p.readTime ? `${p.readTime} min read` : undefined,
             image: p.cover?.url ? getStrapiMediaUrl(p.cover.url) : null,
+            coverMedia: p.cover || null,
         }));
 
     const relatedMock = blogPosts
@@ -206,6 +235,7 @@ export default async function BlogPostPage({ params }) {
             category: p.category,
             readTime: p.readTime,
             image: p.image,
+            coverMedia: p.image ? { url: p.image } : { url: "/blog-placeholder.jpg" },
         }));
 
     const mergedRelated = [...relatedStrapi];
@@ -217,8 +247,27 @@ export default async function BlogPostPage({ params }) {
     }
     const finalRelated = mergedRelated.slice(0, 3);
 
+    let cities = [];
+    try {
+        cities = await getAllCities();
+    } catch (error) {
+        console.error("[Blog Post Page] Failed to fetch cities:", error);
+    }
+
+    const activeCities = cities
+        .filter(city => !city.test_version && city.path && !city.metro_city_slug)
+        .map(city => ({
+            name: city.city_name,
+            state: city.state_code,
+            path: city.path
+        }))
+        .slice(0, 8);
+
     return (
         <>
+            {coverUrl && (
+                <link rel="preload" as="image" href={coverUrl} fetchPriority="high" />
+            )}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -232,9 +281,12 @@ export default async function BlogPostPage({ params }) {
             <PostClient
                 post={post}
                 coverUrl={coverUrl}
+                coverMedia={post.cover || (coverUrl ? { url: coverUrl } : null)}
                 avatarUrl={avatarUrl}
+                avatarMedia={post.author?.avatar || (avatarUrl ? { url: avatarUrl } : null)}
                 relatedPosts={finalRelated}
                 slug={slug}
+                cities={activeCities}
             />
         </>
     );

@@ -25,12 +25,20 @@ export default function SEOBreadcrumbs({ cityContext, items }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbItems.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      "item": item.url ? `${baseUrl}${item.url.startsWith('/') ? item.url : '/' + item.url}` : undefined,
-    })).filter(x => x.item),
+    "itemListElement": breadcrumbItems.map((item, index) => {
+      let itemUrl = item.url;
+      if (itemUrl) {
+        if (!itemUrl.startsWith("http://") && !itemUrl.startsWith("https://")) {
+          itemUrl = `${baseUrl}${itemUrl.startsWith("/") ? itemUrl : "/" + itemUrl}`;
+        }
+      }
+      return {
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.name,
+        "item": itemUrl || undefined,
+      };
+    }).filter(x => x.item),
   };
 
   return (
