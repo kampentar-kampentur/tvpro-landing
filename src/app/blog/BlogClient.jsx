@@ -47,16 +47,25 @@ const promoOffers = {
   }
 };
 
-export default function BlogClient({ initialPosts = [] }) {
+export default function BlogClient({ initialPosts = [], category = null }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams ? searchParams.get("q") : "";
 
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState(category || "All");
   const [reSearchVal, setReSearchVal] = useState("");
   const [searchPosts, setSearchPosts] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState(null);
+
+  const slugify = (text) => {
+    if (!text) return "";
+    return text.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
+  };
+
+  useEffect(() => {
+    setActiveCategory(category || "All");
+  }, [category]);
 
   // Update re-search input when query changes
   useEffect(() => {
@@ -188,7 +197,9 @@ export default function BlogClient({ initialPosts = [] }) {
     { name: "Blog", url: "/blog/" }
   ];
 
-  if (query) {
+  if (category) {
+    breadcrumbItems.push({ name: category, url: `/blog/category/${slugify(category)}/` });
+  } else if (query) {
     breadcrumbItems.push({ name: `Search: ${query}`, url: `/blog/?q=${encodeURIComponent(query)}` });
   }
 
@@ -218,6 +229,13 @@ export default function BlogClient({ initialPosts = [] }) {
             Found {filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"} matching your query.
           </p>
         </header>
+      ) : category ? (
+        <header className={`block ${styles.blogHeader}`}>
+          <h1 className={`blockHeading ${styles.title}`}>{category}</h1>
+          <p className={`subText ${styles.subtitle}`}>
+            Expert tips, guides, and smart home updates relating to {category.toLowerCase()}.
+          </p>
+        </header>
       ) : (
         <header className={`block ${styles.blogHeader}`}>
           <h1 className={`blockHeading ${styles.title}`}>TVPro Handy Insights & Guides</h1>
@@ -225,25 +243,6 @@ export default function BlogClient({ initialPosts = [] }) {
             Expert tips, installation guides, and smart home advice from our certified technicians.
           </p>
         </header>
-      )}
-
-      {/* Categories Filter (Hidden during active search) */}
-      {!query && (
-        <div className={`block ${styles.filterContainer}`} style={{ paddingTop: 0, paddingBottom: 0 }}>
-          {categoriesList.map((category) => (
-            <Button
-              key={category}
-              variant="secondary"
-              size="small"
-              onClick={() => setActiveCategory(category)}
-              className={`${styles.filterChip} ${
-                activeCategory === category ? styles.activeFilter : ""
-              }`}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
       )}
 
       {/* Featured Post */}

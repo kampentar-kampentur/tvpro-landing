@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCTA } from "@/providers/CTAProvider";
@@ -12,17 +12,50 @@ export default function Navbar() {
   const pathname = usePathname();
   const isBlog = pathname && pathname.startsWith("/blog");
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
+  const [dynamicCategories, setDynamicCategories] = useState([]);
 
   const slugify = (text) => {
     return text.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
   };
 
+  useEffect(() => {
+    if (!isBlog) return;
+    const fetchCategories = async () => {
+      try {
+        const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL;
+        if (!strapiUrl) return;
+        const res = await fetch(`${strapiUrl}/api/blog-posts?fields[0]=category&pagination[pageSize]=100`, {
+          headers: { "Content-Type": "application/json" }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          // Flatten Strapi v4 response structure
+          const cats = (json.data || []).map(item => {
+            return item.attributes?.category || item.category;
+          }).filter(Boolean);
+          setDynamicCategories(cats);
+        }
+      } catch (e) {
+        console.warn("Failed to fetch dynamic categories for navbar:", e);
+      }
+    };
+    fetchCategories();
+  }, [isBlog]);
+
   // Calculate dropdown categories
   const mainSlugs = ["news", "reviews", "tips-tricks"];
-  const allCategories = [...new Set(blogPosts.map(p => p.category).filter(Boolean))];
+  
+  // Combine mock categories and dynamic ones
+  const allCategories = [...new Set([
+    ...blogPosts.map(p => p.category),
+    ...dynamicCategories
+  ].filter(Boolean))];
+
   const dropdownCategories = allCategories.filter(cat => !mainSlugs.includes(slugify(cat)));
 
   const getCategoryCount = (cat) => {
+    const dynamicCount = dynamicCategories.filter(c => c === cat).length;
+    if (dynamicCount > 0) return dynamicCount;
     return blogPosts.filter(p => p.category === cat).length;
   };
 

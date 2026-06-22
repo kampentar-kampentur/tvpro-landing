@@ -225,9 +225,7 @@ export async function getBlogPost(slug) {
 export function getStrapiMediaUrl(url) {
   if (!url) return null;
   if (url.startsWith("http")) return url;
-  const base =
-    process.env.NEXT_PUBLIC_SRTAPI_URL ||
-    "https://strapi-dev-e587.up.railway.app";
+  const base = process.env.NEXT_PUBLIC_SRTAPI_URL || "";
   return `${base}${url}`;
 }
 
