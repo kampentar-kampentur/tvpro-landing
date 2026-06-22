@@ -21,7 +21,7 @@ try {
 
 // Use native fetch (Node 18+) instead of node-fetch
 async function fetchAllCities() {
-    const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'https://strapi-dev-e587.up.railway.app';
+    const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL;
     console.log(`Using Strapi URL for variants: ${strapiUrl}`);
     const res = await fetch(`${strapiUrl}/api/cities?pagination[pageSize]=100`);
     const json = await res.json();

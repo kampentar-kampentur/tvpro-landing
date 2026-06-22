@@ -40,9 +40,14 @@ export async function generateMetadata({ params }) {
         ? getStrapiMediaUrl(post.cover.url)
         : post.image || `${SITE_URL}/og-default.jpg`;
 
+    const keywords = post.keywords 
+        ? (Array.isArray(post.keywords) ? post.keywords.join(", ") : post.keywords)
+        : "";
+
     return {
         title: `${title} | TVPro Blog`,
         description,
+        keywords,
         alternates: {
             canonical: `${SITE_URL}/blog/${slug}/`,
         },
@@ -109,6 +114,9 @@ export default async function BlogPostPage({ params }) {
         image: coverUrl ? [coverUrl] : undefined,
         datePublished: post.publishedAt || post.date,
         dateModified: post.updatedAt || post.publishedAt || post.date,
+        keywords: post.keywords 
+            ? (Array.isArray(post.keywords) ? post.keywords.join(", ") : post.keywords)
+            : undefined,
         author: {
             "@type": "Person",
             name: post.author?.name || ORG_NAME,
