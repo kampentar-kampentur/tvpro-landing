@@ -131,34 +131,7 @@ const EngagementTracker = () => {
         };
     }, [triggerPopup]);
 
-    // Render debug block to see user agent, webdriver status, and computed isBot status
-    let debugInfo = "";
-    if (typeof window !== "undefined") {
-        const ua = window.navigator.userAgent || "";
-        const isBot = /lighthouse|chrome-lighthouse|speedinsights|googlebot|headless/i.test(ua) || navigator.webdriver;
-        debugInfo = `isBot=${String(isBot)} | hasRealInteraction=${String(hasRealInteraction.current)} | webdriver=${String(navigator.webdriver)} | UA=${ua}`;
-    }
-
-    return (
-        <div id="debug-bot-detection" style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            background: 'rgba(255, 0, 0, 0.95)',
-            color: 'white',
-            zIndex: 2147483647,
-            padding: '20px',
-            fontSize: '24px',
-            fontWeight: 'bold',
-            fontFamily: 'monospace',
-            pointerEvents: 'none',
-            textAlign: 'center',
-            wordBreak: 'break-all'
-        }}>
-            {debugInfo || "Loading client debug info..."}
-        </div>
-    );
+    return null; // Side-effect only component
 };
 
 export default EngagementTracker;
