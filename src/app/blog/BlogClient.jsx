@@ -9,6 +9,44 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import styles from "./blog.module.css";
 
+const promoOffers = {
+  "TV Mounting": {
+    title: "Need Professional TV Mounting?",
+    description: "Connect with certified local technicians to mount your TV safely on any wall type.",
+    usp: "Background-checked & fully insured technicians.",
+    cta: "Request TV Mounting",
+    modal: "BookNow"
+  },
+  "Home Theater": {
+    title: "Upgrade Your Home Theater",
+    description: "Get surround sound installation, soundbar mounting, projector setup, or calibration services.",
+    usp: "Premium equipment setup and testing.",
+    cta: "Request Audio Setup",
+    modal: "BookNow"
+  },
+  "Smart Home": {
+    title: "Smart Home Installation",
+    description: "Have your smart doorbell, thermostat, cameras, or smart hubs installed by professionals.",
+    usp: "Seamless connection and app setup.",
+    cta: "Request Smart Home Setup",
+    modal: "BookNow"
+  },
+  "Cable Management": {
+    title: "Hide Your Messy Wires",
+    description: "Get clean, premium wire concealment behind the wall or in sleek exterior tracks.",
+    usp: "Minimalist setup with zero visible cables.",
+    cta: "Request Cable Concealment",
+    modal: "BookNow"
+  },
+  "default": {
+    title: "Book a Certified Specialist",
+    description: "Get professional TV mounting, soundbar installation, wire hiding, or smart home setup.",
+    usp: "Trusted service in your local area with 100% guarantee.",
+    cta: "Book Installation Now",
+    modal: "BookNow"
+  }
+};
+
 export default function BlogClient({ initialPosts = [] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -142,6 +180,9 @@ export default function BlogClient({ initialPosts = [] }) {
     ? filteredPosts.filter(post => post.id !== featuredPost.id)
     : filteredPosts;
 
+  const trendingPosts = posts.slice(0, 5);
+  const activePromo = promoOffers[activeCategory] || promoOffers["default"];
+
   const breadcrumbItems = [
     { name: "Home", url: "/" },
     { name: "Blog", url: "/blog/" }
@@ -246,95 +287,150 @@ export default function BlogClient({ initialPosts = [] }) {
 
       {/* Grid of Posts */}
       <section className={`block ${styles.gridSection}`}>
-        {searchLoading ? (
-          <div className={styles.loadingContainer}>
-            <div className={styles.spinner}></div>
-            <span>Searching articles...</span>
-          </div>
-        ) : searchError ? (
-          <div className={styles.errorContainer}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "8px" }}>
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-              <line x1="12" y1="9" x2="12" y2="13"></line>
-              <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-            <h3 className={styles.errorTitle}>Unable to Connect to Search</h3>
-            <p className={styles.errorText}>
-              We couldn't connect to the database to perform the search. If you're running locally, make sure your Strapi server is active or check your NEXT_PUBLIC_SRTAPI_URL setting.
-            </p>
-          </div>
-        ) : gridPosts.length > 0 ? (
-          <div className={styles.grid}>
-            {gridPosts.map((post) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}/`}
-                className={styles.card}
-                aria-label={`Read article: ${post.title}`}
-              >
-                <div className={styles.cardImageWrapper}>
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className={styles.cardImage}
-                    loading="lazy"
-                  />
-                </div>
-                <div className={styles.cardContent}>
-                  <div className={styles.meta}>
-                    <span className={styles.categoryBadge}>{post.category}</span>
-                    <span>&bull;</span>
-                    <span>{post.readTime}</span>
-                  </div>
-                  <h3 className={styles.cardTitle}>{post.title}</h3>
-                  <p className={styles.cardExcerpt}>{post.excerpt}</p>
-                  
-                  <div className={styles.meta} style={{ marginTop: "auto", marginBottom: 0, paddingTop: "12px" }}>
-                    <span>By {post.author.name}</span>
-                    <span>&bull;</span>
-                    <span>{post.date}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.noResultsContainer}>
-            <p className={styles.noResultsText}>
-              Sorry, we couldn't find any articles matching "{query}".
-            </p>
-            <form onSubmit={handleReSearchSubmit} className={styles.reSearchForm}>
-              <input 
-                type="text" 
-                placeholder="Try search another term..." 
-                value={reSearchVal}
-                onChange={(e) => setReSearchVal(e.target.value)}
-                className={styles.reSearchInput}
-              />
-              <Button type="submit" variant="primary">Search</Button>
-            </form>
-            
-            {/* Recommended Articles Section */}
-            <div className={styles.recommendedWrapper}>
-              <h3 className={styles.recommendedTitle}>Recommended Articles</h3>
-              <div className={styles.recommendedGrid}>
-                {recommendedPosts.map((post) => (
-                  <Link 
-                    key={post.slug} 
+        <div className={styles.mainLayout}>
+          <div className={styles.contentColumn}>
+            {searchLoading ? (
+              <div className={styles.loadingContainer}>
+                <div className={styles.spinner}></div>
+                <span>Searching articles...</span>
+              </div>
+            ) : searchError ? (
+              <div className={styles.errorContainer}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "8px" }}>
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <h3 className={styles.errorTitle}>Unable to Connect to Search</h3>
+                <p className={styles.errorText}>
+                  We couldn't connect to the database to perform the search. If you're running locally, make sure your Strapi server is active or check your NEXT_PUBLIC_SRTAPI_URL setting.
+                </p>
+              </div>
+            ) : gridPosts.length > 0 ? (
+              <div className={styles.grid}>
+                {gridPosts.map((post) => (
+                  <Link
+                    key={post.id}
                     href={`/blog/${post.slug}/`}
-                    className={styles.recommendedCard}
+                    className={styles.card}
+                    aria-label={`Read article: ${post.title}`}
                   >
-                    <img src={post.image} alt={post.title} className={styles.recommendedImage} />
-                    <div className={styles.recommendedCardContent}>
-                      <span className={styles.categoryBadge}>{post.category}</span>
-                      <h4 className={styles.recommendedCardTitle}>{post.title}</h4>
+                    <div className={styles.cardImageWrapper}>
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className={styles.cardImage}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className={styles.cardContent}>
+                      <div className={styles.meta}>
+                        <span className={styles.categoryBadge}>{post.category}</span>
+                        <span>&bull;</span>
+                        <span>{post.readTime}</span>
+                      </div>
+                      <h3 className={styles.cardTitle}>{post.title}</h3>
+                      <p className={styles.cardExcerpt}>{post.excerpt}</p>
+                      
+                      <div className={styles.meta} style={{ marginTop: "auto", marginBottom: 0, paddingTop: "12px" }}>
+                        <span>By {post.author.name}</span>
+                        <span>&bull;</span>
+                        <span>{post.date}</span>
+                      </div>
                     </div>
                   </Link>
                 ))}
               </div>
-            </div>
+            ) : (
+              <div className={styles.noResultsContainer}>
+                <p className={styles.noResultsText}>
+                  Sorry, we couldn't find any articles matching "{query}".
+                </p>
+                <form onSubmit={handleReSearchSubmit} className={styles.reSearchForm}>
+                  <input 
+                    type="text" 
+                    placeholder="Try search another term..." 
+                    value={reSearchVal}
+                    onChange={(e) => setReSearchVal(e.target.value)}
+                    className={styles.reSearchInput}
+                  />
+                  <Button type="submit" variant="primary">Search</Button>
+                </form>
+                
+                {/* Recommended Articles Section */}
+                <div className={styles.recommendedWrapper}>
+                  <h3 className={styles.recommendedTitle}>Recommended Articles</h3>
+                  <div className={styles.recommendedGrid}>
+                    {recommendedPosts.map((post) => (
+                      <Link 
+                        key={post.slug} 
+                        href={`/blog/${post.slug}/`}
+                        className={styles.recommendedCard}
+                      >
+                        <img src={post.image} alt={post.title} className={styles.recommendedImage} />
+                        <div className={styles.recommendedCardContent}>
+                          <span className={styles.categoryBadge}>{post.category}</span>
+                          <h4 className={styles.recommendedCardTitle}>{post.title}</h4>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Sidebar */}
+          <aside className={styles.sidebar}>
+            {/* Trending Articles Widget */}
+            {trendingPosts.length > 0 && (
+              <div className={styles.trendingWidget}>
+                <h3 className={styles.widgetTitle}>Trending Articles</h3>
+                <div className={styles.trendingContainer}>
+                  {/* Top 1 */}
+                  <Link href={`/blog/${trendingPosts[0].slug}/`} className={styles.trendingHeroCard}>
+                    <div className={styles.trendingHeroImageWrapper}>
+                      <img src={trendingPosts[0].image} alt={trendingPosts[0].title} className={styles.trendingHeroImage} />
+                    </div>
+                    <div className={styles.trendingHeroContent}>
+                      <span className={styles.trendingCategory}>{trendingPosts[0].category}</span>
+                      <h4 className={styles.trendingHeroTitle}>{trendingPosts[0].title}</h4>
+                    </div>
+                  </Link>
+                  
+                  {/* Top 2-5 */}
+                  <div className={styles.trendingList}>
+                    {trendingPosts.slice(1).map((tPost) => (
+                      <Link key={tPost.slug} href={`/blog/${tPost.slug}/`} className={styles.trendingListItem}>
+                        <img src={tPost.image} alt={tPost.title} className={styles.trendingListImage} />
+                        <div className={styles.trendingListContent}>
+                          <span className={styles.trendingCategory}>{tPost.category}</span>
+                          <h5 className={styles.trendingListTitle}>{tPost.title}</h5>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Dynamic Promo Widget */}
+            <div className={styles.promoWidget}>
+              <div className={styles.promoBadge}>Service</div>
+              <h3 className={styles.promoTitle}>{activePromo.title}</h3>
+              <p className={styles.promoDescription}>{activePromo.description}</p>
+              <div className={styles.promoUsp}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={styles.promoCheckIcon}>
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>{activePromo.usp}</span>
+              </div>
+              <QuoteButton size="medium" modalName={activePromo.modal} className={styles.promoCtaBtn}>
+                {activePromo.cta}
+              </QuoteButton>
+            </div>
+          </aside>
+        </div>
       </section>
 
       {/* CTA Bottom Section */}

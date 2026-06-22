@@ -16,7 +16,7 @@ const flattenStrapiData = (data) => {
 export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
   try {
     const queryString = qs.stringify(urlParamsObject);
-    const requestUrl = `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api${path}${queryString ? `?${queryString}` : ""}`;
+    const requestUrl = `${process.env.NEXT_PUBLIC_SRTAPI_URL || "https://strapi-staging-bd62.up.railway.app"}/api${path}${queryString ? `?${queryString}` : ""}`;
 
     const response = await fetch(requestUrl, {
       headers: { "Content-Type": "application/json" },
