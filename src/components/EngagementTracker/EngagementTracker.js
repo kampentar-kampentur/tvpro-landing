@@ -16,10 +16,11 @@ const EngagementTracker = () => {
     }, [modals]);
 
     const triggerPopup = useCallback(() => {
-        // Prevent triggering on speed test agents and crawlers
+        // Prevent triggering on speed test agents, headless browsers, and crawlers
         if (typeof window !== 'undefined') {
             const ua = window.navigator.userAgent || "";
-            if (/lighthouse|chrome-lighthouse|speedinsights|googlebot/i.test(ua)) {
+            const isBot = /lighthouse|chrome-lighthouse|speedinsights|googlebot|headless/i.test(ua) || navigator.webdriver;
+            if (isBot) {
                 return;
             }
         }
