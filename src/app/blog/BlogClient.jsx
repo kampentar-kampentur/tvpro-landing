@@ -57,6 +57,8 @@ export default function BlogClient({ initialPosts = [], category = null }) {
   const [searchPosts, setSearchPosts] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState(null);
+  const [sortBy, setSortBy] = useState("latest");
+  const [visibleCount, setVisibleCount] = useState(6);
 
   const slugify = (text) => {
     if (!text) return "";
@@ -66,6 +68,11 @@ export default function BlogClient({ initialPosts = [], category = null }) {
   useEffect(() => {
     setActiveCategory(category || "All");
   }, [category]);
+
+  // Reset pagination count when active views change
+  useEffect(() => {
+    setVisibleCount(6);
+  }, [activeCategory, query, sortBy]);
 
   // Update re-search input when query changes
   useEffect(() => {
@@ -189,6 +196,21 @@ export default function BlogClient({ initialPosts = [], category = null }) {
     ? filteredPosts.filter(post => post.id !== featuredPost.id)
     : filteredPosts;
 
+  // Sort posts
+  const sortedPosts = [...gridPosts].sort((a, b) => {
+    if (sortBy === "latest") {
+      return new Date(b.date || 0) - new Date(a.date || 0);
+    } else if (sortBy === "oldest") {
+      return new Date(a.date || 0) - new Date(b.date || 0);
+    } else if (sortBy === "alphabetical") {
+      return (a.title || "").localeCompare(b.title || "");
+    }
+    return 0;
+  });
+
+  const displayedPosts = sortedPosts.slice(0, visibleCount);
+  const hasMore = sortedPosts.length > visibleCount;
+
   const trendingPosts = posts.slice(0, 5);
   const activePromo = promoOffers[activeCategory] || promoOffers["default"];
 
@@ -288,6 +310,28 @@ export default function BlogClient({ initialPosts = [], category = null }) {
       <section className={`block ${styles.gridSection}`}>
         <div className={styles.mainLayout}>
           <div className={styles.contentColumn}>
+            {/* Toolbar: Post Count and Sort selector */}
+            {!searchLoading && !searchError && gridPosts.length > 0 && (
+              <div className={styles.toolbar}>
+                <div className={styles.postCount}>
+                  Showing <strong>{Math.min(visibleCount, sortedPosts.length)}</strong> of <strong>{sortedPosts.length}</strong> articles
+                </div>
+                <div className={styles.sortContainer}>
+                  <label htmlFor="sort-by" className={styles.sortLabel}>Sort by:</label>
+                  <select
+                    id="sort-by"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className={styles.sortSelect}
+                  >
+                    <option value="latest">Latest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="alphabetical">Alphabetical (A-Z)</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
             {searchLoading ? (
               <div className={styles.loadingContainer}>
                 <div className={styles.spinner}></div>
@@ -306,40 +350,53 @@ export default function BlogClient({ initialPosts = [], category = null }) {
                 </p>
               </div>
             ) : gridPosts.length > 0 ? (
-              <div className={styles.grid}>
-                {gridPosts.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}/`}
-                    className={styles.card}
-                    aria-label={`Read article: ${post.title}`}
-                  >
-                    <div className={styles.cardImageWrapper}>
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className={styles.cardImage}
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className={styles.cardContent}>
-                      <div className={styles.meta}>
-                        <span className={styles.categoryBadge}>{post.category}</span>
-                        <span>&bull;</span>
-                        <span>{post.readTime}</span>
+              <>
+                <div className={styles.grid}>
+                  {displayedPosts.map((post) => (
+                    <Link
+                      key={post.id}
+                      href={`/blog/${post.slug}/`}
+                      className={styles.card}
+                      aria-label={`Read article: ${post.title}`}
+                    >
+                      <div className={styles.cardImageWrapper}>
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className={styles.cardImage}
+                          loading="lazy"
+                        />
                       </div>
-                      <h3 className={styles.cardTitle}>{post.title}</h3>
-                      <p className={styles.cardExcerpt}>{post.excerpt}</p>
-                      
-                      <div className={styles.meta} style={{ marginTop: "auto", marginBottom: 0, paddingTop: "12px" }}>
-                        <span>By {post.author.name}</span>
-                        <span>&bull;</span>
-                        <span>{post.date}</span>
+                      <div className={styles.cardContent}>
+                        <div className={styles.meta}>
+                          <span className={styles.categoryBadge}>{post.category}</span>
+                          <span>&bull;</span>
+                          <span>{post.readTime}</span>
+                        </div>
+                        <h3 className={styles.cardTitle}>{post.title}</h3>
+                        <p className={styles.cardExcerpt}>{post.excerpt}</p>
+                        
+                        <div className={styles.meta} style={{ marginTop: "auto", marginBottom: 0, paddingTop: "12px" }}>
+                          <span>By {post.author.name}</span>
+                          <span>&bull;</span>
+                          <span>{post.date}</span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                    </Link>
+                  ))}
+                </div>
+                {hasMore && (
+                  <div className={styles.loadMoreContainer}>
+                    <Button
+                      onClick={() => setVisibleCount((prev) => prev + 6)}
+                      variant="secondary"
+                      className={styles.loadMoreBtn}
+                    >
+                      Load More Articles
+                    </Button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className={styles.noResultsContainer}>
                 <p className={styles.noResultsText}>
