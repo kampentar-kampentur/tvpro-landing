@@ -88,6 +88,40 @@ async function resolvePost(slug) {
     return null;
 }
 
+// Helper: Extract FAQ Q&A pairs from post content (headings ending in '?')
+function extractFAQ(content) {
+    if (!Array.isArray(content)) return [];
+
+    const faqs = [];
+    for (let i = 0; i < content.length - 1; i++) {
+        const node = content[i];
+        if (node.type === "heading" && (node.level === 2 || node.level === 3)) {
+            const text = node.children?.map(c => c.text).join("") || "";
+            if (text.trim().endsWith("?")) {
+                let answerText = "";
+                for (let j = i + 1; j < content.length; j++) {
+                    const nextNode = content[j];
+                    if (nextNode.type === "paragraph") {
+                        answerText = nextNode.children?.map(c => c.text).join("") || "";
+                        break;
+                    }
+                    if (nextNode.type === "heading") {
+                        break;
+                    }
+                }
+
+                if (text && answerText) {
+                    faqs.push({
+                        question: text.trim(),
+                        answer: answerText.trim()
+                    });
+                }
+            }
+        }
+    }
+    return faqs;
+}
+
 // ─── Page ───────────────────────────────────────────────────────────────────
 export default async function BlogPostPage({ params }) {
     const { slug } = await params;
@@ -135,6 +169,21 @@ export default async function BlogPostPage({ params }) {
         },
     };
 
+    // Build FAQ Schema if any questions are found
+    const faqs = extractFAQ(post.content);
+    const faqJsonLd = faqs.length > 0 ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
+            }
+        }))
+    } : null;
+
     // Get related posts (same category, excluding self, max 3)
     const allStrapiPosts = await getAllBlogPosts();
     const relatedStrapi = allStrapiPosts
@@ -174,6 +223,12 @@ export default async function BlogPostPage({ params }) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
+            {faqJsonLd && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+                />
+            )}
             <PostClient
                 post={post}
                 coverUrl={coverUrl}
