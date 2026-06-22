@@ -2,7 +2,7 @@
   margin: 0 auto;
   width: 100%;
   background: var(--background);
-  position: fixed;
+  position: relative;
   z-index: 999;
 }
 

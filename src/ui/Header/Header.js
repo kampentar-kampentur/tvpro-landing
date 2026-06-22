@@ -23,10 +23,24 @@ export default function Header({ cta: parentCta }) {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const height = isBlog && !hideAnnouncement ? 116 : 80;
-    document.documentElement.style.setProperty("--header-height", `${height}px`);
-  }, [hideAnnouncement, isBlog]);
+    if (typeof window === "undefined" || !containerRef.current) return;
+
+    const updateHeight = () => {
+      if (containerRef.current) {
+        const height = containerRef.current.offsetHeight;
+        document.documentElement.style.setProperty("--header-height", `${height}px`);
+      }
+    };
+
+    // Initial measurement
+    updateHeight();
+
+    // Re-measure on window resize
+    window.addEventListener("resize", updateHeight);
+    return () => {
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [hideAnnouncement, pathname]);
 
   const handleCloseAnnouncement = () => {
     sessionStorage.setItem("hide_announcement_bar", "true");

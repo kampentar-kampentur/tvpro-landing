@@ -121,7 +121,7 @@ const TechCard = ({ tech, cityName = "your area" }) => {
   // Extract custom fields mapped to new UI elements
   const whatILove = tech.bio || tech.headline || null;
   const specializesIn = tech.tags ? tech.tags.join(", ") : tech.bestFor || null;
-  const experience = tech.experience || "5+ years";
+  const experience = tech.experience || "";
   const speedReliability =
     tech.signature || "Always on time, always professional.";
   const howIHelp = tech.whyRemember || tech.motto || null;

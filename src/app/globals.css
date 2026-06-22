@@ -264,6 +264,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body.font-mode-montserrat {
+  font-family: 'Montserrat', var(--font-montserrat), Arial, Helvetica, sans-serif;
+  --font-red-hat-display: var(--font-montserrat);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

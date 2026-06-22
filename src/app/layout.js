@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Red_Hat_Display } from "next/font/google";
+import { Red_Hat_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
@@ -8,6 +8,7 @@ import Footer from "@/blocks/Footer";
 import { GoogleTagManager } from '@next/third-parties/google'
 import Script from "next/script";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
+import FontSwitcher from "@/components/FontSwitcher/FontSwitcher";
 import EngagementTracker from "@/components/EngagementTracker/EngagementTracker";
 import UtmCapture from "@/components/UtmCapture/UtmCapture";
 import Modals from "@/app/components/Modals";
@@ -16,7 +17,13 @@ import { CTAProvider } from "@/providers/CTAProvider";
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
   subsets: ["latin"],
-  display: "swap", // Ensure font-display: swap is used
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata = {
@@ -306,7 +313,7 @@ export default async function RootLayout({ children }) {
         </Script>
 
       </head>
-      <body className={redHatDisplay.variable}>
+      <body className={`${redHatDisplay.variable} ${montserrat.variable}`}>
         {process.env.NEXT_PUBLIC_GTM_ID && (
           <noscript>
             <iframe 
@@ -378,6 +385,7 @@ export default async function RootLayout({ children }) {
           </ModalProvider>
         </CTAProvider>
         <ScrollToTop />
+        <FontSwitcher />
 
       </body>
     </html>
