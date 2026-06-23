@@ -7,7 +7,7 @@ import { resolveSpintax } from "@/lib/spintax";
 
 async function getOurServices() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/our-service?populate[services][populate]=image`
+    `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/our-service?populate[services][populate]=image`,
   );
   const json = await res.json();
   return json.data;
@@ -22,9 +22,10 @@ const truncateText = (text, maxLength = 85) => {
 export default async function BriefServices({ data = {}, cityContext }) {
   const defaultServicesData = await getOurServices();
 
-  const rawServices = (data?.services && data.services.length > 0)
-    ? data.services
-    : (defaultServicesData?.services || []);
+  const rawServices =
+    data?.services && data.services.length > 0
+      ? data.services
+      : defaultServicesData?.services || [];
 
   const services = rawServices.map((service) => ({
     ...service,
@@ -46,10 +47,13 @@ export default async function BriefServices({ data = {}, cityContext }) {
     <section className={`block ${styles.briefServices}`} id="services-brief">
       <header className={styles.header}>
         <h2 className="blockHeading">
-          <Text text="Our Handyman Services" cityContext={cityContext} />
+          <Text text="Our Services" cityContext={cityContext} />
         </h2>
         <p className="subText">
-          <Text text="Explore our top professional TV mounting and media wall installation options." cityContext={cityContext} />
+          <Text
+            text="Explore our top professional TV mounting and media wall installation options."
+            cityContext={cityContext}
+          />
         </p>
       </header>
 
