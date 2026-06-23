@@ -11,9 +11,20 @@ const slugify = (text) => {
 
 // Retrieve all categories from both Strapi and mock data
 async function getCategories() {
-  const strapiPosts = await getAllBlogPosts();
+  let strapiPosts = [];
+  try {
+    strapiPosts = await getAllBlogPosts() || [];
+  } catch (error) {
+    console.error("Failed to fetch posts from Strapi in getCategories:", error);
+  }
   const allPosts = [...strapiPosts, ...mockPosts];
-  const uniqueCategories = [...new Set(allPosts.map(p => p.category).filter(Boolean))];
+  
+  // Make sure navbar categories are always included to prevent 404
+  const defaultCategories = ["News", "Reviews", "Tips & Tricks"];
+  const uniqueCategories = [...new Set([
+    ...allPosts.map(p => p.category),
+    ...defaultCategories
+  ].filter(Boolean))];
   
   return uniqueCategories.map(cat => ({
     name: cat,
@@ -122,7 +133,7 @@ export default async function BlogCategoryPage({ params }) {
     }
   }
 
-  const totalPages = Math.ceil(allCategoryPosts.length / POSTS_PER_PAGE);
+  const totalPages = Math.max(1, Math.ceil(allCategoryPosts.length / POSTS_PER_PAGE));
 
   const jsonLd = {
     "@context": "https://schema.org",

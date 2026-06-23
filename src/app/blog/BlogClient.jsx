@@ -492,18 +492,23 @@ export default function BlogClient({
             ) : (
               <div className={styles.noResultsContainer}>
                 <p className={styles.noResultsText}>
-                  Sorry, we couldn't find any articles matching "{query}".
+                  {category 
+                    ? `We don't have any articles in the "${category}" category yet. Check back soon for updates!`
+                    : `Sorry, we couldn't find any articles matching "${query}".`
+                  }
                 </p>
-                <form onSubmit={handleReSearchSubmit} className={styles.reSearchForm}>
-                  <input 
-                    type="text" 
-                    placeholder="Try search another term..." 
-                    value={reSearchVal}
-                    onChange={(e) => setReSearchVal(e.target.value)}
-                    className={styles.reSearchInput}
-                  />
-                  <Button type="submit" variant="primary">Search</Button>
-                </form>
+                {!category && (
+                  <form onSubmit={handleReSearchSubmit} className={styles.reSearchForm}>
+                    <input 
+                      type="text" 
+                      placeholder="Try search another term..." 
+                      value={reSearchVal}
+                      onChange={(e) => setReSearchVal(e.target.value)}
+                      className={styles.reSearchInput}
+                    />
+                    <Button type="submit" variant="primary">Search</Button>
+                  </form>
+                )}
                 
                 {/* Recommended Articles Section */}
                 <div className={styles.recommendedWrapper}>

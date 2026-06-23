@@ -43,7 +43,7 @@ export default function Navbar() {
   }, [isBlog]);
 
   // Calculate dropdown categories
-  const mainSlugs = ["news", "reviews", "tips-tricks"];
+  const mainSlugs = ["news", "reviews", "tips-and-tricks"];
   
   // Combine mock categories and dynamic ones
   const allCategories = [...new Set([
@@ -68,7 +68,7 @@ export default function Navbar() {
             <li><Link href="/blog/">Blog Home</Link></li>
             <li><Link href="/blog/category/news/">News</Link></li>
             <li><Link href="/blog/category/reviews/">Reviews</Link></li>
-            <li><Link href="/blog/category/tips-tricks/">Tips & Tricks</Link></li>
+            <li><Link href="/blog/category/tips-and-tricks/">Tips & Tricks</Link></li>
             {dropdownCategories.length > 0 && (
               <li className={styles.dropdownLi}>
                 <span 
