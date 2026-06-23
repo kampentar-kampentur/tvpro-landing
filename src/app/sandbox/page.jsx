@@ -32,18 +32,15 @@ export default async function Sandbox() {
       <CustomerReviews />
       <GalleryOfWork />
       <Certificates />
-      <AboutUs />
       {/* <TVSizes /> */}
       <MountingTypes />
       <WhyCustomersTrustUs />
       <OurTeam />
       <CareersCTA data={globalConfig?.["careers-cta"] || {}} />
+      <AboutUs />
       <FAQ />
       <Contacts />
       <AreasWeServe />
     </div>
   );
 }
-
-
-
