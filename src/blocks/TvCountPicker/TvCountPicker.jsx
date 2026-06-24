@@ -100,18 +100,21 @@ export default function TvCountPicker({ cityContext }) {
       </header>
 
       <div className={styles.cardsGrid}>
-        {cards.map((card) => (
-          <ServiceCard
-            key={card.id}
-            customIcon={<div className={styles.iconContainer}>{renderCardIcon(card.id)}</div>}
-            title={card.title}
-            description={card.description}
-            buttonText="Calculate Quote"
-            modalName="BestQuote"
-            modalProps={{ tvCount: card.tvCount, isNewQuiz: true }}
-            cityContext={cityContext}
-          />
-        ))}
+        {cards.map((card) => {
+          const isSingle = card.tvCount === "1";
+          return (
+            <ServiceCard
+              key={card.id}
+              customIcon={<div className={styles.iconContainer}>{renderCardIcon(card.id)}</div>}
+              title={card.title}
+              description={card.description}
+              buttonText={isSingle ? "Calculate Quote" : "Book Now"}
+              modalName={isSingle ? "BestQuote" : "BookNow"}
+              modalProps={isSingle ? { tvCount: card.tvCount, isNewQuiz: true } : { tvCount: card.tvCount }}
+              cityContext={cityContext}
+            />
+          );
+        })}
       </div>
     </section>
   );

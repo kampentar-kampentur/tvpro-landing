@@ -85,6 +85,31 @@ export default async function OurTeam({ data = {}, cityContext }) {
     selectedTechs = combined.sort(() => 0.5 - Math.random());
   }
 
+  // Сортируем выбранных техников по убыванию опыта/скиллов
+  const getTechSkillLevel = (tech) => {
+    const localTech = localTechnicians.find(
+      (l) =>
+        l.name &&
+        tech.name &&
+        (l.name.toLowerCase() === tech.name.toLowerCase() ||
+          tech.name.toLowerCase().startsWith(l.name.toLowerCase()) ||
+          l.name.toLowerCase().startsWith(tech.name.toLowerCase()))
+    ) || {};
+
+    const expStr = String(tech.experience || localTech.experience || tech.jobsCount || localTech.jobsCount || "0");
+    const match = expStr.replace(/,/g, "").match(/\d+/);
+    if (match) {
+      const num = parseInt(match[0], 10);
+      if (expStr.toLowerCase().includes("year")) {
+        return num * 500;
+      }
+      return num;
+    }
+    return 0;
+  };
+
+  selectedTechs.sort((a, b) => getTechSkillLevel(b) - getTechSkillLevel(a));
+
   const title = resolveSpintax(
     teamData?.title ||
     `Meet Our TV Mounting Specialists in ${displayLocation}`

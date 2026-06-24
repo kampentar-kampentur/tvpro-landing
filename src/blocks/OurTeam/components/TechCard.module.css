@@ -95,7 +95,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 16px;
+  gap: 6px;
 }
 
 /* ── Name & Role ── */
@@ -119,6 +119,15 @@
   line-height: 22px;
   color: var(--green); /* Using primary color for role as requested in mockup styling */
   margin: 0;
+}
+
+.motto {
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 22px;
+  color: var(--gray);
+  margin: 4px 0 0 0;
+  opacity: 0.9;
 }
 
 /* ── Stat pill ── */
@@ -146,7 +155,7 @@
 .attributesList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 6px;
   margin-top: 8px;
   margin-bottom: auto; /* Push tags/buttons to the bottom */
 }

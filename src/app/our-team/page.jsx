@@ -5,6 +5,8 @@ import { getAllTechnicians } from "@/lib/strapi";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import styles from "./our-team-page.module.css";
 
+import { technicians as localTechnicians } from "@/blocks/OurTeam/data/technicians";
+
 export const metadata = {
   title: "Meet Our Certified TV Mounting Specialists | TVPro",
   description: "Meet our background-checked, insured, and certified TV mounting and AV specialists. Safe installations, flawless setups, and same-day service.",
@@ -26,6 +28,31 @@ export default async function OurTeamPage() {
     console.error("Failed to fetch technicians:", e);
   }
 
+  // Сортируем техников по убыванию опыта/скиллов
+  const getTechSkillLevel = (tech) => {
+    const localTech = localTechnicians.find(
+      (l) =>
+        l.name &&
+        tech.name &&
+        (l.name.toLowerCase() === tech.name.toLowerCase() ||
+          tech.name.toLowerCase().startsWith(l.name.toLowerCase()) ||
+          l.name.toLowerCase().startsWith(tech.name.toLowerCase()))
+    ) || {};
+
+    const expStr = String(tech.experience || localTech.experience || tech.jobsCount || localTech.jobsCount || "0");
+    const match = expStr.replace(/,/g, "").match(/\d+/);
+    if (match) {
+      const num = parseInt(match[0], 10);
+      if (expStr.toLowerCase().includes("year")) {
+        return num * 500;
+      }
+      return num;
+    }
+    return 0;
+  };
+
+  strapiTechs.sort((a, b) => getTechSkillLevel(b) - getTechSkillLevel(a));
+
   return (
     <div className={styles.teamPage}>
       {/* Breadcrumbs */}
@@ -37,6 +64,11 @@ export default async function OurTeamPage() {
         <p className={`subText ${styles.subtitle}`}>
           Every technician is background-checked, insured, and certified — ready to deliver a flawless installation in your home.
         </p>
+        <div className={styles.headerButtons}>
+          <QuoteButton modalName="CareersForm" variant="primary">
+            Join Our Team (Apply Now)
+          </QuoteButton>
+        </div>
       </header>
 
       {/* Grid of All Specialists */}

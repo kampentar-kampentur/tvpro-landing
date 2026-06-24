@@ -40,10 +40,3 @@
     height: 50px !important;
   }
 }
-
-@media (min-width: 1024px) {
-  .cardsGrid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-  }
-}

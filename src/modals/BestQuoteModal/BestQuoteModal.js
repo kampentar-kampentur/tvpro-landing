@@ -925,24 +925,6 @@ const BestQuoteScheme = {
 const NewQuizScheme = {
   steps: [
     {
-      id: "tv-count",
-      title: "How many TVs?",
-      fields: [
-        {
-          name: "tvCount",
-          type: "radio",
-          isRequired: true,
-          label: "How many TVs?",
-          options: [
-            { value: "1", label: "1 TV" },
-            { value: "2", label: "2 TVs" },
-            { value: "3", label: "3 TVs" },
-            { value: "4+", label: "4+ TVs" }
-          ]
-        }
-      ]
-    },
-    {
       id: "tv-size",
       title: "TV Size",
       fields: [
@@ -951,35 +933,11 @@ const NewQuizScheme = {
           type: "radio",
           isRequired: true,
           label: "What size TV do you have?",
-          showIf: {
-            field: "tv-count.tvCount",
-            condition: "equals",
-            value: "1"
-          },
           options: [
             { value: "under31", label: 'Under 31"', cost: 69 },
             { value: "32-59", label: '32"-59"', cost: 125 },
             { value: "60-85", label: '60"-85"', cost: 144 },
             { value: "over-86", label: '86"+', cost: 189 },
-            { value: "notSure", label: "Not Sure", cost: 125 }
-          ]
-        },
-        {
-          name: "tvSelectionMulti",
-          type: "radio",
-          isRequired: true,
-          label: "What size are your TVs?",
-          showIf: {
-            field: "tv-count.tvCount",
-            condition: "notEquals",
-            value: "1"
-          },
-          options: [
-            { value: "under31", label: 'Under 31"', cost: 69 },
-            { value: "32-59", label: '32"-59"', cost: 125 },
-            { value: "60-85", label: '60"-85"', cost: 144 },
-            { value: "over-86", label: '86"+', cost: 189 },
-            { value: "mixed", label: "Mixed Sizes", cost: 135 },
             { value: "notSure", label: "Not Sure", cost: 125 }
           ]
         }
@@ -1042,18 +1000,6 @@ const NewQuizScheme = {
               subtitle: "Consult with technician",
               cost: 0,
               description: "Not sure which mount fits your space? Our professional technician will bring different types and help you choose the best one on-site."
-            },
-            { 
-              value: "different", 
-              label: "Different mounts",
-              subtitle: "For multiple TVs",
-              cost: 0,
-              description: "If you need different types of mounts for your TVs, we will configure each on-site during installation.",
-              showIf: {
-                field: "tv-count.tvCount",
-                condition: "notEquals",
-                value: "1"
-              }
             }
           ]
         }
@@ -1074,16 +1020,6 @@ const NewQuizScheme = {
             { value: "ceiling", label: "Ceiling", cost: 39 },
             { value: "tile", label: "Tile", cost: 69 },
             { value: "metalStuds", label: "Metal Studs", cost: 30 },
-            { 
-              value: "mixed", 
-              label: "Mixed Wall Types", 
-              cost: 39,
-              showIf: {
-                field: "tv-count.tvCount",
-                condition: "notEquals",
-                value: "1"
-              }
-            },
             { value: "notSure", label: "Not Sure", cost: 0 }
           ]
         }
@@ -1144,7 +1080,6 @@ const NewQuizScheme = {
     baseCost: 0,
     dynamicCosts: [
       "tv-size.tvSelection",
-      "tv-size.tvSelectionMulti",
       "mounting.mountType",
       "wall.wallType",
       "wires.wires"
@@ -1267,16 +1202,10 @@ const BestQuoteModal = () => {
       setFormData({});
       setCurrentStepIndex(0);
       setTotalSteps(5);
-    } else if (data?.props?.tvCount) {
-      if (isNewQuiz) {
-        setFormData({ "tv-count": { tvCount: data.props.tvCount } });
-        setCurrentStepIndex(1);
-      } else {
-        setFormData({ tvCount: data.props.tvCount });
-        setCurrentStepIndex(0);
-      }
+    } else {
+      setCurrentStepIndex(0);
     }
-  }, [isOpen, data, isNewQuiz]);
+  }, [isOpen]);
   async function onSubmit(e) {
     e?.preventDefault?.();
     setIsSubmitting(true);
@@ -1286,7 +1215,7 @@ const BestQuoteModal = () => {
       ? (formData.wall?.wallType || "")
       : (formData.wall?.wallType || formData.wall?.wallTypeProjector || "");
 
-    const tvCountResolved = data?.props?.tvCount || formData["tv-count"]?.tvCount || formData.tvCount || "";
+    const tvCountResolved = "1";
 
     const contactInfoResolved = isNewQuiz
       ? {
@@ -1402,7 +1331,7 @@ const BestQuoteModal = () => {
       <div className={styles.bestQuote}>
         <main className={styles.bestQuoteMain}>
           <Form
-            key={isOpen ? `open-${isNewQuiz}-${data?.props?.tvCount || "none"}` : "closed"}
+            key={isOpen ? `open-${isNewQuiz}` : "closed"}
             scheme={currentScheme}
             value={formData}
             onChange={setFormData}

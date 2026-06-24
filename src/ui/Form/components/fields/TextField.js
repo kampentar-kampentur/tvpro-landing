@@ -56,14 +56,16 @@ function cursorPosAtDigitIndex(formatted, digitIdx) {
   return formatted.length;
 }
 
-const TextField = ({ field, value = '', onChange, className }) => {
+const TextField = ({ field, value = '', onChange, className, error }) => {
   const isTel = field.type === 'tel';
   const isNumber = field.type === 'number';
   const hasValue = Boolean(value && value.length > 0);
   const autoCompleteValue = field.autoComplete || AUTOCOMPLETE_MAP[field.name] || 'on';
   const fieldId = `field-${field.name}`;
   const inputRef = useRef(null);
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
+
+  const activeError = error || localError;
 
   const handlePhoneChange = useCallback((e) => {
     const input = e.target;
@@ -79,7 +81,7 @@ const TextField = ({ field, value = '', onChange, className }) => {
 
     // Store raw digits
     onChange(digits);
-    if (error) setError('');
+    if (localError) setLocalError('');
 
     // Figure out where the cursor should go in the new formatted string
     const digitsBefore = digitIndexAtCursor(rawInput, cursorBefore);
@@ -92,20 +94,20 @@ const TextField = ({ field, value = '', onChange, className }) => {
         inputRef.current.setSelectionRange(newCursor, newCursor);
       }
     });
-  }, [onChange, error]);
+  }, [onChange, localError]);
 
   const handleBlur = useCallback(() => {
     if (isTel && value) {
       const isValid = validatePhone(value);
       if (!isValid) {
-        setError('Please enter a valid phone number');
+        setLocalError('Please enter a valid phone number');
       }
     }
   }, [isTel, value]);
 
   const handleFocus = useCallback(() => {
-    if (error) setError('');
-  }, [error]);
+    if (localError) setLocalError('');
+  }, [localError]);
 
   // Display the formatted value
   const displayValue = isTel ? formatUSPhone(value) : value;
@@ -113,7 +115,7 @@ const TextField = ({ field, value = '', onChange, className }) => {
   const containerClassName = [
     styles.textFieldContainer,
     hasValue ? styles.hasValue : '',
-    error ? styles.invalid : '',
+    activeError ? styles.invalid : '',
     className || ''
   ].filter(Boolean).join(' ');
 
@@ -166,7 +168,7 @@ const TextField = ({ field, value = '', onChange, className }) => {
           />
         )}
       </div>
-      {error && <span className={styles.errorText}>{error}</span>}
+      {activeError && <span className={styles.errorText}>{activeError}</span>}
     </div>
   );
 };
