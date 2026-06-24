@@ -42,11 +42,11 @@
     color: var(--gray);
 }
 
-.hiddenButton {
-    opacity: 0;
-    visibility: hidden;
+.serviceCard .hiddenButton {
+    opacity: 0 !important;
+    visibility: hidden !important;
     /* transition: opacity 0.3s ease, visibility 0.3s ease; */
-    display: none;
+    display: none !important;
 }
 
 
@@ -79,9 +79,9 @@
     }
 
     .serviceCard:hover .hiddenButton {
-        opacity: 1;
-        visibility: visible;
-        display: flex;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
         z-index: 11; /* make sure the visible hover button can receive hover cursor visual feedback, though clicks will bubble to card */
     }
 
