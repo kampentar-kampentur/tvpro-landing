@@ -137,3 +137,9 @@
     width: 100% !important;
   }
 }
+
+@media (max-width: 980px) {
+  .fieldLabel {
+    padding-right: 50px;
+  }
+}
