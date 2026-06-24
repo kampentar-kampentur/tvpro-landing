@@ -384,7 +384,7 @@ export default function CareersModal() {
           </div>
           <h3 className={styles.successTitle}>Thank You, {formData.name || "Applicant"}!</h3>
           <p className={styles.successMessage}>
-            We've received your application to become a TVPro Technician. A confirmation and next steps have been sent to <strong>{formData.email}</strong>.
+            We&apos;ve received your application to become a TVPro Technician. A confirmation and next steps have been sent to <strong>{formData.email}</strong>.
           </p>
           <p className={styles.successSubmessage}>
             Our recruiting team will review your skills and contact you shortly at <strong>{formData.phone ? `+1 ${formData.phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")}` : ""}</strong>.
