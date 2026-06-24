@@ -8,9 +8,11 @@ import { useState } from "react";
 import InfoCircle from '@/assets/icons/InfoCircle.svg';
 import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg';
 import Text from "@/ui/Text/Text";
+import { useModal } from "@/providers/ModalProvider";
 
 export default function ServiceCard({ image, title, description, buttonText, modalName, price, cityContext }) {
   const [isInfoShow, setIsInfoShow] = useState(false)
+  const { openModal } = useModal();
   function handleInfoClick(e) {
     e.preventDefault()
     e.stopPropagation()
@@ -34,7 +36,11 @@ export default function ServiceCard({ image, title, description, buttonText, mod
       <QuoteButton className={styles.hiddenButton} variant="primary" size="small" modalName={modalName || "BestQuote"}>
         {buttonText}
       </QuoteButton>
-      <QuoteButton className={styles.invisibleButton} modalName={modalName || "BestQuote"} />
+      <button 
+        className={styles.invisibleButton} 
+        onClick={() => openModal(modalName || "BestQuote")}
+        aria-label={`Book ${title}`}
+      />
       {description && (
         isInfoShow ?
           <InfoCircleActive onClick={handleInfoClick} className={styles.info} /> :

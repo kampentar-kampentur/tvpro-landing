@@ -35,9 +35,16 @@ export default function Header({ cta: parentCta }) {
     // Initial measurement
     updateHeight();
 
+    // Use ResizeObserver to detect layout/styling changes
+    const observer = new ResizeObserver(() => {
+      updateHeight();
+    });
+    observer.observe(containerRef.current);
+
     // Re-measure on window resize
     window.addEventListener("resize", updateHeight);
     return () => {
+      observer.disconnect();
       window.removeEventListener("resize", updateHeight);
     };
   }, [hideAnnouncement, pathname]);
