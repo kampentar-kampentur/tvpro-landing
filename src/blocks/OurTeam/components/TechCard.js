@@ -106,14 +106,15 @@ const CheckCircleIcon = () => (
 );
 
 const TechCard = ({ tech, cityName = "your area" }) => {
-  const localTech = localTechnicians.find(
-    (l) =>
-      l.name &&
-      tech.name &&
-      (l.name.toLowerCase() === tech.name.toLowerCase() ||
-        tech.name.toLowerCase().startsWith(l.name.toLowerCase()) ||
-        l.name.toLowerCase().startsWith(tech.name.toLowerCase()))
-  ) || {};
+  const localTech =
+    localTechnicians.find(
+      (l) =>
+        l.name &&
+        tech.name &&
+        (l.name.toLowerCase() === tech.name.toLowerCase() ||
+          tech.name.toLowerCase().startsWith(l.name.toLowerCase()) ||
+          l.name.toLowerCase().startsWith(tech.name.toLowerCase())),
+    ) || {};
 
   const isInvalidJobsCount = (val) => {
     if (!val) return true;
@@ -123,9 +124,16 @@ const TechCard = ({ tech, cityName = "your area" }) => {
 
   const cleanJobsCount = !isInvalidJobsCount(tech.jobsCount)
     ? tech.jobsCount
-    : (!isInvalidJobsCount(localTech.jobsCount) ? localTech.jobsCount : "100+ Projects");
+    : !isInvalidJobsCount(localTech.jobsCount)
+      ? localTech.jobsCount
+      : "100+ Projects";
 
-  const cleanExperience = tech.experience || localTech.experience || (cleanJobsCount && cleanJobsCount !== "100+ Projects" ? cleanJobsCount.replace(" jobs done", "").trim() : "100+ Projects");
+  const cleanExperience =
+    tech.experience ||
+    localTech.experience ||
+    (cleanJobsCount && cleanJobsCount !== "100+ Projects"
+      ? cleanJobsCount.replace(" jobs done", "").trim()
+      : "100+ Projects");
 
   const ratingStr = String(tech.rating || localTech.rating || "5.0");
   const ratingNum = ratingStr.replace(" ★", "").trim();
@@ -138,13 +146,21 @@ const TechCard = ({ tech, cityName = "your area" }) => {
     mediaObj && mediaObj.url && !mediaObj.url.includes("placeholder.png");
 
   // Extract custom fields mapped to new UI elements
-  const whatILove = tech.bio || tech.headline || localTech.bio || localTech.headline || null;
-  const specializesIn = tech.tags && tech.tags.length > 0
-    ? (Array.isArray(tech.tags) ? tech.tags.join(", ") : tech.tags)
-    : (localTech.tags ? localTech.tags.join(", ") : tech.bestFor || localTech.bestFor || null);
+  const whatILove =
+    tech.bio || tech.headline || localTech.bio || localTech.headline || null;
+  const specializesIn =
+    tech.tags && tech.tags.length > 0
+      ? Array.isArray(tech.tags)
+        ? tech.tags.join(", ")
+        : tech.tags
+      : localTech.tags
+        ? localTech.tags.join(", ")
+        : tech.bestFor || localTech.bestFor || null;
   const experience = cleanExperience;
   const speedReliability =
-    tech.signature || localTech.signature || "Always on time, always professional.";
+    tech.signature ||
+    localTech.signature ||
+    "Always on time, always professional.";
   const howIHelp = tech.whyRemember || localTech.whyRemember || null;
   const blueStatValue = cleanJobsCount;
   const blueStatLabel = "";
@@ -182,7 +198,9 @@ const TechCard = ({ tech, cityName = "your area" }) => {
         <div className={styles.nameBlock}>
           <h3 className={styles.name}>{tech.name}</h3>
           <p className={styles.role}>{tech.role}</p>
-          {mottoText && <p className={styles.motto}>&ldquo;{mottoText}&rdquo;</p>}
+          {mottoText && (
+            <p className={styles.motto}>&ldquo;{mottoText}&rdquo;</p>
+          )}
         </div>
 
         <span className={styles.statPill}>
@@ -213,7 +231,7 @@ const TechCard = ({ tech, cityName = "your area" }) => {
               </div>
             </div>
           )}
-          {experience && (
+          {/* {experience && (
             <div className={styles.attributeItem}>
               <div className={styles.attributeIcon}>
                 <ClockIcon />
@@ -223,7 +241,7 @@ const TechCard = ({ tech, cityName = "your area" }) => {
                 <span className={styles.attributeValue}>{experience}</span>
               </div>
             </div>
-          )}
+          )}*/}
           {speedReliability && (
             <div className={styles.attributeItem}>
               <div className={styles.attributeIcon}>
@@ -245,7 +263,9 @@ const TechCard = ({ tech, cityName = "your area" }) => {
                 <HeartIcon />
               </div>
               <div className={styles.attributeText}>
-                <span className={styles.attributeLabel}>Why Customers Remember Him</span>
+                <span className={styles.attributeLabel}>
+                  Why Customers Remember Him
+                </span>
                 <span className={styles.attributeValue}>{howIHelp}</span>
               </div>
             </div>

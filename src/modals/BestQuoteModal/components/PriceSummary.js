@@ -19,6 +19,10 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
     </div>
   );
 
+  const hasTbd = structuredCostBreakdown.some(group => 
+    group.items?.some(item => item.costLabel === "TBD")
+  );
+
   return (
     <div className={`${styles.priceSummaryContainer} ${isLastStep ? styles.lastStep : ''} ${darkMode ? styles.darkMode : ''}`}>
       <div className={styles.scrollableContent}>
@@ -66,7 +70,6 @@ const PriceSummary = ({ totalPrice, structuredCostBreakdown, currentStepIndex, i
           return null;
         })}
       </div>
-
 
       {isLastStep && (
         <>

@@ -35,7 +35,7 @@ export default async function Sandbox() {
       {/* <TVSizes /> */}
       <MountingTypes />
       <WhyCustomersTrustUs />
-      <OurTeam />
+      <OurTeam cityContext={{ city_name: "Houston", state_code: "TX" }} />
       <CareersCTA data={globalConfig?.["careers-cta"] || {}} />
       <AboutUs />
       <FAQ />

@@ -5,7 +5,7 @@ import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form";
 import React, { useEffect, useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import PriceSummary from "./components/PriceSummary";
 import LogoSVG from "@/assets/logo.svg";
 import ChevronIcon from "@/assets/icons/chevron.svg";
@@ -936,9 +936,9 @@ const NewQuizScheme = {
           options: [
             { value: "under31", label: 'Under 31"', cost: 69 },
             { value: "32-59", label: '32"-59"', cost: 125 },
-            { value: "60-85", label: '60"-85"', cost: 144 },
+            { value: "60-85", label: '60"-85"', cost: 144, costLabel: "From $144" },
             { value: "over-86", label: '86"+', cost: 189 },
-            { value: "notSure", label: "Not Sure", cost: 125 }
+            { value: "notSure", label: "Not Sure", cost: 125, costLabel: "TBD" }
           ]
         }
       ]
@@ -999,6 +999,7 @@ const NewQuizScheme = {
               label: "Need help choosing",
               subtitle: "Consult with technician",
               cost: 0,
+              costLabel: "TBD",
               description: "Not sure which mount fits your space? Our professional technician will bring different types and help you choose the best one on-site."
             }
           ]
@@ -1020,8 +1021,36 @@ const NewQuizScheme = {
             { value: "ceiling", label: "Ceiling", cost: 39 },
             { value: "tile", label: "Tile", cost: 69 },
             { value: "metalStuds", label: "Metal Studs", cost: 30 },
-            { value: "notSure", label: "Not Sure", cost: 0 }
+            { value: "notSure", label: "Not Sure", cost: 0, costLabel: "TBD" }
           ]
+        },
+        {
+          name: "fireplace",
+          type: "radio",
+          isRequired: true,
+          label: "Is the TV being mounted above a fireplace?",
+          showIf: {
+            field: "wallType",
+            condition: "equalsAny",
+            values: ["drywall", "metalStuds"],
+          },
+          options: [
+            {
+              value: "yes",
+              label: "Yes",
+              breakdownLabel: "Above Fireplace",
+              cost: 32,
+              costLabel: "+$32",
+              description: "Above Fireplace installation.",
+            },
+            {
+              value: "no",
+              label: "No",
+              hideFromBreakdown: true,
+              cost: 0,
+              costLabel: "+$0",
+            },
+          ],
         }
       ]
     },
@@ -1029,15 +1058,192 @@ const NewQuizScheme = {
       id: "wires",
       title: "Cable Concealment",
       fields: [
+        // Case 1: Drywall / Metal Studs + NOT above fireplace
         {
           name: "wires",
           type: "radio",
           isRequired: true,
-          label: "Would you like your wires hidden?",
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+          showIf: {
+            all: [
+              {
+                field: "wall.wallType",
+                condition: "equalsAny",
+                values: ["drywall", "metalStuds"],
+              },
+              {
+                field: "wall.fireplace",
+                condition: "equals",
+                value: "no",
+              },
+            ],
+          },
           options: [
-            { value: "yes", label: "Yes, hide all wires", cost: 109 },
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description: "standard setup with visible wires, quick and simple.",
+            },
+            {
+              value: "cableChannelDrywall",
+              label: "Cable Channel",
+              cost: 43,
+              costLabel: "+$43",
+              description: "a sleek plastic channel to neatly hide and organize wires along the wall.",
+            },
+            {
+              value: "wallDrywall",
+              label: "Put it in the wall",
+              cost: 93,
+              costLabel: "+$93",
+              description: "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look.",
+            },
+            {
+              value: "socketDrywall",
+              label: "In wall with socket",
+              cost: 129,
+              costLabel: "+$129",
+              description: "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+            },
+            {
+              value: "notSure",
+              label: "Not Sure",
+              cost: 0,
+              costLabel: "TBD",
+            }
+          ],
+        },
+        // Case 2: Drywall / Metal Studs + ABOVE fireplace
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall.",
+          showIf: {
+            all: [
+              {
+                field: "wall.wallType",
+                condition: "equalsAny",
+                values: ["drywall", "metalStuds"],
+              },
+              {
+                field: "wall.fireplace",
+                condition: "equals",
+                value: "yes",
+              },
+            ],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description: "standard setup with visible wires, quick and simple.",
+            },
+            {
+              value: "cableChannelDrywall",
+              label: "Cable Channel",
+              cost: 43,
+              costLabel: "+$43",
+              description: "a sleek plastic channel to neatly hide and organize wires along the wall.",
+            },
+            {
+              value: "wallFireplace",
+              label: "In-Wall Concealment",
+              cost: 109,
+              costLabel: "+$109",
+              description: "wires run behind the wall with clean cover plates for a seamless look.",
+            },
+            {
+              value: "socketFireplace",
+              label: "In Wall with Socket",
+              cost: 149,
+              costLabel: "+$149",
+              description: "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+            },
+            {
+              value: "notSure",
+              label: "Not Sure",
+              cost: 0,
+              costLabel: "TBD",
+            }
+          ],
+        },
+        // Case 3: Hard Surface (Stone/Brick/Concrete, Tile, Ceiling)
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          description:
+            "*For hidden wires we cut two openings — one behind the TV and another near the power outlet — to neatly hide the power cable inside the wall. To complete the look, we install sleek white cover plates for a clean and seamless finish.",
+          showIf: {
+            field: "wall.wallType",
+            condition: "equalsAny",
+            values: ["stoneBrickConcrete", "tile", "ceiling"],
+          },
+          options: [
+            {
+              value: "open",
+              label: "Exposed",
+              subtitle: "no extra charge",
+              cost: 0,
+              costLabel: "+$0",
+              description: "visible wires, fast and simple setup.",
+            },
+            {
+              value: "cableChannelBrick",
+              label: "Cable channel",
+              cost: 52,
+              costLabel: "+$52",
+              description: "neat surface channel to keep cables organized on brick, concrete, or tile.",
+            },
+            {
+              value: "wallBrick",
+              label: "In-Wall Concealment",
+              cost: 249,
+              costLabel: "+$249",
+              description: "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish.",
+            },
+            {
+              value: "socketBrick",
+              label: "In-Wall with Socket",
+              cost: 289,
+              costLabel: "+$289",
+              description: "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing.",
+            },
+            {
+              value: "notSure",
+              label: "Not Sure",
+              cost: 0,
+              costLabel: "TBD",
+            }
+          ],
+        },
+        // Case 4: Wall type is Not Sure (Show simple options)
+        {
+          name: "wires",
+          type: "radio",
+          isRequired: true,
+          label: "Do you want to hide the wires?",
+          showIf: {
+            field: "wall.wallType",
+            condition: "equals",
+            value: "notSure",
+          },
+          options: [
+            { value: "yes", label: "Yes, hide all wires", cost: 109, costLabel: "TBD" },
             { value: "no", label: "No, standard installation", cost: 0 },
-            { value: "notSure", label: "Not Sure", cost: 0 }
+            { value: "notSure", label: "Not Sure", cost: 0, costLabel: "TBD" }
           ]
         }
       ]
@@ -1099,7 +1305,8 @@ const BestQuoteModal = () => {
   const [totalSteps, setTotalSteps] = useState(5);
   const [isMobile, setIsMobile] = useState(false);
 
-  const isNewQuiz = !!data?.props?.isNewQuiz;
+  const pathname = usePathname();
+  const isNewQuiz = !!data?.props?.isNewQuiz || (pathname && pathname.includes("/sandbox"));
   const tvSelection = formData["tv-size"]?.tvSelection;
 
   const currentScheme = useMemo(() => {

@@ -430,9 +430,9 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
 
                     {/* CTA Card */}
                     <div className={`${styles.sideCard} ${styles.ctaSideCard}`}>
-                        <div className={styles.ctaSideHeading}>Need Professional Installation?</div>
+                        <div className={styles.ctaSideHeading}>Perfect Mounting. Zero Stress.</div>
                         <p className={styles.ctaSideText}>
-                            Our certified technicians are available 7 days a week across the greater Houston area.
+                            Skip the DIY risks. Our certified, fully insured technicians mount screens on any wall surface, conceal the clutter, and set up everything perfectly.
                         </p>
                         <QuoteButton size="big" modalName="BookNow">
                             Get a Free Quote
