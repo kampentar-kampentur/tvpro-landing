@@ -1,6 +1,7 @@
 import { fetchAPI, getAllCities, getGlobalConfig, getCity } from '@/lib/strapi';
 import BlockRenderer from '@/components/BlockRenderer';
 import { notFound } from 'next/navigation';
+import { resolveSpintax } from '@/lib/spintax';
 
 export const dynamicParams = false;
 
@@ -49,8 +50,21 @@ export async function generateMetadata({ params }) {
     const { seo, city_name, state_code } = cityData;
     const displayName = city_name ? `${city_name}${state_code ? `, ${state_code}` : ''}` : 'TVPro Handy Services';
 
-    const title = `[Variant ${version}] ` + (seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`);
-    const description = seo?.metaDescription || `Expert TV mounting and home theater installation services in ${displayName}. Secure mounting on all surfaces, wire hiding, and same-day service.`;
+    let title = seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`;
+    let description = seo?.metaDescription || `Expert TV mounting and home theater installation services in ${displayName}. Secure mounting on all surfaces, wire hiding, and same-day service.`;
+
+    if (title) {
+        title = resolveSpintax(title)
+            .replace(/\{\{city\}\}/g, city_name || '')
+            .replace(/\{\{state\}\}/g, state_code || '');
+    }
+    title = `[Variant ${version}] ` + title;
+
+    if (description) {
+        description = resolveSpintax(description)
+            .replace(/\{\{city\}\}/g, city_name || '')
+            .replace(/\{\{state\}\}/g, state_code || '');
+    }
 
     const ogImageUrl = seo?.shareImage?.url || 'https://tvprousa.com/og-image.png';
 
