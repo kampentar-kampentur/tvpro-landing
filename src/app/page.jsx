@@ -1,5 +1,8 @@
 import styles from "./page.module.css";
 import Hero from "@/blocks/Hero";
+import UtpBar from "@/blocks/UtpBar";
+import TvCountPicker from "@/blocks/TvCountPicker";
+import BriefServices from "@/blocks/BriefServices";
 import WorkVideoGallery from "@/blocks/WorkVideoGallery/WorkVideoGallery";
 import CustomerReviews from "@/blocks/CustomerReviews/CustomerReviews";
 import TVSizes from "@/blocks/TVSizes";
@@ -22,6 +25,9 @@ export default async function Home() {
   return (
     <div className={styles.tvproMain}>
       <Hero />
+      <UtpBar />
+      <TvCountPicker />
+      <BriefServices />
       <WorkVideoGallery />
       <CustomerReviews />
       <GalleryOfWork />

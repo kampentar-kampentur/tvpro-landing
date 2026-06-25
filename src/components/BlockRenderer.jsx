@@ -15,6 +15,9 @@ import AreasWeServe from '@/blocks/AreasWeServe/AreasWeServe';
 import SEOBreadcrumbs from '@/ui/SEOBreadcrumbs/SEOBreadcrumbs';
 import OurTeam from '@/blocks/OurTeam/OurTeam';
 import CareersCTA from '@/blocks/CareersCTA/CareersCTA';
+import UtpBar from '@/blocks/UtpBar';
+import TvCountPicker from '@/blocks/TvCountPicker';
+import BriefServices from '@/blocks/BriefServices';
 
 const blockMap = {
     'blocks.hero': Hero,
@@ -31,14 +34,31 @@ const blockMap = {
     'blocks.see-our-work-in-action': WorkVideoGallery,
     'blocks.areas-we-serve': AreasWeServe,
     'blocks.our-team': OurTeam,
-    'blocks.careers-cta': CareersCTA
+    'blocks.careers-cta': CareersCTA,
+    'blocks.utp-bar': UtpBar,
+    'blocks.tv-count-picker': TvCountPicker,
+    'blocks.brief-services': BriefServices
 };
 
 export default function BlockRenderer({ blocks, globalData, cityContext }) {
     if (!blocks) return null;
 
-    // Auto-inject OurTeam block if not defined in Strapi
+    // Auto-inject UtpBar, TvCountPicker, and BriefServices right after Hero if not present
     let processedBlocks = [...blocks];
+    const heroIndex = processedBlocks.findIndex(block => block.__component === 'blocks.hero');
+    if (heroIndex !== -1) {
+        if (!processedBlocks.some(block => block.__component === 'blocks.brief-services')) {
+            processedBlocks.splice(heroIndex + 1, 0, { __component: 'blocks.brief-services' });
+        }
+        if (!processedBlocks.some(block => block.__component === 'blocks.tv-count-picker')) {
+            processedBlocks.splice(heroIndex + 1, 0, { __component: 'blocks.tv-count-picker' });
+        }
+        if (!processedBlocks.some(block => block.__component === 'blocks.utp-bar')) {
+            processedBlocks.splice(heroIndex + 1, 0, { __component: 'blocks.utp-bar' });
+        }
+    }
+
+    // Auto-inject OurTeam block if not defined in Strapi
     const hasOurTeam = processedBlocks.some(block => block.__component === 'blocks.our-team');
     if (!hasOurTeam) {
         // Find best insertion slot: before FAQ, after Customer Reviews, before Contact Us, or at the end
