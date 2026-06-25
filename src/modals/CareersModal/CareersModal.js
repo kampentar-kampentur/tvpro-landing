@@ -192,7 +192,7 @@ export default function CareersModal() {
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e && typeof e.preventDefault === "function") e.preventDefault();
     const newErrors = {};
 
     if (step === 1) {
@@ -398,7 +398,7 @@ export default function CareersModal() {
           </header>
           <div className={styles.container}>
             <main className={styles.main}>
-              <form className={styles.form} onSubmit={handleSubmit}>
+              <form className={styles.form}>
                 <Breadcrumbs
                   steps={stepsConfig}
                   currentMainStep={step - 1}
@@ -715,9 +715,9 @@ export default function CareersModal() {
                     <Button variant="secondary" onClick={prevStep} type="button" className={styles.btnSecondary}>Back</Button>
                   )}
                   {step < 3 ? (
-                    <Button variant="primary" type="submit" className={styles.btnPrimary}>Next Step</Button>
+                    <Button variant="primary" type="button" onClick={handleSubmit} className={styles.btnPrimary}>Next Step</Button>
                   ) : (
-                    <Button variant="primary" type="submit" disabled={isSubmitting} className={styles.btnPrimary}>
+                    <Button variant="primary" type="button" onClick={handleSubmit} disabled={isSubmitting} className={styles.btnPrimary}>
                       {isSubmitting ? "Submitting..." : "Submit Application"}
                     </Button>
                   )}
