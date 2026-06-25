@@ -398,7 +398,7 @@ export default function CareersModal() {
           </header>
           <div className={styles.container}>
             <main className={styles.main}>
-              <form className={styles.form}>
+              <div className={styles.form}>
                 <Breadcrumbs
                   steps={stepsConfig}
                   currentMainStep={step - 1}
@@ -722,7 +722,7 @@ export default function CareersModal() {
                     </Button>
                   )}
                 </div>
-              </form>
+              </div>
             </main>
           </div>
           

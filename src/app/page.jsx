@@ -35,6 +35,7 @@ export default async function Home() {
       {/* <TVSizes /> */}
       <MountingTypes />
       <WhyCustomersTrustUs />
+      <OurServices />
       <OurTeam />
       <CareersCTA data={globalConfig?.["careers-cta"] || {}} />
       <AboutUs />

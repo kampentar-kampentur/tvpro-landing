@@ -35,7 +35,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={styles.option}>
                   <span style={{ display: "flex", marginBottom: "24px" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
@@ -58,7 +58,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={styles.option}>
                   <span style={{ display: "flex", marginBottom: "24px" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
@@ -82,7 +82,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={styles.option}>
                   <span style={{ display: "flex", marginBottom: "24px" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
@@ -103,7 +103,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={`${styles.option} ${styles.textOption} ${step.id === 'contactInfo' ? styles.contactInfoField : ''}`}>
                   <span style={{ display: "flex" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
@@ -122,7 +122,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={styles.option}>
                   <span style={{ display: "flex", marginBottom: "24px" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
@@ -141,7 +141,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={styles.option}>
                   <span style={{ display: "flex", marginBottom: "24px" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
@@ -160,7 +160,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={styles.option}>
                   <span style={{ display: "flex", marginBottom: "24px" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
@@ -179,7 +179,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return (
                 <div key={field.name} className={`${styles.option} ${styles.splitOption}`}>
                   <span style={{ display: "flex" }}>
-                    {currentStepIndex > 0 && index === 0 && (
+                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
                       <button className={styles.backButton} onClick={onBack}>
                         <ChevronIcon />
                       </button>
