@@ -46,6 +46,40 @@ export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
     throw error;
   }
 }
+const componentPopulateRules = {
+  "blocks.hero": { populate: ["video", "badges"] },
+  "blocks.tv-mounting-types": { populate: ["mountingTypes", "mountingTypes.image", "addons"] },
+  "blocks.why-customers-choose-us": { populate: ["cards", "cards.image"] },
+  "blocks.our-services": { populate: ["services", "services.image"] },
+  "blocks.tv-sizes": { populate: ["tvsizes", "tvsizes.image"] },
+  "blocks.gallery-of-work": { populate: ["types"] },
+  "blocks.faq": { populate: ["faqs"] },
+  "blocks.see-our-work-in-action": {
+    populate: [
+      "videoItem",
+      "videoItem.selfHostedVideo",
+      "videoItem.selfHostedVideo.thumbnail",
+    ]
+  },
+  "blocks.certificate": { populate: ["certificates"] },
+};
+
+const simpleComponents = [
+  "blocks.our-team",
+  "blocks.customer-reviews",
+  "blocks.about-us",
+  "blocks.contact-us",
+  "blocks.areas-we-serve",
+  "blocks.careers-cta",
+  "blocks.utp-bar",
+  "blocks.tv-count-picker",
+  "blocks.brief-services",
+];
+
+const pagePopulateObject = {};
+[...Object.keys(componentPopulateRules), ...simpleComponents].forEach((comp) => {
+  pagePopulateObject[comp] = componentPopulateRules[comp] || { populate: "*" };
+});
 
 export async function getCity(slug, version = null) {
   const filters = { path: slug };
@@ -57,57 +91,7 @@ export async function getCity(slug, version = null) {
     filters: filters,
     populate: {
       page: {
-        on: {
-          "blocks.hero": {
-            populate: ["video", "badges"],
-          },
-          "blocks.tv-mounting-types": {
-            populate: ["mountingTypes", "mountingTypes.image", "addons"],
-          },
-          "blocks.why-customers-choose-us": {
-            populate: ["cards", "cards.image"],
-          },
-          "blocks.our-services": {
-            populate: ["services", "services.image"],
-          },
-          "blocks.tv-sizes": {
-            populate: ["tvsizes", "tvsizes.image"],
-          },
-          "blocks.gallery-of-work": {
-            populate: ["types"],
-          },
-          "blocks.our-team": {
-            populate: "*",
-          },
-          "blocks.faq": {
-            populate: ["faqs"],
-          },
-          "blocks.see-our-work-in-action": {
-            populate: [
-              "videoItem",
-              "videoItem.selfHostedVideo",
-              "videoItem.selfHostedVideo.thumbnail",
-            ],
-          },
-          "blocks.certificate": {
-            populate: ["certificates"],
-          },
-          "blocks.customer-reviews": {
-            populate: "*",
-          },
-          "blocks.about-us": {
-            populate: "*",
-          },
-          "blocks.contact-us": {
-            populate: "*",
-          },
-          "blocks.areas-we-serve": {
-            populate: "*",
-          },
-          "blocks.careers-cta": {
-            populate: "*",
-          },
-        },
+        on: pagePopulateObject
       },
       seo: { populate: "*" },
       cta_override: { populate: "*" },

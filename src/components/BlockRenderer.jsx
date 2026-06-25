@@ -43,56 +43,7 @@ const blockMap = {
 export default function BlockRenderer({ blocks, globalData, cityContext }) {
     if (!blocks) return null;
 
-    // Auto-inject UtpBar, TvCountPicker, and BriefServices right after Hero if not present
-    let processedBlocks = [...blocks];
-    const heroIndex = processedBlocks.findIndex(block => block.__component === 'blocks.hero');
-    if (heroIndex !== -1) {
-        if (!processedBlocks.some(block => block.__component === 'blocks.brief-services')) {
-            processedBlocks.splice(heroIndex + 1, 0, { __component: 'blocks.brief-services' });
-        }
-        if (!processedBlocks.some(block => block.__component === 'blocks.tv-count-picker')) {
-            processedBlocks.splice(heroIndex + 1, 0, { __component: 'blocks.tv-count-picker' });
-        }
-        if (!processedBlocks.some(block => block.__component === 'blocks.utp-bar')) {
-            processedBlocks.splice(heroIndex + 1, 0, { __component: 'blocks.utp-bar' });
-        }
-    }
-
-    // Auto-inject OurTeam block if not defined in Strapi
-    const hasOurTeam = processedBlocks.some(block => block.__component === 'blocks.our-team');
-    if (!hasOurTeam) {
-        // Find best insertion slot: before FAQ, after Customer Reviews, before Contact Us, or at the end
-        const faqIndex = processedBlocks.findIndex(block => block.__component === 'blocks.faq');
-        if (faqIndex !== -1) {
-            processedBlocks.splice(faqIndex, 0, { __component: 'blocks.our-team' });
-        } else {
-            const reviewsIndex = processedBlocks.findIndex(block => block.__component === 'blocks.customer-reviews');
-            if (reviewsIndex !== -1) {
-                processedBlocks.splice(reviewsIndex + 1, 0, { __component: 'blocks.our-team' });
-            } else {
-                const contactIndex = processedBlocks.findIndex(block => block.__component === 'blocks.contact-us');
-                if (contactIndex !== -1) {
-                    processedBlocks.splice(contactIndex, 0, { __component: 'blocks.our-team' });
-                } else {
-                    processedBlocks.push({ __component: 'blocks.our-team' });
-                }
-            }
-        }
-    }
-
-    // Auto-inject CareersCTA block for demonstration if not present
-    const hasCareersCTA = processedBlocks.some(block => block.__component === 'blocks.careers-cta');
-    if (!hasCareersCTA) {
-        // Inject right after OurTeam or at the end
-        const teamIndex = processedBlocks.findIndex(block => block.__component === 'blocks.our-team');
-        if (teamIndex !== -1) {
-            processedBlocks.splice(teamIndex + 1, 0, { __component: 'blocks.careers-cta' });
-        } else {
-            processedBlocks.push({ __component: 'blocks.careers-cta' });
-        }
-    }
-
-    return processedBlocks.map((block, index) => {
+    return blocks.map((block, index) => {
         const Component = blockMap[block.__component];
         if (!Component) {
             console.warn(`Component not found for: ${block.__component}`);

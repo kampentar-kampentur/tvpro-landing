@@ -2,34 +2,65 @@ import React from "react";
 import styles from "./TvCountPicker.module.css";
 import ServiceCard from "@/ui/ServiceCard/ServiceCard";
 import Text from "@/ui/Text/Text";
+import { resolveSpintax } from "@/lib/spintax";
 
-export default function TvCountPicker({ cityContext }) {
-  const cards = [
-    {
-      id: "tv-count-1",
-      title: "1 TV",
-      description: "Perfect for single room mounting: bedroom, living room, or office.",
-      tvCount: "1",
-    },
-    {
-      id: "tv-count-2",
-      title: "2 TVs",
-      description: "Mount two TVs in your house. Save on multiple installations.",
-      tvCount: "2",
-    },
-    {
-      id: "tv-count-3",
-      title: "3 TVs",
-      description: "Ideal multi-room layout. Complete setup for three screens.",
-      tvCount: "3",
-    },
-    {
-      id: "tv-count-4",
-      title: "4+ TVs",
-      description: "Volume package. Home theaters, offices, or commercial settings.",
-      tvCount: "4+",
-    },
-  ];
+async function getTvCountPickerData() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-count-picker?populate=*`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    return null;
+  }
+}
+
+const defaultCards = [
+  {
+    id: "tv-count-1",
+    title: "1 TV",
+    description: "Perfect for single room mounting: bedroom, living room, or office.",
+    tvCount: "1",
+  },
+  {
+    id: "tv-count-2",
+    title: "2 TVs",
+    description: "Mount two TVs in your house. Save on multiple installations.",
+    tvCount: "2",
+  },
+  {
+    id: "tv-count-3",
+    title: "3 TVs",
+    description: "Ideal multi-room layout. Complete setup for three screens.",
+    tvCount: "3",
+  },
+  {
+    id: "tv-count-4",
+    title: "4+ TVs",
+    description: "Volume package. Home theaters, offices, or commercial settings.",
+    tvCount: "4+",
+  },
+];
+
+export default async function TvCountPicker({ data = {}, cityContext }) {
+  const globalTvCountData = await getTvCountPickerData() || {};
+
+  const title = resolveSpintax(data?.title || globalTvCountData?.title || "How Many TVs Do You Need Mounted?");
+  const subTitle = resolveSpintax(data?.subTitle || globalTvCountData?.subTitle || "Select the number of screens to open the quote builder with pre-selected settings.");
+
+  const rawCards = (data?.cards && data.cards.length > 0)
+    ? data.cards
+    : (globalTvCountData?.cards && globalTvCountData.cards.length > 0)
+      ? globalTvCountData.cards
+      : defaultCards;
+
+  const cards = rawCards.map((card, index) => ({
+    ...card,
+    id: card.id || `tv-count-${index + 1}`,
+    title: resolveSpintax(card.title || ""),
+    description: resolveSpintax(card.description || ""),
+    tvCount: card.tvCount || `${index + 1}`,
+  }));
 
   const renderCardIcon = (id) => {
     switch (id) {
@@ -70,6 +101,7 @@ export default function TvCountPicker({ cityContext }) {
           </svg>
         );
       case "tv-count-4":
+      case "tv-count-4+":
         return (
           <svg viewBox="0 0 160 100" className={styles.cardIcon}>
             {/* 2x2 Grid of small TVs */}
@@ -92,10 +124,10 @@ export default function TvCountPicker({ cityContext }) {
     <section className={`block ${styles.tvCountPicker}`}>
       <header className={styles.header}>
         <h2 className="blockHeading">
-          <Text text="How Many TVs Do You Need Mounted?" cityContext={cityContext} />
+          <Text text={title} cityContext={cityContext} />
         </h2>
         <p className="subText">
-          <Text text="Select the number of screens to open the quote builder with pre-selected settings." cityContext={cityContext} />
+          <Text text={subTitle} cityContext={cityContext} />
         </p>
       </header>
 
