@@ -936,7 +936,8 @@ const NewQuizScheme = {
           options: [
             { value: "under31", label: 'Under 31"', cost: 69 },
             { value: "32-59", label: '32"-59"', cost: 125 },
-            { value: "60-85", label: '60"-85"', cost: 144, costLabel: "From $144" },
+            { value: "60-69", label: '60"-69"', cost: 144 },
+            { value: "70-85", label: '70"-85"', cost: 149 },
             { value: "over-86", label: '86"+', cost: 189 },
             { value: "notSure", label: "Not Sure", cost: 125, costLabel: "TBD" }
           ]
@@ -1023,17 +1024,23 @@ const NewQuizScheme = {
             { value: "metalStuds", label: "Metal Studs", cost: 30 },
             { value: "notSure", label: "Not Sure", cost: 0, costLabel: "TBD" }
           ]
-        },
+        }
+      ]
+    },
+    {
+      id: "fireplace",
+      title: "Fireplace",
+      showIf: {
+        field: "wall.wallType",
+        condition: "equalsAny",
+        values: ["drywall", "stoneBrickConcrete", "tile", "ceiling"],
+      },
+      fields: [
         {
           name: "fireplace",
           type: "radio",
           isRequired: true,
           label: "Is the TV being mounted above a fireplace?",
-          showIf: {
-            field: "wallType",
-            condition: "equalsAny",
-            values: ["drywall", "metalStuds"],
-          },
           options: [
             {
               value: "yes",
@@ -1074,7 +1081,7 @@ const NewQuizScheme = {
                 values: ["drywall", "metalStuds"],
               },
               {
-                field: "wall.fireplace",
+                field: "fireplace.fireplace",
                 condition: "equals",
                 value: "no",
               },
@@ -1134,7 +1141,7 @@ const NewQuizScheme = {
                 values: ["drywall", "metalStuds"],
               },
               {
-                field: "wall.fireplace",
+                field: "fireplace.fireplace",
                 condition: "equals",
                 value: "yes",
               },
@@ -1306,14 +1313,10 @@ const BestQuoteModal = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const pathname = usePathname();
-  const isNewQuiz = !!data?.props?.isNewQuiz || (pathname && pathname.includes("/sandbox"));
+  const isNewQuiz = data?.props?.isNewQuiz !== false;
   const tvSelection = formData["tv-size"]?.tvSelection;
 
   const currentScheme = useMemo(() => {
-    if (isNewQuiz) {
-      return NewQuizScheme;
-    }
-
     let fixedCost = 44;
     let tiltCost = 52;
     let fullMotionCost = 69;
@@ -1328,7 +1331,9 @@ const BestQuoteModal = () => {
       fullMotionCost = 79;
     }
 
-    const updatedSteps = BestQuoteScheme.steps.map((step) => {
+    const schemeToUse = isNewQuiz ? NewQuizScheme : BestQuoteScheme;
+
+    const updatedSteps = schemeToUse.steps.map((step) => {
       if (step.id === "mounting") {
         return {
           ...step,
@@ -1382,7 +1387,7 @@ const BestQuoteModal = () => {
     });
 
     return {
-      ...BestQuoteScheme,
+      ...schemeToUse,
       steps: updatedSteps,
     };
   }, [tvSelection, isNewQuiz]);
@@ -1440,7 +1445,11 @@ const BestQuoteModal = () => {
     const submissionData = {
       ...formData,
       tvCount: tvCountResolved,
-      wall: {
+      wall: isNewQuiz ? {
+        wallType: wallTypeResolved,
+        fireplace: formData.fireplace?.fireplace || "",
+        wires: formData.wires?.wires || "",
+      } : {
         ...formData.wall,
         wallType: wallTypeResolved,
       },
@@ -1494,8 +1503,8 @@ const BestQuoteModal = () => {
             extraTechnicians: formData["tv-size"]?.extraTechnicans || "",
             mountType: formData.mounting?.mountType || "",
             wallType: wallTypeResolved,
-            fireplace: formData.wall?.fireplace || "",
-            wires: formData.wall?.wires || "",
+            fireplace: isNewQuiz ? (formData.fireplace?.fireplace || "") : (formData.wall?.fireplace || ""),
+            wires: isNewQuiz ? (formData.wires?.wires || "") : (formData.wall?.wires || ""),
             utm_params: getUtmParams(),
           });
         }

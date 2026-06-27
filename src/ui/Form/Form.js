@@ -227,8 +227,8 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
   const currentStepPosition = visibleStepIndices ? visibleStepIndices.indexOf(currentStepIndex) : 0;
   const isContactStep = stepToRender?.id === "contactInfo";
   
-  // Calculate progress excluding the contactInfo step
-  const progressStepsCount = visibleStepIndices ? visibleStepIndices.length - 1 : 1;
+  // Calculate progress including all steps, so it only reaches 100% at the final step
+  const progressStepsCount = visibleStepIndices ? visibleStepIndices.length : 1;
   const progressPercent = progressStepsCount > 0
     ? Math.min(100, Math.round(((currentStepPosition + 1) / progressStepsCount) * 100))
     : 100;
