@@ -11,32 +11,48 @@ const { cityName, data } = Astro.props;
 
 const formatText = (text: string) => {
     if (!text) return "";
-    return text.split('\n').map((line) => {
-        // [accent text] -> <span class="accent">
-        // **bold text** -> <strong>
-        return line.replace(/\[(.*?)\]/g, '<span class="accent">$1</span>')
-                   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    }).join('<br />');
+    return text
+        .split("\n")
+        .map((line) => {
+            // [accent text] -> <span class="accent">
+            // **bold text** -> <strong>
+            return line
+                .replace(/\[(.*?)\]/g, '<span class="accent">$1</span>')
+                .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        })
+        .join("<br />");
 };
 
-const title = formatText(data?.title) || `Premium TV Mounting <br class="br-desktop" /> Service In ${cityName}`;
-const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-link\" data-open-modal=\"booking-modal\">brief quiz</span> and get <b>$30 off</b> your quote";
+const title =
+    formatText(data?.title) ||
+    `Premium TV Mounting <br class="br-desktop" /> Service In ${cityName}`;
+const subTitle =
+    formatText(data?.subTitle) ||
+    'Take a <span class="hero-quiz-link" data-open-modal="booking-modal">brief quiz</span> and get <b>$30 off</b> your quote';
 ---
 
 <section class="hero">
     <div class="hero-background">
-        {data?.background ? (
-            <ImageWrapper media={data.background} className="hero-bg-wrapper" priority={true} />
-        ) : (
-            <div class="hero-bg-image"></div>
-        )}
+        {
+            data?.background ? (
+                <ImageWrapper
+                    media={data.background}
+                    className="hero-bg-wrapper"
+                    priority={true}
+                />
+            ) : (
+                <div class="hero-bg-image" />
+            )
+        }
         <div class="hero-overlay"></div>
     </div>
 
     <div class="hero-content">
         <h1 class="hero-title" set:html={title} />
         <p class="hero-subtitle" set:html={subTitle} />
-        <Button href="/quiz?from=chicago" size="huge" class="hero-cta">Unlock $30 Off</Button>
+        <Button href="/quiz?from=chicago" size="huge" class="hero-cta"
+            >Take the quiz and get $30 off now</Button
+        >
     </div>
 </section>
 
@@ -57,7 +73,8 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
         z-index: 0;
     }
 
-    .hero-bg-image, .hero-bg-wrapper {
+    .hero-bg-image,
+    .hero-bg-wrapper {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -128,7 +145,11 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
     }
 
     .hero-cta {
-        background: linear-gradient(135deg, var(--blue-main) 0%, #1d4ed8 100%) !important;
+        background: linear-gradient(
+            135deg,
+            var(--blue-main) 0%,
+            #1d4ed8 100%
+        ) !important;
         box-shadow: 0 12px 35px rgba(37, 99, 235, 0.4) !important;
         transform: scale(1.05);
         animation: pulse 2.5s infinite;
@@ -143,16 +164,23 @@ const subTitle = formatText(data?.subTitle) || "Take a <span class=\"hero-quiz-l
     }
 
     @keyframes pulse {
-        0% { transform: scale(1.05); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1.05); }
+        0% {
+            transform: scale(1.05);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1.05);
+        }
     }
 
     @media (min-width: 768px) {
         .hero {
             height: 90vh; /* More impact on desktop */
         }
-        .hero-bg-image, .hero-bg-wrapper {
+        .hero-bg-image,
+        .hero-bg-wrapper {
             transform: scale(1.4) translate(-6px, 95px);
         }
         .hero-title {
