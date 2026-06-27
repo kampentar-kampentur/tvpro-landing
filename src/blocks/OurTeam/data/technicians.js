@@ -2,6 +2,7 @@ export const technicians = [
   // HOUSTON
   {
     id: "tech-houston-1",
+    department: "technician",
     name: "Artur H.",
     city: "Houston",
     photo: null,
@@ -11,10 +12,11 @@ export const technicians = [
     jobsCount: "7,000+ jobs done",
     bio: "Engineering mind behind a clean, secure wall. Artur reads the wall before he touches the tools.",
     tags: ["Frame TV", "Brick & Concrete", "Attic Routing"],
-    motto: "I do every installation the way I would do it in my own home."
+    motto: "I do every installation the way I would do it in my own home.",
   },
   {
     id: "tech-houston-2",
+    department: "technician",
     name: "Daniil B.",
     city: "Houston",
     photo: null,
@@ -24,10 +26,11 @@ export const technicians = [
     jobsCount: "6,000+ jobs done",
     bio: "The calm lead for complex walls and polished media setups. Turns difficult layouts into a finished premium setup.",
     tags: ["Recessed Box", "6-TV Media Wall", "Hard Surfaces"],
-    motto: "The job is finished when the customer feels it is perfect."
+    motto: "The job is finished when the customer feels it is perfect.",
   },
   {
     id: "tech-houston-3",
+    department: "technician",
     name: "Eugene K.",
     city: "Houston",
     photo: null,
@@ -37,10 +40,11 @@ export const technicians = [
     jobsCount: "2,000+ jobs done",
     bio: "A calm fireplace specialist who makes hard installs feel simple. Measures twice, checks the safest solution.",
     tags: ["Fireplace TV", "Hidden Wires", "All Wall Types"],
-    motto: "Measure twice. Mount once. Leave it clean."
+    motto: "Measure twice. Mount once. Leave it clean.",
   },
   {
     id: "tech-houston-4",
+    department: "technician",
     name: "Viktor K.",
     city: "Houston",
     photo: null,
@@ -50,10 +54,11 @@ export const technicians = [
     jobsCount: "2,000+ jobs done",
     bio: "Construction instincts, honest advice, and strong finishes. Explains the safer, cleaner option when he sees one.",
     tags: ["LG Gallery", "Recessed Box", "Drywall & Brick"],
-    motto: "If the wall looks right, the room feels right."
+    motto: "If the wall looks right, the room feels right.",
   },
   {
     id: "tech-houston-5",
+    department: "technician",
     name: "Dimitrii M.",
     city: "Houston",
     photo: null,
@@ -63,10 +68,11 @@ export const technicians = [
     jobsCount: "1,000+ jobs done",
     bio: "An IT brain with a sharp eye for symmetry. Thinks through placement, balance, wiring, and how every piece should look together.",
     tags: ["IT Background", "Floating Shelves", "Mirrors"],
-    motto: "Good placement is where technology disappears into the room."
+    motto: "Good placement is where technology disappears into the room.",
   },
   {
     id: "tech-houston-6",
+    department: "technician",
     name: "Maksym K.",
     city: "Houston",
     photo: null,
@@ -76,12 +82,13 @@ export const technicians = [
     jobsCount: "500+ jobs done",
     bio: "Positive energy with fast, clean drywall work. Friendly, quick, focused, and brings good energy to every home.",
     tags: ["Positive Energy", "Frame TV", "Hidden Wires"],
-    motto: "Bring the energy. Respect the home. Finish clean."
+    motto: "Bring the energy. Respect the home. Finish clean.",
   },
 
   // KANSAS CITY
   {
     id: "tech-kc-1",
+    department: "technician",
     name: "Erdem O.",
     city: "Kansas City",
     photo: null,
@@ -91,10 +98,11 @@ export const technicians = [
     jobsCount: "5,000+ jobs done",
     bio: "A straight-to-the-point installer for almost any wall. Does not waste words. Works with control and delivers clean results.",
     tags: ["Metal Studs", "Storm Shell", "Full-Motion"],
-    motto: "Clear goal. Clean wall. Solid result."
+    motto: "Clear goal. Clean wall. Solid result.",
   },
   {
     id: "tech-kc-2",
+    department: "technician",
     name: "Yurii O.",
     city: "Kansas City",
     photo: null,
@@ -103,13 +111,18 @@ export const technicians = [
     rating: "5.0 ★",
     jobsCount: "1,000+ jobs done",
     bio: "The practical problem-solver who finds a way through tricky layouts. Brings real construction sense to every job.",
-    tags: ["TV Installation Wizard", "Construction Experience", "Complex Installs"],
-    motto: "Every tough wall has a smart answer."
+    tags: [
+      "TV Installation Wizard",
+      "Construction Experience",
+      "Complex Installs",
+    ],
+    motto: "Every tough wall has a smart answer.",
   },
 
   // CHARLOTTE
   {
     id: "tech-cha-1",
+    department: "technician",
     name: "Stepan P.",
     city: "Charlotte",
     photo: null,
@@ -119,10 +132,11 @@ export const technicians = [
     jobsCount: "7,000+ jobs done",
     bio: "A disciplined senior tech who finishes what he starts. Punctual, steady, and serious about the final result.",
     tags: ["Storm Shell", "Outdoor TV", "Hidden Wires"],
-    motto: "Discipline turns a hard job into a clean finish."
+    motto: "Discipline turns a hard job into a clean finish.",
   },
   {
     id: "tech-cha-2",
+    department: "technician",
     name: "Ivan L.",
     city: "Charlotte",
     photo: null,
@@ -132,10 +146,11 @@ export const technicians = [
     jobsCount: "400+ jobs done",
     bio: "A field-tested tool expert who learns fast and works hard. Brings careful tools, clear effort, and clean results.",
     tags: ["Field Work", "Tool Experience", "Clean Installs"],
-    motto: "Do the hard part so the result looks simple."
+    motto: "Do the hard part so the result looks simple.",
   },
   {
     id: "tech-cha-3",
+    department: "technician",
     name: "Roman L.",
     city: "Charlotte",
     photo: null,
@@ -145,12 +160,13 @@ export const technicians = [
     jobsCount: "3,000+ jobs done",
     bio: "A wiring-minded technician with trainer-level discipline. Fast, organized, and serious about doing the job right.",
     tags: ["Wiring Experience", "Trainer", "No Shortcuts"],
-    motto: "Clean wiring. Solid mount. No shortcuts."
+    motto: "Clean wiring. Solid mount. No shortcuts.",
   },
 
   // DALLAS
   {
     id: "tech-dal-1",
+    department: "technician",
     name: "Vitalii R.",
     city: "Dallas",
     photo: null,
@@ -159,11 +175,12 @@ export const technicians = [
     rating: "5.0 ★",
     jobsCount: "3,000+ jobs done",
     bio: "Heavy-duty strength with a precision finish. Brings construction and hard-surface experience to jobs that need real confidence.",
-    tags: ["85\" Frame TV", "Fireplace", "Heavy-Duty"],
-    motto: "Impossible just means the right hands are needed."
+    tags: ['85" Frame TV', "Fireplace", "Heavy-Duty"],
+    motto: "Impossible just means the right hands are needed.",
   },
   {
     id: "tech-dal-2",
+    department: "technician",
     name: "Vasyl V.",
     city: "Dallas",
     photo: null,
@@ -173,10 +190,11 @@ export const technicians = [
     jobsCount: "2,000+ jobs done",
     bio: "A calm installer for big, detailed home projects. Keeps the work area clean and handles pressure without noise.",
     tags: ["MantelMount", "Ceiling Mount", "12-TV Project"],
-    motto: "Stay calm. Line it up. Let the result speak."
+    motto: "Stay calm. Line it up. Let the result speak.",
   },
   {
     id: "tech-dal-3",
+    department: "technician",
     name: "Ivan S.",
     city: "Dallas",
     photo: null,
@@ -186,10 +204,11 @@ export const technicians = [
     jobsCount: "7,000+ jobs done",
     bio: "A senior trainer with the tools and confidence for any surface. Open, honest, and easy to talk to.",
     tags: ["Senior Trainer", "All Wall Types", "Full Tool Set"],
-    motto: "Right tools. Clear plan. Clean result."
+    motto: "Right tools. Clear plan. Clean result.",
   },
   {
     id: "tech-dal-4",
+    department: "technician",
     name: "Ratmir T.",
     city: "Dallas",
     photo: null,
@@ -199,12 +218,14 @@ export const technicians = [
     jobsCount: "500+ jobs done",
     bio: "A cable-minded problem solver who turns wire chaos into comfort. Persistent, disciplined, and does not quit.",
     tags: ["Spectrum Background", "In-Wall Concealment", "IT Background"],
-    motto: "Good work is when cables disappear and the room finally feels easy."
+    motto:
+      "Good work is when cables disappear and the room finally feels easy.",
   },
 
   // AUSTIN
   {
     id: "tech-aus-1",
+    department: "technician",
     name: "Oleh N.",
     city: "Austin",
     photo: null,
@@ -214,10 +235,11 @@ export const technicians = [
     jobsCount: "2,000+ jobs done",
     bio: "A structure-first specialist who knows what is behind the wall. Chooses a safe mounting plan before making the first hole.",
     tags: ["Structural Wall Knowledge", "Fireplace", "Heavy TVs"],
-    motto: "Strong work starts behind the wall."
+    motto: "Strong work starts behind the wall.",
   },
   {
     id: "tech-aus-2",
+    department: "technician",
     name: "Nazar M.",
     city: "Austin",
     photo: null,
@@ -227,12 +249,13 @@ export const technicians = [
     jobsCount: "1,500+ jobs done",
     bio: "A clean-line technician for rooms that need a designer finish. Builds setups that feel planned with hidden wires.",
     tags: ["Frame TV", "Recessed Box", "Clean Lines"],
-    motto: "If it looks effortless, it was planned right."
+    motto: "If it looks effortless, it was planned right.",
   },
 
   // CHICAGO
   {
     id: "tech-chi-1",
+    department: "technician",
     name: "Alex K.",
     city: "Chicago",
     photo: null,
@@ -242,10 +265,11 @@ export const technicians = [
     jobsCount: "3,000+ jobs done",
     bio: "A trainer who plans three steps ahead. Built for older Chicago buildings, condos, and walls that hide surprises.",
     tags: ["Technician Trainer", "Metal Studs", "Hidden Wires"],
-    motto: "Plan it right. Mount it once. Hide the hard part."
+    motto: "Plan it right. Mount it once. Hide the hard part.",
   },
   {
     id: "tech-chi-2",
+    department: "technician",
     name: "Roman P.",
     city: "Chicago",
     photo: null,
@@ -255,10 +279,12 @@ export const technicians = [
     jobsCount: "4,000+ jobs done",
     bio: "The quick, polite pro customers remember in reviews. Understands the emotion behind a finished TV setup.",
     tags: ["Google Review Favorite", "Fast & Polite", "Clean TV Mounting"],
-    motto: "A TV should not just hang there - it should bring the room together."
+    motto:
+      "A TV should not just hang there - it should bring the room together.",
   },
   {
     id: "tech-chi-3",
+    department: "technician",
     name: "Serhii V.",
     city: "Chicago",
     photo: null,
@@ -268,12 +294,13 @@ export const technicians = [
     jobsCount: "1,000+ jobs done",
     bio: "A construction hand who knows homes from foundation to finish. Stays calm and finds the support in any wall puzzle.",
     tags: ["Construction Background", "Brick & Plaster", "Wall Structure"],
-    motto: "Know the structure. Respect the home. Build the result."
+    motto: "Know the structure. Respect the home. Build the result.",
   },
 
   // PHILADELPHIA
   {
     id: "tech-phi-1",
+    department: "technician",
     name: "Roman S.",
     city: "Philadelphia",
     photo: null,
@@ -283,10 +310,11 @@ export const technicians = [
     jobsCount: "1,500+ jobs done",
     bio: "A family-minded installer who brings warmth to the wall. Works with patience, care, and full dedication.",
     tags: ["Family-Oriented", "Fireplace", "Hidden Wires"],
-    motto: "The best install is the one that makes the room feel like home."
+    motto: "The best install is the one that makes the room feel like home.",
   },
   {
     id: "tech-phi-2",
+    department: "technician",
     name: "Artem N.",
     city: "Philadelphia",
     photo: null,
@@ -296,12 +324,14 @@ export const technicians = [
     jobsCount: "2,000+ jobs done",
     bio: "A detail-focused technician raising the standard of home service. Cares about the details customers should never worry about.",
     tags: ["Service Standards", "Frame TV", "Low-Profile"],
-    motto: "Better service starts with details customers should never have to worry about."
+    motto:
+      "Better service starts with details customers should never have to worry about.",
   },
 
   // JACKSONVILLE
   {
     id: "tech-jax-1",
+    department: "technician",
     name: "Anton T.",
     city: "Jacksonville",
     photo: null,
@@ -311,12 +341,13 @@ export const technicians = [
     jobsCount: "1,000+ jobs done",
     bio: "A positive leader who finds solutions where others see a dead end. Works fast, clean, and with confidence.",
     tags: ["The Reliable Force", "Leadership", "Problem Solver"],
-    motto: "There is always a better solution when you care enough to find it."
+    motto: "There is always a better solution when you care enough to find it.",
   },
 
   // MIAMI
   {
     id: "tech-mia-1",
+    department: "technician",
     name: "Nick",
     city: "Miami",
     photo: null,
@@ -326,10 +357,11 @@ export const technicians = [
     jobsCount: "2,500+ jobs done",
     bio: "A condo-friendly specialist for bright, polished Miami spaces. Understands high-rises, concrete walls, and modern interiors.",
     tags: ["Frame TV", "Concrete Wall", "Condo-Friendly"],
-    motto: "Clean walls, clear words, Miami-ready finish."
+    motto: "Clean walls, clear words, Miami-ready finish.",
   },
   {
     id: "tech-mia-2",
+    department: "technician",
     name: "Michael",
     city: "Miami",
     photo: null,
@@ -339,12 +371,13 @@ export const technicians = [
     jobsCount: "2,000+ jobs done",
     bio: "A warm media-wall builder with Florida construction sense. Builds entertainment setups that feel clean, strong, and comfortable.",
     tags: ["LG Gallery", "Floating Shelf", "Concrete Block"],
-    motto: "Strong mounting should look simple, calm, and made for the home."
+    motto: "Strong mounting should look simple, calm, and made for the home.",
   },
 
   // NEW YORK
   {
     id: "tech-ny-1",
+    department: "technician",
     name: "Alex",
     city: "New York",
     photo: null,
@@ -354,10 +387,11 @@ export const technicians = [
     jobsCount: "3,000+ jobs done",
     bio: "A city-space expert for projectors, ceilings, and older walls. Turns tight rooms into clean home theater spaces.",
     tags: ["Projector Setup", "Ceiling Mounts", "Small Space Expert"],
-    motto: "In New York, space is limited - the result should not be."
+    motto: "In New York, space is limited - the result should not be.",
   },
   {
     id: "tech-ny-2",
+    department: "technician",
     name: "Vlad",
     city: "New York",
     photo: null,
@@ -367,6 +401,6 @@ export const technicians = [
     jobsCount: "4,000+ jobs done",
     bio: "A premium wall setup tech who makes apartments feel finished. Listens first, then builds the setup around the customer’s space.",
     tags: ["Soundbar", "Floating Shelves", "Premium Finish"],
-    motto: "A good install does not fill the wall - it changes the room."
-  }
+    motto: "A good install does not fill the wall - it changes the room.",
+  },
 ];

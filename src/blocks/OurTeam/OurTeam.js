@@ -4,7 +4,11 @@ import TechCard from "./components/TechCard";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Button from "@/ui/Button";
 import styles from "./OurTeam.module.css";
-import { getGlobalConfig, getAllTechnicians, getStrapiMediaUrl } from "@/lib/strapi";
+import {
+  getGlobalConfig,
+  getAllTechnicians,
+  getStrapiMediaUrl,
+} from "@/lib/strapi";
 import Text from "@/ui/Text/Text";
 import { resolveSpintax } from "@/lib/spintax";
 
@@ -19,7 +23,7 @@ async function getOurTeamData() {
 
 export default async function OurTeam({ data = {}, cityContext }) {
   const defaultTeamData = await getOurTeamData();
-  
+
   // Аккуратно мержим данные, чтобы null из локального блока не затирал глобальные значения
   const teamData = { ...defaultTeamData };
   if (data?.title) teamData.title = data.title;
@@ -28,13 +32,19 @@ export default async function OurTeam({ data = {}, cityContext }) {
   if (data?.technicians) teamData.technicians = data.technicians;
 
   const cityName = cityContext?.city_name || "your area";
-  const stateCode = cityContext?.state_code ? `, ${cityContext.state_code}` : "";
+  const stateCode = cityContext?.state_code
+    ? `, ${cityContext.state_code}`
+    : "";
   const displayLocation = `${cityName}${stateCode}`;
 
   let strapiTechs = [];
-  
+
   // 1. Проверяем, не переопределены ли техники вручную в блоке
-  if (teamData?.technicians && Array.isArray(teamData.technicians) && teamData.technicians.length > 0) {
+  if (
+    teamData?.technicians &&
+    Array.isArray(teamData.technicians) &&
+    teamData.technicians.length > 0
+  ) {
     strapiTechs = teamData.technicians;
   } else {
     // 2. Если нет, берем всех из новой коллекции Technician
@@ -42,10 +52,10 @@ export default async function OurTeam({ data = {}, cityContext }) {
   }
 
   if (strapiTechs && strapiTechs.length > 0) {
-    strapiTechs = strapiTechs.map(t => {
+    strapiTechs = strapiTechs.map((t) => {
       let photoObj = null;
       if (t.photo) {
-        if (typeof t.photo === 'string') {
+        if (typeof t.photo === "string") {
           photoObj = { url: t.photo };
         } else if (t.photo.data?.attributes) {
           photoObj = { id: t.photo.data.id, ...t.photo.data.attributes };
@@ -60,43 +70,75 @@ export default async function OurTeam({ data = {}, cityContext }) {
         ...t,
         photo: photoObj,
         // Если теги из Strapi пришли строкой "Frame TV, Fireplace", разбиваем в массив
-        tags: typeof t.tags === 'string' ? t.tags.split(',').map(tag => tag.trim()) : (t.tags || [])
+        tags:
+          typeof t.tags === "string"
+            ? t.tags.split(",").map((tag) => tag.trim())
+            : t.tags || [],
       };
     });
   }
-  
+
   const allTechs = strapiTechs.length > 0 ? strapiTechs : localTechnicians;
 
-  const cityTechs = allTechs.filter(t => 
-    t.city?.toLowerCase() === cityName?.toLowerCase()
+  // Filter to show only technicians (exclude managers) on main page
+  // Include undefined/null department for backward compatibility
+  const techniciansOnly = allTechs.filter(
+    (t) => !t.department || t.department === "technician",
   );
-  
+  const managersOnly = allTechs.filter((t) => t.department === "manager");
+
+  const cityTechs = techniciansOnly.filter(
+    (t) => t.city?.toLowerCase() === cityName?.toLowerCase(),
+  );
+
   let selectedTechs = [];
   // Если для города есть свои техники — показываем их (максимум 6)
-  // Если меньше 3 — добираем рандомных из других городов
-  if (cityTechs.length >= 3) {
+  // Если меньше 6 — добираем менеджерами, затем рандомными из других городов
+  if (cityTechs.length >= 6) {
     const shuffled = [...cityTechs].sort(() => 0.5 - Math.random());
     selectedTechs = shuffled.slice(0, 6);
   } else {
-    // Fallback: берём техников из других городов, кроме уже выбранных
-    const others = allTechs.filter(t => t.city?.toLowerCase() !== cityName?.toLowerCase());
-    const shuffledOthers = [...others].sort(() => 0.5 - Math.random());
-    const combined = [...cityTechs, ...shuffledOthers].slice(0, 6);
+    // Try to fill remaining slots with managers from the same city
+    const cityManagers = managersOnly.filter(
+      (t) => t.city?.toLowerCase() === cityName?.toLowerCase(),
+    );
+    const remainingSlots = 6 - cityTechs.length;
+    const managersToFill = cityManagers.slice(0, remainingSlots);
+
+    // If still not enough, add technicians from other cities
+    const otherTechnicians = techniciansOnly.filter(
+      (t) => t.city?.toLowerCase() !== cityName?.toLowerCase(),
+    );
+    const shuffledOthers = [...otherTechnicians].sort(
+      () => 0.5 - Math.random(),
+    );
+
+    const combined = [...cityTechs, ...managersToFill, ...shuffledOthers].slice(
+      0,
+      6,
+    );
     selectedTechs = combined.sort(() => 0.5 - Math.random());
   }
 
   // Сортируем выбранных техников по убыванию опыта/скиллов
   const getTechSkillLevel = (tech) => {
-    const localTech = localTechnicians.find(
-      (l) =>
-        l.name &&
-        tech.name &&
-        (l.name.toLowerCase() === tech.name.toLowerCase() ||
-          tech.name.toLowerCase().startsWith(l.name.toLowerCase()) ||
-          l.name.toLowerCase().startsWith(tech.name.toLowerCase()))
-    ) || {};
+    const localTech =
+      localTechnicians.find(
+        (l) =>
+          l.name &&
+          tech.name &&
+          (l.name.toLowerCase() === tech.name.toLowerCase() ||
+            tech.name.toLowerCase().startsWith(l.name.toLowerCase()) ||
+            l.name.toLowerCase().startsWith(tech.name.toLowerCase())),
+      ) || {};
 
-    const expStr = String(tech.experience || localTech.experience || tech.jobsCount || localTech.jobsCount || "0");
+    const expStr = String(
+      tech.experience ||
+        localTech.experience ||
+        tech.jobsCount ||
+        localTech.jobsCount ||
+        "0",
+    );
     const match = expStr.replace(/,/g, "").match(/\d+/);
     if (match) {
       const num = parseInt(match[0], 10);
@@ -111,34 +153,33 @@ export default async function OurTeam({ data = {}, cityContext }) {
   selectedTechs.sort((a, b) => getTechSkillLevel(b) - getTechSkillLevel(a));
 
   const title = resolveSpintax(
-    teamData?.title ||
-    `Meet Our TV Mounting Specialists in ${displayLocation}`
+    teamData?.title || `Meet Our TV Mounting Specialists in ${displayLocation}`,
   );
 
   const subTitle = resolveSpintax(
     teamData?.subTitle ||
-    "Every technician is background-checked, insured, and certified — ready to deliver a flawless installation in your home."
+      "Every technician is background-checked, insured, and certified — ready to deliver a flawless installation in your home.",
   );
 
   const footerText = resolveSpintax(
     teamData?.footerText ||
-    "Ready to mount your TV? Book your service with one of our local specialists."
+      "Ready to mount your TV? Book your service with one of our local specialists.",
   );
 
   return (
     <section className={`block ${styles.ourTeam}`} id="team">
       <header className={styles.header}>
-        <h2 className="blockHeading"><Text text={title} cityContext={cityContext} /></h2>
-        <p className="subText"><Text text={subTitle} cityContext={cityContext} /></p>
+        <h2 className="blockHeading">
+          <Text text={title} cityContext={cityContext} />
+        </h2>
+        <p className="subText">
+          <Text text={subTitle} cityContext={cityContext} />
+        </p>
       </header>
 
       <div className={styles.sliderTrack}>
         {selectedTechs.map((tech) => (
-          <TechCard
-            key={tech.id}
-            tech={tech}
-            cityName={cityName}
-          />
+          <TechCard key={tech.id} tech={tech} cityName={cityName} />
         ))}
       </div>
 
