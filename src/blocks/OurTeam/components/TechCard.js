@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import styles from "./TechCard.module.css";
 import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import { technicians as localTechnicians } from "../data/technicians";
@@ -105,7 +108,38 @@ const CheckCircleIcon = () => (
   </svg>
 );
 
+const FlipBackIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="16"
+    height="16"
+  >
+    <polyline points="1 4 1 10 7 10"></polyline>
+    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+  </svg>
+);
+
 const TechCard = ({ tech, cityName = "your area" }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleFlip = () => {
+    if (window.innerWidth <= 1024) {
+      setIsFlipped((prev) => !prev);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleFlip();
+    }
+  };
+
   const localTech =
     localTechnicians.find(
       (l) =>
@@ -166,137 +200,242 @@ const TechCard = ({ tech, cityName = "your area" }) => {
   const blueStatLabel = "";
   const mottoText = tech.motto || localTech.motto || "";
 
+  const cardInnerClass = `${styles.cardInner}${isFlipped ? ` ${styles.flipped}` : ""}`;
+
   return (
-    <div className={styles.techCard}>
-      {/* Top Image Container */}
-      <div className={styles.coverPhoto}>
-        {/* Verified Badge Overlay */}
-        <div className={styles.verifiedBadge}>
-          <VerifiedCheckIcon /> Verified Pro
+    <div
+      className={styles.techCard}
+      onClick={handleFlip}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label="Flip card to see more details"
+    >
+      <div className={cardInnerClass}>
+        {/* ── FRONT FACE ── */}
+        <div className={styles.front}>
+          {/* Top Image Container */}
+          <div className={styles.coverPhoto}>
+            {/* Verified Badge Overlay */}
+            <div className={styles.verifiedBadge}>
+              <VerifiedCheckIcon /> Verified Pro
+            </div>
+
+            {hasValidPhoto ? (
+              <ImageWrapper
+                media={mediaObj}
+                defaultAlt={tech.name}
+                className={styles.photo}
+                sizes="(max-width: 768px) 100vw, 400px"
+                width={400}
+                height={400}
+              />
+            ) : (
+              <div
+                className={styles.avatarInitials}
+                style={{ backgroundColor: nameToHSL(tech.name) }}
+              >
+                {getInitials(tech.name)}
+              </div>
+            )}
+          </div>
+
+          <div className={styles.content}>
+            <div className={styles.nameBlock}>
+              <h3 className={styles.name}>{tech.name}</h3>
+              <p className={styles.role}>{tech.role}</p>
+              {mottoText && (
+                <p className={styles.motto}>&ldquo;{mottoText}&rdquo;</p>
+              )}
+            </div>
+
+            <span className={styles.statPill}>
+              <span className={styles.statStar}>★</span>
+              {ratingNum}
+            </span>
+
+            {/* Blue Stat Block - shown on front for mobile, in desktopOnly for desktop */}
+            <div className={styles.blueStatBlockMobile}>
+              <div className={styles.blueStatIcon}>
+                <CheckCircleIcon />
+              </div>
+              <div className={styles.blueStatText}>
+                <span className={styles.blueStatValue}>{blueStatValue}</span>
+                <span className={styles.blueStatLabel}>{blueStatLabel}</span>
+              </div>
+            </div>
+
+            {/* Desktop-only content: show everything below the fold on desktop */}
+            <div className={styles.desktopOnly}>
+              <div className={styles.attributesList}>
+                {whatILove && (
+                  <div className={styles.attributeItem}>
+                    <div className={styles.attributeIcon}>
+                      <TargetIcon />
+                    </div>
+                    <div className={styles.attributeText}>
+                      <span className={styles.attributeLabel}>Headline</span>
+                      <span className={styles.attributeValue}>{whatILove}</span>
+                    </div>
+                  </div>
+                )}
+                {specializesIn && (
+                  <div className={styles.attributeItem}>
+                    <div className={styles.attributeIcon}>
+                      <ToolsIcon />
+                    </div>
+                    <div className={styles.attributeText}>
+                      <span className={styles.attributeLabel}>Best For</span>
+                      <span className={styles.attributeValue}>
+                        {specializesIn}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {speedReliability && (
+                  <div className={styles.attributeItem}>
+                    <div className={styles.attributeIcon}>
+                      <ShieldIcon />
+                    </div>
+                    <div className={styles.attributeText}>
+                      <span className={styles.attributeLabel}>
+                        Signature Challenge
+                      </span>
+                      <span className={styles.attributeValue}>
+                        {speedReliability}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {howIHelp && (
+                  <div className={styles.attributeItem}>
+                    <div className={styles.attributeIcon}>
+                      <HeartIcon />
+                    </div>
+                    <div className={styles.attributeText}>
+                      <span className={styles.attributeLabel}>
+                        Why Customers Remember Him
+                      </span>
+                      <span className={styles.attributeValue}>{howIHelp}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Large Blue Block */}
+              <div className={styles.blueStatBlock}>
+                <div className={styles.blueStatIcon}>
+                  <CheckCircleIcon />
+                </div>
+                <div className={styles.blueStatText}>
+                  <span className={styles.blueStatValue}>{blueStatValue}</span>
+                  <span className={styles.blueStatLabel}>{blueStatLabel}</span>
+                </div>
+              </div>
+
+              {/* Bottom tags - if any */}
+              {tech.badges && (
+                <div className={styles.tags}>
+                  {tech.badges
+                    .split(/[,·]+/)
+                    .map((b) => b.trim())
+                    .filter(Boolean)
+                    .map((tag, i) => (
+                      <span key={i} className={styles.tag}>
+                        {tag}
+                      </span>
+                    ))}
+                </div>
+              )}
+            </div>
+
+            {/* Mobile-only flip hint */}
+            <div className={styles.flipHint}>
+              <span>Tap to see more</span>
+            </div>
+          </div>
         </div>
 
-        {hasValidPhoto ? (
-          <ImageWrapper
-            media={mediaObj}
-            defaultAlt={tech.name}
-            className={styles.photo}
-            sizes="(max-width: 768px) 100vw, 400px"
-            width={400}
-            height={400}
-          />
-        ) : (
-          <div
-            className={styles.avatarInitials}
-            style={{ backgroundColor: nameToHSL(tech.name) }}
-          >
-            {getInitials(tech.name)}
-          </div>
-        )}
-      </div>
+        {/* ── BACK FACE (mobile only) ── */}
+        <div className={styles.back}>
+          <div className={styles.content}>
+            <div className={styles.attributesList}>
+              {whatILove && (
+                <div className={styles.attributeItem}>
+                  <div className={styles.attributeIcon}>
+                    <TargetIcon />
+                  </div>
+                  <div className={styles.attributeText}>
+                    <span className={styles.attributeLabel}>Headline</span>
+                    <span className={styles.attributeValue}>{whatILove}</span>
+                  </div>
+                </div>
+              )}
+              {specializesIn && (
+                <div className={styles.attributeItem}>
+                  <div className={styles.attributeIcon}>
+                    <ToolsIcon />
+                  </div>
+                  <div className={styles.attributeText}>
+                    <span className={styles.attributeLabel}>Best For</span>
+                    <span className={styles.attributeValue}>
+                      {specializesIn}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {speedReliability && (
+                <div className={styles.attributeItem}>
+                  <div className={styles.attributeIcon}>
+                    <ShieldIcon />
+                  </div>
+                  <div className={styles.attributeText}>
+                    <span className={styles.attributeLabel}>
+                      Signature Challenge
+                    </span>
+                    <span className={styles.attributeValue}>
+                      {speedReliability}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {howIHelp && (
+                <div className={styles.attributeItem}>
+                  <div className={styles.attributeIcon}>
+                    <HeartIcon />
+                  </div>
+                  <div className={styles.attributeText}>
+                    <span className={styles.attributeLabel}>
+                      Why Customers Remember Him
+                    </span>
+                    <span className={styles.attributeValue}>{howIHelp}</span>
+                  </div>
+                </div>
+              )}
+            </div>
 
-      <div className={styles.content}>
-        <div className={styles.nameBlock}>
-          <h3 className={styles.name}>{tech.name}</h3>
-          <p className={styles.role}>{tech.role}</p>
-          {mottoText && (
-            <p className={styles.motto}>&ldquo;{mottoText}&rdquo;</p>
-          )}
-        </div>
+            {/* Bottom tags - if any */}
+            {tech.badges && (
+              <div className={styles.tags}>
+                {tech.badges
+                  .split(/[,·]+/)
+                  .map((b) => b.trim())
+                  .filter(Boolean)
+                  .map((tag, i) => (
+                    <span key={i} className={styles.tag}>
+                      {tag}
+                    </span>
+                  ))}
+              </div>
+            )}
 
-        <span className={styles.statPill}>
-          <span className={styles.statStar}>★</span>
-          {ratingNum}
-        </span>
-
-        <div className={styles.attributesList}>
-          {whatILove && (
-            <div className={styles.attributeItem}>
-              <div className={styles.attributeIcon}>
-                <TargetIcon />
-              </div>
-              <div className={styles.attributeText}>
-                <span className={styles.attributeLabel}>Headline</span>
-                <span className={styles.attributeValue}>{whatILove}</span>
-              </div>
+            {/* Close / flip-back hint */}
+            <div className={styles.flipHint}>
+              <FlipBackIcon />
+              <span>Tap to flip back</span>
             </div>
-          )}
-          {specializesIn && (
-            <div className={styles.attributeItem}>
-              <div className={styles.attributeIcon}>
-                <ToolsIcon />
-              </div>
-              <div className={styles.attributeText}>
-                <span className={styles.attributeLabel}>Best For</span>
-                <span className={styles.attributeValue}>{specializesIn}</span>
-              </div>
-            </div>
-          )}
-          {/* {experience && (
-            <div className={styles.attributeItem}>
-              <div className={styles.attributeIcon}>
-                <ClockIcon />
-              </div>
-              <div className={styles.attributeText}>
-                <span className={styles.attributeLabel}>Experience</span>
-                <span className={styles.attributeValue}>{experience}</span>
-              </div>
-            </div>
-          )}*/}
-          {speedReliability && (
-            <div className={styles.attributeItem}>
-              <div className={styles.attributeIcon}>
-                <ShieldIcon />
-              </div>
-              <div className={styles.attributeText}>
-                <span className={styles.attributeLabel}>
-                  Signature Challenge
-                </span>
-                <span className={styles.attributeValue}>
-                  {speedReliability}
-                </span>
-              </div>
-            </div>
-          )}
-          {howIHelp && (
-            <div className={styles.attributeItem}>
-              <div className={styles.attributeIcon}>
-                <HeartIcon />
-              </div>
-              <div className={styles.attributeText}>
-                <span className={styles.attributeLabel}>
-                  Why Customers Remember Him
-                </span>
-                <span className={styles.attributeValue}>{howIHelp}</span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Large Blue Block */}
-        <div className={styles.blueStatBlock}>
-          <div className={styles.blueStatIcon}>
-            <CheckCircleIcon />
-          </div>
-          <div className={styles.blueStatText}>
-            <span className={styles.blueStatValue}>{blueStatValue}</span>
-            <span className={styles.blueStatLabel}>{blueStatLabel}</span>
           </div>
         </div>
-
-        {/* Bottom tags - if any */}
-        {tech.badges && (
-          <div className={styles.tags}>
-            {tech.badges
-              .split(/[,·]+/)
-              .map((b) => b.trim())
-              .filter(Boolean)
-              .map((tag, i) => (
-                <span key={i} className={styles.tag}>
-                  {tag}
-                </span>
-              ))}
-          </div>
-        )}
       </div>
     </div>
   );
