@@ -41,7 +41,7 @@ export default async function Home() {
       <AboutUs />
       <FAQ />
       <Contacts />
-      <AreasWeServe />
+      {/* <AreasWeServe />*/}
     </div>
   );
 }

@@ -108,7 +108,7 @@ export default async function OurTeamPage() {
       {/* Managers Section */}
       {managers.length > 0 && (
         <section className={`block ${styles.gridSection}`}>
-          <h2 className={styles.sectionTitle}>Our Management Team</h2>
+          <h2 className={styles.sectionTitle}>Customer Experience & Project Planning Team</h2>
           <div className={styles.grid}>{renderTechCards(managers)}</div>
         </section>
       )}

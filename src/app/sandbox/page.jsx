@@ -41,7 +41,7 @@ export default async function Sandbox() {
       <AboutUs />
       <FAQ />
       <Contacts />
-      <AreasWeServe />
+      {/* <AreasWeServe />*/}
     </div>
   );
 }
