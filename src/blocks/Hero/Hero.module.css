@@ -2,6 +2,10 @@
     font-weight: 700;
 }
 
+.buttonCTATesxt {
+    margin: 0 !important;
+}
+
 .hero {
     padding-bottom: 0;
 }
@@ -185,7 +189,7 @@
     }
 
     .buttonWrapper {
-        margin-top: 30px;
+        margin-top: 20px;
     }
 
     .bxlt {

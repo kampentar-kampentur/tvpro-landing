@@ -1,416 +1,408 @@
 :root {
-  --background: #f6f6f8;
-  /* main light background from Figma */
-  --foreground: #0e0e13;
-  /* main dark color (text, icons) */
-  --white: #ffffff;
-  /* white (cards, buttons) */
-  --gray-light: #dbdbdf;
-  /* light gray (borders) */
-  --gray: #91929c;
-  /* gray (borders, elements) */
-  --gray-medium: #6B6A73;
-  /* new gray medium color */
-  --green: #0d64a0;
-  /* authoritative deep blue */
-  --green-hover: #0a4d7d;
-  /* deeper hover */
-  --gray-extra-light: #e7e7eb;
-  /* extra light gray (button disabled, border hover) */
-  --text-secondary: var(--gray);
-  --header-height: 80px;
+    --background: #f6f6f8;
+    /* main light background from Figma */
+    --foreground: #0e0e13;
+    /* main dark color (text, icons) */
+    --white: #ffffff;
+    /* white (cards, buttons) */
+    --gray-light: #dbdbdf;
+    /* light gray (borders) */
+    --gray: #91929c;
+    /* gray (borders, elements) */
+    --gray-medium: #6b6a73;
+    /* new gray medium color */
+    --green: #0d64a0;
+    /* authoritative deep blue */
+    --green-hover: #0a4d7d;
+    /* deeper hover */
+    --gray-extra-light: #e7e7eb;
+    /* extra light gray (button disabled, border hover) */
+    --text-secondary: var(--gray);
+    --header-height: 80px;
 }
 
 /* Chat Widget Engagement Enhancements */
 chat-widget {
-  display: contents !important;
-  transform-origin: bottom right !important;
+    display: contents !important;
+    transform-origin: bottom right !important;
 }
 
 .chat-widget-animated {
-  transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }
 
 /* Attention Animations (Reusable) */
 @keyframes widget-sequence {
+    /* cycle is 30s total */
+    /* Wiggle: 0-2s (approx 0-7%) */
+    0%,
+    6% {
+        transform: scale(1) rotate(0);
+    }
 
-  /* cycle is 30s total */
-  /* Wiggle: 0-2s (approx 0-7%) */
-  0%,
-  6% {
-    transform: scale(1) rotate(0);
-  }
+    1% {
+        transform: scale(1.2) rotate(15deg);
+    }
 
-  1% {
-    transform: scale(1.2) rotate(15deg);
-  }
+    2% {
+        transform: scale(1.2) rotate(-15deg);
+    }
 
-  2% {
-    transform: scale(1.2) rotate(-15deg);
-  }
+    3% {
+        transform: scale(1.2) rotate(15deg);
+    }
 
-  3% {
-    transform: scale(1.2) rotate(15deg);
-  }
+    4% {
+        transform: scale(1.2) rotate(-15deg);
+    }
 
-  4% {
-    transform: scale(1.2) rotate(-15deg);
-  }
+    5% {
+        transform: scale(1.2) rotate(15deg);
+    }
 
-  5% {
-    transform: scale(1.2) rotate(15deg);
-  }
+    /* Long Pause: 6-33% (approx 2s to 10s) */
+    7%,
+    32% {
+        transform: scale(1) rotate(0);
+    }
 
-  /* Long Pause: 6-33% (approx 2s to 10s) */
-  7%,
-  32% {
-    transform: scale(1) rotate(0);
-  }
+    /* Tada: 33-40% (approx 10s to 12s) */
+    33% {
+        transform: scale(1);
+    }
 
-  /* Tada: 33-40% (approx 10s to 12s) */
-  33% {
-    transform: scale(1);
-  }
+    34%,
+    35% {
+        transform: scale(0.9) rotate(-3deg);
+    }
 
-  34%,
-  35% {
-    transform: scale(0.9) rotate(-3deg);
-  }
+    36%,
+    37%,
+    38% {
+        transform: scale(1.3) rotate(3deg);
+    }
 
-  36%,
-  37%,
-  38% {
-    transform: scale(1.3) rotate(3deg);
-  }
+    36.5%,
+    37.5%,
+    38.5% {
+        transform: scale(1.3) rotate(-3deg);
+    }
 
-  36.5%,
-  37.5%,
-  38.5% {
-    transform: scale(1.3) rotate(-3deg);
-  }
+    40% {
+        transform: scale(1) rotate(0);
+    }
 
-  40% {
-    transform: scale(1) rotate(0);
-  }
+    /* Long Pause: 40-66% (approx 12s to 20s) */
+    41%,
+    65% {
+        transform: scale(1) rotate(0);
+    }
 
-  /* Long Pause: 40-66% (approx 12s to 20s) */
-  41%,
-  65% {
-    transform: scale(1) rotate(0);
-  }
+    /* Bounce: 66-73% (approx 20s to 22s) */
+    66% {
+        transform: translateY(0);
+    }
 
-  /* Bounce: 66-73% (approx 20s to 22s) */
-  66% {
-    transform: translateY(0);
-  }
+    68% {
+        transform: translateY(-20px);
+    }
 
-  68% {
-    transform: translateY(-20px);
-  }
+    70% {
+        transform: translateY(0);
+    }
 
-  70% {
-    transform: translateY(0);
-  }
+    72% {
+        transform: translateY(-10px);
+    }
 
-  72% {
-    transform: translateY(-10px);
-  }
+    73% {
+        transform: translateY(0);
+    }
 
-  73% {
-    transform: translateY(0);
-  }
-
-  /* Final Long Pause: 73-100% (approx 22s to 30s) */
-  74%,
-  100% {
-    transform: scale(1) rotate(0) translateY(0);
-  }
+    /* Final Long Pause: 73-100% (approx 22s to 30s) */
+    74%,
+    100% {
+        transform: scale(1) rotate(0) translateY(0);
+    }
 }
 
 @keyframes widget-wiggle-keyframes {
+    0%,
+    90% {
+        transform: rotate(0);
+    }
 
-  0%,
-  90% {
-    transform: rotate(0);
-  }
+    92% {
+        transform: rotate(10deg);
+    }
 
-  92% {
-    transform: rotate(10deg);
-  }
+    94% {
+        transform: rotate(-10deg);
+    }
 
-  94% {
-    transform: rotate(-10deg);
-  }
+    96% {
+        transform: rotate(10deg);
+    }
 
-  96% {
-    transform: rotate(10deg);
-  }
+    98% {
+        transform: rotate(-10deg);
+    }
 
-  98% {
-    transform: rotate(-10deg);
-  }
-
-  100% {
-    transform: rotate(0);
-  }
+    100% {
+        transform: rotate(0);
+    }
 }
 
 @keyframes widget-pulse-keyframes {
-  0% {
-    transform: scale(1);
-  }
+    0% {
+        transform: scale(1);
+    }
 
-  50% {
-    transform: scale(1.08);
-  }
+    50% {
+        transform: scale(1.08);
+    }
 
-  100% {
-    transform: scale(1);
-  }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes widget-bounce-keyframes {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
 
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
+    40% {
+        transform: translateY(-10px);
+    }
 
-  40% {
-    transform: translateY(-10px);
-  }
-
-  60% {
-    transform: translateY(-5px);
-  }
+    60% {
+        transform: translateY(-5px);
+    }
 }
 
 @keyframes widget-glow-keyframes {
-  0% {
-    box-shadow: 0 0 0 0 rgba(13, 100, 160, 0.4);
-  }
+    0% {
+        box-shadow: 0 0 0 0 rgba(13, 100, 160, 0.4);
+    }
 
-  70% {
-    box-shadow: 0 0 0 15px rgba(13, 100, 160, 0);
-  }
+    70% {
+        box-shadow: 0 0 0 15px rgba(13, 100, 160, 0);
+    }
 
-  100% {
-    box-shadow: 0 0 0 0 rgba(13, 100, 160, 0);
-  }
+    100% {
+        box-shadow: 0 0 0 0 rgba(13, 100, 160, 0);
+    }
 }
 
 /* Notification Badge */
 .lc-widget-badge {
-  position: fixed;
-  right: 58px;
-  bottom: 16px;
-  /* Standard leadconnector position is ~20px from bottom, badge goes on top-right of bubble */
-  width: 18px;
-  height: 18px;
-  background-color: #22c55e;
-  border: 2.5px solid white;
-  border-radius: 50%;
-  z-index: 99999999;
-  /* Ensure it's above the widget */
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  /* Shown via JS when widget is ready */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    right: 58px;
+    bottom: 16px;
+    /* Standard leadconnector position is ~20px from bottom, badge goes on top-right of bubble */
+    width: 18px;
+    height: 18px;
+    background-color: #22c55e;
+    border: 2.5px solid white;
+    border-radius: 50%;
+    z-index: 99999999;
+    /* Ensure it's above the widget */
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Shown via JS when widget is ready */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .lc-widget-badge.visible {
-  opacity: 1;
-  transform: scale(1);
+    opacity: 1;
+    transform: scale(1);
 }
 
-
 @keyframes badge-appear {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
 
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 90px;
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
 }
 
 html,
 body {
-  max-width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  /* overflow: hidden; */
+    max-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    /* overflow: hidden; */
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: 'Red Hat Display', var(--font-red-hat-display), Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body.font-mode-montserrat {
-  font-family: 'Montserrat', var(--font-montserrat), Arial, Helvetica, sans-serif;
-  --font-red-hat-display: var(--font-montserrat);
+    color: var(--foreground);
+    background: var(--background);
+    font-family:
+        "Red Hat Display", var(--font-red-hat-display), Arial, Helvetica,
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+    html {
+        color-scheme: dark;
+    }
 }
 
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  border: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    border: 0;
 }
 
 .blockHeading {
-  font-size: 44px;
-  font-weight: 700;
-  line-height: 60px;
-  color: var(--foreground);
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 60px;
+    color: var(--foreground);
 }
 
 .subText {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  color: var(--foreground);
-  margin-top: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--foreground);
+    margin-top: 20px;
 }
 
 .blockContainer {
-  max-width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .block {
-  width: 100%;
-  max-width: 1220px;
-  margin: 0 auto;
-  padding: 60px 20px;
+    width: 100%;
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 60px 20px;
 }
 
 @media (max-width: 1024px) {
-  .subText {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
-  }
+    .subText {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        text-align: center;
+    }
 
-  .block {
-    padding: 40px 16px;
-  }
+    .block {
+        padding: 40px 16px;
+    }
 
-  .blockHeading {
-    font-size: 28px;
-    line-height: 36px;
-    text-align: center;
-  }
+    .blockHeading {
+        font-size: 28px;
+        line-height: 36px;
+        text-align: center;
+    }
 
-  #tt-review-widget-star.widget.tt {
-    margin: auto;
-  }
+    #tt-review-widget-star.widget.tt {
+        margin: auto;
+    }
 
-  .modalOverlay .wc_track {
-    height: 100vh;
-  }
+    .modalOverlay .wc_track {
+        height: 100vh;
+    }
 }
 
-
 .sms-link {
-  color: inherit;
-  text-decoration: underline;
-  transition: color 0.2s;
+    color: inherit;
+    text-decoration: underline;
+    transition: color 0.2s;
 }
 
 .sms-link:hover,
 .sms-link:focus {
-  color: var(--green);
+    color: var(--green);
 }
 
 .visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  white-space: nowrap;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #tt-review-widget-star.widget.tt {
-  margin-bottom: 32px;
-  color: inherit;
-  /* margin: auto; */
-  box-shadow: none;
-  background: none;
+    margin-bottom: 32px;
+    color: inherit;
+    /* margin: auto; */
+    box-shadow: none;
+    background: none;
 }
-
 
 .rec {
-  width: 100px;
-  height: 100px;
-  background: red;
-  position: fixed;
-  bottom: 0px;
-  z-index: 100000;
+    width: 100px;
+    height: 100px;
+    background: red;
+    position: fixed;
+    bottom: 0px;
+    z-index: 100000;
 }
 
 #tt-review-widget-star.widget.tt {
-  margin-bottom: 0px !important;
+    margin-bottom: 0px !important;
 }
 
-
 .wc_form_1 {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 /* Global Dark Theme overrides */
 .dark-theme {
-  --background: #0e0e13;
-  --foreground: #f6f6f8;
-  --white: #171721;
-  --gray-light: #2c2c35;
-  --gray-extra-light: #22222d;
-  --gray: #a1a1a9;
+    --background: #0e0e13;
+    --foreground: #f6f6f8;
+    --white: #171721;
+    --gray-light: #2c2c35;
+    --gray-extra-light: #22222d;
+    --gray: #a1a1a9;
 }

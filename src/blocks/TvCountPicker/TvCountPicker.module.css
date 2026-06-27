@@ -1,42 +1,48 @@
 .tvCountPicker {
-  /* block margins handled by global styles */
+    /* block margins handled by global styles */
 }
 
 .header {
-  margin-bottom: 40px;
+    margin-bottom: 40px;
 }
 
 .cardsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
 }
 
 .iconContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
 }
 
 .cardIcon {
-  width: 120px !important;
-  height: 75px !important; /* 160:100 aspect ratio */
-  display: block;
+    width: 120px !important;
+    height: 75px !important; /* 160:100 aspect ratio */
+    display: block;
 }
 
 @media (max-width: 600px) {
-  .cardsGrid {
-    gap: 8px;
-  }
+    .cardsGrid {
+        gap: 8px;
+    }
 
-  .iconContainer {
-    height: 60px;
-  }
+    .iconContainer {
+        height: 60px;
+    }
 
-  .cardIcon {
-    width: 80px !important;
-    height: 50px !important;
-  }
+    .cardIcon {
+        width: 80px !important;
+        height: 50px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .tvCountPicker {
+        padding-top: 25px;
+    }
 }

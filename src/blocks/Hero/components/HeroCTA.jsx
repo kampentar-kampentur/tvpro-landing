@@ -10,7 +10,7 @@ export default function HeroCTA({ className }) {
 
   return (
     <div className={styles.buttonWrapper}>
-      <p className={`subText ${styles.boldSubText}`}>
+      <p className={`subText ${styles.boldSubText} ${styles.buttonCTATesxt}`}>
         Take a brief quiz to get a discount
       </p>
       <QuoteButton size="big" className={className}>

@@ -1,14 +1,14 @@
 /* eslint-disable */
-import { Red_Hat_Display, Montserrat } from "next/font/google";
+import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
 import Footer from "@/blocks/Footer";
-import { GoogleTagManager } from '@next/third-parties/google'
+import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
-import FontSwitcher from "@/components/FontSwitcher/FontSwitcher";
+
 import EngagementTracker from "@/components/EngagementTracker/EngagementTracker";
 import UtmCapture from "@/components/UtmCapture/UtmCapture";
 import Modals from "@/app/components/Modals";
@@ -20,103 +20,100 @@ const redHatDisplay = Red_Hat_Display({
   display: "swap",
 });
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export const metadata = {
   title: "TV Mounting Services | TVPro Handy Services",
-  description: "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+  description:
+    "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
   robots: {
     index: true,
     follow: true,
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   address: {
     "@type": "PostalAddress",
-    "addressLocality": "Houston",
-    "addressRegion": "TX",
-    "addressCountry": "US",
+    addressLocality: "Houston",
+    addressRegion: "TX",
+    addressCountry: "US",
   },
   icons: [
     {
-      rel: 'icon',
-      url: '/favicon.ico', // Primary ICO favicon
+      rel: "icon",
+      url: "/favicon.ico", // Primary ICO favicon
     },
     {
-      rel: 'icon',
-      type: 'image/svg+xml',
-      url: '/icon.svg', // SVG favicon
+      rel: "icon",
+      type: "image/svg+xml",
+      url: "/icon.svg", // SVG favicon
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '32x32',
-      url: '/favicon-32x32.png', // Desktop PNG favicon (32x32)
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      url: "/favicon-32x32.png", // Desktop PNG favicon (32x32)
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '16x16',
-      url: '/favicon-16x16.png', // Desktop PNG favicon (16x16)
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      url: "/favicon-16x16.png", // Desktop PNG favicon (16x16)
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '96x96',
-      url: '/favicon-96x96.png', // Desktop PNG favicon (96x96)
+      rel: "icon",
+      type: "image/png",
+      sizes: "96x96",
+      url: "/favicon-96x96.png", // Desktop PNG favicon (96x96)
     },
     {
-      rel: 'apple-touch-icon',
-      sizes: '180x180',
-      url: '/apple-touch-icon.png', // Apple Touch Icon
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      url: "/apple-touch-icon.png", // Apple Touch Icon
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '192x192',
-      url: '/web-app-manifest-192x192.png', // From existing web app manifest
+      rel: "icon",
+      type: "image/png",
+      sizes: "192x192",
+      url: "/web-app-manifest-192x192.png", // From existing web app manifest
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '512x512',
-      url: '/web-app-manifest-512x512.png', // From existing web app manifest
+      rel: "icon",
+      type: "image/png",
+      sizes: "512x512",
+      url: "/web-app-manifest-512x512.png", // From existing web app manifest
     },
   ],
   alternates: {
-    canonical: 'https://tvprousa.com/',
+    canonical: "https://tvprousa.com/",
   },
   openGraph: {
-    title: 'TV Mounting Services | TVPro Handy Services',
-    description: "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
-    url: 'https://tvprousa.com/',
+    title: "TV Mounting Services | TVPro Handy Services",
+    description:
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+    url: "https://tvprousa.com/",
     images: [
       {
-        url: 'https://tvprousa.com/og-image.png',
+        url: "https://tvprousa.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: 'TV mounting services in Houston',
+        alt: "TV mounting services in Houston",
       },
     ],
-    type: 'website',
+    type: "website",
   },
   other: {
     "apple-mobile-web-app-title": "TVPro",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'TVPro Handy Services',
-    description: "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
-    images: ['https://tvprousa.com/og-image.png'],
+    card: "summary_large_image",
+    title: "TVPro Handy Services",
+    description:
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+    images: ["https://tvprousa.com/og-image.png"],
   },
   verification: {
     // google: 'your-code', // Add if needed
@@ -130,22 +127,29 @@ async function getCTA() {
     const json = await res.json();
     return json.data;
   } catch (error) {
-    console.error("[Layout] getCTA fetch failed, using fallbacks:", error.message);
+    console.error(
+      "[Layout] getCTA fetch failed, using fallbacks:",
+      error.message,
+    );
     return {
       phone: "(877) 455-5535",
       phoneLabel: "Call Us",
       workHours: "Mon-Sun 7:00 AM - 10:00 PM",
-      homeLink: "/"
+      homeLink: "/",
     };
   }
 }
 
 export default async function RootLayout({ children }) {
-  const cta = await getCTA()
+  const cta = await getCTA();
   return (
     <html lang="en">
       <head>
-        <script async src="https://ob.sornavellon.com/i/525465f0a01f5537af7992a76b9c7bf2.js" className="ct_clicktrue"></script>
+        <script
+          async
+          src="https://ob.sornavellon.com/i/525465f0a01f5537af7992a76b9c7bf2.js"
+          className="ct_clicktrue"
+        ></script>
         {/* Preload LCP Image */}
         <link
           rel="preload"
@@ -154,10 +158,18 @@ export default async function RootLayout({ children }) {
           fetchPriority="high"
         />
         {/* Only critical preconnects (max 4) */}
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-        <link rel="preconnect" href="https://media.tvprousa.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://media.tvprousa.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
@@ -174,17 +186,17 @@ export default async function RootLayout({ children }) {
               console.log('Marketing scripts: Initialization started');
               var fired = false;
               var timeoutId;
-              
+
               function loadScripts() {
                 if (fired) return;
                 fired = true;
                 console.log('Marketing scripts: Loading triggered');
-                
+
                 clearTimeout(timeoutId);
                 ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
                   window.removeEventListener(e, loadScripts);
                 });
-                
+
                 // 1. GTM
                 (function() {
                   const gtmId = '${process.env.NEXT_PUBLIC_GTM_ID}';
@@ -229,11 +241,11 @@ export default async function RootLayout({ children }) {
                   try {
                     var workizLeads = {doc:{url:document.URL,ref:document.referrer,search:location.search,hash:location.hash}};
                     window.$wc_leads = JSON.parse(JSON.stringify(workizLeads));
-                    
+
                     var workizScript = document.createElement('script');
                     workizScript.async = true;
                     workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
-                    
+
                     document.head.appendChild(workizScript);
                   } catch(e) { console.error('WhatConverts Error:', e); }
                 })();
@@ -292,7 +304,7 @@ export default async function RootLayout({ children }) {
                     setTimeout(enhanceWidget, 500);
                   }
                 }
-                
+
                 const observer = new MutationObserver((mutations, obs) => {
                     const widget = document.querySelector('chat-widget');
                     if (widget) {
@@ -311,65 +323,72 @@ export default async function RootLayout({ children }) {
             })();
           `}
         </Script>
-
       </head>
-      <body className={`${redHatDisplay.variable} ${montserrat.variable}`}>
+      <body className={`${redHatDisplay.variable}`}>
         {process.env.NEXT_PUBLIC_GTM_ID && (
           <noscript>
-            <iframe 
+            <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
-              height="0" 
-              width="0" 
-              style={{ display: 'none', visibility: 'hidden' }}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
             ></iframe>
           </noscript>
         )}
         {process.env.NEXT_PUBLIC_FB_PIXEL_ID && (
           <noscript>
-            <img 
-              height="1" 
-              width="1" 
-              style={{ display: 'none' }}
+            <img
+              height="1"
+              width="1"
+              style={{ display: "none" }}
               src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FB_PIXEL_ID}&ev=PageView&noscript=1`}
             />
           </noscript>
         )}
-        <noscript><iframe src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch=" width="0" height="0" style={{ display: 'none' }}></iframe></noscript>
+        <noscript>
+          <iframe
+            src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch="
+            width="0"
+            height="0"
+            style={{ display: "none" }}
+          ></iframe>
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              "name": "TVPro Handy Services",
-              "description": "TVPro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide.",
-              "url": "https://tvprousa.com/",
-              "telephone": cta?.phone || "(877) 455-5535",
-              "image": "https://tvprousa.com/logo.svg",
-              "priceRange": "$$",
-              "address": {
+              name: "TVPro Handy Services",
+              description:
+                "TVPro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide.",
+              url: "https://tvprousa.com/",
+              telephone: cta?.phone || "(877) 455-5535",
+              image: "https://tvprousa.com/logo.svg",
+              priceRange: "$$",
+              address: {
                 "@type": "PostalAddress",
-                "addressLocality": "Houston",
-                "addressRegion": "TX",
-                "addressCountry": "US"
+                addressLocality: "Houston",
+                addressRegion: "TX",
+                addressCountry: "US",
               },
-              "openingHoursSpecification": [
+              openingHoursSpecification: [
                 {
                   "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": [
+                  dayOfWeek: [
                     "Monday",
                     "Tuesday",
                     "Wednesday",
                     "Thursday",
                     "Friday",
                     "Saturday",
-                    "Sunday"
+                    "Sunday",
                   ],
-                  "opens": "08:00",
-                  "closes": "20:00"
-                }
-              ]
-            })
+                  opens: "08:00",
+                  closes: "20:00",
+                },
+              ],
+            }),
           }}
         />
         <CTAProvider initialCTA={cta}>
@@ -378,15 +397,15 @@ export default async function RootLayout({ children }) {
             <UtmCapture />
             <Modals />
             <Header cta={cta} />
-            <main style={{ paddingTop: 'var(--header-height, 80px)', flexGrow: 1 }}>
+            <main
+              style={{ paddingTop: "var(--header-height, 80px)", flexGrow: 1 }}
+            >
               {children}
             </main>
             <Footer cta={cta} />
           </ModalProvider>
         </CTAProvider>
         <ScrollToTop />
-        <FontSwitcher />
-
       </body>
     </html>
   );
