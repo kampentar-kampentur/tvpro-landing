@@ -19,16 +19,14 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
       {step?.subTitle && <div className={styles.subHeader}><h3>{step?.subTitle}</h3> <span className={styles.subSteps}>{currentSubStep + 1}/{totalSubSteps}</span></div>}
 
       {
-        step.fields && step.fields.map((field, index) => {
-          const fieldCurrentValue = formData[step.id] ? formData[step.id][field.name] : undefined;
+        step.fields && step.fields
+          .filter((field) => shouldRenderField(field.showIf, formData, step.id, step.parentContext))
+          .map((field, index) => {
+            const fieldCurrentValue = formData[step.id] ? formData[step.id][field.name] : undefined;
 
-          if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) {
-            return null;
-          }
-
-          const handleFieldChange = (fieldValue) => {
-            onFieldChange(step.id, field.name, fieldValue);
-          };
+            const handleFieldChange = (fieldValue) => {
+              onFieldChange(step.id, field.name, fieldValue);
+            };
 
           switch (field.type) {
             case "checkboxWithCounter":
