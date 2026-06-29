@@ -6,7 +6,9 @@ import { resolveSpintax } from "@/lib/spintax";
 
 async function getTvCountPickerData() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-count-picker?populate=*`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/tv-count-picker?populate=*`,
+    );
     if (!res.ok) return null;
     const json = await res.json();
     return json.data;
@@ -19,7 +21,8 @@ const defaultCards = [
   {
     id: "tv-count-1",
     title: "1 TV",
-    description: "Perfect for single room mounting: bedroom, living room, or office.",
+    description:
+      "Perfect for single room mounting: bedroom, living room, or office.",
     tvCount: "1",
   },
   {
@@ -37,26 +40,36 @@ const defaultCards = [
   {
     id: "tv-count-4",
     title: "4+ TVs",
-    description: "Volume package. Home theaters, offices, or commercial settings.",
+    description:
+      "Volume package. Home theaters, offices, or commercial settings.",
     tvCount: "4+",
   },
 ];
 
 export default async function TvCountPicker({ data = {}, cityContext }) {
-  const globalTvCountData = await getTvCountPickerData() || {};
+  const globalTvCountData = (await getTvCountPickerData()) || {};
 
-  const title = resolveSpintax(data?.title || globalTvCountData?.title || "How Many TVs Do You Need Mounted?");
-  const subTitle = resolveSpintax(data?.subTitle || globalTvCountData?.subTitle || "Select the number of screens to open the quote builder with pre-selected settings.");
+  const title = resolveSpintax(
+    data?.title ||
+      globalTvCountData?.title ||
+      "How Many TVs Do You Need Mounted?",
+  );
+  const subTitle = resolveSpintax(
+    data?.subTitle ||
+      globalTvCountData?.subTitle ||
+      "Select the number of screens to open the quote builder with pre-selected settings.",
+  );
 
-  const rawCards = (data?.cards && data.cards.length > 0)
-    ? data.cards
-    : (globalTvCountData?.cards && globalTvCountData.cards.length > 0)
-      ? globalTvCountData.cards
-      : defaultCards;
+  const rawCards =
+    data?.cards && data.cards.length > 0
+      ? data.cards
+      : globalTvCountData?.cards && globalTvCountData.cards.length > 0
+        ? globalTvCountData.cards
+        : defaultCards;
 
   const cards = rawCards.map((card, index) => ({
     ...card,
-    id: card.id || `tv-count-${index + 1}`,
+    id: card.iconId || `tv-count-${index + 1}`,
     title: resolveSpintax(card.title || ""),
     description: resolveSpintax(card.description || ""),
     tvCount: card.tvCount || `${index + 1}`,
@@ -71,7 +84,16 @@ export default async function TvCountPicker({ data = {}, cityContext }) {
             <path d="M72 80 h16 v6 h-16 z" fill="#91929C" />
             <path d="M62 86 h36 v2 h-36 z" fill="#91929C" />
             {/* Screen */}
-            <rect x="25" y="15" width="110" height="65" rx="3" fill="#E2E2E6" stroke="#91929C" strokeWidth="2" />
+            <rect
+              x="25"
+              y="15"
+              width="110"
+              height="65"
+              rx="3"
+              fill="#E2E2E6"
+              stroke="#91929C"
+              strokeWidth="2"
+            />
           </svg>
         );
       case "tv-count-2":
@@ -80,24 +102,72 @@ export default async function TvCountPicker({ data = {}, cityContext }) {
             {/* TV 2 (Back) */}
             <path d="M52 68 h12 v4 h-12 z" fill="#A1A2AC" opacity="0.7" />
             <path d="M44 72 h28 v1.5 h-28 z" fill="#A1A2AC" opacity="0.7" />
-            <rect x="15" y="10" width="85" height="58" rx="3" fill="#E2E2E6" stroke="#A1A2AC" strokeWidth="2" opacity="0.7" />
+            <rect
+              x="15"
+              y="10"
+              width="85"
+              height="58"
+              rx="3"
+              fill="#E2E2E6"
+              stroke="#A1A2AC"
+              strokeWidth="2"
+              opacity="0.7"
+            />
             {/* TV 1 (Front) */}
             <path d="M96 80 h14 v6 h-14 z" fill="#91929C" />
             <path d="M87 86 h32 v2 h-32 z" fill="#91929C" />
-            <rect x="50" y="22" width="100" height="58" rx="3" fill="#E2E2E6" stroke="#91929C" strokeWidth="2" />
+            <rect
+              x="50"
+              y="22"
+              width="100"
+              height="58"
+              rx="3"
+              fill="#E2E2E6"
+              stroke="#91929C"
+              strokeWidth="2"
+            />
           </svg>
         );
       case "tv-count-3":
         return (
           <svg viewBox="0 0 160 100" className={styles.cardIcon}>
             {/* TV 3 (Back Left) */}
-            <rect x="10" y="8" width="70" height="48" rx="2" fill="#E2E2E6" stroke="#A1A2AC" strokeWidth="2" opacity="0.5" />
+            <rect
+              x="10"
+              y="8"
+              width="70"
+              height="48"
+              rx="2"
+              fill="#E2E2E6"
+              stroke="#A1A2AC"
+              strokeWidth="2"
+              opacity="0.5"
+            />
             {/* TV 2 (Back Right) */}
-            <rect x="80" y="8" width="70" height="48" rx="2" fill="#E2E2E6" stroke="#A1A2AC" strokeWidth="2" opacity="0.5" />
+            <rect
+              x="80"
+              y="8"
+              width="70"
+              height="48"
+              rx="2"
+              fill="#E2E2E6"
+              stroke="#A1A2AC"
+              strokeWidth="2"
+              opacity="0.5"
+            />
             {/* TV 1 (Front Center) */}
             <path d="M73 80 h14 v6 h-14 z" fill="#91929C" />
             <path d="M64 86 h32 v2 h-32 z" fill="#91929C" />
-            <rect x="32" y="24" width="96" height="56" rx="3" fill="#E2E2E6" stroke="#91929C" strokeWidth="2" />
+            <rect
+              x="32"
+              y="24"
+              width="96"
+              height="56"
+              rx="3"
+              fill="#E2E2E6"
+              stroke="#91929C"
+              strokeWidth="2"
+            />
           </svg>
         );
       case "tv-count-4":
@@ -106,13 +176,49 @@ export default async function TvCountPicker({ data = {}, cityContext }) {
           <svg viewBox="0 0 160 100" className={styles.cardIcon}>
             {/* 2x2 Grid of small TVs */}
             {/* Top Left */}
-            <rect x="15" y="10" width="60" height="38" rx="2" fill="#E2E2E6" stroke="#91929C" strokeWidth="1.5" />
+            <rect
+              x="15"
+              y="10"
+              width="60"
+              height="38"
+              rx="2"
+              fill="#E2E2E6"
+              stroke="#91929C"
+              strokeWidth="1.5"
+            />
             {/* Top Right */}
-            <rect x="85" y="10" width="60" height="38" rx="2" fill="#E2E2E6" stroke="#91929C" strokeWidth="1.5" />
+            <rect
+              x="85"
+              y="10"
+              width="60"
+              height="38"
+              rx="2"
+              fill="#E2E2E6"
+              stroke="#91929C"
+              strokeWidth="1.5"
+            />
             {/* Bottom Left */}
-            <rect x="15" y="54" width="60" height="38" rx="2" fill="#E2E2E6" stroke="#91929C" strokeWidth="1.5" />
+            <rect
+              x="15"
+              y="54"
+              width="60"
+              height="38"
+              rx="2"
+              fill="#E2E2E6"
+              stroke="#91929C"
+              strokeWidth="1.5"
+            />
             {/* Bottom Right */}
-            <rect x="85" y="54" width="60" height="38" rx="2" fill="#E2E2E6" stroke="#91929C" strokeWidth="1.5" />
+            <rect
+              x="85"
+              y="54"
+              width="60"
+              height="38"
+              rx="2"
+              fill="#E2E2E6"
+              stroke="#91929C"
+              strokeWidth="1.5"
+            />
           </svg>
         );
       default:
@@ -137,12 +243,20 @@ export default async function TvCountPicker({ data = {}, cityContext }) {
           return (
             <ServiceCard
               key={card.id}
-              customIcon={<div className={styles.iconContainer}>{renderCardIcon(card.id)}</div>}
+              customIcon={
+                <div className={styles.iconContainer}>
+                  {renderCardIcon(card.id)}
+                </div>
+              }
               title={card.title}
               description={card.description}
               buttonText={isSingle ? "Calculate Quote" : "Book Now"}
               modalName={isSingle ? "BestQuote" : "BookNow"}
-              modalProps={isSingle ? { tvCount: card.tvCount, isNewQuiz: true } : { tvCount: card.tvCount }}
+              modalProps={
+                isSingle
+                  ? { tvCount: card.tvCount, isNewQuiz: true }
+                  : { tvCount: card.tvCount }
+              }
               cityContext={cityContext}
             />
           );
