@@ -1082,8 +1082,8 @@ const NewQuizScheme = {
               },
               {
                 field: "fireplace.fireplace",
-                condition: "equals",
-                value: "no",
+                condition: "notEquals",
+                value: "yes",
               },
             ],
           },
