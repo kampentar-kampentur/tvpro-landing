@@ -974,12 +974,20 @@ const NewQuizScheme = {
               cost: 52,
               description: "Adjust the vertical angle to reduce glare and get the perfect view from any seating position."
             },
-            {
+             {
               value: "fullMotion",
               label: "Full-Motion Mount",
               subtitle: "extends up to 15”",
               cost: 69,
               description: "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room."
+            },
+            {
+              value: "corner",
+              label: "Corner Mount",
+              subtitle: "fits TVs up to 75”",
+              cost: 69,
+              costLabel: "+$69",
+              description: "the ideal solution for corner setups: saves space while keeping your room stylish and functional."
             },
             {
               value: "ceilingMount",
