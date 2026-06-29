@@ -939,10 +939,15 @@ const NewQuizScheme = {
             { value: "60-69", label: '60"-69"', cost: 144 },
             { value: "70-85", label: '70"-85"', cost: 149 },
             { value: "over-86", label: '86"+', cost: 189 },
-            { value: "notSure", label: "Not Sure", cost: 125, costLabel: "TBD" }
-          ]
-        }
-      ]
+            {
+              value: "notSure",
+              label: "Not Sure",
+              cost: 125,
+              costLabel: "TBD",
+            },
+          ],
+        },
+      ],
     },
     {
       id: "mounting",
@@ -958,28 +963,32 @@ const NewQuizScheme = {
               value: "alreadyThere",
               label: "Already there",
               cost: 0,
-              description: "Already have your own mount? Perfect! We’ll safely install your TV on your existing bracket at no extra cost."
+              description:
+                "Already have your own mount? Perfect! We’ll safely install your TV on your existing bracket at no extra cost.",
             },
             {
               value: "fixed",
               label: "Fixed Mount",
               subtitle: "1.5” from wall",
               cost: 44,
-              description: "Clean and reliable: keeps your TV close to the wall for a sleek, modern look"
+              description:
+                "Clean and reliable: keeps your TV close to the wall for a sleek, modern look",
             },
             {
               value: "tilting",
               label: "Tilt Mount",
               subtitle: "up to 15° tilt",
               cost: 52,
-              description: "Adjust the vertical angle to reduce glare and get the perfect view from any seating position."
+              description:
+                "Adjust the vertical angle to reduce glare and get the perfect view from any seating position.",
             },
-             {
+            {
               value: "fullMotion",
               label: "Full-Motion Mount",
               subtitle: "extends up to 15”",
               cost: 69,
-              description: "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room."
+              description:
+                "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room.",
             },
             {
               value: "corner",
@@ -987,21 +996,24 @@ const NewQuizScheme = {
               subtitle: "fits TVs up to 75”",
               cost: 69,
               costLabel: "+$69",
-              description: "the ideal solution for corner setups: saves space while keeping your room stylish and functional."
+              description:
+                "the ideal solution for corner setups: saves space while keeping your room stylish and functional.",
             },
             {
               value: "ceilingMount",
               label: "Ceiling Mount",
               subtitle: "",
               cost: 69,
-              description: "a unique option when walls are occupied or for a bold interior design: mount your TV directly to the ceiling."
+              description:
+                "a unique option when walls are occupied or for a bold interior design: mount your TV directly to the ceiling.",
             },
             {
               value: "ultraSlim",
               label: "Ultra Slim 0.3",
               subtitle: "ultra thin profile",
               cost: 79,
-              description: "ultra low profile mount: keeps the TV extremely close to the wall for a picture-frame effect."
+              description:
+                "ultra low profile mount: keeps the TV extremely close to the wall for a picture-frame effect.",
             },
             {
               value: "needHelp",
@@ -1009,11 +1021,12 @@ const NewQuizScheme = {
               subtitle: "Consult with technician",
               cost: 0,
               costLabel: "TBD",
-              description: "Not sure which mount fits your space? Our professional technician will bring different types and help you choose the best one on-site."
-            }
-          ]
-        }
-      ]
+              description:
+                "Not sure which mount fits your space? Our professional technician will bring different types and help you choose the best one on-site.",
+            },
+          ],
+        },
+      ],
     },
     {
       id: "wall",
@@ -1026,14 +1039,18 @@ const NewQuizScheme = {
           label: "What type of wall?",
           options: [
             { value: "drywall", label: "Drywall", cost: 0 },
-            { value: "stoneBrickConcrete", label: "Brick / Stone / Concrete", cost: 49 },
+            {
+              value: "stoneBrickConcrete",
+              label: "Brick / Stone / Concrete",
+              cost: 49,
+            },
             { value: "ceiling", label: "Ceiling", cost: 39 },
             { value: "tile", label: "Tile", cost: 69 },
             { value: "metalStuds", label: "Metal Studs", cost: 30 },
-            { value: "notSure", label: "Not Sure", cost: 0, costLabel: "TBD" }
-          ]
-        }
-      ]
+            { value: "notSure", label: "Not Sure", cost: 0, costLabel: "TBD" },
+          ],
+        },
+      ],
     },
     {
       id: "fireplace",
@@ -1066,8 +1083,8 @@ const NewQuizScheme = {
               costLabel: "+$0",
             },
           ],
-        }
-      ]
+        },
+      ],
     },
     {
       id: "wires",
@@ -1102,35 +1119,39 @@ const NewQuizScheme = {
               subtitle: "no extra charge",
               cost: 0,
               costLabel: "+$0",
-              description: "standard setup with visible wires, quick and simple.",
+              description:
+                "standard setup with visible wires, quick and simple.",
             },
             {
               value: "cableChannelDrywall",
               label: "Cable Channel",
               cost: 43,
               costLabel: "+$43",
-              description: "a sleek plastic channel to neatly hide and organize wires along the wall.",
+              description:
+                "a sleek plastic channel to neatly hide and organize wires along the wall.",
             },
             {
               value: "wallDrywall",
               label: "Put it in the wall",
               cost: 93,
               costLabel: "+$93",
-              description: "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look.",
+              description:
+                "professional in-wall cable concealment: wires run behind the wall with clean cover plates for a seamless look.",
             },
             {
               value: "socketDrywall",
               label: "In wall with socket",
               cost: 129,
               costLabel: "+$129",
-              description: "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+              description:
+                "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
             },
             {
               value: "notSure",
               label: "Not Sure",
               cost: 0,
               costLabel: "TBD",
-            }
+            },
           ],
         },
         // Case 2: Drywall / Metal Studs + ABOVE fireplace
@@ -1162,35 +1183,39 @@ const NewQuizScheme = {
               subtitle: "no extra charge",
               cost: 0,
               costLabel: "+$0",
-              description: "standard setup with visible wires, quick and simple.",
+              description:
+                "standard setup with visible wires, quick and simple.",
             },
             {
               value: "cableChannelDrywall",
               label: "Cable Channel",
               cost: 43,
               costLabel: "+$43",
-              description: "a sleek plastic channel to neatly hide and organize wires along the wall.",
+              description:
+                "a sleek plastic channel to neatly hide and organize wires along the wall.",
             },
             {
               value: "wallFireplace",
               label: "In-Wall Concealment",
               cost: 109,
               costLabel: "+$109",
-              description: "wires run behind the wall with clean cover plates for a seamless look.",
+              description:
+                "wires run behind the wall with clean cover plates for a seamless look.",
             },
             {
               value: "socketFireplace",
               label: "In Wall with Socket",
               cost: 149,
               costLabel: "+$149",
-              description: "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
+              description:
+                "premium solution: full in-wall cable concealment plus a recessed power outlet for the cleanest, most professional finish.",
             },
             {
               value: "notSure",
               label: "Not Sure",
               cost: 0,
               costLabel: "TBD",
-            }
+            },
           ],
         },
         // Case 3: Hard Surface (Stone/Brick/Concrete, Tile, Ceiling)
@@ -1220,28 +1245,31 @@ const NewQuizScheme = {
               label: "Cable channel",
               cost: 52,
               costLabel: "+$52",
-              description: "neat surface channel to keep cables organized on brick, concrete, or tile.",
+              description:
+                "neat surface channel to keep cables organized on brick, concrete, or tile.",
             },
             {
               value: "wallBrick",
               label: "In-Wall Concealment",
               cost: 249,
               costLabel: "+$249",
-              description: "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish.",
+              description:
+                "we cut the surface with a diamond grinder, hide the cables, add a brush plate, and seal edges with silicone for a clean finish.",
             },
             {
               value: "socketBrick",
               label: "In-Wall with Socket",
               cost: 289,
               costLabel: "+$289",
-              description: "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing.",
+              description:
+                "premium option: full in-wall concealment plus recessed power outlet, finished with brush plates and silicone detailing.",
             },
             {
               value: "notSure",
               label: "Not Sure",
               cost: 0,
               costLabel: "TBD",
-            }
+            },
           ],
         },
         // Case 4: Wall type is Not Sure (Show simple options)
@@ -1256,12 +1284,17 @@ const NewQuizScheme = {
             value: "notSure",
           },
           options: [
-            { value: "yes", label: "Yes, hide all wires", cost: 109, costLabel: "TBD" },
+            {
+              value: "yes",
+              label: "Yes, hide all wires",
+              cost: 109,
+              costLabel: "TBD",
+            },
             { value: "no", label: "No, standard installation", cost: 0 },
-            { value: "notSure", label: "Not Sure", cost: 0, costLabel: "TBD" }
-          ]
-        }
-      ]
+            { value: "notSure", label: "Not Sure", cost: 0, costLabel: "TBD" },
+          ],
+        },
+      ],
     },
     {
       id: "contactInfo",
@@ -1278,24 +1311,24 @@ const NewQuizScheme = {
           type: "text",
           textLabel: "Enter your name",
           placeholder: "Name",
-          isRequired: false
+          isRequired: false,
         },
         {
           name: "phone",
           type: "tel",
           textLabel: "Enter your phone",
           placeholder: "Phone Number *",
-          isRequired: true
+          isRequired: true,
         },
         {
           name: "zip",
           type: "text",
           textLabel: "Enter your zip code",
           placeholder: "Zip Code",
-          isRequired: false
-        }
-      ]
-    }
+          isRequired: false,
+        },
+      ],
+    },
   ],
   priceCalculation: {
     baseCost: 0,
@@ -1303,9 +1336,9 @@ const NewQuizScheme = {
       "tv-size.tvSelection",
       "mounting.mountType",
       "wall.wallType",
-      "wires.wires"
-    ]
-  }
+      "wires.wires",
+    ],
+  },
 };
 
 const BestQuoteModal = () => {
@@ -1373,14 +1406,14 @@ const BestQuoteModal = () => {
                         tvSelection === "over-86"
                           ? ""
                           : tvSelection === "70-85"
-                          ? "75\"–86\""
-                          : "<70\"",
+                            ? '75"–86"'
+                            : '<70"',
                       description:
                         tvSelection === "over-86"
                           ? "premium heavy-duty full-motion bracket supporting up to 100 inches."
                           : tvSelection === "70-85"
-                          ? "specially designed for larger screens: sturdy arms with full rotation and extendability."
-                          : "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room.",
+                            ? "specially designed for larger screens: sturdy arms with full rotation and extendability."
+                            : "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room.",
                     };
                   }
                   return opt;
@@ -1400,7 +1433,10 @@ const BestQuoteModal = () => {
     };
   }, [tvSelection, isNewQuiz]);
 
-  const isLastStep = currentScheme && currentScheme.steps ? currentStepIndex === (currentScheme.steps.length - 1) : false;
+  const isLastStep =
+    currentScheme && currentScheme.steps
+      ? currentStepIndex === currentScheme.steps.length - 1
+      : false;
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 1024);
@@ -1410,7 +1446,10 @@ const BestQuoteModal = () => {
   }, []);
 
   const isFormValid = isNewQuiz
-    ? !!(formData.contactInfo?.phone && validatePhone(formData.contactInfo?.phone))
+    ? !!(
+        formData.contactInfo?.phone &&
+        validatePhone(formData.contactInfo?.phone)
+      )
     : !!(
         formData.contactInfo?.name &&
         validatePhone(formData.contactInfo?.phone) &&
@@ -1432,8 +1471,8 @@ const BestQuoteModal = () => {
     console.log("formData", formData);
 
     const wallTypeResolved = isNewQuiz
-      ? (formData.wall?.wallType || "")
-      : (formData.wall?.wallType || formData.wall?.wallTypeProjector || "");
+      ? formData.wall?.wallType || ""
+      : formData.wall?.wallType || formData.wall?.wallTypeProjector || "";
 
     const tvCountResolved = "1";
 
@@ -1453,14 +1492,16 @@ const BestQuoteModal = () => {
     const submissionData = {
       ...formData,
       tvCount: tvCountResolved,
-      wall: isNewQuiz ? {
-        wallType: wallTypeResolved,
-        fireplace: formData.fireplace?.fireplace || "",
-        wires: formData.wires?.wires || "",
-      } : {
-        ...formData.wall,
-        wallType: wallTypeResolved,
-      },
+      wall: isNewQuiz
+        ? {
+            wallType: wallTypeResolved,
+            fireplace: formData.fireplace?.fireplace || "",
+            wires: formData.wires?.wires || "",
+          }
+        : {
+            ...formData.wall,
+            wallType: wallTypeResolved,
+          },
       contactInfo: contactInfoResolved,
       ...getUtmParams(),
       submittedAt: new Date().toISOString(),
@@ -1507,12 +1548,19 @@ const BestQuoteModal = () => {
             apt: submissionData.contactInfo?.apt || "",
             address: submissionData.contactInfo?.address || "",
             totalPrice: totalPrice,
-            tvSelection: formData["tv-size"]?.tvSelection || formData["tv-size"]?.tvSelectionMulti || "",
+            tvSelection:
+              formData["tv-size"]?.tvSelection ||
+              formData["tv-size"]?.tvSelectionMulti ||
+              "",
             extraTechnicians: formData["tv-size"]?.extraTechnicans || "",
             mountType: formData.mounting?.mountType || "",
             wallType: wallTypeResolved,
-            fireplace: isNewQuiz ? (formData.fireplace?.fireplace || "") : (formData.wall?.fireplace || ""),
-            wires: isNewQuiz ? (formData.wires?.wires || "") : (formData.wall?.wires || ""),
+            fireplace: isNewQuiz
+              ? formData.fireplace?.fireplace || ""
+              : formData.wall?.fireplace || "",
+            wires: isNewQuiz
+              ? formData.wires?.wires || ""
+              : formData.wall?.wires || "",
             utm_params: getUtmParams(),
           });
         }
@@ -1581,21 +1629,24 @@ const BestQuoteModal = () => {
             </div>
           )}
           {isMobile && isLastStep && (
-            <div className={styles.mobileBookSection}>
-              <Button
-                className={styles.mobileBookBtn}
-                disabled={!isFormValid || isSubmitting}
-                onClick={onSubmit}
-                size="big"
-              >
-                {isSubmitting ? "Booking..." : "Book Now"}
-              </Button>
-              <p className={styles.mobileTermsText}>
-                By booking an appointment you agree to the <br />
-                <Link href="/terms">Terms of Service</Link> and the{" "}
-                <Link href="/privacy-policy">Privacy Policy</Link>.
-              </p>
-            </div>
+            <>
+              <div style={{ flexGrow: 1 }}></div>
+              <div className={styles.mobileBookSection}>
+                <Button
+                  className={styles.mobileBookBtn}
+                  disabled={!isFormValid || isSubmitting}
+                  onClick={onSubmit}
+                  size="big"
+                >
+                  {isSubmitting ? "Booking..." : "Book Now"}
+                </Button>
+                <p className={styles.mobileTermsText}>
+                  By booking an appointment you agree to the <br />
+                  <Link href="/terms">Terms of Service</Link> and the{" "}
+                  <Link href="/privacy-policy">Privacy Policy</Link>.
+                </p>
+              </div>
+            </>
           )}
         </main>
         <aside className={styles.servicesContainer}>
