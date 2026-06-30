@@ -938,7 +938,7 @@ const NewQuizScheme = {
             { value: "32-59", label: '32"-59"', cost: 125 },
             { value: "60-69", label: '60"-69"', cost: 144 },
             { value: "70-85", label: '70"-85"', cost: 149 },
-            { value: "over-86", label: '86"+', cost: 189 },
+            { value: "over-86", label: '98"-100"', cost: 189 },
             {
               value: "notSure",
               label: "Not Sure",
@@ -1380,9 +1380,13 @@ const BestQuoteModal = () => {
           ...step,
           fields: step.fields.map((field) => {
             if (field.name === "mountType") {
+              let options = field.options;
+              if (tvSelection === "over-86") {
+                options = options.filter((opt) => opt.value !== "corner");
+              }
               return {
                 ...field,
-                options: field.options.map((opt) => {
+                options: options.map((opt) => {
                   if (opt.value === "fixed") {
                     return {
                       ...opt,
@@ -1414,6 +1418,14 @@ const BestQuoteModal = () => {
                           : tvSelection === "70-85"
                             ? "specially designed for larger screens: sturdy arms with full rotation and extendability."
                             : "maximum flexibility: pull, swivel, and tilt your TV to enjoy the best viewing angle anywhere in the room.",
+                    };
+                  }
+                  if (opt.value === "ceilingMount") {
+                    const ceilingCost = tvSelection === "over-86" ? 99 : 69;
+                    return {
+                      ...opt,
+                      cost: ceilingCost,
+                      costLabel: `+$${ceilingCost}`,
                     };
                   }
                   return opt;
