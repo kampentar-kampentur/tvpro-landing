@@ -110,8 +110,8 @@ export default function Navbar() {
       <div className={styles.navbarWrapper}>
         <nav className={styles.navbar} aria-label="Blog Navigation">
           <ul className={styles.navLinks}>
-            <li>
-              <Link href="/">Main Site</Link>
+            <li className={styles.mainSiteLi}>
+              <Link href="/" className={styles.mainSiteChip}>Main Site</Link>
             </li>
             <li>
               <Link href="/blog/">Blog Home</Link>

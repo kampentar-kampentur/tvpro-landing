@@ -105,8 +105,8 @@ export default function Header({ cta: parentCta }) {
         <div className={styles.headerWrapper}>
           <div className={styles.headerNavWrapper}>
             <Link
-              href={cta?.homeLink || "/"}
-              aria-label="TVPro Main Page"
+              href={isBlog ? "/blog/" : (cta?.homeLink || "/")}
+              aria-label={isBlog ? "TVPro Blog Home" : "TVPro Main Page"}
               className="logo"
             >
               <LogoSVG width="82" height="40" />

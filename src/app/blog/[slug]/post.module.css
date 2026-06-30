@@ -678,3 +678,39 @@
     color: var(--green);
     flex-shrink: 0;
 }
+
+/* Top Navigation: Breadcrumbs & Back Button Container */
+.topNavContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-top: 16px;
+    padding-bottom: 8px;
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    color: var(--foreground);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+@media (hover: hover) {
+    .backButton:hover {
+        color: var(--green);
+    }
+}
+
+@media (max-width: 1024px) {
+    .topNavContainer {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 12px;
+        padding-top: 12px;
+    }
+}

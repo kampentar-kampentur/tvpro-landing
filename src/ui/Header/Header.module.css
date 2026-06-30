@@ -689,3 +689,37 @@ button.menuButton {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   }
 }
+
+/* Circular Home Button on Mobile for Blog Exit */
+.mobileHomeCircle {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobileHomeCircle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--gray-extra-light);
+    background: transparent;
+    color: var(--foreground);
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 1024px) and (hover: hover) {
+  .mobileHomeCircle:hover {
+    background-color: var(--gray-extra-light);
+    border-color: var(--gray-light);
+  }
+}
+
+@media (max-width: 1024px) {
+  .mobileHomeCircle:active {
+    background-color: var(--gray-extra-light);
+  }
+}

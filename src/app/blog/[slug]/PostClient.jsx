@@ -6,6 +6,7 @@ import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import RichTextRenderer from "@/ui/RichTextRenderer/RichTextRenderer";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
+import ChevronIcon from "@/assets/icons/chevron.svg";
 import styles from "./post.module.css";
 
 const StarIcon = ({ filled, onClick, onMouseEnter, onMouseLeave }) => (
@@ -204,8 +205,14 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                     {Math.round(scrollProgress)}%
                 </div>
             </div>
-            {/* Breadcrumbs */}
-            <SEOBreadcrumbs items={breadcrumbItems} />
+            {/* Breadcrumbs & Back Button */}
+            <div className={`block ${styles.topNavContainer}`}>
+                <SEOBreadcrumbs items={breadcrumbItems} />
+                <Link href="/blog/" className={styles.backButton}>
+                    <ChevronIcon width="14" height="14" style={{ marginRight: "6px", transform: "rotate(180deg)", display: "block" }} />
+                    Back to Blog
+                </Link>
+            </div>
 
             {/* Cover Image */}
             {coverMedia && (
