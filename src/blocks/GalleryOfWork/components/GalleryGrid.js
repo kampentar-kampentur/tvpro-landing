@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import FilterButtons from "./FilterButtons";
 import PhotoGrid from "./PhotoGrid";
@@ -10,22 +10,36 @@ import modalStyles from "./PhotoCard.module.css";
 // SVG Arrow Left иконка
 const ArrowLeftIcon = (props) => (
   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
-    <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M15 18l-6-6 6-6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 // SVG Arrow Right иконка
 const ArrowRightIcon = (props) => (
   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" {...props}>
-    <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M9 18l6-6-6-6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const sortPhotos = (photos) => {
   if (!photos) return [];
   return [...photos].sort((a, b) => {
-    const orderA = a.order !== null && a.order !== undefined ? a.order : Infinity;
-    const orderB = b.order !== null && b.order !== undefined ? b.order : Infinity;
+    const orderA =
+      a.order !== null && a.order !== undefined ? a.order : Infinity;
+    const orderB =
+      b.order !== null && b.order !== undefined ? b.order : Infinity;
 
     if (orderA !== orderB) {
       return orderA - orderB;
@@ -40,7 +54,9 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
   const [galleryPhotos, setGalleryPhotos] = useState(() => {
     const defaultFilter = filters?.[0]?.type || "";
     if (initialPhotos && initialPhotos.length > 0) {
-      const filtered = initialPhotos.filter(photo => photo.type === defaultFilter);
+      const filtered = initialPhotos.filter(
+        (photo) => photo.type === defaultFilter,
+      );
       return sortPhotos(filtered);
     }
     return [];
@@ -49,7 +65,7 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [gridKey, setGridKey] = useState(`${activeFilter}-${Date.now()}`);
-  const [containerHeight, setContainerHeight] = useState('auto');
+  const [containerHeight, setContainerHeight] = useState("auto");
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,8 +81,12 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
   const isFirstMount = useRef(true);
 
   // Pre-populate cache with initialPhotos on first render
-  if (Object.keys(cacheRef.current).length === 0 && initialPhotos && initialPhotos.length > 0) {
-    initialPhotos.forEach(photo => {
+  if (
+    Object.keys(cacheRef.current).length === 0 &&
+    initialPhotos &&
+    initialPhotos.length > 0
+  ) {
+    initialPhotos.forEach((photo) => {
       const type = photo.type;
       if (type) {
         if (!cacheRef.current[type]) {
@@ -106,8 +126,12 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
 
     if (isManual) {
       setIsAutoPlaying(false);
-      if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current);
-      transitionTimeoutRef.current = setTimeout(() => setIsAutoPlaying(true), 45000);
+      if (transitionTimeoutRef.current)
+        clearTimeout(transitionTimeoutRef.current);
+      transitionTimeoutRef.current = setTimeout(
+        () => setIsAutoPlaying(true),
+        45000,
+      );
     }
   };
 
@@ -130,7 +154,7 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
       setIsTransitioning(true);
 
       // Wait for fade out to complete
-      await new Promise(resolve => setTimeout(resolve, 400));
+      await new Promise((resolve) => setTimeout(resolve, 400));
 
       // 3. Clear data and force remount
       setGalleryPhotos([]);
@@ -140,12 +164,12 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
       let nextData = [];
       if (cacheRef.current[activeFilter]) {
         nextData = cacheRef.current[activeFilter];
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 300));
       } else {
         setLoading(true);
         try {
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*&filters[type]=${encodeURIComponent(activeFilter)}&pagination[limit]=100`
+            `${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/galler-photos?populate=*&filters[type]=${encodeURIComponent(activeFilter)}&pagination[limit]=100`,
           );
           const json = await res.json();
           nextData = json.data || [];
@@ -156,22 +180,33 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
           setLoading(false);
         }
       }
-      console.log(nextData);
+      console.log("activeFilter", activeFilter);
+      console.log("nextData", nextData);
 
       // 5. Apply Data
       setGalleryPhotos(sortPhotos(nextData));
       setGridKey(`${activeFilter}-${Date.now()}`);
 
+      // Measure new height and trigger transition
+      setTimeout(() => {
+        if (containerRef.current) {
+          const prevMinHeight = containerRef.current.style.minHeight;
+          containerRef.current.style.minHeight = "0px";
+          const newHeight = containerRef.current.scrollHeight;
+          containerRef.current.style.minHeight = prevMinHeight;
+          setContainerHeight(`${newHeight}px`);
+        }
+      }, 50);
+
       // 6. Fade In
-      // Tiny delay to ensure React commits the new data before fading in
       setTimeout(() => {
         setIsTransitioning(false);
 
         // 7. Unfreeze height after animation completes
         setTimeout(() => {
-          setContainerHeight('auto');
+          setContainerHeight("auto");
         }, 500);
-      }, 50);
+      }, 100);
     };
 
     performUpdate();
@@ -192,12 +227,16 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
     setIsModalOpen(false);
   };
 
-  const photoItems = modalImages ? modalImages.filter(item => item.image) : [];
+  const photoItems = modalImages
+    ? modalImages.filter((item) => item.image)
+    : [];
 
   const handleNext = (e) => {
     e?.preventDefault();
     e?.stopPropagation();
-    const currentPhotoIndex = photoItems.findIndex(item => item === modalImages[modalIndex]);
+    const currentPhotoIndex = photoItems.findIndex(
+      (item) => item === modalImages[modalIndex],
+    );
     const nextPhotoIndex = (currentPhotoIndex + 1) % photoItems.length;
     const nextItemIndex = modalImages.indexOf(photoItems[nextPhotoIndex]);
     setModalIndex(nextItemIndex);
@@ -206,8 +245,11 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
   const handlePrev = (e) => {
     e?.preventDefault();
     e?.stopPropagation();
-    const currentPhotoIndex = photoItems.findIndex(item => item === modalImages[modalIndex]);
-    const prevPhotoIndex = (currentPhotoIndex - 1 + photoItems.length) % photoItems.length;
+    const currentPhotoIndex = photoItems.findIndex(
+      (item) => item === modalImages[modalIndex],
+    );
+    const prevPhotoIndex =
+      (currentPhotoIndex - 1 + photoItems.length) % photoItems.length;
     const prevItemIndex = modalImages.indexOf(photoItems[prevPhotoIndex]);
     setModalIndex(prevItemIndex);
   };
@@ -229,9 +271,13 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
   };
 
   const currentItem = modalImages[modalIndex];
-  const currentIsVideo = currentItem ? Boolean(currentItem.videoUrl || currentItem.video) : false;
-  const currentVideoSrc = currentItem ? (currentItem.videoUrl || (currentItem.video && currentItem.video.url)) : null;
-
+  const currentIsVideo = currentItem
+    ? Boolean(currentItem.videoUrl || currentItem.video)
+    : false;
+  const currentVideoSrc = currentItem
+    ? currentItem.videoUrl || (currentItem.video && currentItem.video.url)
+    : null;
+  console.log("galleryPhotos", galleryPhotos);
   return (
     <>
       <FilterButtons
@@ -244,7 +290,11 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
         className={`${styles.gridContainer} ${isTransitioning ? styles.fadeOut : styles.fadeIn}`}
         style={{ minHeight: containerHeight }}
       >
-        <PhotoGrid key={gridKey} images={galleryPhotos} onPhotoClick={handleOpenModal} />
+        <PhotoGrid
+          key={gridKey}
+          images={galleryPhotos}
+          onPhotoClick={handleOpenModal}
+        />
       </div>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
