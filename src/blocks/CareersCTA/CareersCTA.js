@@ -16,14 +16,16 @@ export default function CareersCTA({ data, cityContext }) {
 
   return (
     <section className="block">
-      <header className={styles.header}>
-        <h2 className="blockHeading"><Text text={title} cityContext={cityContext} /></h2>
-        <p className="subText"><Text text={subTitle} cityContext={cityContext} /></p>
-      </header>
-      <div className={styles.buttonWrapper}>
-        <Button variant="primary" onClick={() => open()} size="big">
-          {buttonText}
-        </Button>
+      <div className={styles.careersCard}>
+        <header className={styles.header}>
+          <h2 className="blockHeading"><Text text={title} cityContext={cityContext} /></h2>
+          <p className="subText"><Text text={subTitle} cityContext={cityContext} /></p>
+        </header>
+        <div className={styles.buttonWrapper}>
+          <Button variant="primary" onClick={() => open()} size="big">
+            {buttonText}
+          </Button>
+        </div>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import Text from "@/ui/Text/Text";
 import { resolveSpintax } from "@/lib/spintax";
+import ScrollSnapSlider from "@/ui/ScrollSnapSlider/ScrollSnapSlider";
 
 async function getOurServices() {
   const res = await fetch(
@@ -49,15 +50,9 @@ export default async function BriefServices({ data = {}, cityContext }) {
         <h2 className="blockHeading">
           <Text text="Our Services" cityContext={cityContext} />
         </h2>
-        <p className="subText">
-          <Text
-            text="Explore our top professional TV mounting and media wall installation options."
-            cityContext={cityContext}
-          />
-        </p>
       </header>
 
-      <div className={styles.cardsGrid}>
+      <ScrollSnapSlider className={styles.cardsGrid} dotsPosition="top">
         {slicedServices.map((service) => {
           const briefDescription = truncateText(service.description);
           return (
@@ -91,7 +86,7 @@ export default async function BriefServices({ data = {}, cityContext }) {
             </div>
           );
         })}
-      </div>
+      </ScrollSnapSlider>
     </section>
   );
 }

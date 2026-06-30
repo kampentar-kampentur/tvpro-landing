@@ -11,6 +11,7 @@ import {
 } from "@/lib/strapi";
 import Text from "@/ui/Text/Text";
 import { resolveSpintax } from "@/lib/spintax";
+import ScrollSnapSlider from "@/ui/ScrollSnapSlider/ScrollSnapSlider";
 
 async function getOurTeamData() {
   try {
@@ -184,11 +185,11 @@ export default async function OurTeam({ data = {}, cityContext }) {
         </p>
       </header>
 
-      <div className={styles.sliderTrack}>
+      <ScrollSnapSlider className={styles.sliderTrack} dotsPosition="top">
         {selectedTechs.map((tech) => (
           <TechCard key={tech.id} tech={tech} cityName={cityName} />
         ))}
-      </div>
+      </ScrollSnapSlider>
 
       <div className={styles.footer}>
         <p className={styles.footerText}>

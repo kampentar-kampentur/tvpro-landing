@@ -30,9 +30,6 @@ export default async function CustomerReviews({ data = {}, cityContext }) {
         <h2 className="blockHeading">
           <Text text={customerReviewsData.title} cityContext={cityContext} />
         </h2>
-        <p className="subText">
-          <Text text={customerReviewsData.subTitle} cityContext={cityContext} />
-        </p>
       </header>
 
       <CustomerReviewsClient />
