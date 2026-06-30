@@ -67,7 +67,7 @@ export default async function Contacts({ data = {}, cityContext }) {
         <p className={styles.subHeading}><Text text={contact.subTitle} cityContext={cityContext} /></p>
         <div className={styles.mapWrap}>
           <div className={styles.contactDetailsSection}>
-            <ContactsDetails />
+            <ContactsDetails cityContext={cityContext} />
           </div>
 
           <iframe
