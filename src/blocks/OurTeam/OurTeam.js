@@ -98,25 +98,32 @@ export default async function OurTeam({ data = {}, cityContext }) {
     const shuffled = [...cityTechs].sort(() => 0.5 - Math.random());
     selectedTechs = shuffled.slice(0, 6);
   } else {
-    // Try to fill remaining slots with managers from the same city
+    // Prefer managers from the same city, then global/other managers
     const cityManagers = managersOnly.filter(
       (t) => t.city?.toLowerCase() === cityName?.toLowerCase(),
     );
-    const remainingSlots = 6 - cityTechs.length;
-    const managersToFill = cityManagers.slice(0, remainingSlots);
-
-    // If still not enough, add technicians from other cities
-    const otherTechnicians = techniciansOnly.filter(
+    const otherManagers = managersOnly.filter(
       (t) => t.city?.toLowerCase() !== cityName?.toLowerCase(),
     );
-    const shuffledOthers = [...otherTechnicians].sort(
-      () => 0.5 - Math.random(),
-    );
+    const allAvailableManagers = [...cityManagers, ...otherManagers];
+    
+    const remainingSlots = 6 - cityTechs.length;
+    const managersToFill = allAvailableManagers.slice(0, remainingSlots);
 
-    const combined = [...cityTechs, ...managersToFill, ...shuffledOthers].slice(
-      0,
-      6,
-    );
+    // Only fallback to other cities' technicians if we still have empty slots
+    const slotsLeft = remainingSlots - managersToFill.length;
+    let otherTechsToFill = [];
+    if (slotsLeft > 0) {
+      const otherTechnicians = techniciansOnly.filter(
+        (t) => t.city?.toLowerCase() !== cityName?.toLowerCase(),
+      );
+      const shuffledOthers = [...otherTechnicians].sort(
+        () => 0.5 - Math.random(),
+      );
+      otherTechsToFill = shuffledOthers.slice(0, slotsLeft);
+    }
+
+    const combined = [...cityTechs, ...managersToFill, ...otherTechsToFill];
     selectedTechs = combined.sort(() => 0.5 - Math.random());
   }
 
