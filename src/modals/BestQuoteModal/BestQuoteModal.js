@@ -1097,7 +1097,7 @@ const NewQuizScheme = {
             },
             {
               value: "gamingConsole",
-              label: "Gaming Console Setup",
+              label: "Gaming Console Mounting",
               cost: 50,
               costLabel: "+$50",
             },
