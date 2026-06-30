@@ -30,7 +30,7 @@ const PhotoCard = ({ image, videoUrl, video, className, currentIndex, onClick, o
         defaultAlt="TV Installation Project"
         width={375}
         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 375px"
-        style={objectPosition ? { objectPosition } : undefined}
+        style={(typeof objectPosition === 'string' || typeof objectPosition === 'number') && objectPosition ? { objectPosition } : undefined}
       />}
       {isVideo && (
         <span className={styles.playIconWrap}>
