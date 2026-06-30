@@ -6,10 +6,6 @@
     margin: 0 !important;
 }
 
-.hero {
-    padding-bottom: 0;
-}
-
 .heroContainer {
     align-items: center;
     text-align: center;
@@ -189,7 +185,7 @@
     }
 
     .buttonWrapper {
-        margin-top: 20px;
+        margin-top: 40px;
     }
 
     .bxlt {

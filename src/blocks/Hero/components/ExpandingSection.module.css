@@ -24,7 +24,7 @@
 
 @media (max-width: 1024px) {
     .expandingWrapper {
-        margin-top: 40px;
+        margin-top: 0px;
     }
 
     .expandingContainer {
