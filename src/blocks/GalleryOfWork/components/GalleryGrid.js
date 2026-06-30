@@ -111,10 +111,34 @@ export default function GalleryGrid({ filters, initialPhotos = [] }) {
   }, [filters, activeFilter]);
 
   useEffect(() => {
-    if (isAutoPlaying && filters?.length > 1) {
-      startTimer();
+    const container = containerRef.current;
+    if (!container || !isAutoPlaying || filters?.length <= 1) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      return;
     }
-    return () => clearInterval(timerRef.current);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startTimer();
+        } else {
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+        }
+      },
+      { threshold: 0.05 } // Trigger when at least 5% of the gallery is visible
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   }, [isAutoPlaying, filters, activeFilter, startTimer]);
 
   const handleFilterChange = (filter, isManual = false) => {

@@ -26,6 +26,7 @@
   font-size: 16px;
   line-height: 24px;
   color: var(--white);
+  margin-top: 20px;
 }
 
 .contactDetailsSection {
@@ -126,4 +127,44 @@
 
 .mapWrap iframe {
   margin-top: 20px;
+}
+
+.detailIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--green, #0d64a0);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.nonClickable {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--white);
+}
+
+.clickableLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--white);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease, opacity 0.2s ease;
+}
+
+.clickableLink:hover {
+  text-decoration-color: var(--white);
+}
+
+.clickableLink:hover .detailIcon {
+  transform: scale(1.1);
+}
+
+@media (max-width: 1024px) {
+  .clickableLink {
+    text-decoration-color: var(--white); /* always underlined on mobile to signal clickability */
+  }
 }

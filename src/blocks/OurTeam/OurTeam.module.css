@@ -12,7 +12,13 @@
 }
 
 .header {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .header {
+        margin-bottom: 40px;
+    }
 }
 
 /* ── Mobile: swipe carousel ──────────────────────────────────
@@ -20,14 +26,14 @@
    ─────────────────────────────────────────────────────────── */
 .sliderTrack {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     /* bleed past section padding so the peek effect works */
-    margin: 0 -16px;
-    padding: 4px 16px 20px;
+    margin: 20px -16px 0 -16px;
+    padding: 8px 16px 24px 16px;
 }
 
 .sliderTrack::-webkit-scrollbar {
@@ -36,8 +42,8 @@
 
 /* Each card snaps and shows 85% width — user sees next card peeking */
 .sliderTrack > * {
-    flex: 0 0 88%;
-    scroll-snap-align: start;
+    flex: 0 0 calc(100% - 32px);
+    scroll-snap-align: center;
     min-width: 0;
 }
 
