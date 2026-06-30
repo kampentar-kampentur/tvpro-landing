@@ -9,8 +9,9 @@ import CheckboxGroupField from '../components/fields/CheckboxGroupField';
 import SplitField from '../components/fields/SplitField';
 import { shouldRenderField } from '../utils/formUtils';
 import ChevronIcon from '@/assets/icons/chevron.svg';
+import Button from '@/ui/Button';
 
-const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps, isMobile, currentStepIndex, onClose, onBack }) => {
+const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps, isMobile, currentStepIndex, onClose, onBack, onNext }) => {
   if (!step) {
     return <div>hahaha{step}</div>
   }
@@ -157,18 +158,21 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
             case "checkboxGroup":
               return (
                 <div key={field.name} className={styles.option}>
-                  <span style={{ display: "flex", marginBottom: "24px" }}>
-                    {(currentStepIndex > 0 || currentSubStep > 0) && index === 0 && (
-                      <button className={styles.backButton} onClick={onBack}>
-                        <ChevronIcon />
-                      </button>
-                    )}
-                    {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
-                  </span>
+                  {index === 0 && (
+                    <span style={{ display: "flex", marginBottom: "24px" }}>
+                      {(currentStepIndex > 0 || currentSubStep > 0) && (
+                        <button className={styles.backButton} onClick={onBack}>
+                          <ChevronIcon />
+                        </button>
+                      )}
+                      {field.label && <h3 className={styles.fieldLabel}>{field.label}</h3>}
+                    </span>
+                  )}
                   <CheckboxGroupField
                     field={field}
                     value={fieldCurrentValue}
                     onChange={handleFieldChange}
+                    label={index === 0 ? "" : undefined}
                   />
                   {field.description && <p className={styles.fieldDescription}>{field.description}</p>}
                 </div>
@@ -196,6 +200,33 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
               return null;
           }
         })
+      }
+      {
+        step.fields && step.fields.some(f => f.type === "checkboxGroup") && (
+          <div className={styles.navigation}>
+            <Button
+              variant="primary"
+              size="big"
+              onClick={onNext}
+              className={styles.nextBtn}
+              disabled={!(() => {
+                const isFieldRequiredAndMissing = (field) => {
+                  if (!field.isRequired) return false;
+                  if (!shouldRenderField(field.showIf, formData, step.id, step.parentContext)) return false;
+                  const val = formData[step.id]?.[field.name];
+                  return val === undefined || val === null || val === '';
+                };
+                return step.fields ? !step.fields.some(isFieldRequiredAndMissing) : true;
+              })()}
+            >
+              {step.fields.some(f => {
+                if (f.type !== "checkboxGroup") return false;
+                const val = formData[step.id]?.[f.name];
+                return val && val.length > 0;
+              }) ? "Next" : "Skip"}
+            </Button>
+          </div>
+        )
       }
     </div>
   );

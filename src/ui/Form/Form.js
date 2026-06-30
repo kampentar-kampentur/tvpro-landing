@@ -87,8 +87,9 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         [fieldName]: fieldValue
       }
     }
-    if (isStepComplete(stepToRender, fd)) {
-      handleNext(fd)
+    const fieldConfig = stepToRender?.fields?.find(f => f.name === fieldName);
+    if (fieldConfig?.type !== "checkboxGroup" && isStepComplete(stepToRender, fd)) {
+      handleNext(fd);
     }
   };
 

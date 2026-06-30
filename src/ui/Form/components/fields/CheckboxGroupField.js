@@ -1,9 +1,11 @@
 import React from 'react';
-import Checkbox from '@/ui/Checkbox';
 import styles from './CheckboxGroupField.module.css';
 import fieldStyles from './TextField.module.css';
 
-const CheckboxGroupField = ({ label, options, value = [], onChange, error, columns }) => {
+const CheckboxGroupField = ({ label, options, value = [], onChange, error, columns, field }) => {
+  const finalLabel = label || field?.label;
+  const finalOptions = options || field?.options || [];
+
   const handleToggle = (optionValue) => {
     const newValue = value.includes(optionValue)
       ? value.filter((v) => v !== optionValue)
@@ -13,17 +15,29 @@ const CheckboxGroupField = ({ label, options, value = [], onChange, error, colum
 
   return (
     <div className={`${styles.container} ${error ? styles.invalid : ''}`}>
-      <span className={styles.label}>{label}</span>
-      <div className={styles.grid} style={columns ? { gridTemplateColumns: `repeat(${columns}, 1fr)` } : undefined}>
-        {options.map((opt) => (
-          <div key={opt.value} className={styles.checkboxItem}>
-            <Checkbox
-              checked={value.includes(opt.value)}
-              onChange={() => handleToggle(opt.value)}
-              label={opt.label}
-            />
-          </div>
-        ))}
+      {finalLabel && <span className={styles.label}>{finalLabel}</span>}
+      <div className={styles.verticalList}>
+        {finalOptions.map((opt) => {
+          const isSelected = value.includes(opt.value);
+          return (
+            <div
+              key={opt.value}
+              className={`${styles.checkboxRow} ${isSelected ? styles.selected : ''}`}
+              onClick={() => handleToggle(opt.value)}
+            >
+              <div className={styles.checkboxIcon} aria-checked={isSelected} />
+              <div className={styles.textContainer}>
+                <span className={styles.optionLabel}>{opt.label}</span>
+                {opt.subtitle && <span className={styles.optionSubtitle}>{opt.subtitle}</span>}
+              </div>
+              {opt.cost !== undefined && (
+                <span className={styles.priceTag}>
+                  {opt.costLabel ? opt.costLabel : `+$${opt.cost}`}
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
       {error && (
         <span className={fieldStyles.errorText} style={{ marginTop: '4px' }}>

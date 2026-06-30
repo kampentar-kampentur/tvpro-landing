@@ -295,7 +295,7 @@ const BestQuoteScheme = {
           name: "fireplace",
           type: "radio",
           isRequired: true,
-          label: "Is the TV being mounted above a fireplace?",
+          label: "Mounting above a fireplace?",
           showIf: {
             field: "wallType",
             condition: "equalsAny",
@@ -1065,7 +1065,7 @@ const NewQuizScheme = {
           name: "fireplace",
           type: "radio",
           isRequired: true,
-          label: "Is the TV being mounted above a fireplace?",
+          label: "Mounting above a fireplace?",
           options: [
             {
               value: "yes",
@@ -1081,6 +1081,37 @@ const NewQuizScheme = {
               hideFromBreakdown: true,
               cost: 0,
               costLabel: "+$0",
+            },
+          ],
+        },
+        {
+          name: "addons",
+          type: "checkboxGroup",
+          label: "Do you need any addons?",
+          options: [
+            {
+              value: "soundbar",
+              label: "Soundbar Installation",
+              cost: 69,
+              costLabel: "+$69",
+            },
+            {
+              value: "gamingConsole",
+              label: "Gaming Console Setup",
+              cost: 50,
+              costLabel: "+$50",
+            },
+            {
+              value: "ledLight",
+              label: "LED Light Strip Installation",
+              cost: 39,
+              costLabel: "+$39",
+            },
+            {
+              value: "paintings",
+              label: "Install Painting or Mirrors",
+              cost: 39,
+              costLabel: "+$39",
             },
           ],
         },
@@ -1603,6 +1634,9 @@ const BestQuoteModal = () => {
     setStructuredCostBreakdown(newStructuredCostBreakdown);
   };
 
+  const currentStepId = currentScheme?.steps?.[currentStepIndex]?.id;
+  const hideDiscountBanner = currentStepId === "fireplace";
+
   return (
     <Modal
       className={styles.bestQuoteModalcontent}
@@ -1631,7 +1665,7 @@ const BestQuoteModal = () => {
             onClose={close}
           />
           <div className={styles.space}></div>
-          {(isMobile && currentStepIndex === 0) || (
+          {hideDiscountBanner || (isMobile && currentStepIndex === 0) || (
             <div className={styles.discountBanner}>
               <p className={styles.discountLabel}>Installing 2 or more TVs?</p>
               <p className={styles.discountText}>
