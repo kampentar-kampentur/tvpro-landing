@@ -337,10 +337,18 @@ export default function CareersModal() {
         languages: Array.isArray(formData.languages) ? formData.languages.join(", ") : formData.languages,
         servicesPerformed: Array.isArray(formData.servicesPerformed) ? formData.servicesPerformed.join(", ") : formData.servicesPerformed
       };
-      const response = await fetch("/api/careers", {
+
+      // Remove file and otherCity fields as they are not needed in Strapi
+      const { file, otherCity, ...postData } = submissionData;
+
+      const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
+
+      const response = await fetch(`${apiUrl}/api/technician-applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(submissionData),
+        body: JSON.stringify({
+          data: postData
+        }),
       });
 
       if (response.ok) {
@@ -372,6 +380,18 @@ export default function CareersModal() {
     { value: "other", label: "Other" }
   ];
 
+  const formatPhoneSuccess = (phone) => {
+    if (!phone) return "";
+    let cleaned = phone.replace(/\D/g, "");
+    if (cleaned.length === 11 && cleaned.startsWith("1")) {
+      cleaned = cleaned.substring(1);
+    }
+    if (cleaned.length === 10) {
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+    }
+    return phone;
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose} className={styles.modal}>
       {isSuccess ? (
@@ -387,7 +407,7 @@ export default function CareersModal() {
             We&apos;ve received your application to become a TVPro Technician. A confirmation and next steps have been sent to <strong>{formData.email}</strong>.
           </p>
           <p className={styles.successSubmessage}>
-            Our recruiting team will review your skills and contact you shortly at <strong>{formData.phone ? `+1 ${formData.phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")}` : ""}</strong>.
+            Our recruiting team will review your skills and contact you shortly at <strong>{formData.phone ? `+1 ${formatPhoneSuccess(formData.phone)}` : ""}</strong>.
           </p>
           <Button onClick={handleClose} className={styles.successCloseBtn}>Go to homepage</Button>
         </div>
@@ -437,6 +457,7 @@ export default function CareersModal() {
                       <RadioQuestionField
                         question="Legally authorized to work in the U.S.? *"
                         name="workAuth"
+                        options={yesNoOptions}
                         value={formData.workAuth}
                         onChange={(val) => handleChange("workAuth")(val)}
                         error={errors.workAuth}
@@ -445,6 +466,7 @@ export default function CareersModal() {
                       <RadioQuestionField
                         question="Are you over 18 years old? *"
                         name="over18"
+                        options={yesNoOptions}
                         value={formData.over18}
                         onChange={(val) => handleChange("over18")(val)}
                         error={errors.over18}
@@ -453,6 +475,7 @@ export default function CareersModal() {
                       <RadioQuestionField
                         question="Do you have a valid Driver's License and a vehicle? *"
                         name="driverLicense"
+                        options={yesNoOptions}
                         value={formData.driverLicense}
                         onChange={(val) => handleChange("driverLicense")(val)}
                         error={errors.driverLicense}
