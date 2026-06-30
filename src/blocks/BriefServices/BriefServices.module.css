@@ -40,7 +40,7 @@
 
 .imageWrapper {
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 12 / 10;
     overflow: hidden;
     position: relative;
     border-radius: 12px;
