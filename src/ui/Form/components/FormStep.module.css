@@ -162,3 +162,13 @@
         width: 100%;
     }
 }
+
+.disabledBtn {
+  background: var(--gray-extra-light) !important;
+  color: var(--foreground) !important;
+  cursor: not-allowed !important;
+}
+
+.disabledBtn span {
+  opacity: 0.2 !important;
+}

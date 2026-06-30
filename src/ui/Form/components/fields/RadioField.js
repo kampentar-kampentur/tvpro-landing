@@ -3,7 +3,7 @@ import SelectionCard from '@/ui/SelectionCard';
 import { shouldRenderField } from '../../utils/formUtils';
 import formStyles from '../../Form.module.css'
 
-const RadioField = ({ field, value, onChange, isMobile, formData, stepId, step }) => {
+const RadioField = ({ field, value, onChange, isMobile, formData, stepId, step, isShaking }) => {
   const [isInfoShow, setIsInfoShow] = useState(null);
 
   const handleClick = (optionValue) => {
@@ -40,6 +40,7 @@ const RadioField = ({ field, value, onChange, isMobile, formData, stepId, step }
             description={option.description}
             isInfoShow={isInfoShow === option.value}
             onInfoClick={() => handleInfoClick(option.value)}
+            isShaking={isShaking}
           />
         ))}
     </div>
