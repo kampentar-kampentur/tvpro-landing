@@ -1066,6 +1066,11 @@ const NewQuizScheme = {
           type: "radio",
           isRequired: true,
           label: "Mounting above a fireplace?",
+          showIf: {
+            field: "mounting.mountType",
+            condition: "notEquals",
+            value: "ceilingMount",
+          },
           options: [
             {
               value: "yes",
