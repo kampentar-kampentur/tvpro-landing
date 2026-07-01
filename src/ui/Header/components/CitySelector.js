@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCTA } from "@/providers/CTAProvider";
 import styles from "./CitySelector.module.css";
 
 function PinIcon() {
@@ -82,26 +83,9 @@ export default function CitySelector() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Determine current city from URL pathname (first segment, e.g. /houston -> Houston)
-  const firstSegment =
-    pathname && pathname !== "/"
-      ? pathname.split("/").filter(Boolean)[0]
-      : null;
-
-  let currentCityName = "";
-  if (firstSegment) {
-    const match = cities.find(
-      (c) => c.path === firstSegment || c.path === `${firstSegment}/`,
-    );
-    if (match) {
-      currentCityName = match.name;
-    } else {
-      // Fallback: title-case the slug
-      currentCityName = firstSegment
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (m) => m.toUpperCase());
-    }
-  }
+  const cta = useCTA();
+  const currentCityName = cta?.cityName || "";
+  const firstSegment = cta?.citySlug || "";
 
   return (
     <div className={styles.wrapper} ref={wrapperRef}>
@@ -115,6 +99,9 @@ export default function CitySelector() {
       >
         <span className={styles.pinIcon} aria-hidden="true">
           <PinIcon />
+        </span>
+        <span className={styles.triggerLabel}>
+          {currentCityName || "Select Location"}
         </span>
         <span
           className={`${styles.caret} ${open ? styles.caretOpen : ""}`}

@@ -205,7 +205,12 @@ export default async function CityPage({ params }) {
   console.log("layout", layout);
   return (
     <main>
-      <CityCTASetter ctaOverride={cityData.cta_override} citySlug={citySlug} />
+      <CityCTASetter
+        ctaOverride={cityData.cta_override}
+        citySlug={citySlug}
+        cityName={cityData.city_name}
+        stateCode={cityData.state_code}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

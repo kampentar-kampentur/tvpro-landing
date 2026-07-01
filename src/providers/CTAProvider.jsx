@@ -7,10 +7,32 @@ const CTAContext = createContext(null);
 export function CTAProvider({ children, initialCTA }) {
     const [cta, setCta] = useState(initialCTA || {});
 
-    // Effect to handle dynamic updates if needed, though primarily controlled by CityCTASetter
+    // Helper to get saved city context from localStorage
+    const getSavedContext = () => {
+        if (typeof window === "undefined") return {};
+        try {
+            const saved = localStorage.getItem("user_city_context");
+            return saved ? JSON.parse(saved) : {};
+        } catch (e) {
+            return {};
+        }
+    };
+
+    // Load saved context on mount
+    useEffect(() => {
+        const saved = getSavedContext();
+        if (Object.keys(saved).length > 0) {
+            setCta(prev => ({ ...prev, ...saved }));
+        }
+    }, []);
+
+    // Effect to handle dynamic updates when page transition updates initialCTA
     useEffect(() => {
         if (initialCTA) {
-            setCta(prev => ({ ...prev, ...initialCTA }));
+            setCta(prev => {
+                const saved = getSavedContext();
+                return { ...prev, ...initialCTA, ...saved };
+            });
         }
     }, [initialCTA]);
 
@@ -50,13 +72,16 @@ export function useCTA() {
     return context.cta;
 }
 
-export function CityCTASetter({ ctaOverride, citySlug }) {
+export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
     const context = useContext(CTAContext);
 
-    // Inject dynamic root link for the city page
+    // Inject dynamic root link and city name details for the city page
     const overridePayload = {
         ...(ctaOverride || {}),
-        homeLink: citySlug ? `/${citySlug}` : undefined
+        homeLink: citySlug ? `/${citySlug}` : undefined,
+        cityName,
+        stateCode,
+        citySlug
     };
 
     // Stringify to prevent endless object reference re-renders
@@ -67,8 +92,16 @@ export function CityCTASetter({ ctaOverride, citySlug }) {
             try {
                 const parsedOverride = JSON.parse(ctaOverrideStr);
                 context.overrideCTA(parsedOverride);
+
+                // Save to localStorage & cookie to persist city context across page changes
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("user_city_context", ctaOverrideStr);
+                    if (parsedOverride.citySlug) {
+                        document.cookie = `user_city_slug=${parsedOverride.citySlug}; path=/; max-age=31536000; SameSite=Lax`;
+                    }
+                }
             } catch (e) {
-                console.error("Error parsing ctaOverride string");
+                console.error("Error parsing ctaOverride string or persisting context", e);
             }
         }
     }, [ctaOverrideStr, context]);

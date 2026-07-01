@@ -338,7 +338,7 @@ export default function HeaderActions({ isBlog, isHome }) {
           </div>
         )}
 
-        {isHome && <CitySelector />}
+        {!isBlog && <CitySelector />}
         <span className={styles.hours}>
           {cta?.workHours || "Mon-Sun 7:00 AM - 10:00 PM"}
         </span>

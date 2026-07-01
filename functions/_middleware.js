@@ -33,13 +33,20 @@ export async function onRequest(context) {
     // 3. Determine working path (Actual path or Geo-mapped path)
     let workingPath = (path === 'index' ? '' : path);
 
-    if (isRoot && !disableGeo) {
-        // Always try Geo-IP detection on every root request
-        const userCity = context.request.cf?.city?.toLowerCase();
-        const matchedSlug = userCity ? config.geo[userCity] : null;
+    if (isRoot) {
+        const match = cookieHeader.match(/user_city_slug=([^;]+)/);
+        const cookieSlug = match ? match[1] : null;
 
-        if (matchedSlug) {
-            workingPath = matchedSlug;
+        if (cookieSlug && config.variants[cookieSlug] !== undefined) {
+            workingPath = cookieSlug;
+        } else if (!disableGeo) {
+            // Fallback to Geo-IP detection
+            const userCity = context.request.cf?.city?.toLowerCase();
+            const matchedSlug = userCity ? config.geo[userCity] : null;
+
+            if (matchedSlug) {
+                workingPath = matchedSlug;
+            }
         }
     }
 
