@@ -1479,6 +1479,15 @@ const BestQuoteModal = () => {
           }),
         };
       }
+      if (step.id === "fireplace") {
+        const isFireplaceHidden =
+          formData["mounting"]?.mountType === "ceilingMount" ||
+          formData["wall"]?.wallType === "metalStuds";
+        return {
+          ...step,
+          title: isFireplaceHidden ? "Addons" : "Fireplace",
+        };
+      }
       return step;
     });
 
