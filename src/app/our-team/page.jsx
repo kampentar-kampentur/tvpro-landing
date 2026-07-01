@@ -67,6 +67,21 @@ export default async function OurTeamPage() {
     (tech) => tech.department !== "manager",
   );
 
+  // Sort managers: Senior Sales Manager first, then alphabetically by name
+  managers.sort((a, b) => {
+    const roleA = a.role || "";
+    const roleB = b.role || "";
+    const isSeniorA = roleA.toLowerCase().includes("senior sales manager");
+    const isSeniorB = roleB.toLowerCase().includes("senior sales manager");
+
+    if (isSeniorA && !isSeniorB) return -1;
+    if (!isSeniorA && isSeniorB) return 1;
+
+    const nameA = a.name || "";
+    const nameB = b.name || "";
+    return nameA.localeCompare(nameB);
+  });
+
   // Helper to prepare tech data and render cards
   const renderTechCards = (techList) =>
     techList.map((tech) => {
