@@ -3,7 +3,7 @@ import styles from './CheckboxGroupField.module.css';
 import fieldStyles from './TextField.module.css';
 
 const CheckboxGroupField = ({ label, options, value = [], onChange, error, columns, field }) => {
-  const finalLabel = label || field?.label;
+  const finalLabel = label !== undefined ? label : field?.label;
   const finalOptions = options || field?.options || [];
 
   const handleToggle = (optionValue) => {
