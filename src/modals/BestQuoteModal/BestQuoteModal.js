@@ -1058,7 +1058,7 @@ const NewQuizScheme = {
       showIf: {
         field: "wall.wallType",
         condition: "equalsAny",
-        values: ["drywall", "stoneBrickConcrete", "tile", "ceiling"],
+        values: ["drywall", "stoneBrickConcrete", "tile", "ceiling", "metalStuds"],
       },
       fields: [
         {
@@ -1066,11 +1066,18 @@ const NewQuizScheme = {
           type: "radio",
           isRequired: true,
           label: "Mounting above a fireplace?",
-          showIf: {
-            field: "mounting.mountType",
-            condition: "notEquals",
-            value: "ceilingMount",
-          },
+          showIf: [
+            {
+              field: "mounting.mountType",
+              condition: "notEquals",
+              value: "ceilingMount",
+            },
+            {
+              field: "wall.wallType",
+              condition: "notEquals",
+              value: "metalStuds",
+            },
+          ],
           options: [
             {
               value: "yes",
@@ -1649,7 +1656,7 @@ const BestQuoteModal = () => {
       onClose={close}
     >
       <header className={styles.bestQuoteHeader}>
-        <LogoSVG width="82" height="40" role="img" />
+        <LogoSVG width="82" height="40" role="img" onClick={close} style={{ cursor: "pointer" }} />
       </header>
       <div className={styles.bestQuote}>
         <main className={styles.bestQuoteMain}>
