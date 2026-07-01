@@ -100,9 +100,6 @@ export default function CitySelector() {
         <span className={styles.pinIcon} aria-hidden="true">
           <PinIcon />
         </span>
-        <span className={styles.triggerLabel}>
-          {currentCityName || "Select Location"}
-        </span>
         <span
           className={`${styles.caret} ${open ? styles.caretOpen : ""}`}
           aria-hidden="true"
