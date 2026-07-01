@@ -87,7 +87,7 @@ export default async function UtpBar({ data = {}, cityContext }) {
   };
 
   return (
-    <section className={styles.utpSection}>
+    <div className={styles.utpSection}>
       <div className={`blockContainer ${styles.utpContainer}`}>
         <div className={styles.utpCard}>
           {resolvedItems.map((item) => (
@@ -128,6 +128,6 @@ export default async function UtpBar({ data = {}, cityContext }) {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

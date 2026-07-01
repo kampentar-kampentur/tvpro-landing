@@ -242,7 +242,7 @@ const TechCard = ({ tech, cityName = "your area" }) => {
 
           <div className={styles.content}>
             <div className={styles.nameBlock}>
-              <h3 className={styles.name}>{tech.name}</h3>
+              <div className={styles.name}>{tech.name}</div>
               <p className={styles.role}>{tech.role}</p>
               {mottoText && (
                 <p className={styles.motto}>&ldquo;{mottoText}&rdquo;</p>
