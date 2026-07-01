@@ -1495,7 +1495,7 @@ const BestQuoteModal = () => {
       ...schemeToUse,
       steps: updatedSteps,
     };
-  }, [tvSelection, isNewQuiz]);
+  }, [tvSelection, isNewQuiz, formData]);
 
   const isLastStep =
     currentScheme && currentScheme.steps
