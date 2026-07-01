@@ -3,12 +3,23 @@ import { useEffect } from "react";
 
 export default function ElfsightWidget() {
   useEffect(() => {
-    if (!window.Elfsight) {
-      const script = document.createElement("script");
-      script.src = "https://static.elfsight.com/platform/platform.js";
-      script.async = true;
-      document.body.appendChild(script);
-    }
+    const script = document.createElement("script");
+    script.src = "https://static.elfsight.com/platform/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+      if (window.Elfsight) {
+        try {
+          delete window.Elfsight;
+        } catch (e) {
+          window.Elfsight = undefined;
+        }
+      }
+    };
   }, []);
 
   return (
