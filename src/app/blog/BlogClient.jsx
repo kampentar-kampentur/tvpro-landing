@@ -67,6 +67,7 @@ export default function BlogClient({
   const displayCities = cities && cities.length > 0 ? cities : defaultCities;
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const query = searchParams ? (searchParams.get("q") || "") : "";
 
   const [activeCategory, setActiveCategory] = useState(category || "All");
