@@ -43,6 +43,7 @@ const VideoModal = () => {
             isOpen={isOpen}
             onClose={close}
             className={`${styles.videoModalContent} ${isVertical ? styles.isVerticalModal : ""}`}
+            closeButtonClassName={styles.closeButton}
         >
             <div className={`${styles.videoContainer} ${isVertical ? styles.isVertical : ""}`}>
                 <video
