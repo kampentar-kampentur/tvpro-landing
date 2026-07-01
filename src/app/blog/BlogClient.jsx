@@ -67,7 +67,7 @@ export default function BlogClient({
   const displayCities = cities && cities.length > 0 ? cities : defaultCities;
   const router = useRouter();
   const searchParams = useSearchParams();
-  const query = searchParams ? searchParams.get("q") : "";
+  const query = searchParams ? (searchParams.get("q") || "") : "";
 
   const [activeCategory, setActiveCategory] = useState(category || "All");
   const [reSearchVal, setReSearchVal] = useState("");
@@ -397,104 +397,108 @@ export default function BlogClient({
                   We couldn't connect to the database to perform the search. If you're running locally, make sure your Strapi server is active or check your NEXT_PUBLIC_SRTAPI_URL setting.
                 </p>
               </div>
-            ) : gridPosts.length > 0 ? (
-              <>
-                <div className={styles.grid}>
-                  {displayedPosts.map((post) => (
-                    <Link
-                      key={post.id}
-                      href={`/blog/${post.slug}/`}
-                      className={styles.card}
-                      aria-label={`Read article: ${post.title}`}
-                    >
-                      <div className={styles.cardImageWrapper}>
-                        <ImageWrapper
-                          media={post.coverMedia}
-                          defaultAlt={post.title}
-                          className={styles.cardImage}
-                          width={400}
-                          height={250}
-                        />
-                      </div>
-                      <div className={styles.cardContent}>
-                        <div className={styles.meta}>
-                          <span className={styles.categoryBadge}>{post.category}</span>
-                          <span>&bull;</span>
-                          <span>{post.readTime}</span>
+            ) : filteredPosts.length > 0 ? (
+              gridPosts.length > 0 ? (
+                <>
+                  <div className={styles.grid}>
+                    {displayedPosts.map((post) => (
+                      <Link
+                        key={post.id}
+                        href={`/blog/${post.slug}/`}
+                        className={styles.card}
+                        aria-label={`Read article: ${post.title}`}
+                      >
+                        <div className={styles.cardImageWrapper}>
+                          <ImageWrapper
+                            media={post.coverMedia}
+                            defaultAlt={post.title}
+                            className={styles.cardImage}
+                            width={400}
+                            height={250}
+                          />
                         </div>
-                        <h3 className={styles.cardTitle}>{post.title}</h3>
-                        <p className={styles.cardExcerpt}>{post.excerpt}</p>
-                        
-                        <div className={styles.meta} style={{ marginTop: "auto", marginBottom: 0, paddingTop: "12px" }}>
-                          <span>By {post.author.name}</span>
-                          <span>&bull;</span>
-                          <span>{post.date}</span>
+                        <div className={styles.cardContent}>
+                          <div className={styles.meta}>
+                            <span className={styles.categoryBadge}>{post.category}</span>
+                            <span>&bull;</span>
+                            <span>{post.readTime}</span>
+                          </div>
+                          <h3 className={styles.cardTitle}>{post.title}</h3>
+                          <p className={styles.cardExcerpt}>{post.excerpt}</p>
+                          
+                          <div className={styles.meta} style={{ marginTop: "auto", marginBottom: 0, paddingTop: "12px" }}>
+                            <span>By {post.author.name}</span>
+                            <span>&bull;</span>
+                            <span>{post.date}</span>
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-                {totalPages > 1 && !query && (
-                  <div className={styles.paginationContainer}>
-                    {/* Previous page link */}
-                    <Link
-                      href={
-                        currentPage === 2
+                      </Link>
+                    ))}
+                  </div>
+                  {totalPages > 1 && !query && (
+                    <div className={styles.paginationContainer}>
+                      {/* Previous page link */}
+                      <Link
+                        href={
+                          currentPage === 2
+                            ? (category ? `/blog/category/${slugify(category)}/` : `/blog/`)
+                            : (category
+                                ? `/blog/category/${slugify(category)}/page/${currentPage - 1}/`
+                                : `/blog/page/${currentPage - 1}/`)
+                        }
+                        className={`${styles.paginationLink} ${currentPage === 1 ? styles.paginationDisabled : ""}`}
+                        aria-label="Previous page"
+                      >
+                        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                      </Link>
+
+                      {/* Page numbers */}
+                      {Array.from({ length: totalPages }, (_, i) => {
+                        const pageNum = i + 1;
+                        const pageUrl = pageNum === 1
                           ? (category ? `/blog/category/${slugify(category)}/` : `/blog/`)
                           : (category
-                              ? `/blog/category/${slugify(category)}/page/${currentPage - 1}/`
-                              : `/blog/page/${currentPage - 1}/`)
-                      }
-                      className={`${styles.paginationLink} ${currentPage === 1 ? styles.paginationDisabled : ""}`}
-                      aria-label="Previous page"
-                    >
-                      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                      </svg>
-                    </Link>
+                              ? `/blog/category/${slugify(category)}/page/${pageNum}/`
+                              : `/blog/page/${pageNum}/`);
+                        return (
+                          <Link
+                            key={pageNum}
+                            href={pageUrl}
+                            className={`${styles.paginationLink} ${currentPage === pageNum ? styles.paginationActive : ""}`}
+                          >
+                            {pageNum}
+                          </Link>
+                        );
+                      })}
 
-                    {/* Page numbers */}
-                    {Array.from({ length: totalPages }, (_, i) => {
-                      const pageNum = i + 1;
-                      const pageUrl = pageNum === 1
-                        ? (category ? `/blog/category/${slugify(category)}/` : `/blog/`)
-                        : (category
-                            ? `/blog/category/${slugify(category)}/page/${pageNum}/`
-                            : `/blog/page/${pageNum}/`);
-                      return (
-                        <Link
-                          key={pageNum}
-                          href={pageUrl}
-                          className={`${styles.paginationLink} ${currentPage === pageNum ? styles.paginationActive : ""}`}
-                        >
-                          {pageNum}
-                        </Link>
-                      );
-                    })}
-
-                    {/* Next page link */}
-                    <Link
-                      href={
-                        category
-                          ? `/blog/category/${slugify(category)}/page/${currentPage + 1}/`
-                          : `/blog/page/${currentPage + 1}/`
-                      }
-                      className={`${styles.paginationLink} ${currentPage === totalPages ? styles.paginationDisabled : ""}`}
-                      aria-label="Next page"
-                    >
-                      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                      </svg>
-                    </Link>
-                  </div>
-                )}
-              </>
+                      {/* Next page link */}
+                      <Link
+                        href={
+                          category
+                            ? `/blog/category/${slugify(category)}/page/${currentPage + 1}/`
+                            : `/blog/page/${currentPage + 1}/`
+                        }
+                        className={`${styles.paginationLink} ${currentPage === totalPages ? styles.paginationDisabled : ""}`}
+                        aria-label="Next page"
+                      >
+                        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </Link>
+                    </div>
+                  )}
+                </>
+              ) : null
             ) : (
               <div className={styles.noResultsContainer}>
                 <p className={styles.noResultsText}>
                   {category 
                     ? `We don't have any articles in the "${category}" category yet. Check back soon for updates!`
-                    : `Sorry, we couldn't find any articles matching "${query}".`
+                    : query
+                      ? `Sorry, we couldn't find any articles matching "${query}".`
+                      : "We don't have any articles published yet. Check back soon for updates!"
                   }
                 </p>
                 {!category && (
