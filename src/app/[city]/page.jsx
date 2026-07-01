@@ -1,158 +1,223 @@
-import { getCityBySlug, getAllCities, getGlobalConfig, getMetroCityLayout } from '@/lib/strapi';
-import BlockRenderer from '@/components/BlockRenderer';
-import { notFound } from 'next/navigation';
-import { CityCTASetter } from '@/providers/CTAProvider';
+import {
+  getCityBySlug,
+  getAllCities,
+  getGlobalConfig,
+  getMetroCityLayout,
+} from "@/lib/strapi";
+import BlockRenderer from "@/components/BlockRenderer";
+import { notFound } from "next/navigation";
+import { CityCTASetter } from "@/providers/CTAProvider";
+import { resolveSpintax } from "@/lib/spintax";
 
 // 1. Generate Static Params for SSG
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-    try {
-        const cities = await getAllCities() || [];
-        const params = cities
-            .filter(city => !city.test_version && city.path)
-            .map((city) => ({
-                city: city.path,
-            }));
+  try {
+    const cities = (await getAllCities()) || [];
+    const params = cities
+      .filter((city) => !city.test_version && city.path)
+      .map((city) => ({
+        city: city.path,
+      }));
 
-        if (params.length === 0) {
-            console.log("[Build Info] No cities found for static generation. Providing placeholder.");
-            return [{ city: 'houston' }]; // Houston is almost always there, safe fallback
-        }
-
-        return params;
-    } catch (error) {
-        console.error("[Build Error] Failed to generate city static params:", error);
-        return [{ city: 'houston' }];
+    if (params.length === 0) {
+      console.log(
+        "[Build Info] No cities found for static generation. Providing placeholder.",
+      );
+      return [{ city: "houston" }]; // Houston is almost always there, safe fallback
     }
+
+    return params;
+  } catch (error) {
+    console.error(
+      "[Build Error] Failed to generate city static params:",
+      error,
+    );
+    return [{ city: "houston" }];
+  }
 }
 
 export async function generateMetadata({ params }) {
-    const { city: citySlug } = await params;
-    const cityData = await getCityBySlug(citySlug);
+  const { city: citySlug } = await params;
+  const cityData = await getCityBySlug(citySlug);
 
-    if (!cityData) return {};
+  if (!cityData) return {};
 
-    const { seo, city_name, state_code, metro_city_slug } = cityData;
-    const isSuburb = !!metro_city_slug;
-    const canonicalSlug = isSuburb ? metro_city_slug : citySlug;
+  const { seo, city_name, state_code, metro_city_slug } = cityData;
+  const isSuburb = !!metro_city_slug;
+  const canonicalSlug = isSuburb ? metro_city_slug : citySlug;
 
-    const displayName = city_name ? `${city_name}${state_code ? `, ${state_code}` : ''}` : 'TVPro Handy Services';
+  const displayName = city_name
+    ? `${city_name}${state_code ? `, ${state_code}` : ""}`
+    : "TVPro Handy Services";
 
-    const title = seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`;
-    const description = seo?.metaDescription || `Expert TV mounting and home theater installation services in ${displayName}. Secure mounting on all surfaces, wire hiding, and same-day service.`;
+  let title = seo?.metaTitle || `TV Mounting Services in ${displayName} | TVPro`;
+  let description =
+    seo?.metaDescription ||
+    `Expert TV mounting & home theater installation in ${displayName}. Secure mounting on all surfaces, clean wire hiding & same-day service.`;
 
-    const ogImageUrl = seo?.shareImage?.url || 'https://tvprousa.com/og-image.png';
+  if (title) {
+    title = resolveSpintax(title)
+      .replace(/\{\{city\}\}/g, city_name || "")
+      .replace(/\{\{state\}\}/g, state_code || "");
+  }
+  if (description) {
+    description = resolveSpintax(description)
+      .replace(/\{\{city\}\}/g, city_name || "")
+      .replace(/\{\{state\}\}/g, state_code || "");
+  }
 
-    return {
-        title,
-        description,
-        robots: isSuburb
-            ? { index: false, follow: true, googleBot: { index: false, follow: true } }
-            : {
-                index: true,
-                follow: true,
-                googleBot: {
-                    index: true,
-                    follow: true,
-                    'max-video-preview': -1,
-                    'max-image-preview': 'large',
-                    'max-snippet': -1,
-                }
-            },
-        address: {
-            "@type": "PostalAddress",
-            "addressLocality": city_name || "Houston",
-            "addressRegion": state_code || "TX",
-            "addressCountry": "US",
+  const ogImageUrl =
+    seo?.shareImage?.url || "https://tvprousa.com/og-image.png";
+
+  return {
+    title,
+    description,
+    robots: isSuburb
+      ? {
+          index: false,
+          follow: true,
+          googleBot: { index: false, follow: true },
+        }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
         },
-        alternates: {
-            canonical: `https://tvprousa.com/${canonicalSlug}/`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: city_name || "Houston",
+      addressRegion: state_code || "TX",
+      addressCountry: "US",
+    },
+    alternates: {
+      canonical: `https://tvprousa.com/${canonicalSlug}/`,
+    },
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `TV mounting services in ${displayName}`,
         },
-        openGraph: {
-            title,
-            description,
-            images: [
-                {
-                    url: ogImageUrl,
-                    width: 1200,
-                    height: 630,
-                    alt: `TV mounting services in ${displayName}`,
-                },
-            ],
-            type: 'website',
-            url: `https://tvprousa.com/${canonicalSlug}/`,
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title,
-            description,
-            images: [ogImageUrl],
-        },
-    };
+      ],
+      type: "website",
+      url: `https://tvprousa.com/${canonicalSlug}/`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImageUrl],
+    },
+  };
 }
 
 export default async function CityPage({ params }) {
-    const { city: citySlug } = await params;
+  const { city: citySlug } = await params;
 
-    // 2. Fetch Data
-    const [cityData, globalData] = await Promise.all([
-        getCityBySlug(citySlug),
-        getGlobalConfig()
-    ]);
+  // 2. Fetch Data
+  const [cityData, globalData] = await Promise.all([
+    getCityBySlug(citySlug),
+    getGlobalConfig(),
+  ]);
 
-    if (!cityData) {
-        return notFound();
-    }
+  if (!cityData) {
+    return notFound();
+  }
 
-    const { metro_city_slug } = cityData;
-    const isSuburb = !!metro_city_slug;
+  const { metro_city_slug } = cityData;
+  const isSuburb = !!metro_city_slug;
 
-    // 3. Fallback Logic
-    // If city has no page, use global default layout
-    // Note: strapi.js populate depth needs to be sufficient
-    let layout;
-    if (cityData.page && cityData.page.length > 0) {
-        layout = cityData.page;
-    } else if (isSuburb) {
-        const metroLayout = await getMetroCityLayout(metro_city_slug);
-        layout = metroLayout || globalData.default_layout || [];
-    } else {
-        layout = globalData.default_layout || [];
-    }
+  // 3. Fallback Logic
+  // If city has no page, use global default layout
+  // Note: strapi.js populate depth needs to be sufficient
+  let layout;
+  if (cityData.page && cityData.page.length > 0) {
+    layout = cityData.page;
+  } else if (isSuburb) {
+    const metroLayout = await getMetroCityLayout(metro_city_slug);
+    layout = metroLayout || globalData.default_layout || [];
+  } else {
+    layout = globalData.default_layout || [];
+  }
 
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": `TVPro Handy Services - ${cityData.city_name || 'TV Mounting'}`,
-        "description": cityData.seo?.metaDescription || "Professional TV Mounting Services",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": cityData.city_name || "Houston",
-            "addressRegion": cityData.state_code || "TX",
-            "addressCountry": "US"
-        },
-        "url": isSuburb
-            ? `https://tvprousa.com/${metro_city_slug}`
-            : `https://tvprousa.com/${citySlug}`,
-        "telephone": "(877) 455-5535"
-    };
-
-    return (
-        <main>
-            <CityCTASetter ctaOverride={cityData.cta_override} citySlug={citySlug} />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-            <BlockRenderer
-                blocks={layout}
-                globalData={globalData}
-                cityContext={{
-                    city_name: cityData.city_name,
-                    state_code: cityData.state_code
-                }}
-            />
-        </main>
-    );
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: `TVPro Handy Services - ${cityData.city_name || "TV Mounting"}`,
+    description:
+      cityData.seo?.metaDescription || "Professional TV Mounting Services",
+    image: "https://tvprousa.com/logo.svg",
+    priceRange: "$$",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: cityData.city_name || "Houston",
+      addressRegion: cityData.state_code || "TX",
+      addressCountry: "US",
+    },
+    // areaServed — ключевой geo-сигнал для Google Local
+    // Для suburb'а указываем metro-город (реальный центр обслуживания)
+    areaServed: {
+      "@type": "City",
+      name: isSuburb
+        ? cityData.metro_city_name || cityData.city_name
+        : cityData.city_name,
+      addressRegion: cityData.state_code || "TX",
+      addressCountry: "US",
+    },
+    url: isSuburb
+      ? `https://tvprousa.com/${metro_city_slug}/`
+      : `https://tvprousa.com/${citySlug}/`,
+    telephone: cityData.cta_override?.phone || "(877) 455-5535",
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "07:00",
+        closes: "22:00",
+      },
+    ],
+    sameAs: [
+      "https://www.facebook.com/tvprousa",
+      "https://www.instagram.com/tvprousa",
+    ],
+  };
+  debugger;
+  console.log("layout", layout);
+  return (
+    <main>
+      <CityCTASetter ctaOverride={cityData.cta_override} citySlug={citySlug} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BlockRenderer
+        blocks={layout}
+        globalData={globalData}
+        cityContext={{
+          city_name: cityData.city_name,
+          state_code: cityData.state_code,
+        }}
+      />
+    </main>
+  );
 }

@@ -2,8 +2,9 @@
   margin: 0 auto;
   width: 100%;
   background: var(--background);
-  position: fixed;
+  position: relative;
   z-index: 999;
+  border-bottom: 1px solid var(--gray-extra-light);
 }
 
 .headerWrapper {
@@ -280,5 +281,445 @@ button.menuButton {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+/* TVPro Blog Phase 1 Enhancements */
+.headerContainer {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.announcementBar {
+  background: var(--green); /* branding accent blue/green */
+  color: var(--white);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 36px;
+  z-index: 1001;
+}
+
+.announcementContent {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.announcementLink {
+  color: var(--white);
+  text-decoration: underline;
+  font-weight: 700;
+  transition: opacity 0.2s;
+}
+
+.announcementLink:hover {
+  opacity: 0.9;
+}
+
+.closeAnnouncement {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.blogHeaderOverride {
+  position: relative !important;
+}
+
+.blogWidgets {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-right: 16px;
+}
+
+/* Dropdown Styles */
+.dropdownContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownButton {
+  background: none;
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.2s;
+}
+
+.dropdownButton:hover {
+  border-color: var(--gray);
+}
+
+.arrow {
+  font-size: 9px;
+  transition: transform 0.2s;
+}
+
+.dropdownContainer:hover .arrow {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 10;
+  min-width: 190px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.dropdownContainer:hover .dropdownMenu {
+  display: block;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdownItem:hover {
+  background-color: var(--background);
+}
+
+.count {
+  font-size: 12px;
+  color: var(--gray);
+}
+
+/* Search Bar Styles */
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+  width: 32px;
+  height: 32px;
+  color: var(--foreground); /* ensures high contrast */
+}
+
+.searchIconBtn:hover {
+  background-color: var(--gray-extra-light);
+  color: var(--green); /* slight highlight on hover */
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--gray-extra-light);
+  border-radius: 36px;
+  padding: 4px 8px 4px 14px;
+  position: absolute;
+  right: 0;
+  z-index: 5;
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, visibility 0.2s;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.searchFormExpanded {
+  width: 320px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 0;
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+}
+
+.searchSubmitBtn, .searchCloseBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  transition: color 0.2s;
+}
+
+.searchSubmitBtn:hover, .searchCloseBtn:hover {
+  color: var(--green);
+}
+
+.searchCloseBtn {
+  color: var(--gray);
+}
+
+.searchClearBtn {
+  background: none;
+  border: none;
+  color: var(--gray);
+  cursor: pointer;
+  padding: 4px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.searchClearBtn:hover {
+  color: var(--foreground);
+}
+
+/* Autocomplete suggestions dropdown card (Design DNA) */
+.searchSuggestionsCard {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 420px;
+  background: var(--white);
+  border: 1px solid var(--gray-extra-light);
+  border-radius: 20px;
+  box-shadow:
+    0px 5px 11px 0px #0000001f,
+    0px 19px 19px 0px #00000017,
+    0px 44px 26px 0px #00000014,
+    0px 78px 31px 0px #0000000a,
+    0px 121px 34px 0px #00000005;
+  z-index: 100;
+  overflow: hidden;
+  animation: slideDownFade 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestionsHeader {
+  padding: 14px 20px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--gray);
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--gray-extra-light);
+}
+
+.suggestionsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestionItem {
+  border-bottom: 1px solid var(--gray-extra-light);
+}
+
+.suggestionItem:last-child {
+  border-bottom: none;
+}
+
+.suggestionLink {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 20px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.suggestionLink:hover {
+  background-color: var(--background);
+}
+
+.suggestionCategory {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.suggestionTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground);
+  line-height: 1.4;
+}
+
+.suggestionsFooter {
+  padding: 12px 20px;
+  background-color: var(--background);
+  text-align: center;
+  border-top: 1px solid var(--gray-extra-light);
+}
+
+.seeAllBtn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+  font-family: inherit;
+}
+
+.seeAllBtn:hover {
+  color: var(--green-hover);
+  text-decoration: underline;
+}
+
+.suggestionsState {
+  padding: 24px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.suggestionsStateError {
+  color: #d32f2f;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.suggestionsSpinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--gray-extra-light);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: suggestionsSpin 0.8s linear infinite;
+  margin-bottom: 4px;
+}
+
+@keyframes suggestionsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .searchContainer {
+    position: static;
+  }
+  
+  .searchForm {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    top: 80px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 101;
+  }
+
+  .searchFormExpanded {
+    width: auto;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .searchSuggestionsCard {
+    width: auto;
+    left: 16px;
+    right: 16px;
+    top: 136px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Circular Home Button on Mobile for Blog Exit */
+.mobileHomeCircle {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobileHomeCircle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--gray-extra-light);
+    background: transparent;
+    color: var(--foreground);
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 1024px) and (hover: hover) {
+  .mobileHomeCircle:hover {
+    background-color: var(--gray-extra-light);
+    border-color: var(--gray-light);
+  }
+}
+
+@media (max-width: 1024px) {
+  .mobileHomeCircle:active {
+    background-color: var(--gray-extra-light);
   }
 }

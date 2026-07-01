@@ -65,6 +65,10 @@
   border-color: #ff4d4f;
 }
 
+.textFieldContainer:focus-within {
+  border-color: var(--green, #22c55e);
+}
+
 .errorText {
   color: #ff4d4f;
   font-size: 11px;

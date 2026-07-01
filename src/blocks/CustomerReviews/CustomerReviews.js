@@ -2,6 +2,7 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Text from "@/ui/Text/Text";
 import CustomerReviewsClient from "./CustomerReviewsClient";
 import styles from "./CustomerReviews.module.css";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getCustomerReviews() {
   const res = await fetch(
@@ -12,26 +13,23 @@ async function getCustomerReviews() {
 }
 
 // Default export with data prop
-export default async function CustomerReviews({ data = {} }) {
+export default async function CustomerReviews({ data = {}, cityContext }) {
   const defaultReviewsData = await getCustomerReviews();
 
   // Merge: Use prop data if available, otherwise fallback to default
   const customerReviewsData = {
     ...defaultReviewsData,
     ...data,
-    title: data?.title || defaultReviewsData.title,
-    subTitle: data?.subTitle || defaultReviewsData.subTitle,
+    title: resolveSpintax(data?.title || defaultReviewsData.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultReviewsData.subTitle || ''),
   };
 
   return (
     <section className={`block ${styles.customerReviews}`} id="reviews">
       <header className={styles.customerReviewsHeader}>
         <h2 className="blockHeading">
-          <Text text={customerReviewsData.title} />
+          <Text text={customerReviewsData.title} cityContext={cityContext} />
         </h2>
-        <p className="subText">
-          <Text text={customerReviewsData.subTitle} />
-        </p>
       </header>
 
       <CustomerReviewsClient />

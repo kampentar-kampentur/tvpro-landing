@@ -20,7 +20,7 @@ export default function CustomerReviewsClient() {
           observer.disconnect();
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "800px" }
     );
     observer.observe(ref.current);
     return () => observer.disconnect();

@@ -4,15 +4,19 @@ import styles from "./Text.module.css"
 export default function Text({ text, cityContext }) {
   if (!text) return null;
 
-  // Replace placeholders with city context values
+  // Replace placeholders with city context values or defaults
   let processedText = text;
-  if (cityContext) {
-    if (cityContext.city_name) {
-      processedText = processedText.replace(/\{\{city\}\}/g, cityContext.city_name);
-    }
-    if (cityContext.state_code) {
-      processedText = processedText.replace(/\{\{state\}\}/g, cityContext.state_code);
-    }
+  const city = cityContext?.city_name || "your city";
+  const state = cityContext?.state_code || "";
+
+  processedText = processedText.replace(/\{\{city\}\}/g, city);
+
+  if (!state) {
+    // Remove trailing comma/space if state is empty, e.g. "in {{city}}, {{state}}" -> "in your city"
+    processedText = processedText.replace(/,\s*\{\{state\}\}/g, "");
+    processedText = processedText.replace(/\{\{state\}\}/g, "");
+  } else {
+    processedText = processedText.replace(/\{\{state\}\}/g, state);
   }
 
   return processedText.split('\n').map((line, index) => {

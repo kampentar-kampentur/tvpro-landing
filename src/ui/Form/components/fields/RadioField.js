@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import SelectionCard from '@/ui/SelectionCard';
+import { shouldRenderField } from '../../utils/formUtils';
 import formStyles from '../../Form.module.css'
 
-const RadioField = ({ field, value, onChange, isMobile }) => {
+const RadioField = ({ field, value, onChange, isMobile, formData, stepId, step, isShaking }) => {
   const [isInfoShow, setIsInfoShow] = useState(null);
 
   const handleClick = (optionValue) => {
@@ -16,14 +17,18 @@ const RadioField = ({ field, value, onChange, isMobile }) => {
   const handleInfoClick = (optionValue) => {
     setIsInfoShow(isInfoShow === optionValue ? null : optionValue);
   };
-  if (!field.options.length) {
-    return
+
+  const filteredOptions = field.options.filter(option => 
+    !option.showIf || (formData && shouldRenderField(option.showIf, formData, stepId || step?.id))
+  );
+
+  if (!filteredOptions.length) {
+    return null;
   }
 
   return (
     <div className={formStyles.optionsGrid}>
-      {field.options
-        // .filter(option => !isMobile || !value || option.value === value)
+      {filteredOptions
         .map(option => (
           <SelectionCard
             key={option.value}
@@ -35,6 +40,7 @@ const RadioField = ({ field, value, onChange, isMobile }) => {
             description={option.description}
             isInfoShow={isInfoShow === option.value}
             onInfoClick={() => handleInfoClick(option.value)}
+            isShaking={isShaking}
           />
         ))}
     </div>

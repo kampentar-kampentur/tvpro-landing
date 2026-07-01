@@ -4,7 +4,8 @@ import { useEffect } from "react";
 export default function MenuAutoClose({ menuToggleId = "menu-toggle", menuWrapperClass = "navbarWrapper" }) {
   useEffect(() => {
     const menuToggle = document.getElementById(menuToggleId);
-    const menuWrapper = document.querySelector(`.${menuWrapperClass}`);
+    // Find the wrapper using a partial selector to match CSS modules hashed class names
+    const menuWrapper = document.querySelector(`[class*="${menuWrapperClass}"]`);
 
     function closeMenu() {
       if (menuToggle) menuToggle.checked = false;
@@ -18,20 +19,18 @@ export default function MenuAutoClose({ menuToggleId = "menu-toggle", menuWrappe
 
     function onDocumentClick(e) {
       if (!menuToggle || e.target.getAttribute("for") === menuToggleId || e.target.getAttribute("id") === menuToggleId) return;
-      if (
-        menuToggle.checked
-      ) {
+      // Do not close when clicking inside the menu container itself
+      if (menuWrapper && menuWrapper.contains(e.target)) return;
+      if (menuToggle.checked) {
         closeMenu();
       }
     }
 
     if (menuWrapper) menuWrapper.addEventListener("click", onMenuClick);
     document.addEventListener("click", onDocumentClick);
-    document.addEventListener("touchmove", closeMenu);
     return () => {
       if (menuWrapper) menuWrapper.removeEventListener("click", onMenuClick);
       document.removeEventListener("click", onDocumentClick);
-      document.removeEventListener("touchmove", closeMenu);
     };
   }, [menuToggleId, menuWrapperClass]);
 

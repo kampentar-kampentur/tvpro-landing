@@ -1,5 +1,6 @@
 import styles from "./AboutUs.module.css";
 import Text from "@/ui/Text/Text";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getAboutUs() {
   try {
@@ -20,10 +21,10 @@ export default async function AboutUs({ data = {}, cityContext }) {
   const aboutUsData = {
     ...defaultAboutUsData,
     ...data,
-    title: data?.title || defaultAboutUsData.title,
-    subTitle: data?.subTitle || defaultAboutUsData.subTitle,
-    mainTextLeft: data?.mainTextLeft || defaultAboutUsData.mainTextLeft,
-    mainTextRight: data?.mainTextRight || defaultAboutUsData.mainTextRight,
+    title: resolveSpintax(data?.title || defaultAboutUsData.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultAboutUsData.subTitle || ''),
+    mainTextLeft: resolveSpintax(data?.mainTextLeft || defaultAboutUsData.mainTextLeft || ''),
+    mainTextRight: resolveSpintax(data?.mainTextRight || defaultAboutUsData.mainTextRight || ''),
   };
   return (
     <section className={`block ${styles.aboutUs}`} id="about">
@@ -41,5 +42,5 @@ export default async function AboutUs({ data = {}, cityContext }) {
       </div>
     </section>
   );
-};
+}
 

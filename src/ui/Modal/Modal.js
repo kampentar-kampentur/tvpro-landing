@@ -7,7 +7,7 @@ import { useRef } from "react";
 import Portal from "@/ui/Portal/Portal";
 
 
-const Modal = ({ isOpen, onClose, children, className }) => {
+const Modal = ({ isOpen, onClose, children, className, closeButtonClassName }) => {
   const modalRef = useRef(null);
   useLockScroll(isOpen, modalRef);
 
@@ -17,7 +17,7 @@ const Modal = ({ isOpen, onClose, children, className }) => {
     <Portal>
       <div className={`${styles.modalOverlay} modalOverlay`} onClick={onClose}>
         <div className={`${styles.modalContent} ${className}`} onClick={(e) => e.stopPropagation()}>
-          <Button variant="secondary" size="small" className={styles.closeButton} onClick={onClose}>
+          <Button variant="secondary" size="small" className={`${styles.closeButton} ${closeButtonClassName || ""}`} onClick={onClose}>
             <CloseIcon width="10" height="10" />
           </Button>
           <div className={styles.modalWrapper} ref={modalRef}>

@@ -1,0 +1,103 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+}
+
+.label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #07080a;
+    text-align: left;
+    margin-top: 0px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.verticalList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.checkboxRow {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background: #ffffff;
+    border: 1px solid #e7e7eb;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.checkboxRow:hover {
+    border-color: #c5c7d0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.checkboxRow.selected {
+    border-color: var(--green, #0d64a0);
+    background-color: rgba(13, 100, 160, 0.03);
+}
+
+.checkboxIcon {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #e7e7eb;
+    border-radius: 6px;
+    margin-right: 16px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.checkboxRow.selected .checkboxIcon {
+    background: var(--green, #0d64a0);
+    border-color: var(--green, #0d64a0);
+}
+
+.checkboxRow.selected .checkboxIcon::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: left;
+}
+
+.optionLabel {
+    font-size: 16px;
+    font-weight: 500;
+    color: #07080a;
+}
+
+.optionSubtitle {
+    font-size: 13px;
+    color: #555864;
+    margin-top: 2px;
+}
+
+.priceTag {
+    font-size: 16px;
+    font-weight: 600;
+    color: #07080a;
+    margin-left: 12px;
+}

@@ -1,211 +1,212 @@
 .ourServices {
-  background-color: #f6f6f8;
-  padding: 60px 0;
-  max-width: 1400px;
-  margin: auto;
+    background-color: #f6f6f8;
+    padding: 60px 0;
+    max-width: 1400px;
+    margin: auto;
 }
 
 .ourServicesContainer {
-  background-color: #0f0e13;
-  border-radius: 20px;
-  padding: 60px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
+    background-color: #0f0e13;
+    border-radius: 20px;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
 }
 
 .mainHeading.mainHeading {
-  color: #f6f6f8;
-  width: 100%;
-  max-width: 1180px;
+    color: #f6f6f8;
+    width: 100%;
+    max-width: 1180px;
 }
 
 .categoriesWrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  width: 100%;
-  max-width: 1180px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+    max-width: 1180px;
 }
 
 .categoryButton {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 36px;
-  color: #ffffff;
-  padding: 12px 24px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 36px;
+    color: #ffffff;
+    padding: 12px 24px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
 .categoryButton.active {
-  border-color: #ffffff;
+    border-color: #ffffff;
 }
 
 .categoryButton:hover {
-  border-color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.05);
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .progress {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 0;
-  background-color: rgba(255, 255, 255, 0.1);
-  z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    z-index: -1;
 }
 
 .categoryButton.active .progress {
-  width: 100%;
-  transition: width var(--interval-time) linear;
+    width: 100%;
+    transition: width var(--interval-time) linear;
 }
 
 .categoryButtonText {
-  position: relative;
-  z-index: 2;
+    position: relative;
+    z-index: 2;
 }
 
 .detailsWrapper {
-  display: flex;
-  gap: 40px;
-  width: 100%;
-  max-width: 1180px;
-  /* Aligned with Figma */
-  margin-top: 40px;
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    max-width: 1180px;
+    /* Aligned with Figma */
+    margin-top: 40px;
 }
 
 .detailsContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  justify-content: center;
-  align-items: flex-start;
-
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .detailsTitle {
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 32px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 32px;
 }
 
 .detailsDescription {
-  color: #ffffff;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .detailsImage {
-  flex: 1;
-  border-radius: 12px;
-  overflow: hidden;
-  width: 528px;
-  height: 528px;
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 528px;
+    height: 528px;
 }
 
 .detailsImage img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
 }
 
 .fadeIn {
-  animation: fadeIn 0.6s;
-  opacity: 1;
-  transition: opacity 0.6s;
+    animation: fadeIn 0.6s;
+    opacity: 1;
+    transition: opacity 0.6s;
 }
 
 .fadeOut {
-  animation: fadeOut 0.6s;
-  opacity: 0;
-  transition: opacity 0.6s;
+    animation: fadeOut 0.6s;
+    opacity: 0;
+    transition: opacity 0.6s;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
+    from {
+        opacity: 0;
+    }
 
-  to {
-    opacity: 1;
-  }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
+    from {
+        opacity: 1;
+    }
 
-  to {
-    opacity: 0;
-  }
+    to {
+        opacity: 0;
+    }
 }
 
 @media (max-width: 1024px) {
-  .ourServicesContainer {
-    border-radius: 0;
-    padding: 60px 20px;
-    gap: 16px;
-  }
+    .ourServicesContainer {
+        border-radius: 0;
+        padding: 60px 20px;
+        gap: 16px;
+    }
+    .detailsImage img {
+        max-height: 350px;
+    }
+    .categoriesWrapper {
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        scrollbar-width: thin;
+        scrollbar-color: #bbb #222;
+    }
 
-  .categoriesWrapper {
-    flex-wrap: nowrap;
-    overflow-x: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: #bbb #222;
-  }
+    .categoriesWrapper::-webkit-scrollbar {
+        height: 4px;
+        background: #222;
+    }
 
-  .categoriesWrapper::-webkit-scrollbar {
-    height: 4px;
-    background: #222;
-  }
+    .categoriesWrapper::-webkit-scrollbar-thumb {
+        background: #bbb;
+        border-radius: 2px;
+    }
 
-  .categoriesWrapper::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 2px;
-  }
+    .categoriesWrapper::-webkit-scrollbar-track {
+        background: #222;
+    }
 
-  .categoriesWrapper::-webkit-scrollbar-track {
-    background: #222;
-  }
+    .categoryButton {
+        flex-shrink: 0;
+    }
 
-  .categoryButton {
-    flex-shrink: 0;
-  }
+    .detailsWrapper {
+        flex-direction: column;
+        margin-top: 12px;
+    }
 
-  .detailsWrapper {
-    flex-direction: column;
-    margin-top: 12px;
-  }
+    .ourServices {
+        padding: 40px 0;
+    }
 
-  .ourServices {
-    padding: 40px 0;
-  }
+    .detailsImage {
+        max-width: 370px;
+        width: auto;
+        height: 350px;
+    }
 
-  .detailsImage {
-    max-width: 370px;
-    width: auto;
-    height: 350px;
-  }
+    .detailsTitle {
+        font-size: 20px;
+        line-height: 28px;
+        height: 56px;
+    }
 
-  .detailsTitle {
-    font-size: 20px;
-    line-height: 28px;
-    height: 56px;
-  }
-
-  .detailsDescription {
-    height: 340px;
-  }
+    .detailsDescription {
+        height: 340px;
+    }
 }

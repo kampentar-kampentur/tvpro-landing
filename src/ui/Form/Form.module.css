@@ -1,8 +1,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    /* min-height: 100%; */
-    /* max-height: 100%; */
+    padding-bottom: 40px;
 }
 
 .fieldLabel {
@@ -35,54 +34,55 @@
     margin-bottom: 40px;
 }
 
-
 @media (max-width: 980px) {
     .optionsGrid {
         grid-template-columns: repeat(auto-fit, minmax(135px, 0.5fr));
         margin-left: auto;
         margin-right: auto;
+        gap: 12px;
+        grid-auto-rows: 110px;
     }
 }
 
 .progressWrapper {
-  position: fixed;
-  bottom: 12px;
-  left: 16px;
-  right: 16px;
-  height: 18px;
-  background-color: var(--gray-extra-light);
-  z-index: 99999;
-  margin: 0;
-  padding: 0;
-  border-radius: 9px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: fixed;
+    bottom: 12px;
+    left: 16px;
+    right: 16px;
+    height: 18px;
+    background-color: var(--gray-extra-light);
+    z-index: 99999;
+    margin: 0;
+    padding: 0;
+    border-radius: 9px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 @media (min-width: 981px) {
-  .progressWrapper {
-    display: none;
-  }
+    .progressWrapper {
+        display: none;
+    }
 }
 
 .progressFill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: var(--green);
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 8px;
-  border-radius: 9px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--green);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    border-radius: 9px;
 }
 
 .progressPercent {
-  font-size: 10px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-  line-height: 1;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    line-height: 1;
 }

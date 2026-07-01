@@ -8,7 +8,7 @@ const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => {
-        if (window.pageYOffset > 400) {
+        if (window.scrollY > 400) {
             setIsVisible(true);
         } else {
             setIsVisible(false);
@@ -39,7 +39,7 @@ const ScrollToTop = () => {
             const handleHashScroll = () => {
                 const element = document.getElementById(hash.substring(1));
                 if (element) {
-                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
                     window.scrollTo({
                         top: elementPosition - 80,
                         behavior: 'auto'

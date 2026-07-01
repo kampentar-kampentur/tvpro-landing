@@ -5,8 +5,9 @@ import QuoteButton from "@/ui/QuoteButton/QuoteButton";
 import Image from "next/image";
 import VideoCardClient from "./VideoCardClient";
 import localData from "./videoGalleryData.json";
+import { resolveSpintax } from "@/lib/spintax";
 
-const VideoCard = ({ video, index = 0, length }) => {
+const VideoCard = ({ video, index = 0, length, cityContext }) => {
     // Optimization: Use mqdefault (320x180) for all grid thumbnails to save data.
     // Heavy maxresdefault is only needed for the full-width view in modal.
     const thumbType = length % 2 !== 0 && index !== length - 1 ? 'hqdefault' : 'sddefault';
@@ -42,31 +43,31 @@ const VideoCard = ({ video, index = 0, length }) => {
                     </div>
                 </div>
                 <div className={styles.videoInfo}>
-                    <h3 className={styles.videoTitle}>{video.title}</h3>
-                    <p className={styles.videoDescription}>{video.description}</p>
+                    <h3 className={styles.videoTitle}><Text text={video.title} cityContext={cityContext} /></h3>
+                    <p className={styles.videoDescription}><Text text={video.description} cityContext={cityContext} /></p>
                 </div>
             </div>
         </VideoCardClient>
     );
 };
 
-export default function WorkVideoGallery({ data = {} }) {
+export default function WorkVideoGallery({ data = {}, cityContext }) {
     const videoGalleryData = localData.data;
     const displayData = {
         ...videoGalleryData,
         ...data,
         videoItem: data.videoItem?.length > 0 ? data.videoItem : (videoGalleryData?.videoItem || [])
     };
-    const title = displayData.title || "See Our Work in Action";
-    const subTitle = displayData.subTitle || "Documentation of our high-quality professional installations.";
+    const title = resolveSpintax(displayData.title || "See Our Work in Action");
+    const subTitle = resolveSpintax(displayData.subTitle || "Documentation of our high-quality professional installations.");
 
     const videos = displayData.videoItem.map((v, idx) => ({
         id: v.id || idx,
         youtubeId: v.youtubeId || "dQw4w9WgXcQ",
         selfHostedVideo: v.selfHostedVideo || null,
         isVertical: v.isVertical ?? false,
-        title: v.title || "Installation Project",
-        description: v.description || "Professional TV mounting by TVPro team"
+        title: resolveSpintax(v.title || "Installation Project"),
+        description: resolveSpintax(v.description || "Professional TV mounting by TVPro team")
     }));
 
     return (
@@ -74,18 +75,18 @@ export default function WorkVideoGallery({ data = {} }) {
             <div className="block">
                 <header className={styles.header}>
                     <h2 className="blockHeading">
-                        <Text text={title} />
+                        <Text text={title} cityContext={cityContext} />
                     </h2>
                     {subTitle && (
                         <p className="subText">
-                            <Text text={subTitle} />
+                            <Text text={subTitle} cityContext={cityContext} />
                         </p>
                     )}
                 </header>
 
                 <div className={styles.grid}>
                     {videos.map((video, idx) => (
-                        <VideoCard key={video.id} video={video} index={idx} length={videos.length} />
+                        <VideoCard key={video.id} video={video} index={idx} length={videos.length} cityContext={cityContext} />
                     ))}
                 </div>
 

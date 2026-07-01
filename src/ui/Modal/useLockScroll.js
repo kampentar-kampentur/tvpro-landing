@@ -12,7 +12,7 @@ export function useLockScroll(isOpen, modalRef) {
     if (!isOpen) return;
 
     if (isIOS) {
-      savedY.current = window.scrollY || window.pageYOffset;
+      savedY.current = window.scrollY;
       Object.assign(document.body.style, {
         position: 'fixed',
         top: `-${savedY.current}px`,

@@ -1,35 +1,51 @@
 import React from 'react';
-import FormOption from '@/ui/Form/components/FormOption';
-import formStyles from '../../Form.module.css'
+import styles from './CheckboxGroupField.module.css';
+import fieldStyles from './TextField.module.css';
 
-const CheckboxGroupField = ({ field, value = [], onChange }) => {
-  const handleOptionChange = (optionValue, checked) => {
-    let newSelection;
-    if (checked) {
-      newSelection = [...value, optionValue];
-    } else {
-      newSelection = value.filter(item => item !== optionValue);
-    }
-    onChange(newSelection);
+const CheckboxGroupField = ({ label, options, value = [], onChange, error, columns, field }) => {
+  const finalLabel = label || field?.label;
+  const finalOptions = options || field?.options || [];
+
+  const handleToggle = (optionValue) => {
+    const newValue = value.includes(optionValue)
+      ? value.filter((v) => v !== optionValue)
+      : [...value, optionValue];
+    onChange(newValue);
   };
-  if (!field.options.length) {
-    return
-  }
 
   return (
-    <div className={formStyles.optionsGrid}>
-      {field.options.map(option => (
-        <FormOption
-          key={option.value}
-          type="checkbox"
-          label={option.label}
-          subLabel={option.cost ? `$${option.cost}` : undefined}
-          checked={value.includes(option.value)}
-          onChange={(e) => handleOptionChange(option.value, e.target.checked)}
-        />
-      ))}
+    <div className={`${styles.container} ${error ? styles.invalid : ''}`}>
+      {finalLabel && <span className={styles.label}>{finalLabel}</span>}
+      <div className={styles.verticalList}>
+        {finalOptions.map((opt) => {
+          const isSelected = value.includes(opt.value);
+          return (
+            <div
+              key={opt.value}
+              className={`${styles.checkboxRow} ${isSelected ? styles.selected : ''}`}
+              onClick={() => handleToggle(opt.value)}
+            >
+              <div className={styles.checkboxIcon} aria-checked={isSelected} />
+              <div className={styles.textContainer}>
+                <span className={styles.optionLabel}>{opt.label}</span>
+                {opt.subtitle && <span className={styles.optionSubtitle}>{opt.subtitle}</span>}
+              </div>
+              {opt.cost !== undefined && (
+                <span className={styles.priceTag}>
+                  {opt.costLabel ? opt.costLabel : `+$${opt.cost}`}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {error && (
+        <span className={fieldStyles.errorText} style={{ marginTop: '4px' }}>
+          {error}
+        </span>
+      )}
     </div>
   );
 };
 
-export default CheckboxGroupField; 
+export default CheckboxGroupField;

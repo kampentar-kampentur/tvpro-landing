@@ -54,5 +54,6 @@ export default function ImageWrapper({
         priority={priority}
         sizes={sizes}
         style={style}
+        fetchPriority={priority ? "high" : undefined}
     />;
 }

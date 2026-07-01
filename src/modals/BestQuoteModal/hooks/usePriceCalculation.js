@@ -39,7 +39,8 @@ export const usePriceCalculation = (
             items.push({
               label: selectedOption.breakdownLabel || selectedOption.label,
               cost: (selectedOption.cost || 0),
-              fieldName: fieldConfig.name
+              fieldName: fieldConfig.name,
+              costLabel: selectedOption.costLabel
             });
           }
         } else if (fieldConfig.type === "checkboxGroup" && Array.isArray(fieldValue)) {

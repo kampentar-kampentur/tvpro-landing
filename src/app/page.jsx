@@ -1,5 +1,8 @@
 import styles from "./page.module.css";
 import Hero from "@/blocks/Hero";
+import UtpBar from "@/blocks/UtpBar";
+import TvCountPicker from "@/blocks/TvCountPicker";
+import BriefServices from "@/blocks/BriefServices";
 import WorkVideoGallery from "@/blocks/WorkVideoGallery/WorkVideoGallery";
 import CustomerReviews from "@/blocks/CustomerReviews/CustomerReviews";
 import TVSizes from "@/blocks/TVSizes";
@@ -12,22 +15,33 @@ import AboutUs from "@/blocks/AboutUs";
 import FAQ from "@/blocks/FAQ";
 import Contacts from "@/blocks/Contacts";
 import AreasWeServe from "@/blocks/AreasWeServe/AreasWeServe";
+import OurTeam from "@/blocks/OurTeam/OurTeam";
+import CareersCTA from "@/blocks/CareersCTA/CareersCTA";
+import { getGlobalConfig } from "@/lib/strapi";
 
 export default async function Home() {
+  const globalConfig = await getGlobalConfig();
+
   return (
     <div className={styles.tvproMain}>
       <Hero />
+      <UtpBar />
+      <TvCountPicker />
+      <BriefServices />
       <WorkVideoGallery />
       <CustomerReviews />
       <GalleryOfWork />
       <Certificates />
-      <AboutUs />
       {/* <TVSizes /> */}
       <MountingTypes />
       <WhyCustomersTrustUs />
+      <OurServices />
+      <OurTeam />
+      <CareersCTA data={globalConfig?.["careers-cta"] || {}} />
+      <AboutUs />
       <FAQ />
       <Contacts />
-      <AreasWeServe />
+      {/* <AreasWeServe />*/}
     </div>
   );
 }

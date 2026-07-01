@@ -1,133 +1,174 @@
 .fieldLabel {
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 40px;
-  letter-spacing: 0%;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 40px;
+    letter-spacing: 0%;
 }
 
 .fieldDescription {
-  margin-top: 24px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0%;
+    margin-top: 6px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
 }
 
 .subHeader {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .subHeader h3 {
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 32px;
-  letter-spacing: 0%;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 32px;
+    letter-spacing: 0%;
 }
 
 .subSteps {
-  color: var(--text-secondary);
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0%;
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
 }
 
 .backButton {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  line-height: 0;
-  margin-right: 0;
-  /* Removed margin to center hit area */
-  padding: 10px;
-  /* Increase hit area to ~44x44px */
-  margin: -10px 0 -10px -10px;
-  /* Offset padding to maintain visual alignment */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    line-height: 0;
+    margin-right: 0;
+    /* Removed margin to center hit area */
+    padding: 10px;
+    /* Increase hit area to ~44x44px */
+    margin: -10px 0 -10px -10px;
+    /* Offset padding to maintain visual alignment */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .backButton svg {
-  transform: rotate(180deg);
-  width: 24px;
-  height: 24px;
+    transform: rotate(180deg);
+    width: 24px;
+    height: 24px;
 }
 
 .option {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .option:last-child {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 @media (min-width: 1024px) {
-  .formStep {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px 32px;
-    align-items: flex-start;
-  }
+    .formStep {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px 32px;
+        align-items: flex-start;
+    }
 
-  .option {
-    width: 100%;
-  }
+    .option {
+        width: 100%;
+    }
 
-  .textOption {
-    width: calc(50% - 16px);
-    min-width: 280px;
-    margin-bottom: 0;
-  }
+    .textOption {
+        width: calc(50% - 16px);
+        min-width: 280px;
+        margin-bottom: 0;
+    }
 
-  .splitOption {
-    width: calc(50% - 16px);
-    min-width: 280px;
-    margin-bottom: 0;
-  }
+    .splitOption {
+        width: calc(50% - 16px);
+        min-width: 280px;
+        margin-bottom: 0;
+    }
 }
 
-
 .banner {
-  border-radius: 16px;
-  padding: 12px 20px;
-  color: var(--white);
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background-image: url("/modalBanerBg.webp");
-  flex-direction: column;
-  text-align: center;
-  width: 100%;
-  margin: auto;
-  background-size: cover;
-  background-position-y: center;
-  margin-top: 28px;
-  margin-bottom: 18px;
+    border-radius: 16px;
+    padding: 12px 20px;
+    color: var(--white);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url("/modalBanerBg.webp");
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    background-size: cover;
+    background-position-y: center;
+    margin-top: 28px;
+    margin-bottom: 18px;
 }
 
 .saleText {
-  text-wrap: wrap;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
+    text-wrap: wrap;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
 }
 
 .saleSize {
-  font-size: 52px;
-  line-height: 52px;
-  font-weight: 700;
+    font-size: 52px;
+    line-height: 52px;
+    font-weight: 700;
 }
 
 .selectedField {
-  color: var(--text-secondary);
-  padding-right: 40px;
+    color: var(--text-secondary);
+    padding-right: 40px;
+}
+
+@media (min-width: 1024px) {
+    .contactInfoField {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 980px) {
+    .fieldLabel {
+        padding-right: 50px;
+    }
+}
+
+.navigation {
+    margin-top: 32px;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.nextBtn {
+    min-width: 140px;
+}
+
+@media (max-width: 480px) {
+    .navigation {
+        justify-content: center;
+    }
+    .nextBtn {
+        width: 100%;
+    }
+}
+
+.disabledBtn {
+  background: var(--gray-extra-light) !important;
+  color: var(--foreground) !important;
+  cursor: not-allowed !important;
+}
+
+.disabledBtn span {
+  opacity: 0.2 !important;
 }

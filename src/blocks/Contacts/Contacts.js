@@ -20,6 +20,7 @@ import LinkedinDefault from "@/assets/socialIcons/LinkedinDefault.svg";
 import LinkedinHover from "@/assets/socialIcons/LinkedinHover.svg";
 import Text from "@/ui/Text/Text";
 import ContactsDetails from "./components/ContactsDetails";
+import { resolveSpintax } from "@/lib/spintax";
 
 async function getContactUs() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/contact-us`);
@@ -34,15 +35,15 @@ async function getCTA() {
 }
 
 // Default export with data prop
-export default async function Contacts({ data = {} }) {
+export default async function Contacts({ data = {}, cityContext }) {
   const [defaultContact, cta] = await Promise.all([getContactUs(), getCTA()]);
 
   // Merge: Use prop data if available, otherwise fallback to default
   const contact = {
     ...defaultContact,
     ...data,
-    title: data?.title || defaultContact?.title,
-    subTitle: data?.subTitle || defaultContact?.subTitle,
+    title: resolveSpintax(data?.title || defaultContact?.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultContact?.subTitle || ''),
     // Social links - priority to prop data if present
     facebook: data?.facebook || defaultContact?.facebook,
     instagram: data?.instagram || defaultContact?.instagram,
@@ -54,26 +55,31 @@ export default async function Contacts({ data = {} }) {
     x: data?.x || defaultContact?.x,
     linkedin: data?.linkedin || defaultContact?.linkedin,
   };
+
+  const mapQuery = cityContext?.city_name
+    ? `${cityContext.city_name}, ${cityContext.state_code || ""}`
+    : "Houston, TX";
+
   return (
     <section className={styles.contacts} id="contact">
       <div className={`blockContainer ${styles.contactsContainer}`}>
-        <h2 className={styles.heading}><Text text={contact.title} /></h2>
-        <p className={styles.subHeading}><Text text={contact.subTitle} /></p>
+        <h2 className={styles.heading}><Text text={contact.title} cityContext={cityContext} /></h2>
+        <p className={styles.subHeading}><Text text={contact.subTitle} cityContext={cityContext} /></p>
         <div className={styles.mapWrap}>
           <div className={styles.contactDetailsSection}>
-            <ContactsDetails />
+            <ContactsDetails cityContext={cityContext} />
           </div>
 
-          {/* <iframe
-            title="Location map of TVPro Handy Services"
-            width="300"
-            height="300"
-            style={{border:0}}
+          <iframe
+            title={`Location map of TVPro Handy Services in ${mapQuery}`}
+            height="350"
+            style={{ border: 0, width: "100%" }}
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCu91rreI2noQjqeEJIbHzJFI8pWVgXXME&q=place_id:ChIJuVr9LojYwQERHVjQfs1s2O8">
-          </iframe> */}
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=11&ie=UTF8&iwloc=&output=embed`}
+          >
+          </iframe>
         </div>
         <div className={styles.socialNetworksSection}>
           <h3 className={styles.detailTitle}>Social Networks</h3>

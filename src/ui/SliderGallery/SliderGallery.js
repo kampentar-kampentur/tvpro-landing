@@ -193,8 +193,6 @@ export const SliderGallery = ({
         onClick={() => handleDotClick(index)}
         aria-label={`Перейти к слайду ${index + 1}`}
         aria-current={index === activeDotIndex ? 'true' : 'false'}
-        role="tab"
-        aria-selected={index === activeDotIndex}
       />
     )), 
     [totalPages, activeDotIndex, handleDotClick]
@@ -222,7 +220,7 @@ export const SliderGallery = ({
       </div>
       
       {totalPages > 1 && (
-        <div className={styles.paginationDots} role="tablist">
+        <div className={styles.paginationDots}>
           {renderDots}
         </div>
       )}

@@ -1,0 +1,144 @@
+.wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    font-family: inherit;
+    transition: color 0.2s;
+}
+
+.trigger:hover,
+.trigger:focus {
+    color: var(--green);
+}
+
+.pinIcon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--foreground);
+}
+
+.triggerLabel {
+    white-space: nowrap;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.caret {
+    display: inline-flex;
+    align-items: center;
+    color: var(--gray);
+    transition: transform 0.2s ease;
+}
+
+.caretOpen {
+    transform: rotate(180deg);
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 220px;
+    max-width: 320px;
+    max-height: 320px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #e7e7eb;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow:
+        0px 5px 11px 0px #0000001f,
+        0px 19px 19px 0px #00000017,
+        0px 44px 26px 0px #00000014,
+        0px 78px 31px 0px #0000000a,
+        0px 121px 34px 0px #00000005;
+    z-index: 1100;
+    animation: cityFadeIn 0.18s ease;
+    box-sizing: border-box;
+}
+
+@keyframes cityFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--foreground);
+    text-decoration: none;
+    border-radius: 12px;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
+    box-sizing: border-box;
+}
+
+.item:hover {
+    background-color: var(--background);
+    color: var(--green);
+}
+
+.itemPin {
+    display: inline-flex;
+    align-items: center;
+    color: var(--gray);
+}
+
+.item:hover .itemPin {
+    color: var(--green);
+}
+
+.itemActive {
+    color: var(--green);
+}
+
+.itemActive .itemPin {
+    color: var(--green);
+}
+
+.state {
+    padding: 8px 10px;
+    font-size: 14px;
+    color: var(--gray);
+}
+
+/* Hide on mobile — mobile uses the accordion in the burger menu */
+@media (max-width: 1024px) {
+    .wrapper {
+        display: none;
+    }
+}

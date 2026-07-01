@@ -24,35 +24,17 @@ async function processFile(file, beasties) {
   // оптимизация beasties
   const optimized = await beasties.process(html);
 
-  // Парсим и чистим <link rel="stylesheet">
-  const dom = new JSDOM(optimized);
-  const document = dom.window.document;
-  document.querySelectorAll("link[rel=stylesheet]").forEach((link) => {
-    const href = link.getAttribute("href");
-
-    // создаём новый preload link
-    const preload = document.createElement("link");
-    preload.setAttribute("rel", "preload");
-    preload.setAttribute("as", "style");
-    preload.setAttribute("href", href);
-    preload.setAttribute("onload", "this.onload=null;this.rel='stylesheet'");
-
-    // создаём noscript fallback
-    const noscript = document.createElement("noscript");
-    noscript.innerHTML = `<link rel="stylesheet" href="${href}">`;
-
-    link.replaceWith(preload, noscript);
-  });
-
   // сохраняем обратно
-  await writeFile(file, dom.serialize(), "utf8");
+  await writeFile(file, optimized, "utf8");
   console.log(`✔ Optimized: ${file}`);
 }
 
 async function run() {
   const beasties = new Beasties({
-    pruneSource: true, // удаляет инлайновый css из бандла
-    preload: "media", // подгружает стили по необходимости
+    path: outDir,
+    publicPath: "/",
+    pruneSource: false, // не удаляем стили из исходных файлов для надежности
+    preload: false, // загружаем стили синхронно, чтобы избежать FOUC (мигания стилей)
     inlineFonts: true,
     mergeStylesheets: true
   });

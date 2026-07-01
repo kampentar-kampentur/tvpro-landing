@@ -12,6 +12,6 @@ export default function ElfsightWidget() {
   }, []);
 
   return (
-    <div className="elfsight-app-0c8768dc-758c-4c7f-a7fe-9fcc2345d890" data-elfsight-app-lazy></div>
+    <div className="elfsight-app-0c8768dc-758c-4c7f-a7fe-9fcc2345d890"></div>
   );
 } 

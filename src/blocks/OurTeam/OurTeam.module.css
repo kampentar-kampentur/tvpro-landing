@@ -1,0 +1,109 @@
+/* ─────────────────────────────────────────────────────────────
+   OurTeam Block
+   Mobile-first: horizontal swipe (85% card)
+   Tablet 768+: 2-col grid
+   Desktop 1024+: 3-col grid  (6 cards = 2 rows)
+
+   Header / footer match WhyCustomersTrustUs + CustomerReviews
+   ───────────────────────────────────────────────────────────── */
+
+.ourTeam {
+    background-color: var(--background);
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .header {
+        margin-bottom: 40px;
+    }
+}
+
+/* ── Mobile: swipe carousel ──────────────────────────────────
+   Negative margin lets cards bleed past the .block padding
+   ─────────────────────────────────────────────────────────── */
+.sliderTrack {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* bleed past section padding so the peek effect works */
+    margin: 20px -16px 0 -16px;
+    padding: 8px 16px 24px 16px;
+}
+
+.sliderTrack::-webkit-scrollbar {
+    display: none;
+}
+
+/* Each card snaps and shows 85% width — user sees next card peeking */
+.sliderTrack > * {
+    flex: 0 0 calc(100% - 32px);
+    scroll-snap-align: center;
+    min-width: 0;
+}
+
+/* ── CTA footer — same as CustomerReviews ────────────────── */
+.footer {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.footerText {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--foreground);
+}
+
+.buttonsGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .buttonsGroup {
+        flex-direction: row;
+        justify-content: center;
+        gap: 16px;
+    }
+}
+
+/* ── Tablet 768+: 2-column grid ─────────────────────────── */
+@media (min-width: 768px) {
+    .sliderTrack {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+    }
+
+    .sliderTrack > * {
+        flex: none;
+    }
+}
+
+/* ── Desktop 1024+: 3-column grid ──────────────────────── */
+@media (min-width: 1024px) {
+    .sliderTrack {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    .header {
+        margin-bottom: 48px;
+    }
+}

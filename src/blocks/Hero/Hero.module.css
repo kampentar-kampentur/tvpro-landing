@@ -1,263 +1,266 @@
-.hero {
-  padding-bottom: 0;
+.boldSubText {
+    font-weight: 700;
+}
+
+.buttonCTATesxt {
+    margin: 0 !important;
 }
 
 .heroContainer {
-  align-items: center;
-  text-align: center;
+    align-items: center;
+    text-align: center;
 }
 
 .mainHeading {
-  font-size: 56px;
-  font-weight: 700;
-  line-height: 64px;
-  /* letter-spacing: -2px; */
-  color: var(--foreground);
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 64px;
+    /* letter-spacing: -2px; */
+    color: var(--foreground);
 }
 
-
 .buttonWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-top: 50px;
-  /* Adjust spacing as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 50px;
+    gap: 12px;
+    /* Adjust spacing as needed */
 }
 
 .heroButton {
-  font-weight: 700 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease !important;
 }
 
 .heroButton:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45);
+    transform: translateY(-4px);
+    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45);
 }
 
 @media (max-width: 1024px) {
-  .heroButton {
-    height: 52px !important;
-    font-size: 18px !important;
-    padding: 0 32px !important;
-    width: auto;
-    max-width: 100%;
-    border-radius: 12px !important;
-  }
+    .heroButton {
+        height: 52px !important;
+        font-size: 18px !important;
+        padding: 0 32px !important;
+        width: auto;
+        max-width: 100%;
+        border-radius: 12px !important;
+    }
 }
 
-
 .badgesWrapper {
-  margin-top: 40px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 
 .banner1 {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  max-width: 1180px;
-  margin: auto;
-  padding: 120px 100px;
-  margin-bottom: 20px;
-  margin-top: 10px;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1180px;
+    margin: auto;
+    padding: 120px 100px;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 .banner1Img {
-  width: 100%;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 .banner2 {
-  color: #fff;
+    color: #fff;
 }
 
-
 .bxlt {
-  font-size: 26px;
-  font-weight: 700;
+    font-size: 26px;
+    font-weight: 700;
 }
 
 .bltb {
-  font-size: 22px;
-  font-weight: 700;
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .blt {
-  font-size: 22px;
+    font-size: 22px;
 }
 
 .bmt {
-  font-size: 18px;
+    font-size: 18px;
 }
 
 .bst {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .bannerListWrapper {
-  padding-left: 20px;
+    padding-left: 20px;
 }
 
 @media (max-width: 1024px) {
-  .banner2Text {
-    max-width: 56%;
-  }
+    .banner2Text {
+        max-width: 56%;
+    }
 
-  .mainHeading {
-    font-size: 36px;
-    line-height: 44px;
-    font-weight: 800;
-  }
+    .mainHeading {
+        font-size: 36px;
+        line-height: 44px;
+        font-weight: 800;
+    }
 
-  .heroContainer {
-    /* align-items: flex-start;
+    .heroContainer {
+        /* align-items: flex-start;
     text-align: left; */
-    min-height: 200px;
-    /* Reserve space for heading and subtext */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+        min-height: 200px;
+        /* Reserve space for heading and subtext */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
-  .hero {
-    min-height: 250px;
-  }
+    .hero {
+        min-height: 250px;
+    }
 
-  .fiveStarBadge {
-    width: 121px;
-    height: 40px;
-  }
+    .fiveStarBadge {
+        width: 121px;
+        height: 40px;
+    }
 
-  .oneYearWarantyBadge {
-    width: 88px;
-    height: 32px;
-  }
+    .oneYearWarantyBadge {
+        width: 88px;
+        height: 32px;
+    }
 
-  .aboveBadge {
-    width: 48px;
-    height: 48px;
-  }
+    .aboveBadge {
+        width: 48px;
+        height: 48px;
+    }
 
-  .badgesWrapper {
-    gap: 8px;
-    justify-content: center;
-    max-width: 400px;
-    width: 100%;
-    margin-top: 30px;
-  }
+    .badgesWrapper {
+        gap: 8px;
+        justify-content: center;
+        max-width: 400px;
+        width: 100%;
+        margin-top: 30px;
+    }
 
-  .twoYearsWarantyImg {
-    width: 70px;
-    height: 48px;
-  }
+    .twoYearsWarantyImg {
+        width: 70px;
+        height: 48px;
+    }
 
-  .fiveStarImg {
-    width: 52px;
-    height: 52px;
-  }
+    .fiveStarImg {
+        width: 52px;
+        height: 52px;
+    }
 
-  .sevenDaysImg {
-    width: 105px;
-    height: 40px;
-  }
+    .sevenDaysImg {
+        width: 105px;
+        height: 40px;
+    }
 
-  .aboveFireplaceImg {
-    width: 52px;
-    height: 52px;
-  }
+    .aboveFireplaceImg {
+        width: 52px;
+        height: 52px;
+    }
 
-  .buttonWrapper {
-    margin-top: 30px;
-  }
+    .buttonWrapper {
+        margin-top: 40px;
+    }
 
-  .bxlt {
-    font-size: 26px;
-    font-weight: 700;
-  }
+    .bxlt {
+        font-size: 26px;
+        font-weight: 700;
+    }
 
-  .bltb {
-    font-size: 22px;
-    font-weight: 700;
-  }
+    .bltb {
+        font-size: 22px;
+        font-weight: 700;
+    }
 
-  .blt {
-    font-size: 22px;
-  }
+    .blt {
+        font-size: 22px;
+    }
 
-  .bmt {
-    font-size: 18px;
-  }
+    .bmt {
+        font-size: 18px;
+    }
 
-  .bst {
-    font-size: 14px;
-  }
+    .bst {
+        font-size: 14px;
+    }
 
-  .banner1 {
-    width: 100%;
-    padding: 88px 44px;
-  }
+    .banner1 {
+        width: 100%;
+        padding: 88px 44px;
+    }
 
-  .banner2 {
-    padding: 60px 44px;
-  }
+    .banner2 {
+        padding: 60px 44px;
+    }
 
-
-  .bannerListWrapper {
-    padding-left: 20px;
-  }
+    .bannerListWrapper {
+        padding-left: 20px;
+    }
 }
 
 @media (max-width: 767px) {
-  .banner1 {
-    width: 120%;
-    padding: 12px 8px;
-  }
+    .banner1 {
+        width: 120%;
+        padding: 12px 8px;
+    }
 
-  .banner1Text {
-    max-width: 53%;
-  }
+    .banner1Text {
+        max-width: 53%;
+    }
 
-  .bxlt {
-    font-size: 20px;
-    font-weight: 700;
-  }
+    .bxlt {
+        font-size: 20px;
+        font-weight: 700;
+    }
 
-  .bltb {
-    font-size: 16px;
-    font-weight: 700;
-  }
+    .bltb {
+        font-size: 16px;
+        font-weight: 700;
+    }
 
-  .blt {
-    font-size: 16px;
-  }
+    .blt {
+        font-size: 16px;
+    }
 
-  .bmt {
-    font-size: 14px;
-  }
+    .bmt {
+        font-size: 14px;
+    }
 
-  .bst {
-    font-size: 12px;
-  }
+    .bst {
+        font-size: 12px;
+    }
 
-  .bannerListWrapper {
-    padding-left: 15px;
-  }
-
+    .bannerListWrapper {
+        padding-left: 15px;
+    }
 }
 
 .bannerListWrapper b {
-  font-weight: 700;
+    font-weight: 700;
 }

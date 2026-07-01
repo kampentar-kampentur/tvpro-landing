@@ -30,7 +30,17 @@ const PhotoCard = ({ image, videoUrl, video, className, currentIndex, onClick, o
         defaultAlt="TV Installation Project"
         width={375}
         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 375px"
-        style={objectPosition ? { objectPosition } : undefined}
+        style={
+          (() => {
+            if (typeof objectPosition !== "string" && typeof objectPosition !== "number") {
+              return undefined;
+            }
+            const cleanPos = typeof objectPosition === "string"
+              ? objectPosition.replace(/^["']|["']$/g, "").trim()
+              : objectPosition;
+            return cleanPos ? { objectPosition: cleanPos } : undefined;
+          })()
+        }
       />}
       {isVideo && (
         <span className={styles.playIconWrap}>

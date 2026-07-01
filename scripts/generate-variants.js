@@ -1,8 +1,27 @@
 const fs = require('fs');
 const path = require('path');
+
+// Manually parse .env file if it exists to load NEXT_PUBLIC_SRTAPI_URL
+try {
+    const envPath = path.join(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+        const envContent = fs.readFileSync(envPath, 'utf8');
+        envContent.split('\n').forEach(line => {
+            const parts = line.split('=');
+            if (parts[0]) {
+                const key = parts[0].trim();
+                const value = parts[1] ? parts[1].trim() : '';
+                process.env[key] = value;
+            }
+        });
+    }
+} catch (e) {
+    console.error('Failed to parse .env file:', e);
+}
+
 // Use native fetch (Node 18+) instead of node-fetch
 async function fetchAllCities() {
-    const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'https://strapi-dev-e587.up.railway.app';
+    const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL;
     console.log(`Using Strapi URL for variants: ${strapiUrl}`);
     const res = await fetch(`${strapiUrl}/api/cities?pagination[pageSize]=100`);
     const json = await res.json();

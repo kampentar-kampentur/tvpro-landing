@@ -5,9 +5,10 @@ import Header from "@/ui/Header";
 import { ModalProvider } from "@/providers/ModalProvider";
 import Head from "next/head";
 import Footer from "@/blocks/Footer";
-import { GoogleTagManager } from '@next/third-parties/google'
+import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
+
 import EngagementTracker from "@/components/EngagementTracker/EngagementTracker";
 import UtmCapture from "@/components/UtmCapture/UtmCapture";
 import Modals from "@/app/components/Modals";
@@ -16,128 +17,103 @@ import { CTAProvider } from "@/providers/CTAProvider";
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
   subsets: ["latin"],
-  display: "swap", // Ensure font-display: swap is used
+  display: "swap",
 });
 
 export const metadata = {
   title: "TV Mounting Services | TVPro Handy Services",
-  description: `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
-
-Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
-
-
-✅ Transparent pricing, no hidden fees
-✅ Evening & weekend availability
-✅ 1-year warranty on all installations
-✅ Trusted by homeowners, businesses, and designers
-
-Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
+  description:
+    "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
   robots: {
     index: true,
     follow: true,
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   address: {
     "@type": "PostalAddress",
-    "addressLocality": "Houston",
-    "addressRegion": "TX",
-    "addressCountry": "US",
+    addressLocality: "Houston",
+    addressRegion: "TX",
+    addressCountry: "US",
   },
   icons: [
     {
-      rel: 'icon',
-      url: '/favicon.ico', // Primary ICO favicon
+      rel: "icon",
+      url: "/favicon.ico", // Primary ICO favicon
     },
     {
-      rel: 'icon',
-      type: 'image/svg+xml',
-      url: '/icon.svg', // SVG favicon
+      rel: "icon",
+      type: "image/svg+xml",
+      url: "/icon.svg", // SVG favicon
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '32x32',
-      url: '/favicon-32x32.png', // Desktop PNG favicon (32x32)
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      url: "/favicon-32x32.png", // Desktop PNG favicon (32x32)
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '16x16',
-      url: '/favicon-16x16.png', // Desktop PNG favicon (16x16)
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      url: "/favicon-16x16.png", // Desktop PNG favicon (16x16)
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '96x96',
-      url: '/favicon-96x96.png', // Desktop PNG favicon (96x96)
+      rel: "icon",
+      type: "image/png",
+      sizes: "96x96",
+      url: "/favicon-96x96.png", // Desktop PNG favicon (96x96)
     },
     {
-      rel: 'apple-touch-icon',
-      sizes: '180x180',
-      url: '/apple-touch-icon.png', // Apple Touch Icon
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      url: "/apple-touch-icon.png", // Apple Touch Icon
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '192x192',
-      url: '/web-app-manifest-192x192.png', // From existing web app manifest
+      rel: "icon",
+      type: "image/png",
+      sizes: "192x192",
+      url: "/web-app-manifest-192x192.png", // From existing web app manifest
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '512x512',
-      url: '/web-app-manifest-512x512.png', // From existing web app manifest
+      rel: "icon",
+      type: "image/png",
+      sizes: "512x512",
+      url: "/web-app-manifest-512x512.png", // From existing web app manifest
     },
   ],
   alternates: {
-    canonical: 'https://tvprousa.com/',
+    canonical: "https://tvprousa.com/",
   },
   openGraph: {
-    title: 'TV Mounting Services | TVPro Handy Services',
-    description: `TV Pro Handy Services LLC provides expert television mounting service, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
-
-Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
-
-✅ Transparent pricing, no hidden fees
-✅ Evening & weekend availability
-✅ 1-year warranty on all installations
-✅ Trusted by homeowners, businesses, and designers
-
-Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
-    url: 'https://tvprousa.com',
+    title: "TV Mounting Services | TVPro Handy Services",
+    description:
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+    url: "https://tvprousa.com/",
     images: [
       {
-        url: 'https://tvprousa.com/og-image.png',
+        url: "https://tvprousa.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: 'TV mounting services in Houston',
+        alt: "TV mounting services in Houston",
       },
     ],
-    type: 'website',
+    type: "website",
   },
   other: {
     "apple-mobile-web-app-title": "TVPro",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'TVPro Handy Services',
-    description: `TV Pro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide. We mount TVs on any surface, including brick and fireplaces, hiding wires for a clean finish.
-
-Our TV dismount service is free with orders over $200. We also offer sound bar installation services and gaming console setups.
-
-✅ Transparent pricing, no hidden fees
-✅ Evening & weekend availability
-✅ 1-year warranty on all installations
-✅ Trusted by homeowners, businesses, and designers
-
-Choose TV Pro Handy Services for fast, reliable, top-rated home theater installation services, TV mounting services, and more.`,
-    images: ['https://tvprousa.com/og-image.png'],
+    card: "summary_large_image",
+    title: "TVPro Handy Services",
+    description:
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+    images: ["https://tvprousa.com/og-image.png"],
   },
   verification: {
     // google: 'your-code', // Add if needed
@@ -145,17 +121,35 @@ Choose TV Pro Handy Services for fast, reliable, top-rated home theater installa
 };
 
 async function getCTA() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
-  const json = await res.json();
-  return json.data;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/cta`);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error(
+      "[Layout] getCTA fetch failed, using fallbacks:",
+      error.message,
+    );
+    return {
+      phone: "(877) 455-5535",
+      phoneLabel: "Call Us",
+      workHours: "Mon-Sun 7:00 AM - 10:00 PM",
+      homeLink: "/",
+    };
+  }
 }
 
 export default async function RootLayout({ children }) {
-  const cta = await getCTA()
+  const cta = await getCTA();
   return (
     <html lang="en">
       <head>
-        <script async src="https://ob.sornavellon.com/i/525465f0a01f5537af7992a76b9c7bf2.js" className="ct_clicktrue"></script>
+        <script
+          async
+          src="https://ob.sornavellon.com/i/525465f0a01f5537af7992a76b9c7bf2.js"
+          className="ct_clicktrue"
+        ></script>
         {/* Preload LCP Image */}
         <link
           rel="preload"
@@ -164,10 +158,18 @@ export default async function RootLayout({ children }) {
           fetchPriority="high"
         />
         {/* Only critical preconnects (max 4) */}
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-        <link rel="preconnect" href="https://media.tvprousa.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://media.tvprousa.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
@@ -184,17 +186,17 @@ export default async function RootLayout({ children }) {
               console.log('Marketing scripts: Initialization started');
               var fired = false;
               var timeoutId;
-              
+
               function loadScripts() {
                 if (fired) return;
                 fired = true;
                 console.log('Marketing scripts: Loading triggered');
-                
+
                 clearTimeout(timeoutId);
                 ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
                   window.removeEventListener(e, loadScripts);
                 });
-                
+
                 // 1. GTM
                 (function() {
                   const gtmId = '${process.env.NEXT_PUBLIC_GTM_ID}';
@@ -239,11 +241,11 @@ export default async function RootLayout({ children }) {
                   try {
                     var workizLeads = {doc:{url:document.URL,ref:document.referrer,search:location.search,hash:location.hash}};
                     window.$wc_leads = JSON.parse(JSON.stringify(workizLeads));
-                    
+
                     var workizScript = document.createElement('script');
                     workizScript.async = true;
                     workizScript.src = "//s.ksrndkehqnwntyxlhgto.com/154265.js";
-                    
+
                     document.head.appendChild(workizScript);
                   } catch(e) { console.error('WhatConverts Error:', e); }
                 })();
@@ -302,7 +304,7 @@ export default async function RootLayout({ children }) {
                     setTimeout(enhanceWidget, 500);
                   }
                 }
-                
+
                 const observer = new MutationObserver((mutations, obs) => {
                     const widget = document.querySelector('chat-widget');
                     if (widget) {
@@ -321,44 +323,89 @@ export default async function RootLayout({ children }) {
             })();
           `}
         </Script>
-
       </head>
-      <body className={redHatDisplay.variable}>
+      <body className={`${redHatDisplay.variable}`}>
         {process.env.NEXT_PUBLIC_GTM_ID && (
           <noscript>
-            <iframe 
+            <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
-              height="0" 
-              width="0" 
-              style={{ display: 'none', visibility: 'hidden' }}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
             ></iframe>
           </noscript>
         )}
         {process.env.NEXT_PUBLIC_FB_PIXEL_ID && (
           <noscript>
-            <img 
-              height="1" 
-              width="1" 
-              style={{ display: 'none' }}
+            <img
+              height="1"
+              width="1"
+              style={{ display: "none" }}
               src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FB_PIXEL_ID}&ev=PageView&noscript=1`}
             />
           </noscript>
         )}
-        <noscript><iframe src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch=" width="0" height="0" style={{ display: 'none' }}></iframe></noscript>
+        <noscript>
+          <iframe
+            src="https://ob.sornavellon.com/ns/525465f0a01f5537af7992a76b9c7bf2.html?ch="
+            width="0"
+            height="0"
+            style={{ display: "none" }}
+          ></iframe>
+        </noscript>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "TVPro Handy Services",
+              description:
+                "TVPro Handy Services LLC provides expert TV mounting services, home theater installation services, and video wall installation services nationwide.",
+              url: "https://tvprousa.com/",
+              telephone: cta?.phone || "(877) 455-5535",
+              image: "https://tvprousa.com/logo.svg",
+              priceRange: "$$",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Houston",
+                addressRegion: "TX",
+                addressCountry: "US",
+              },
+              openingHoursSpecification: [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday",
+                  ],
+                  opens: "08:00",
+                  closes: "20:00",
+                },
+              ],
+            }),
+          }}
+        />
         <CTAProvider initialCTA={cta}>
           <ModalProvider>
             <EngagementTracker />
             <UtmCapture />
             <Modals />
             <Header cta={cta} />
-            <main style={{ paddingTop: 80, flexGrow: 1 }}>
+            <main
+              style={{ paddingTop: "var(--header-height, 80px)", flexGrow: 1 }}
+            >
               {children}
             </main>
             <Footer cta={cta} />
           </ModalProvider>
         </CTAProvider>
         <ScrollToTop />
-
       </body>
     </html>
   );

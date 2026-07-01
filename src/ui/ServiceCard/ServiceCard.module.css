@@ -42,11 +42,11 @@
     color: var(--gray);
 }
 
-.hiddenButton {
-    opacity: 0;
-    visibility: hidden;
+.serviceCard .hiddenButton {
+    opacity: 0 !important;
+    visibility: hidden !important;
     /* transition: opacity 0.3s ease, visibility 0.3s ease; */
-    display: none;
+    display: none !important;
 }
 
 
@@ -58,14 +58,18 @@
 }
 
 .invisibleButton {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    visibility: hidden;
-    display: none;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    opacity: 0 !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    transform: none !important;
 }
 
 @media (hover: hover) {
@@ -75,9 +79,10 @@
     }
 
     .serviceCard:hover .hiddenButton {
-        opacity: 1;
-        visibility: visible;
-        display: flex;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        z-index: 11; /* make sure the visible hover button can receive hover cursor visual feedback, though clicks will bubble to card */
     }
 
     .serviceCard:hover .description {
@@ -97,13 +102,6 @@
             0px 78px 31px 0px #0000000a,
             0px 121px 34px 0px #00000005;
         border: white;
-    }
-}
-
-@media (pointer: coarse) {
-    .invisibleButton {
-        display: block;
-        visibility: visible;
     }
 }
 

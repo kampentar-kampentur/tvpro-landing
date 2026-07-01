@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./Hero.module.css";
 import RunningTextLine from "./components/RunningTextLine";
+import { resolveSpintaxLine, resolveSpintax } from "@/lib/spintax";
+import { RAW_TICKER_LINES } from "@/lib/tickerData";
 // import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 // import dynamic from "next/dynamic";
 import HeroCTA from "./components/HeroCTA";
@@ -11,15 +13,28 @@ import Text from "@/ui/Text/Text";
 // import SevenDaysImg from "@/assets/badges/7days.webp"
 // import InsuredImg from "@/assets/badges/insured.webp"
 // import ExpandingSection from "./components/ExpandingSection";
-// import HeroCarousel from "./components/HeroCarousel";
 import HeroClientContainer from "./components/HeroClientContainer";
+const getRandomLines = (rawLines, count = 6) => {
+  if (!rawLines || rawLines.length === 0) return [];
+  const result = [...rawLines];
+  const length = result.length;
+  const iterations = Math.min(count, length);
+  
+  for (let i = 0; i < iterations; i++) {
+    const randomIndex = i + Math.floor(Math.random() * (length - i));
+    [result[i], result[randomIndex]] = [result[randomIndex], result[i]];
+  }
+  
+  return result.slice(0, iterations);
+};
+
 async function getHero() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SRTAPI_URL}/api/hero?populate=*`);
     const json = await res.json();
     return json.data;
   } catch (error) {
-    console.error("Hero fetch failed:", error);
+    print("Hero fetch failed:", error);
     return null;
   }
 }
@@ -29,7 +44,7 @@ async function getHeroRunningLines() {
     const json = await res.json();
     return json.data;
   } catch (error) {
-    console.error("Hero lines fetch failed:", error);
+    print("Hero lines fetch failed:", error);
     return [];
   }
 }
@@ -49,14 +64,22 @@ export default async function Hero({ data = {}, cityContext }) {
     ...defaultHeroData,
     ...data,
     // Explicitly handle nested or specific fields if needed
-    title: data?.title || defaultHeroData?.title || '',
-    subTitle: data?.subTitle || defaultHeroData?.subTitle || '',
+    title: resolveSpintax(data?.title || defaultHeroData?.title || ''),
+    subTitle: resolveSpintax(data?.subTitle || defaultHeroData?.subTitle || ''),
   };
 
-  // For running lines, we might just replace the array entirely if provided
-  const heroLinesData = data?.runningLines && data.runningLines.length > 0
-    ? data.runningLines
-    : defaultLinesData;
+  // Выбираем источник строк: data из Strapi > глобальные из Strapi > fallback tickerData
+  const rawLines =
+    data?.runningLines?.length > 0 ? data.runningLines
+    : defaultLinesData?.length > 0 ? defaultLinesData
+    : RAW_TICKER_LINES;
+
+  // Перемешиваем массив и выбираем ровно 6 случайных элементов методом Fisher-Yates
+  const shuffledLines = getRandomLines(rawLines, 6);
+
+  // Разворачиваем спинтакс {A|B|C} → случайный вариант (серверный рендер при SSG).
+  // Каждая страница города получает свой вариант → уникализация HTML.
+  const heroLinesData = shuffledLines.map(resolveSpintaxLine);
 
   const carouselSlides = [
     { type: 'video', data: { src720: '/optimized/mainVideo2-720p.mp4' } },
@@ -82,8 +105,12 @@ export default async function Hero({ data = {}, cityContext }) {
             "name": "TV Wall Mounting Demo by TVPro Handy Services",
             "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
             "uploadDate": "2025-07-25",
-            "contentUrl": "https://tvprousa.com/mainVideo2.mp4",
-            "embedUrl": "https://tvprousa.com",
+            "duration": "PT9.5S",
+            "thumbnailUrl": [
+              "https://tvprousa.com/videoplaceholder-800.webp"
+            ],
+            "contentUrl": "https://tvprousa.com/optimized/mainVideo2-720p.mp4",
+            "embedUrl": "https://tvprousa.com/",
           }),
         }}
       />

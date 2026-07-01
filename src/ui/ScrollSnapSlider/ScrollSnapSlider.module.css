@@ -1,0 +1,44 @@
+.sliderWrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.dotsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--gray-light, #dbdbdf);
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+}
+
+.dot:hover {
+    background-color: var(--gray, #91929c);
+}
+
+.dot.active {
+    background-color: var(--green, #0d64a0);
+    width: 24px;
+    border-radius: 4px;
+}
+
+@media (min-width: 1024px) {
+    /* On desktop, the dots display is handled dynamically by isOverflowing check,
+     but we can also enforce it in CSS for extra safety */
+    .dotsContainer {
+        display: none !important;
+    }
+}

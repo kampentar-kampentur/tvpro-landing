@@ -4,7 +4,7 @@ import CheckMark from '@/assets/icons/CheckmarkCircle.svg'
 import InfoCircle from '@/assets/icons/InfoCircle.svg'
 import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg'
 
-const SelectionCard = ({ label, description, price, subtitle, selected, onClick, isInfoShow, onInfoClick }) => {
+const SelectionCard = ({ label, description, price, subtitle, selected, onClick, isInfoShow, onInfoClick, isShaking }) => {
   function handleInfoClick(e) {
     e.preventDefault()
     e.stopPropagation()
@@ -12,7 +12,7 @@ const SelectionCard = ({ label, description, price, subtitle, selected, onClick,
   }
   return (
     <div
-      className={`${styles.card} ${selected ? styles.selected : ''} ${isInfoShow  ? styles.showInfo : ''}`}
+      className={`${styles.card} ${selected ? styles.selected : ''} ${isInfoShow  ? styles.showInfo : ''} ${isShaking ? styles.shaking : ''}`}
       onClick={onClick}
     >
       <div className={styles.label}>{label}</div>

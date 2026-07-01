@@ -59,7 +59,7 @@ button.closeButton:hover {
     padding: 20px;
     height: 100% !important;
     width: 100% !important;
-    overflow: auto;
+    overflow: hidden;
   }
 
   button.closeButton {
@@ -69,6 +69,7 @@ button.closeButton:hover {
 
   .modalWrapper {
     display: block;
+    overflow-y: auto;
   }
 }
 
@@ -77,4 +78,5 @@ button.closeButton:hover {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }

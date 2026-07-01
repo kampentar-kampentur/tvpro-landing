@@ -45,6 +45,8 @@ const FormField = ({ field, value, stepId, formData, onChange }) => {
         field={field}
         value={value}
         onChange={handleChange}
+        formData={formData}
+        stepId={stepId}
       />
     </div>
   );

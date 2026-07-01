@@ -1,10 +1,13 @@
 import { validatePhone } from './phoneValidation';
 
 export const shouldRenderField = (showIfCondition, currentFormData, currentStepId, parentContext) => {
-  console.log('🔍 shouldRenderField called with:', { showIfCondition, currentStepId, wallType: currentFormData[currentStepId]?.wallType });
+  console.log('🔍 shouldRenderField called with:', { showIfCondition, currentStepId, wallType: currentFormData ? currentFormData[currentStepId]?.wallType : undefined });
   if (!showIfCondition) {
     console.log('🔍 No showIfCondition, returning true');
     return true;
+  }
+  if (!currentFormData) {
+    return false;
   }
 
   // --- Новая логика: массив условий (AND)
