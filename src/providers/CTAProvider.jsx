@@ -14,6 +14,13 @@ export function CTAProvider({ children, initialCTA }) {
         }
     }, [initialCTA]);
 
+    // Clean up legacy user_city_slug cookie on mount if it exists
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            document.cookie = "user_city_slug=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
+        }
+    }, []);
+
     const overrideCTA = useCallback((newCTAData) => {
         if (!newCTAData) return;
 

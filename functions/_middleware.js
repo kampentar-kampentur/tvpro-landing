@@ -34,12 +34,7 @@ export async function onRequest(context) {
     let workingPath = (path === 'index' ? '' : path);
 
     if (isRoot) {
-        const match = cookieHeader.match(/user_city_slug=([^;]+)/);
-        const cookieSlug = match ? match[1] : null;
-
-        if (cookieSlug && config.variants[cookieSlug] !== undefined) {
-            workingPath = cookieSlug;
-        } else if (!disableGeo) {
+        if (!disableGeo) {
             // Fallback to Geo-IP detection
             const userCity = context.request.cf?.city?.toLowerCase();
             const matchedSlug = userCity ? config.geo[userCity] : null;
