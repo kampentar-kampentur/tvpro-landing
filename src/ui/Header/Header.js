@@ -104,14 +104,15 @@ export default function Header({ cta: parentCta }) {
       >
         <div className={styles.headerWrapper}>
           <div className={styles.headerNavWrapper}>
-            <Link
-              href={isBlog ? "/blog/" : (cta?.homeLink || "/")}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a
+              href={isBlog ? "/blog/" : "/"}
               aria-label={isBlog ? "TVPro Blog Home" : "TVPro Main Page"}
               className="logo"
             >
               <LogoSVG width="82" height="40" />
               <span className="sr-only">TVPro Logo</span>
-            </Link>
+            </a>
             <HeaderActions
               cta={cta}
               isBlog={isBlog}

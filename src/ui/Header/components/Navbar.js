@@ -111,7 +111,8 @@ export default function Navbar() {
         <nav className={styles.navbar} aria-label="Blog Navigation">
           <ul className={styles.navLinks}>
             <li className={styles.mainSiteLi}>
-              <Link href="/" className={styles.mainSiteChip}>Main Site</Link>
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a href="/" className={styles.mainSiteChip}>Main Site</a>
             </li>
             <li>
               <Link href="/blog/">Blog Home</Link>
@@ -170,7 +171,8 @@ export default function Navbar() {
       <nav className={styles.navbar} aria-label="Main Navigation">
         <ul className={styles.navLinks}>
           <li>
-            <Link href={cta?.homeLink || "/"}>Home</Link>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a href="/">Home</a>
           </li>
           <li>
             <Link href="/#services">Services</Link>

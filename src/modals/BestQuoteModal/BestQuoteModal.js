@@ -1058,7 +1058,13 @@ const NewQuizScheme = {
       showIf: {
         field: "wall.wallType",
         condition: "equalsAny",
-        values: ["drywall", "stoneBrickConcrete", "tile", "ceiling", "metalStuds"],
+        values: [
+          "drywall",
+          "stoneBrickConcrete",
+          "tile",
+          "ceiling",
+          "metalStuds",
+        ],
       },
       fields: [
         {
@@ -1092,7 +1098,9 @@ const NewQuizScheme = {
               label: "No",
               hideFromBreakdown: true,
               cost: 0,
+              breakdownLabel: "Above Fireplace",
               costLabel: "+$0",
+              description: "Above Fireplace installation.",
             },
           ],
         },
@@ -1665,7 +1673,13 @@ const BestQuoteModal = () => {
       onClose={close}
     >
       <header className={styles.bestQuoteHeader}>
-        <LogoSVG width="82" height="40" role="img" onClick={close} style={{ cursor: "pointer" }} />
+        <LogoSVG
+          width="82"
+          height="40"
+          role="img"
+          onClick={close}
+          style={{ cursor: "pointer" }}
+        />
       </header>
       <div className={styles.bestQuote}>
         <main className={styles.bestQuoteMain}>
