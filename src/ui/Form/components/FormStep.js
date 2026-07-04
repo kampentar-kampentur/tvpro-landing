@@ -11,7 +11,7 @@ import { shouldRenderField } from '../utils/formUtils';
 import ChevronIcon from '@/assets/icons/chevron.svg';
 import Button from '@/ui/Button';
 
-const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps, isMobile, currentStepIndex, onClose, onBack, onNext }) => {
+const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps, isMobile, currentStepIndex, onClose, onBack, onNext, onValidationError }) => {
   const [shakingField, setShakingField] = useState(null);
 
   if (!step) {
@@ -31,6 +31,7 @@ const FormStep = ({ step, formData, onFieldChange, currentSubStep, totalSubSteps
     if (!isStepValid) {
       const missingField = step.fields?.find(isFieldRequiredAndMissing);
       if (missingField) {
+        onValidationError?.(missingField.name, "required");
         setShakingField(missingField.name);
         setTimeout(() => {
           setShakingField(null);

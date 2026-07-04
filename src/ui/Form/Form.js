@@ -86,10 +86,8 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
       if (shouldRenderField(field.showIf, value, stepToRender.id, parentContext)) {
         const fieldValue = value[stepToRender.id] ? value[stepToRender.id][field.name] : undefined;
 
-        if (field.isRequired && (fieldValue === undefined || fieldValue === null || fieldValue === '' || (Array.isArray(fieldValue) && fieldValue.length === 0))) {
-          currentErrors.add(`${field.name}:required`);
-          return;
-        }
+        // Note: we do not automatically log "required" errors for empty fields here to avoid spamming on step load.
+        // We only check for format violations when values are present.
 
         if (field.type === 'tel' && fieldValue && !validatePhone(fieldValue)) {
           currentErrors.add(`${field.name}:invalid_phone`);
@@ -98,9 +96,6 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         if (field.type === "splited" && field.fields && Array.isArray(field.fields)) {
           field.fields.forEach(subField => {
             const subFieldValue = fieldValue && typeof fieldValue === 'object' ? fieldValue[subField.name] : undefined;
-            if (subField.isRequired && (!subFieldValue || String(subFieldValue).trim() === '')) {
-              currentErrors.add(`${field.name}.${subField.name}:required`);
-            }
             if (subField.type === 'tel' && subFieldValue && !validatePhone(subFieldValue)) {
               currentErrors.add(`${field.name}.${subField.name}:invalid_phone`);
             }
@@ -348,6 +343,15 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         onClose={onClose}
         onBack={onBack || handleBack}
         onNext={() => handleNext(value)}
+        onValidationError={(fieldName, errorType) => {
+          quizTracker.sendEvent("validation_error", {
+            stepId: stepToRender.id,
+            stepIndex: currentStepIndex,
+            fieldName,
+            errorType,
+            additionalData: { totalPrice: totalPriceRef.current }
+          });
+        }}
       />
       {showProgress && !isContactStep && (
         <div className={styles.progressWrapper}>
