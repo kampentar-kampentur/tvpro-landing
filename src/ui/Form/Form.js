@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormNavigation } from './hooks/useFormNavigation';
 import { useDynamicSteps } from './hooks/useDynamicSteps';
+import quizTracker from '@/lib/quizTracker';
 import FormStep from './components/FormStep';
 import FormNavigation from './components/FormNavigation';
 import Breadcrumbs from '@/ui/Breadcrumbs';
@@ -44,6 +45,9 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     ? renderedSteps[currentSubStepIndex]
     : currentStepConfig;
 
+  const totalPriceRef = useRef(totalPrice);
+  totalPriceRef.current = totalPrice;
+
   useEffect(() => {
     if (onPriceChange) {
       onPriceChange(totalPrice, structuredCostBreakdown);
@@ -56,8 +60,96 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     }
   }, [currentStepIndex, currentSubStepIndex, renderedSteps.length, onStepChange]);
 
+  // Track step views
+  useEffect(() => {
+    if (stepToRender?.id) {
+      quizTracker.sendEvent("step_view", {
+        stepId: stepToRender.id,
+        stepIndex: currentStepIndex,
+        additionalData: {
+          stepTitle: stepToRender.title,
+          totalPrice: totalPriceRef.current
+        }
+      });
+    }
+  }, [currentStepIndex, currentSubStepIndex, stepToRender?.id, stepToRender?.title]);
+
+  // Track validation errors in the background
+  const lastLoggedErrors = useRef(new Set());
+  useEffect(() => {
+    if (!stepToRender || !stepToRender.fields) return;
+
+    const parentContext = stepToRender.parentContext;
+    const currentErrors = new Set();
+
+    stepToRender.fields.forEach(field => {
+      if (shouldRenderField(field.showIf, value, stepToRender.id, parentContext)) {
+        const fieldValue = value[stepToRender.id] ? value[stepToRender.id][field.name] : undefined;
+
+        if (field.isRequired && (fieldValue === undefined || fieldValue === null || fieldValue === '' || (Array.isArray(fieldValue) && fieldValue.length === 0))) {
+          currentErrors.add(`${field.name}:required`);
+          return;
+        }
+
+        if (field.type === 'tel' && fieldValue && !validatePhone(fieldValue)) {
+          currentErrors.add(`${field.name}:invalid_phone`);
+        }
+
+        if (field.type === "splited" && field.fields && Array.isArray(field.fields)) {
+          field.fields.forEach(subField => {
+            const subFieldValue = fieldValue && typeof fieldValue === 'object' ? fieldValue[subField.name] : undefined;
+            if (subField.isRequired && (!subFieldValue || String(subFieldValue).trim() === '')) {
+              currentErrors.add(`${field.name}.${subField.name}:required`);
+            }
+            if (subField.type === 'tel' && subFieldValue && !validatePhone(subFieldValue)) {
+              currentErrors.add(`${field.name}.${subField.name}:invalid_phone`);
+            }
+            if (subField.name === 'zip' && subFieldValue && !/^\d{5}$/.test(subFieldValue)) {
+              currentErrors.add(`${field.name}.${subField.name}:invalid_zip`);
+            }
+          });
+        }
+      }
+    });
+
+    currentErrors.forEach(errKey => {
+      if (!lastLoggedErrors.current.has(errKey)) {
+        const [fieldName, errorType] = errKey.split(':');
+        quizTracker.sendEvent("validation_error", {
+          stepId: stepToRender.id,
+          stepIndex: currentStepIndex,
+          fieldName,
+          errorType,
+          fieldValue: value[stepToRender.id]?.[fieldName.split('.')[0]],
+          additionalData: {
+            totalPrice: totalPriceRef.current
+          }
+        });
+        lastLoggedErrors.current.add(errKey);
+      }
+    });
+
+    lastLoggedErrors.current.forEach(errKey => {
+      if (!currentErrors.has(errKey)) {
+        lastLoggedErrors.current.delete(errKey);
+      }
+    });
+  }, [value, stepToRender, currentStepIndex]);
+
   const handleFieldChange = (stepId, fieldName, fieldValue) => {
     console.log(`📝 Field change: ${stepId}.${fieldName} = ${JSON.stringify(fieldValue)}`);
+    
+    // Log the option_select event immediately
+    quizTracker.sendEvent("option_select", {
+      stepId,
+      stepIndex: currentStepIndex,
+      fieldName,
+      fieldValue,
+      additionalData: {
+        totalPrice: totalPriceRef.current
+      }
+    });
+
     onChange(prevData => {
       const stepIndex = scheme.steps.findIndex(s => s.id === stepId);
       const updatedData = {

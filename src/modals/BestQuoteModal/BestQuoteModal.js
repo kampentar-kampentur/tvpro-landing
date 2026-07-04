@@ -4,7 +4,7 @@ import { useModalState, useModal } from "@/providers/ModalProvider";
 import styles from "./BestQuoteModal.module.css";
 import Modal from "@/ui/Modal";
 import Form from "@/ui/Form";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import PriceSummary from "./components/PriceSummary";
 import LogoSVG from "@/assets/logo.svg";
@@ -13,6 +13,7 @@ import Button from "@/ui/Button";
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import { getUtmParams } from "@/lib/utmTracker";
 import Link from "next/link";
+import quizTracker from "@/lib/quizTracker";
 
 const BestQuoteScheme = {
   steps: [
@@ -1403,6 +1404,11 @@ const BestQuoteModal = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [totalSteps, setTotalSteps] = useState(5);
   const [isMobile, setIsMobile] = useState(false);
+  const wasSubmittedRef = useRef(false);
+  const currentStepIndexRef = useRef(0);
+  currentStepIndexRef.current = currentStepIndex;
+  const totalPriceRef = useRef(0);
+  totalPriceRef.current = totalPrice;
 
   const pathname = usePathname();
   const isNewQuiz = data?.props?.isNewQuiz !== false;
@@ -1530,10 +1536,23 @@ const BestQuoteModal = () => {
 
   useEffect(() => {
     if (!isOpen) {
+      if (quizTracker.sessionId) {
+        quizTracker.sendEvent("quiz_close", {
+          additionalData: {
+            wasSubmitted: wasSubmittedRef.current,
+            lastStepIndex: currentStepIndexRef.current,
+            totalPrice: totalPriceRef.current
+          }
+        });
+      }
       setFormData({});
       setCurrentStepIndex(0);
       setTotalSteps(5);
+      wasSubmittedRef.current = false;
     } else {
+      wasSubmittedRef.current = false;
+      quizTracker.init();
+      quizTracker.sendEvent("quiz_open");
       setCurrentStepIndex(0);
     }
   }, [isOpen]);
@@ -1585,6 +1604,12 @@ const BestQuoteModal = () => {
     }
 
     try {
+      quizTracker.sendEvent("submit_attempt", {
+        additionalData: {
+          totalPrice
+        }
+      });
+
       const apiUrl =
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
       const response = await fetch(`${apiUrl}/api/best-quote`, {
@@ -1597,6 +1622,13 @@ const BestQuoteModal = () => {
         }),
       });
       if (response.ok) {
+        wasSubmittedRef.current = true;
+        quizTracker.sendEvent("submit_success", {
+          additionalData: {
+            totalPrice
+          }
+        });
+
         // Build return URL: if we're on the quiz page, it's already set by QuizClient.
         // If we're on a city page, save current path as the return point.
         if (!window.location.pathname.includes("/quiz")) {
@@ -1648,10 +1680,23 @@ const BestQuoteModal = () => {
       } else {
         const errorData = await response.json();
         console.error("Form submission error:", errorData);
+        quizTracker.sendEvent("submit_error", {
+          errorType: "server_error",
+          additionalData: {
+            status: response.status,
+            error: errorData
+          }
+        });
         alert("An error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Failed to send form:", error);
+      quizTracker.sendEvent("submit_error", {
+        errorType: "network_error",
+        additionalData: {
+          error: error.message || String(error)
+        }
+      });
       alert("Failed to send request. Please check your connection.");
     } finally {
       setIsSubmitting(false);
