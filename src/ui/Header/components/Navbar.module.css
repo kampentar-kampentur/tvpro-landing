@@ -12,6 +12,7 @@
 
 .navLinks {
     display: flex;
+    align-items: center;
     gap: 32px;
     list-style: none;
     margin: 0;
@@ -52,6 +53,7 @@
     }
     .navLinks {
         flex-direction: column;
+        align-items: stretch;
         height: auto;
         padding: 16px;
         gap: 8px;
