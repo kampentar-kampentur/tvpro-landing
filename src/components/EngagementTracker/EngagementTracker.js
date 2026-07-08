@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 import { useModal } from "@/providers/ModalProvider";
+import { usePathname } from 'next/navigation';
 
 const EngagementTracker = () => {
     const { openModal, modals } = useModal();
+    const pathname = usePathname();
     const hasTriggered = useRef(false);
     const hasRealInteraction = useRef(false); // Track real human interactions
     const idleTimer = useRef(null);
@@ -17,6 +19,16 @@ const EngagementTracker = () => {
     }, [modals]);
 
     const triggerPopup = useCallback(() => {
+        // Prevent triggering on main blog index, pagination, and category pages, but keep on blog posts
+        if (pathname) {
+            const isBlogMain = pathname === '/blog' || pathname === '/blog/';
+            const isBlogPage = pathname.startsWith('/blog/page/');
+            const isBlogCategory = pathname.startsWith('/blog/category/');
+            if (isBlogMain || isBlogPage || isBlogCategory) {
+                return;
+            }
+        }
+
         // Prevent triggering if no real human interaction has occurred yet (blocks bots/Lighthouse)
         if (!hasRealInteraction.current) {
             console.log("Exit intent blocked: No real user interaction detected.");
@@ -45,7 +57,7 @@ const EngagementTracker = () => {
         openModal('ExitIntentModal');
         hasTriggered.current = true;
         sessionStorage.setItem('exit_popup_triggered', 'true');
-    }, [openModal]);
+    }, [openModal, pathname]);
 
     useEffect(() => {
         // Mark real human interaction on first physical action
