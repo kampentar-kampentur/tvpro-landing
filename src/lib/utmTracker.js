@@ -1,4 +1,14 @@
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+const UTM_KEYS = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_content',
+    'utm_term',
+    'utm_position',
+    'utm_matchtype',
+    'utm_placement',
+    'utm_network'
+];
 const STORAGE_KEY = 'utm_params';
 
 /**

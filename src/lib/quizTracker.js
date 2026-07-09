@@ -49,6 +49,10 @@ class QuizTracker {
         utmCampaign: this.utm.utm_campaign || null,
         utmTerm: this.utm.utm_term || null,
         utmContent: this.utm.utm_content || null,
+        utmPosition: this.utm.utm_position || null,
+        utmMatchtype: this.utm.utm_matchtype || null,
+        utmPlacement: this.utm.utm_placement || null,
+        utmNetwork: this.utm.utm_network || null,
         additionalData: {
           secondsSinceStart,
           ...additionalData
