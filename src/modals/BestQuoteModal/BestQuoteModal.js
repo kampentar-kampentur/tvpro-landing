@@ -935,7 +935,7 @@ const NewQuizScheme = {
           isRequired: true,
           label: "What size TV do you have?",
           options: [
-            { value: "under31", label: 'Under 31"', cost: 69 },
+            { value: "under31", label: 'Under 31"', cost: 59 },
             { value: "32-59", label: '32"-59"', cost: 125 },
             { value: "60-69", label: '60"-69"', cost: 144 },
             { value: "70-85", label: '70"-85"', cost: 149 },
@@ -1541,8 +1541,8 @@ const BestQuoteModal = () => {
           additionalData: {
             wasSubmitted: wasSubmittedRef.current,
             lastStepIndex: currentStepIndexRef.current,
-            totalPrice: totalPriceRef.current
-          }
+            totalPrice: totalPriceRef.current,
+          },
         });
       }
       setFormData({});
@@ -1606,8 +1606,8 @@ const BestQuoteModal = () => {
     try {
       quizTracker.sendEvent("submit_attempt", {
         additionalData: {
-          totalPrice
-        }
+          totalPrice,
+        },
       });
 
       const apiUrl =
@@ -1625,8 +1625,8 @@ const BestQuoteModal = () => {
         wasSubmittedRef.current = true;
         quizTracker.sendEvent("submit_success", {
           additionalData: {
-            totalPrice
-          }
+            totalPrice,
+          },
         });
 
         // Build return URL: if we're on the quiz page, it's already set by QuizClient.
@@ -1684,8 +1684,8 @@ const BestQuoteModal = () => {
           errorType: "server_error",
           additionalData: {
             status: response.status,
-            error: errorData
-          }
+            error: errorData,
+          },
         });
         alert("An error occurred. Please try again.");
       }
@@ -1694,8 +1694,8 @@ const BestQuoteModal = () => {
       quizTracker.sendEvent("submit_error", {
         errorType: "network_error",
         additionalData: {
-          error: error.message || String(error)
-        }
+          error: error.message || String(error),
+        },
       });
       alert("Failed to send request. Please check your connection.");
     } finally {
