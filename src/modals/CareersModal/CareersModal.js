@@ -191,6 +191,19 @@ export default function CareersModal() {
   const nextStep = () => setStep((s) => Math.min(s + 1, 3));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
+  const scrollToFirstError = (newErrors) => {
+    const firstErrorKey = Object.keys(newErrors)[0];
+    if (!firstErrorKey) return;
+    setTimeout(() => {
+      const errorElement = document.querySelector(`[data-error-field="${firstErrorKey}"]`);
+      if (errorElement) {
+        errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        const input = errorElement.querySelector("input, textarea, select");
+        if (input) input.focus();
+      }
+    }, 100);
+  };
+
   const handleSubmit = async (e) => {
     if (e && typeof e.preventDefault === "function") e.preventDefault();
     const newErrors = {};
@@ -230,6 +243,7 @@ export default function CareersModal() {
 
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
+        scrollToFirstError(newErrors);
         return;
       }
       nextStep();
@@ -258,6 +272,7 @@ export default function CareersModal() {
 
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
+        scrollToFirstError(newErrors);
         return;
       }
       nextStep();
@@ -325,6 +340,7 @@ export default function CareersModal() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      scrollToFirstError(newErrors);
       return;
     }
 
@@ -436,69 +452,87 @@ export default function CareersModal() {
                   {step === 1 && (
                     <>
                       <h4>Step 1: Contact & Eligibility</h4>
-                      <TextField field={{ name: "name", placeholder: "Full Name *", textLabel: "Full Name" }} value={formData.name} onChange={handleChange("name")} error={errors.name} />
-                      <TextField field={{ name: "phone", type: "tel", placeholder: "Phone Number *", textLabel: "Phone Number" }} value={formData.phone} onChange={handleChange("phone")} error={errors.phone} />
-                      <TextField field={{ name: "email", type: "email", placeholder: "Email *", textLabel: "Email" }} value={formData.email} onChange={handleChange("email")} error={errors.email} />
+                      <div data-error-field="name">
+                        <TextField field={{ name: "name", placeholder: "Full Name *", textLabel: "Full Name" }} value={formData.name} onChange={handleChange("name")} error={errors.name} />
+                      </div>
+                      <div data-error-field="phone">
+                        <TextField field={{ name: "phone", type: "tel", placeholder: "Phone Number *", textLabel: "Phone Number" }} value={formData.phone} onChange={handleChange("phone")} error={errors.phone} />
+                      </div>
+                      <div data-error-field="email">
+                        <TextField field={{ name: "email", type: "email", placeholder: "Email *", textLabel: "Email" }} value={formData.email} onChange={handleChange("email")} error={errors.email} />
+                      </div>
                       
-                      <SelectField
-                        label="City you want to work in *"
-                        placeholder="City you want to work in *"
-                        value={formData.city}
-                        onChange={(val) => handleChange("city")(val)}
-                        options={cityOptions}
-                        error={errors.city}
-                      />
+                      <div data-error-field="city">
+                        <SelectField
+                          label="City you want to work in *"
+                          placeholder="City you want to work in *"
+                          value={formData.city}
+                          onChange={(val) => handleChange("city")(val)}
+                          options={cityOptions}
+                          error={errors.city}
+                        />
+                      </div>
 
                       {formData.city === "other" && (
-                        <TextField
-                          field={{ name: "otherCity", placeholder: "Enter your city *", textLabel: "Enter your city" }}
-                          value={formData.otherCity || ""}
-                          onChange={handleChange("otherCity")}
-                          error={errors.otherCity}
-                        />
+                        <div data-error-field="otherCity">
+                          <TextField
+                            field={{ name: "otherCity", placeholder: "Enter your city *", textLabel: "Enter your city" }}
+                            value={formData.otherCity || ""}
+                            onChange={handleChange("otherCity")}
+                            error={errors.otherCity}
+                          />
+                        </div>
                       )}
 
-                      <RadioQuestionField
-                        question="Legally authorized to work in the U.S.? *"
-                        name="workAuth"
-                        options={yesNoOptions}
-                        value={formData.workAuth}
-                        onChange={(val) => handleChange("workAuth")(val)}
-                        error={errors.workAuth}
-                      />
+                      <div data-error-field="workAuth">
+                        <RadioQuestionField
+                          question="Legally authorized to work in the U.S.? *"
+                          name="workAuth"
+                          options={yesNoOptions}
+                          value={formData.workAuth}
+                          onChange={(val) => handleChange("workAuth")(val)}
+                          error={errors.workAuth}
+                        />
+                      </div>
 
-                      <RadioQuestionField
-                        question="Are you over 18 years old? *"
-                        name="over18"
-                        options={yesNoOptions}
-                        value={formData.over18}
-                        onChange={(val) => handleChange("over18")(val)}
-                        error={errors.over18}
-                      />
+                      <div data-error-field="over18">
+                        <RadioQuestionField
+                          question="Are you over 18 years old? *"
+                          name="over18"
+                          options={yesNoOptions}
+                          value={formData.over18}
+                          onChange={(val) => handleChange("over18")(val)}
+                          error={errors.over18}
+                        />
+                      </div>
 
-                      <RadioQuestionField
-                        question="Do you have a valid Driver's License and a vehicle? *"
-                        name="driverLicense"
-                        options={yesNoOptions}
-                        value={formData.driverLicense}
-                        onChange={(val) => handleChange("driverLicense")(val)}
-                        error={errors.driverLicense}
-                      />
+                      <div data-error-field="driverLicense">
+                        <RadioQuestionField
+                          question="Do you have a valid Driver's License and a vehicle? *"
+                          name="driverLicense"
+                          options={yesNoOptions}
+                          value={formData.driverLicense}
+                          onChange={(val) => handleChange("driverLicense")(val)}
+                          error={errors.driverLicense}
+                        />
+                      </div>
 
-                      <CheckboxGroupField
-                        label="Which languages can you use with customers? *"
-                        options={languageOptions}
-                        value={formData.languages}
-                        onChange={(val) => handleChange("languages")(val)}
-                        error={errors.languages}
-                      />
+                      <div data-error-field="languages">
+                        <CheckboxGroupField
+                          label="Which languages can you use with customers? *"
+                          options={languageOptions}
+                          value={formData.languages}
+                          onChange={(val) => handleChange("languages")(val)}
+                          error={errors.languages}
+                        />
+                      </div>
                     </>
                   )}
                   {step === 2 && (
                     <>
                       <h4>Step 2: Experience & Skills</h4>
                       
-                      <div className={styles.fieldGroup}>
+                      <div data-error-field="experienceLevel" className={styles.fieldGroup}>
                         <span className={styles.fieldGroupLabel}>How much experience do you have with TV mounting, handyman work, construction, or low-voltage work? *</span>
                         <div className={styles.experienceGrid}>
                           {experienceLevelOptions.map((opt) => (
@@ -515,24 +549,28 @@ export default function CareersModal() {
                         )}
                       </div>
 
-                      <TextAreaField
-                        label="Where have you worked before? *"
-                        placeholder="Company names, platforms, construction jobs, handyman work, etc."
-                        value={formData.previousWork}
-                        onChange={(val) => handleChange("previousWork")(val)}
-                        error={errors.previousWork}
-                      />
+                      <div data-error-field="previousWork">
+                        <TextAreaField
+                          label="Where have you worked before? *"
+                          placeholder="Company names, platforms, construction jobs, handyman work, etc."
+                          value={formData.previousWork}
+                          onChange={(val) => handleChange("previousWork")(val)}
+                          error={errors.previousWork}
+                        />
+                      </div>
 
-                      <CheckboxGroupField
-                        label="Services you can confidently perform"
-                        options={servicesOptions}
-                        value={formData.servicesPerformed}
-                        onChange={(val) => handleChange("servicesPerformed")(val)}
-                        error={errors.servicesPerformed}
-                        columns={2}
-                      />
+                      <div data-error-field="servicesPerformed">
+                        <CheckboxGroupField
+                          label="Services you can confidently perform"
+                          options={servicesOptions}
+                          value={formData.servicesPerformed}
+                          onChange={(val) => handleChange("servicesPerformed")(val)}
+                          error={errors.servicesPerformed}
+                          columns={2}
+                        />
+                      </div>
 
-                      <div className={styles.fieldGroup}>
+                      <div data-error-field="hasTools" className={styles.fieldGroup}>
                         <span className={styles.fieldGroupLabel}>Do you have your own basic tools for TV installation? *</span>
                         <div className={styles.toolsRow}>
                           {hasToolsOptions.map((opt) => (
@@ -552,7 +590,7 @@ export default function CareersModal() {
                       <div className={styles.quizBox}>
                         <h4 className={styles.quizBoxTitle}>Quick technical checks</h4>
                         
-                        <div className={styles.fieldGroup}>
+                        <div data-error-field="q1Studs" className={styles.fieldGroup}>
                           <span className={styles.fieldGroupLabel}>1) Standard stud spacing in most U.S. homes: *</span>
                           <div className={styles.experienceGrid}>
                             {q1StudsOptions.map((opt) => (
@@ -569,7 +607,7 @@ export default function CareersModal() {
                           )}
                         </div>
 
-                        <div className={styles.fieldGroup}>
+                        <div data-error-field="q2Power" className={styles.fieldGroup}>
                           <span className={styles.fieldGroupLabel}>2) Can a regular TV power cord be hidden inside the wall? *</span>
                           <div className={styles.fieldGroup} style={{ gap: '12px' }}>
                             {q2PowerOptions.map((opt) => (
@@ -596,7 +634,7 @@ export default function CareersModal() {
                       <div className={styles.twoColumnLayout}>
                         {/* Left Column */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                          <div className={styles.fieldGroup}>
+                          <div data-error-field="schedule" className={styles.fieldGroup}>
                             <span className={styles.fieldGroupLabel}>What schedule are you looking for? *</span>
                             <div className={styles.fieldGroup} style={{ gap: '12px' }}>
                               {scheduleOptions.map((opt) => (
@@ -613,7 +651,7 @@ export default function CareersModal() {
                             )}
                           </div>
 
-                          <div className={styles.fieldGroup}>
+                          <div data-error-field="daysPerWeek" className={styles.fieldGroup}>
                             <span className={styles.fieldGroupLabel}>How many days per week can you work? *</span>
                             <div className={styles.fieldGroup} style={{ gap: '12px' }}>
                               {daysPerWeekOptions.map((opt) => (
@@ -630,7 +668,7 @@ export default function CareersModal() {
                             )}
                           </div>
 
-                          <div className={styles.fieldGroup}>
+                          <div data-error-field="drivingRange" className={styles.fieldGroup}>
                             <span className={styles.fieldGroupLabel}>Comfortable driving 30-40 miles to customers? *</span>
                             <div className={styles.toolsRow}>
                               {yesNoOptions.map((opt) => (
@@ -647,18 +685,20 @@ export default function CareersModal() {
                             )}
                           </div>
 
-                           <TextField
-                            field={{ name: "desiredIncome", placeholder: "Desired weekly income *", type: "number", textLabel: "Desired weekly income" }}
-                            value={formData.desiredIncome}
-                            onChange={handleChange("desiredIncome")}
-                            error={errors.desiredIncome}
-                            className={fieldStyles.desiredIncomeField}
-                          />
+                          <div data-error-field="desiredIncome">
+                            <TextField
+                              field={{ name: "desiredIncome", placeholder: "Desired weekly income *", type: "number", textLabel: "Desired weekly income" }}
+                              value={formData.desiredIncome}
+                              onChange={handleChange("desiredIncome")}
+                              error={errors.desiredIncome}
+                              className={fieldStyles.desiredIncomeField}
+                            />
+                          </div>
                         </div>
 
                         {/* Right Column */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                          <div className={styles.fieldGroup}>
+                          <div data-error-field="insurance" className={styles.fieldGroup}>
                             <span className={styles.fieldGroupLabel}>Willing to get liability insurance if required? *</span>
                             <div className={styles.fieldGroup} style={{ gap: '12px' }}>
                               {insuranceOptions.map((opt) => (
@@ -675,7 +715,7 @@ export default function CareersModal() {
                             )}
                           </div>
 
-                          <div className={styles.fieldGroup}>
+                          <div data-error-field="backgroundCheck" className={styles.fieldGroup}>
                             <span className={styles.fieldGroupLabel}>Willing to pass a background check? *</span>
                             <div className={styles.toolsRow}>
                               {yesNoOptions.map((opt) => (
@@ -703,29 +743,35 @@ export default function CareersModal() {
                       <div className={styles.shortAnswersBox}>
                         <h4 className={styles.shortAnswersTitle}>Short written answers</h4>
 
-                        <TextAreaField
-                          label="Tell us about yourself *"
-                          placeholder="Short introduction, background, what kind of work you like"
-                          value={formData.about}
-                          onChange={(val) => handleChange("about")(val)}
-                          error={errors.about}
-                        />
+                        <div data-error-field="about">
+                          <TextAreaField
+                            label="Tell us about yourself *"
+                            placeholder="Short introduction, background, what kind of work you like"
+                            value={formData.about}
+                            onChange={(val) => handleChange("about")(val)}
+                            error={errors.about}
+                          />
+                        </div>
 
-                        <TextAreaField
-                          label="Your strengths *"
-                          placeholder="Example: punctual, clean, fast, technical, customer-friendly"
-                          value={formData.strengths}
-                          onChange={(val) => handleChange("strengths")(val)}
-                          error={errors.strengths}
-                        />
+                        <div data-error-field="strengths">
+                          <TextAreaField
+                            label="Your strengths *"
+                            placeholder="Example: punctual, clean, fast, technical, customer-friendly"
+                            value={formData.strengths}
+                            onChange={(val) => handleChange("strengths")(val)}
+                            error={errors.strengths}
+                          />
+                        </div>
 
-                        <TextAreaField
-                          label="Your weaknesses *"
-                          placeholder="Be honest: what are you improving right now?"
-                          value={formData.weaknesses}
-                          onChange={(val) => handleChange("weaknesses")(val)}
-                          error={errors.weaknesses}
-                        />
+                        <div data-error-field="weaknesses">
+                          <TextAreaField
+                            label="Your weaknesses *"
+                            placeholder="Be honest: what are you improving right now?"
+                            value={formData.weaknesses}
+                            onChange={(val) => handleChange("weaknesses")(val)}
+                            error={errors.weaknesses}
+                          />
+                        </div>
                       </div>
                     </>
                   )}
