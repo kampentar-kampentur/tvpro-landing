@@ -2,12 +2,9 @@
 import React from "react";
 import styles from "./CareersCTA.module.css";
 import Button from "@/ui/Button";
-import { useModalState } from "@/providers/ModalProvider";
 import Text from "@/ui/Text/Text";
 
 export default function CareersCTA({ data, cityContext }) {
-  const { open } = useModalState("CareersForm");
-
   const title = data?.title || "Join Our Team of Expert Technicians";
   const subTitle =
     data?.subTitle ||
@@ -22,7 +19,7 @@ export default function CareersCTA({ data, cityContext }) {
           <p className="subText"><Text text={subTitle} cityContext={cityContext} /></p>
         </header>
         <div className={styles.buttonWrapper}>
-          <Button variant="primary" onClick={() => open()} size="big">
+          <Button variant="primary" href="/careers/" size="big">
             {buttonText}
           </Button>
         </div>

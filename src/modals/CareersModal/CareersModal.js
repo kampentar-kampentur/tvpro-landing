@@ -364,6 +364,10 @@ export default function CareersModal() {
   };
 
   const handleClose = () => {
+    if (typeof window !== "undefined" && window.location.pathname.includes("/careers")) {
+      window.location.href = "/";
+      return;
+    }
     close();
     setTimeout(() => {
       setStep(1);

@@ -3,6 +3,7 @@ import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import TechCard from "@/blocks/OurTeam/components/TechCard";
 import { getAllTechnicians } from "@/lib/strapi";
 import QuoteButton from "@/ui/QuoteButton/QuoteButton";
+import Button from "@/ui/Button";
 import styles from "./our-team-page.module.css";
 
 import { technicians as localTechnicians } from "@/blocks/OurTeam/data/technicians";
@@ -114,9 +115,9 @@ export default async function OurTeamPage() {
           to deliver a flawless installation in your home.
         </p>
         <div className={styles.headerButtons}>
-          <QuoteButton modalName="CareersForm" variant="primary">
+          <Button href="/careers/" variant="primary">
             Join Our Team (Apply Now)
-          </QuoteButton>
+          </Button>
         </div>
       </header>
 
