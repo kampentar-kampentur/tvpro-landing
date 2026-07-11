@@ -795,6 +795,12 @@ export default function CareersModal() {
                     </Button>
                   )}
                 </div>
+
+                <p style={{ fontSize: "11px", color: "var(--gray-medium)", marginTop: "16px", textAlign: "center", lineHeight: "1.4", opacity: 0.8 }}>
+                  Your data will only be used to contact you regarding the TV Installer vacancy at TVPRO USA. 
+                  We will contact you to discuss your experience, working conditions, and next steps. 
+                  Your data will not be shared with third parties.
+                </p>
               </div>
             </main>
           </div>
