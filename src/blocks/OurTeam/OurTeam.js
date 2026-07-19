@@ -158,7 +158,13 @@ export default async function OurTeam({ data = {}, cityContext }) {
     return 0;
   };
 
-  selectedTechs.sort((a, b) => getTechSkillLevel(b) - getTechSkillLevel(a));
+  selectedTechs.sort((a, b) => {
+    const aIsCity = a.city?.toLowerCase() === cityName?.toLowerCase();
+    const bIsCity = b.city?.toLowerCase() === cityName?.toLowerCase();
+    if (aIsCity && !bIsCity) return -1;
+    if (!aIsCity && bIsCity) return 1;
+    return getTechSkillLevel(b) - getTechSkillLevel(a);
+  });
 
   const title = resolveSpintax(
     teamData?.title || `Meet Our TV Mounting Specialists in ${displayLocation}`,
