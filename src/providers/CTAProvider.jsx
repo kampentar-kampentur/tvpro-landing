@@ -24,6 +24,72 @@ export function CTAProvider({ children, initialCTA }) {
         }
     }, []);
 
+    // Programmatic Google Ads phone number swapping via window._googWcmGet
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const TRACKING_NUMBERS = [
+            '12818684356', // Houston
+            '14697514991', // Dallas
+            '18723504357', // Chicago
+            '17373556973', // Austin
+            '17864621468', // Miami
+            '18163077393', // Kansas
+            '19045695281', // Jacksonville
+            '18563535503', // New Jersey
+            '15169792880', // New York
+            '17042850469', // Charlotte
+            '14452344929', // Philadelphia
+            '18326647597', // Global Main
+            '18774555535'  // Fallback
+        ];
+
+        const cleanCurrent = cta.phone ? cta.phone.replace(/[^0-9]/g, '') : '';
+        if (!TRACKING_NUMBERS.includes(cleanCurrent)) {
+            // Number has already been swapped (or is not a trackable city number)
+            return;
+        }
+
+        let checkInterval;
+        let attempts = 0;
+
+        const trySwap = () => {
+            if (window._googWcmGet) {
+                clearInterval(checkInterval);
+                const originalNumber = cta.phoneLabel || cta.phone;
+                if (!originalNumber) return;
+
+                try {
+                    window._googWcmGet((formattedNumber, rawNumber) => {
+                        setCta(prev => {
+                            const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
+                            if (!TRACKING_NUMBERS.includes(cleanPrev)) {
+                                return prev;
+                            }
+                            return {
+                                ...prev,
+                                phone: rawNumber,
+                                phoneLabel: formattedNumber
+                            };
+                        });
+                    }, originalNumber);
+                } catch (err) {
+                    console.error("Error executing _googWcmGet:", err);
+                }
+            } else {
+                attempts++;
+                if (attempts > 50) { // Stop checking after 10 seconds
+                    clearInterval(checkInterval);
+                }
+            }
+        };
+
+        checkInterval = setInterval(trySwap, 200);
+        trySwap();
+
+        return () => clearInterval(checkInterval);
+    }, [cta.phone, cta.phoneLabel]);
+
     const overrideCTA = useCallback((newCTAData) => {
         if (!newCTAData) return;
 
