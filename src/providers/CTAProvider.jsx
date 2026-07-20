@@ -56,30 +56,44 @@ export function CTAProvider({ children, initialCTA }) {
         const trySwap = () => {
             if (window._googWcmGet) {
                 clearInterval(checkInterval);
-                const originalNumber = cta.phoneLabel || cta.phone;
-                if (!originalNumber) return;
+                const cleanPhone = cta.phone ? cta.phone.replace(/[^0-9]/g, '') : '';
+                const tenDigits = cleanPhone.length === 11 && cleanPhone.startsWith('1') ? cleanPhone.slice(1) : cleanPhone;
+                
+                if (tenDigits.length !== 10) return;
 
-                try {
-                    window._googWcmGet((formattedNumber, rawNumber) => {
-                        console.log("[googWcmGet callback] Received:", { formattedNumber, rawNumber });
-                        setCta(prev => {
-                            const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
-                            console.log("[googWcmGet callback] Prev phone:", prev.phone, "Clean prev:", cleanPrev);
-                            if (!TRACKING_NUMBERS.includes(cleanPrev)) {
-                                console.log("[googWcmGet callback] Skip swap - not a tracking number");
-                                return prev;
-                            }
-                            console.log("[googWcmGet callback] Swap success!");
-                            return {
-                                ...prev,
-                                phone: rawNumber,
-                                phoneLabel: formattedNumber
-                            };
-                        });
-                    }, originalNumber);
-                } catch (err) {
-                    console.error("Error executing _googWcmGet:", err);
-                }
+                const formats = [
+                    `+1 ${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`, // +1 281-868-4356
+                    `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`, // (281) 868-4356
+                    `${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`,   // 281-868-4356
+                    `+1${tenDigits}`,                                                            // +12818684356
+                    tenDigits                                                                    // 2818684356
+                ];
+
+                console.log("[googWcmGet] Queueing swap calls for formats:", formats);
+
+                formats.forEach(formatStr => {
+                    try {
+                        window._googWcmGet((formattedNumber, rawNumber) => {
+                            console.log("[googWcmGet callback success] Format matched:", formatStr, { formattedNumber, rawNumber });
+                            setCta(prev => {
+                                const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
+                                console.log("[googWcmGet callback] Prev phone:", prev.phone, "Clean prev:", cleanPrev);
+                                if (!TRACKING_NUMBERS.includes(cleanPrev)) {
+                                    console.log("[googWcmGet callback] Skip swap - not a tracking number");
+                                    return prev;
+                                }
+                                console.log("[googWcmGet callback] Swap success!");
+                                return {
+                                    ...prev,
+                                    phone: rawNumber,
+                                    phoneLabel: formattedNumber
+                                };
+                            });
+                        }, formatStr);
+                    } catch (err) {
+                        console.error(`Error calling _googWcmGet for ${formatStr}:`, err);
+                    }
+                });
             } else {
                 attempts++;
                 if (attempts > 50) { // Stop checking after 10 seconds
