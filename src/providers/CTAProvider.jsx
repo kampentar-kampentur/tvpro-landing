@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 
 const CTAContext = createContext(null);
 
@@ -50,61 +50,32 @@ export function CTAProvider({ children, initialCTA }) {
             return;
         }
 
-        const conversionLabel = cta.conversion_label || cta.google_conversion_label || cta.conversionLabel || process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || "a8L_CP3LxdMcEKqu1fBA";
-        const conversionId = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || "AW-17416148778";
-        const configTarget = `${conversionId}/${conversionLabel}`;
-
         let checkInterval;
         let attempts = 0;
 
         const trySwap = () => {
-            if (window._googWcmGet && typeof window.gtag === 'function') {
+            if (window._googWcmGet) {
                 clearInterval(checkInterval);
-                const cleanPhone = cta.phone ? cta.phone.replace(/[^0-9]/g, '') : '';
-                const tenDigits = cleanPhone.length === 11 && cleanPhone.startsWith('1') ? cleanPhone.slice(1) : cleanPhone;
-                
-                if (tenDigits.length !== 10) return;
+                const originalNumber = cta.phoneLabel || cta.phone;
+                if (!originalNumber) return;
 
-                const primaryFormat = cta.phoneLabel || `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`;
-                
-                // Register ONLY this active page number with Google Ads ONCE
-                window.gtag('config', configTarget, {
-                    'phone_conversion_number': primaryFormat
-                });
-
-                const formats = [
-                    primaryFormat,
-                    `+1 ${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`,
-                    `${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`,
-                    `+1${tenDigits}`,
-                    tenDigits
-                ];
-
-                console.log("[googWcmGet] Registered active format:", primaryFormat, "Queueing swap calls for:", formats);
-
-                formats.forEach(formatStr => {
-                    try {
-                        window._googWcmGet((formattedNumber, rawNumber) => {
-                            console.log("[googWcmGet callback success] Format matched:", formatStr, { formattedNumber, rawNumber });
-                            setCta(prev => {
-                                const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
-                                console.log("[googWcmGet callback] Prev phone:", prev.phone, "Clean prev:", cleanPrev);
-                                if (!TRACKING_NUMBERS.includes(cleanPrev)) {
-                                    console.log("[googWcmGet callback] Skip swap - not a tracking number");
-                                    return prev;
-                                }
-                                console.log("[googWcmGet callback] Swap success!");
-                                return {
-                                    ...prev,
-                                    phone: rawNumber,
-                                    phoneLabel: formattedNumber
-                                };
-                            });
-                        }, formatStr);
-                    } catch (err) {
-                        console.error(`Error calling _googWcmGet for ${formatStr}:`, err);
-                    }
-                });
+                try {
+                    window._googWcmGet((formattedNumber, rawNumber) => {
+                        setCta(prev => {
+                            const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
+                            if (!TRACKING_NUMBERS.includes(cleanPrev)) {
+                                return prev;
+                            }
+                            return {
+                                ...prev,
+                                phone: rawNumber,
+                                phoneLabel: formattedNumber
+                            };
+                        });
+                    }, originalNumber);
+                } catch (err) {
+                    console.error("Error executing _googWcmGet:", err);
+                }
             } else {
                 attempts++;
                 if (attempts > 50) { // Stop checking after 10 seconds
@@ -140,10 +111,8 @@ export function CTAProvider({ children, initialCTA }) {
         });
     }, []);
 
-    const value = React.useMemo(() => ({ cta, overrideCTA }), [cta, overrideCTA]);
-
     return (
-        <CTAContext.Provider value={value}>
+        <CTAContext.Provider value={{ cta, overrideCTA }}>
             {children}
         </CTAContext.Provider>
     );
@@ -158,55 +127,29 @@ export function useCTA() {
 }
 
 export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
-    const { overrideCTA } = useContext(CTAContext) || {};
+    const context = useContext(CTAContext);
 
-    const overridePayload = useMemo(() => ({
+    // Inject dynamic city name details for the city page (no homeLink override, logo always goes to /)
+    const overridePayload = {
         ...(ctaOverride || {}),
         cityName,
         stateCode,
         citySlug
-    }), [ctaOverride, citySlug, cityName, stateCode]);
+    };
 
+    // Stringify to prevent endless object reference re-renders
     const ctaOverrideStr = JSON.stringify(overridePayload);
 
-    // useLayoutEffect runs BEFORE browser paint, eliminating any flash of default number
-    const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
-
-    useIsomorphicLayoutEffect(() => {
-        if (overrideCTA && ctaOverrideStr) {
+    useEffect(() => {
+        if (context && ctaOverrideStr) {
             try {
                 const parsedOverride = JSON.parse(ctaOverrideStr);
-                overrideCTA(parsedOverride);
+                context.overrideCTA(parsedOverride);
             } catch (e) {
                 console.error("Error parsing ctaOverride string", e);
             }
         }
-    }, [ctaOverrideStr, overrideCTA]);
+    }, [ctaOverrideStr, context]);
 
-    const phoneLabel = ctaOverride?.phoneLabel || ctaOverride?.phone;
-    const phoneHref = ctaOverride?.phone ? `tel:${ctaOverride.phone}` : null;
-
-    if (!phoneLabel) return null;
-
-    return (
-        <script
-            dangerouslySetInnerHTML={{
-                __html: `
-                    (function() {
-                        try {
-                            var label = ${JSON.stringify(phoneLabel)};
-                            var href = ${JSON.stringify(phoneHref)};
-                            if (label) {
-                                var btns = document.querySelectorAll('a[href^="tel:"]');
-                                btns.forEach(function(b) {
-                                    b.textContent = label;
-                                    if (href) b.href = href;
-                                });
-                            }
-                        } catch(e) {}
-                    })();
-                `
-            }}
-        />
-    );
+    return null; // This component doesn't render anything visually
 }

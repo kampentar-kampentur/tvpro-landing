@@ -213,7 +213,7 @@ export default async function RootLayout({ children }) {
             const conversionId = '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || "AW-17416148778"}';
             const configTarget = conversionId + '/' + conversionLabel;
 
-            numbersToSwap.forEach(num => {
+             numbersToSwap.forEach(num => {
               // 1. Register '+1 XXX-XXX-XXXX' format
               gtag('config', configTarget, {
                 'phone_conversion_number': num
@@ -228,6 +228,12 @@ export default async function RootLayout({ children }) {
                   'phone_conversion_number': formatted
                 });
               }
+
+              // 3. Register '+1XXXXXXXXXX' raw format
+              const rawNum = num.replace(/\s+/g, '').replace(/-/g, '');
+              gtag('config', configTarget, {
+                'phone_conversion_number': rawNum
+              });
             });
           `}
         </Script>
