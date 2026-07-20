@@ -61,11 +61,15 @@ export function CTAProvider({ children, initialCTA }) {
 
                 try {
                     window._googWcmGet((formattedNumber, rawNumber) => {
+                        console.log("[googWcmGet callback] Received:", { formattedNumber, rawNumber });
                         setCta(prev => {
                             const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
+                            console.log("[googWcmGet callback] Prev phone:", prev.phone, "Clean prev:", cleanPrev);
                             if (!TRACKING_NUMBERS.includes(cleanPrev)) {
+                                console.log("[googWcmGet callback] Skip swap - not a tracking number");
                                 return prev;
                             }
+                            console.log("[googWcmGet callback] Swap success!");
                             return {
                                 ...prev,
                                 phone: rawNumber,
