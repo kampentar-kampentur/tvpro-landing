@@ -7,24 +7,28 @@ import styles from "../../blog.module.css";
 const POSTS_PER_PAGE = 9;
 
 export async function generateStaticParams() {
-    const strapiPosts = await getAllBlogPosts();
+    const strapiPosts = await getAllBlogPosts() || [];
     
     // Merge Strapi and fallback mock posts to get the full count
     const posts = [...strapiPosts];
-    for (const mock of blogPosts) {
+    for (const mock of (blogPosts || [])) {
         if (!posts.find(p => p.slug === mock.slug)) {
             posts.push(mock);
         }
     }
 
-    const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+    const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+    
     const params = [];
     for (let i = 1; i <= totalPages; i++) {
         params.push({ num: String(i) });
     }
+
     if (params.length === 0) {
-        params.push({ num: "1" });
+        console.log("[Build Info] No paginated blog pages. Providing page 1 to prevent build failure.");
+        return [{ num: '1' }];
     }
+
     return params;
 }
 

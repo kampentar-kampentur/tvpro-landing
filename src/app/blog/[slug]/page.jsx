@@ -10,9 +10,9 @@ const ORG_NAME = "TVPro Handy Services";
 export async function generateStaticParams() {
     // Try Strapi first, fall back to local mock slugs
     const strapiPosts = await getAllBlogPosts();
-    const strapiSlugs = strapiPosts.map((p) => ({ slug: p.slug }));
+    const strapiSlugs = (strapiPosts || []).map((p) => ({ slug: p.slug }));
 
-    const mockSlugs = blogPosts.map((p) => ({ slug: p.slug }));
+    const mockSlugs = (blogPosts || []).map((p) => ({ slug: p.slug }));
 
     // Merge, deduplicating by slug
     const allSlugs = [...strapiSlugs];
@@ -23,8 +23,10 @@ export async function generateStaticParams() {
     }
 
     if (allSlugs.length === 0) {
-        return [{ slug: "tv-mounting-guide" }];
+        console.log("[Build Info] No blog posts found in Strapi. Providing placeholder to prevent build failure.");
+        return [{ slug: 'build-placeholder' }];
     }
+
     return allSlugs;
 }
 
