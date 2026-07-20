@@ -7,10 +7,13 @@ const CTAContext = createContext(null);
 export function CTAProvider({ children, initialCTA }) {
     const [cta, setCta] = useState(initialCTA || {});
 
+    const prevInitialCtaRef = React.useRef(initialCTA);
+
     // Effect to handle dynamic updates when page transition updates initialCTA
     useEffect(() => {
-        if (initialCTA) {
+        if (initialCTA && prevInitialCtaRef.current !== initialCTA) {
             setCta(initialCTA);
+            prevInitialCtaRef.current = initialCTA;
         }
     }, [initialCTA]);
 
