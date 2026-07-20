@@ -230,7 +230,7 @@ export default async function RootLayout({ children }) {
               }
 
               // 3. Register '+1XXXXXXXXXX' raw format
-              const rawNum = num.replace(/\s+/g, '').replace(/-/g, '');
+              const rawNum = num.replace(/\\s+/g, '').replace(/-/g, '');
               gtag('config', configTarget, {
                 'phone_conversion_number': rawNum
               });
