@@ -185,15 +185,47 @@ export default async function RootLayout({ children }) {
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || 'AW-17416148778'}`}
           strategy="afterInteractive"
         />
-        {/* Configure Google Ads Tag with Call Forwarding Goal */}
+        {/* Configure Swapping for all tracking numbers */}
         <Script id="google-ads-phone-tracking" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || 'AW-17416148778'}');
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || 'AW-17416148778'}/${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || 'a8L_CP3LxdMcEKqu1fBA'}', {
-              'phone_conversion_number': '(281) 868-4356'
+            
+            const numbersToSwap = [
+              '+1 281-868-4356', // Houston
+              '+1 469-751-4991', // Dallas
+              '+1 872-350-4357', // Chicago
+              '+1 737-355-6973', // Austin
+              '+1 786-462-1468', // Miami
+              '+1 816-307-7393', // Kansas
+              '+1 904-569-5281', // Jacksonville
+              '+1 856-353-5503', // New Jersey
+              '+1 516-979-2880', // New York
+              '+1 704-285-0469', // Charlotte
+              '+1 445-234-4929'  // Philadelphia
+            ];
+
+            const conversionLabel = '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || "a8L_CP3LxdMcEKqu1fBA"}';
+            const conversionId = '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || "AW-17416148778"}';
+            const configTarget = conversionId + '/' + conversionLabel;
+
+            numbersToSwap.forEach(num => {
+              // 1. Register '+1 XXX-XXX-XXXX' format
+              gtag('config', configTarget, {
+                'phone_conversion_number': num
+              });
+
+              // 2. Register '(XXX) XXX-XXXX' format
+              const plainNum = num.replace('+1 ', '');
+              const parts = plainNum.split('-');
+              if (parts.length === 3) {
+                const formatted = '(' + parts[0] + ') ' + parts[1] + '-' + parts[2];
+                gtag('config', configTarget, {
+                  'phone_conversion_number': formatted
+                });
+              }
             });
           `}
         </Script>
