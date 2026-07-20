@@ -39,7 +39,7 @@ export async function generateStaticParams() {
   const params = [];
 
   for (const cat of categories) {
-    const strapiPosts = await getAllBlogPosts() || [];
+    const strapiPosts = await getAllBlogPosts();
     const allPosts = [...strapiPosts, ...mockPosts];
     const categoryPostsCount = allPosts.filter(post => slugify(post.category || "General") === cat.slug).length;
     const totalPages = Math.max(1, Math.ceil(categoryPostsCount / POSTS_PER_PAGE));
@@ -50,11 +50,6 @@ export async function generateStaticParams() {
         num: String(i)
       });
     }
-  }
-
-  if (params.length === 0) {
-    console.log("[Build Info] No paginated blog category pages. Providing placeholder category to prevent build failure.");
-    return [{ slug: 'news', num: '1' }];
   }
   
   if (params.length === 0) {
