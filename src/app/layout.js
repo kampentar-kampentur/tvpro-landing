@@ -204,7 +204,9 @@ export default async function RootLayout({ children }) {
               '+1 856-353-5503', // New Jersey
               '+1 516-979-2880', // New York
               '+1 704-285-0469', // Charlotte
-              '+1 445-234-4929'  // Philadelphia
+              '+1 445-234-4929', // Philadelphia
+              '+1 832-664-7597', // Global Main Number
+              '+1 877-455-5535'  // Global Default Fallback
             ];
 
             const conversionLabel = '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || "a8L_CP3LxdMcEKqu1fBA"}';
