@@ -139,18 +139,19 @@ export default async function CityPage({ params }) {
   const { metro_city_slug } = cityData;
   const isSuburb = !!metro_city_slug;
 
-  // 3. Fallback Logic
-  // If city has no page, use global default layout
-  // Note: strapi.js populate depth needs to be sufficient
+  let metroCityData = null;
   let layout;
   if (cityData.page && cityData.page.length > 0) {
     layout = cityData.page;
   } else if (isSuburb) {
-    const metroLayout = await getMetroCityLayout(metro_city_slug);
+    metroCityData = await getCityBySlug(metro_city_slug);
+    const metroLayout = metroCityData?.page || await getMetroCityLayout(metro_city_slug);
     layout = metroLayout || globalData.default_layout || [];
   } else {
     layout = globalData.default_layout || [];
   }
+
+  const ctaOverride = cityData.cta_override || metroCityData?.cta_override || null;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -201,12 +202,10 @@ export default async function CityPage({ params }) {
       "https://www.instagram.com/tvprousa",
     ],
   };
-  debugger;
-  console.log("layout", layout);
   return (
     <main>
       <CityCTASetter
-        ctaOverride={cityData.cta_override}
+        ctaOverride={ctaOverride}
         citySlug={citySlug}
         cityName={cityData.city_name}
         stateCode={cityData.state_code}
