@@ -129,8 +129,10 @@ export function CTAProvider({ children, initialCTA }) {
         });
     }, []);
 
+    const value = React.useMemo(() => ({ cta, overrideCTA }), [cta, overrideCTA]);
+
     return (
-        <CTAContext.Provider value={{ cta, overrideCTA }}>
+        <CTAContext.Provider value={value}>
             {children}
         </CTAContext.Provider>
     );
@@ -145,7 +147,7 @@ export function useCTA() {
 }
 
 export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
-    const context = useContext(CTAContext);
+    const { overrideCTA } = useContext(CTAContext) || {};
 
     // Inject dynamic city name details for the city page (no homeLink override, logo always goes to /)
     const overridePayload = {
@@ -159,15 +161,15 @@ export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
     const ctaOverrideStr = JSON.stringify(overridePayload);
 
     useEffect(() => {
-        if (context && ctaOverrideStr) {
+        if (overrideCTA && ctaOverrideStr) {
             try {
                 const parsedOverride = JSON.parse(ctaOverrideStr);
-                context.overrideCTA(parsedOverride);
+                overrideCTA(parsedOverride);
             } catch (e) {
                 console.error("Error parsing ctaOverride string", e);
             }
         }
-    }, [ctaOverrideStr, context]);
+    }, [ctaOverrideStr, overrideCTA]);
 
     return null; // This component doesn't render anything visually
 }
