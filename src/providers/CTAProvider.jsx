@@ -157,6 +157,8 @@ export function useCTA() {
     return context.cta;
 }
 
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
 export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
     const { overrideCTA } = useContext(CTAContext) || {};
 
@@ -168,9 +170,6 @@ export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
     }), [ctaOverride, citySlug, cityName, stateCode]);
 
     const ctaOverrideStr = JSON.stringify(overridePayload);
-
-    // useLayoutEffect runs BEFORE browser paint, eliminating any flash of default number
-    const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
     useIsomorphicLayoutEffect(() => {
         if (overrideCTA && ctaOverrideStr) {
