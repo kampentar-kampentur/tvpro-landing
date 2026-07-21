@@ -50,11 +50,15 @@ export function CTAProvider({ children, initialCTA }) {
             return;
         }
 
+        const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || "a8L_CP3LxdMcEKqu1fBA";
+        const conversionId = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || "AW-17416148778";
+        const configTarget = `${conversionId}/${conversionLabel}`;
+
         let checkInterval;
         let attempts = 0;
 
         const trySwap = () => {
-            if (window._googWcmGet) {
+            if (window._googWcmGet && typeof window.gtag === 'function') {
                 clearInterval(checkInterval);
                 const cleanPhone = cta.phone ? cta.phone.replace(/[^0-9]/g, '') : '';
                 const tenDigits = cleanPhone.length === 11 && cleanPhone.startsWith('1') ? cleanPhone.slice(1) : cleanPhone;
@@ -69,7 +73,16 @@ export function CTAProvider({ children, initialCTA }) {
                     tenDigits                                                                    // 2818684356
                 ];
 
-                console.log("[googWcmGet] Queueing swap calls for formats:", formats);
+                // Dynamically register ONLY this active page's number with Google Ads
+                formats.forEach(fmt => {
+                    try {
+                        window.gtag('config', configTarget, {
+                            'phone_conversion_number': fmt
+                        });
+                    } catch (e) {}
+                });
+
+                console.log("[googWcmGet] Dynamically registered and queueing swap calls for active formats:", formats);
 
                 formats.forEach(formatStr => {
                     try {
