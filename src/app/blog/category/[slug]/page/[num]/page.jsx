@@ -42,7 +42,7 @@ export async function generateStaticParams() {
     const strapiPosts = await getAllBlogPosts();
     const allPosts = [...strapiPosts, ...mockPosts];
     const categoryPostsCount = allPosts.filter(post => slugify(post.category || "General") === cat.slug).length;
-    const totalPages = Math.ceil(categoryPostsCount / POSTS_PER_PAGE);
+    const totalPages = Math.max(1, Math.ceil(categoryPostsCount / POSTS_PER_PAGE));
 
     for (let i = 1; i <= totalPages; i++) {
       params.push({
@@ -50,6 +50,10 @@ export async function generateStaticParams() {
         num: String(i)
       });
     }
+  }
+  
+  if (params.length === 0) {
+    params.push({ slug: "tips-and-tricks", num: "1" });
   }
   
   return params;

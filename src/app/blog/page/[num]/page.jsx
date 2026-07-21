@@ -17,11 +17,13 @@ export async function generateStaticParams() {
         }
     }
 
-    const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-    
+    const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
     const params = [];
     for (let i = 1; i <= totalPages; i++) {
         params.push({ num: String(i) });
+    }
+    if (params.length === 0) {
+        params.push({ num: "1" });
     }
     return params;
 }
