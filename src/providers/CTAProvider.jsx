@@ -54,23 +54,32 @@ export function CTAProvider({ children, initialCTA }) {
         const conversionId = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || "AW-17416148778";
         const configTarget = `${conversionId}/${conversionLabel}`;
 
+        const cleanPhone = cta.phone ? cta.phone.replace(/[^0-9]/g, '') : '';
+        const tenDigits = cleanPhone.length === 11 && cleanPhone.startsWith('1') ? cleanPhone.slice(1) : cleanPhone;
+        
+        if (tenDigits.length !== 10) return;
+
+        const primaryFormat = cta.phoneLabel || `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`;
+        
+        // 1. Immediately register ONLY this active page number & label with Google Ads
+        if (typeof window.gtag === 'function') {
+            window.gtag('config', configTarget, {
+                'phone_conversion_number': primaryFormat
+            });
+        }
+
         let checkInterval;
         let attempts = 0;
 
         const trySwap = () => {
-            if (window._googWcmGet && typeof window.gtag === 'function') {
-                clearInterval(checkInterval);
-                const cleanPhone = cta.phone ? cta.phone.replace(/[^0-9]/g, '') : '';
-                const tenDigits = cleanPhone.length === 11 && cleanPhone.startsWith('1') ? cleanPhone.slice(1) : cleanPhone;
-                
-                if (tenDigits.length !== 10) return;
-
-                const primaryFormat = cta.phoneLabel || `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`;
-                
-                // Register ONLY this active page number with Google Ads ONCE
+            if (typeof window.gtag === 'function') {
                 window.gtag('config', configTarget, {
                     'phone_conversion_number': primaryFormat
                 });
+            }
+
+            if (window._googWcmGet) {
+                clearInterval(checkInterval);
 
                 const formats = [
                     primaryFormat,
@@ -80,7 +89,7 @@ export function CTAProvider({ children, initialCTA }) {
                     tenDigits
                 ];
 
-                console.log("[googWcmGet] Registered active format:", primaryFormat, "Queueing swap calls for:", formats);
+                console.log("[googWcmGet] Active label & format registered:", configTarget, primaryFormat);
 
                 formats.forEach(formatStr => {
                     try {
@@ -88,12 +97,7 @@ export function CTAProvider({ children, initialCTA }) {
                             console.log("[googWcmGet callback success] Format matched:", formatStr, { formattedNumber, rawNumber });
                             setCta(prev => {
                                 const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
-                                console.log("[googWcmGet callback] Prev phone:", prev.phone, "Clean prev:", cleanPrev);
-                                if (!TRACKING_NUMBERS.includes(cleanPrev)) {
-                                    console.log("[googWcmGet callback] Skip swap - not a tracking number");
-                                    return prev;
-                                }
-                                console.log("[googWcmGet callback] Swap success!");
+                                if (!TRACKING_NUMBERS.includes(cleanPrev)) return prev;
                                 return {
                                     ...prev,
                                     phone: rawNumber,
