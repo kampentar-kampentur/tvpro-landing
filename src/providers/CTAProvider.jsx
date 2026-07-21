@@ -65,15 +65,22 @@ export function CTAProvider({ children, initialCTA }) {
                 
                 if (tenDigits.length !== 10) return;
 
+                const primaryFormat = cta.phoneLabel || `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`;
+                
+                // Register ONLY this active page number with Google Ads ONCE
+                window.gtag('config', configTarget, {
+                    'phone_conversion_number': primaryFormat
+                });
+
                 const formats = [
-                    `+1 ${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`, // +1 281-868-4356
-                    `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`, // (281) 868-4356
-                    `${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`,   // 281-868-4356
-                    `+1${tenDigits}`,                                                            // +12818684356
-                    tenDigits                                                                    // 2818684356
+                    primaryFormat,
+                    `+1 ${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`,
+                    `${tenDigits.slice(0, 3)}-${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`,
+                    `+1${tenDigits}`,
+                    tenDigits
                 ];
 
-                console.log("[googWcmGet] Queueing swap calls for active formats:", formats);
+                console.log("[googWcmGet] Registered active format:", primaryFormat, "Queueing swap calls for:", formats);
 
                 formats.forEach(formatStr => {
                     try {
