@@ -73,16 +73,7 @@ export function CTAProvider({ children, initialCTA }) {
                     tenDigits                                                                    // 2818684356
                 ];
 
-                // Dynamically register ONLY this active page's number with Google Ads
-                formats.forEach(fmt => {
-                    try {
-                        window.gtag('config', configTarget, {
-                            'phone_conversion_number': fmt
-                        });
-                    } catch (e) {}
-                });
-
-                console.log("[googWcmGet] Dynamically registered and queueing swap calls for active formats:", formats);
+                console.log("[googWcmGet] Queueing swap calls for active formats:", formats);
 
                 formats.forEach(formatStr => {
                     try {
