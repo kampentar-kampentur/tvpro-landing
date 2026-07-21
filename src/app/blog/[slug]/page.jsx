@@ -22,6 +22,9 @@ export async function generateStaticParams() {
         }
     }
 
+    if (allSlugs.length === 0) {
+        return [{ slug: "tv-mounting-guide" }];
+    }
     return allSlugs;
 }
 

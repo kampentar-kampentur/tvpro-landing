@@ -180,6 +180,23 @@ export default async function RootLayout({ children }) {
             })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
           `}
         </Script>
+        {/* Load Google Tag for Google Ads dynamic call forwarding */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || 'AW-17416148778'}`}
+          strategy="afterInteractive"
+        />
+        {/* Configure Google Ads Tag with Call Forwarding Goal */}
+        <Script id="google-ads-phone-tracking" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || 'AW-17416148778'}');
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || 'AW-17416148778'}/${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || 'a8L_CP3LxdMcEKqu1fBA'}', {
+              'phone_conversion_number': '(281) 868-4356'
+            });
+          `}
+        </Script>
         <Script id="delayed-marketing-scripts" strategy="afterInteractive">
           {`
             (function() {
