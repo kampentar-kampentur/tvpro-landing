@@ -160,18 +160,19 @@ export function useCTA() {
 export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
     const { overrideCTA } = useContext(CTAContext) || {};
 
-    // Inject dynamic city name details for the city page (no homeLink override, logo always goes to /)
-    const overridePayload = {
+    const overridePayload = useMemo(() => ({
         ...(ctaOverride || {}),
         cityName,
         stateCode,
         citySlug
-    };
+    }), [ctaOverride, citySlug, cityName, stateCode]);
 
-    // Stringify to prevent endless object reference re-renders
     const ctaOverrideStr = JSON.stringify(overridePayload);
 
-    useEffect(() => {
+    // useLayoutEffect runs BEFORE browser paint, eliminating any flash of default number
+    const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
+    useIsomorphicLayoutEffect(() => {
         if (overrideCTA && ctaOverrideStr) {
             try {
                 const parsedOverride = JSON.parse(ctaOverrideStr);
@@ -182,28 +183,5 @@ export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
         }
     }, [ctaOverrideStr, overrideCTA]);
 
-    const phoneLabel = ctaOverride?.phoneLabel || ctaOverride?.phone;
-    const phoneHref = ctaOverride?.phone ? `tel:${ctaOverride.phone}` : null;
-
-    return (
-        <script
-            dangerouslySetInnerHTML={{
-                __html: `
-                    (function() {
-                        try {
-                            var label = ${JSON.stringify(phoneLabel)};
-                            var href = ${JSON.stringify(phoneHref)};
-                            if (label) {
-                                var btns = document.querySelectorAll('a[href^="tel:"]');
-                                btns.forEach(function(b) {
-                                    b.textContent = label;
-                                    if (href) b.href = href;
-                                });
-                            }
-                        } catch(e) {}
-                    })();
-                `
-            }}
-        />
-    );
+    return null;
 }
