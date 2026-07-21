@@ -183,5 +183,30 @@ export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
         }
     }, [ctaOverrideStr, overrideCTA]);
 
-    return null;
+    const phoneLabel = ctaOverride?.phoneLabel || ctaOverride?.phone;
+    const phoneHref = ctaOverride?.phone ? `tel:${ctaOverride.phone}` : null;
+
+    if (!phoneLabel) return null;
+
+    return (
+        <script
+            dangerouslySetInnerHTML={{
+                __html: `
+                    (function() {
+                        try {
+                            var label = ${JSON.stringify(phoneLabel)};
+                            var href = ${JSON.stringify(phoneHref)};
+                            if (label) {
+                                var btns = document.querySelectorAll('a[href^="tel:"]');
+                                btns.forEach(function(b) {
+                                    b.textContent = label;
+                                    if (href) b.href = href;
+                                });
+                            }
+                        } catch(e) {}
+                    })();
+                `
+            }}
+        />
+    );
 }
