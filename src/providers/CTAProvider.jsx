@@ -50,7 +50,7 @@ export function CTAProvider({ children, initialCTA }) {
             return;
         }
 
-        const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || "a8L_CP3LxdMcEKqu1fBA";
+        const conversionLabel = cta.conversion_label || cta.google_conversion_label || cta.conversionLabel || process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || "a8L_CP3LxdMcEKqu1fBA";
         const conversionId = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID || "AW-17416148778";
         const configTarget = `${conversionId}/${conversionLabel}`;
 
