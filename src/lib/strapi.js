@@ -111,10 +111,25 @@ export async function getCityBySlug(slug) {
 }
 
 export async function getAllCities() {
-  const data = await fetchAPI("/cities", {
-    pagination: { pageSize: 200 },
-  });
-  return flattenStrapiData(data?.data) || [];
+  let allCities = [];
+  let page = 1;
+  let pageCount = 1;
+
+  try {
+    do {
+      const data = await fetchAPI("/cities", {
+        pagination: { page, pageSize: 100 },
+      });
+      const cities = flattenStrapiData(data?.data) || [];
+      allCities = [...allCities, ...cities];
+      pageCount = data?.meta?.pagination?.pageCount || 1;
+      page++;
+    } while (page <= pageCount);
+  } catch (error) {
+    console.error("[Strapi] getAllCities error:", error);
+  }
+
+  return allCities;
 }
 
 /**
