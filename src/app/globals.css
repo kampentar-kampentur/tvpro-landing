@@ -241,7 +241,7 @@ chat-widget {
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 90px;
+    scroll-padding-top: 140px;
 }
 
 html,
@@ -250,8 +250,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
-    /* overflow: hidden; */
+    overflow-x: clip;
 }
 
 body {

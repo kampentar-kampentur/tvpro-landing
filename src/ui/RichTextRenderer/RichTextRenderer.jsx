@@ -37,8 +37,9 @@ function renderBlock(node, index) {
 
     switch (node.type) {
         case "heading": {
-            const Tag = `h${node.level || 2}`;
-            const headingClass = styles[`h${node.level}`] || styles.h2;
+            const effectiveLevel = (!node.level || node.level === 1) ? 2 : node.level;
+            const Tag = `h${effectiveLevel}`;
+            const headingClass = styles[`h${effectiveLevel}`] || styles.h2;
             const id = node.children?.[0]?.text
                 ?.toLowerCase()
                 .replace(/[^a-z0-9\s-]/g, "")
@@ -344,8 +345,9 @@ export default function RichTextRenderer({ content, category }) {
 
             switch (node.type) {
                 case "heading": {
-                    const Tag = `h${node.level || 2}`;
-                    const headingClass = styles[`h${node.level}`] || styles.h2;
+                    const effectiveLevel = (!node.level || node.level === 1) ? 2 : node.level;
+                    const Tag = `h${effectiveLevel}`;
+                    const headingClass = styles[`h${effectiveLevel}`] || styles.h2;
                     const id = node.text
                         ?.toLowerCase()
                         .replace(/[^a-z0-9\s-]/g, "")

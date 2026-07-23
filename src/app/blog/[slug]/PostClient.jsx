@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import SEOBreadcrumbs from "@/ui/SEOBreadcrumbs/SEOBreadcrumbs";
 import RichTextRenderer from "@/ui/RichTextRenderer/RichTextRenderer";
@@ -103,9 +103,11 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
     // Parse H2 and H3 headings for the Table of Contents (TOC)
     const headings = React.useMemo(() => {
         const list = [];
-        if (post && Array.isArray(post.content)) {
+        if (!post) return list;
+
+        if (Array.isArray(post.content)) {
             post.content.forEach((node) => {
-                if (node.type === "heading" && (node.level === 2 || node.level === 3)) {
+                if (node.type === "heading" && (node.level === 1 || node.level === 2 || node.level === 3)) {
                     const text = node.children?.map(c => c.text).join("") || "";
                     const id = text
                         .toLowerCase()
@@ -113,7 +115,33 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                         .replace(/\s+/g, "-")
                         .trim();
                     if (text && id) {
-                        list.push({ id, text, level: node.level });
+                        list.push({ id, text, level: node.level === 1 ? 2 : node.level });
+                    }
+                }
+            });
+        } else if (typeof post.content === "string") {
+            const lines = post.content.split("\n");
+            lines.forEach((line) => {
+                const trimmed = line.trim();
+                let level = 0;
+                let text = "";
+                if (trimmed.startsWith("# ")) {
+                    level = 2; text = trimmed.substring(2);
+                } else if (trimmed.startsWith("## ")) {
+                    level = 2; text = trimmed.substring(3);
+                } else if (trimmed.startsWith("### ")) {
+                    level = 3; text = trimmed.substring(4);
+                }
+
+                if (level > 0 && text) {
+                    const cleanText = text.replace(/[\u{1F300}-\u{1F9FF}]/gu, "").replace(/\*\*/g, "").trim();
+                    const id = cleanText
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s-]/g, "")
+                        .replace(/\s+/g, "-")
+                        .trim();
+                    if (id && cleanText) {
+                        list.push({ id, text: cleanText, level });
                     }
                 }
             });
@@ -123,6 +151,8 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
 
     const [activeId, setActiveId] = useState("");
     const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
+    const isClickScrollingRef = useRef(false);
+    const clickTimerRef = useRef(null);
 
     // Active heading tracking via IntersectionObserver
     useEffect(() => {
@@ -130,11 +160,14 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
 
         const observerOptions = {
             root: null,
-            rootMargin: "-100px 0px -70% 0px",
+            rootMargin: "-130px 0px -50% 0px", // aligned with headerOffset (140px)
             threshold: 0,
         };
 
         const observer = new IntersectionObserver((entries) => {
+            // Ignore intermediate headings while smooth scrolling after clicking a TOC link
+            if (isClickScrollingRef.current) return;
+
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     setActiveId(entry.target.id);
@@ -155,11 +188,48 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
         };
     }, [headings]);
 
+    // Center active TOC item inside internal scroll container
+    useEffect(() => {
+        if (!activeId) return;
+        const targets = [];
+        if (styles.tocActive) targets.push(`.${styles.tocActive}`);
+        if (styles.inlineTocActive) targets.push(`.${styles.inlineTocActive}`);
+        
+        if (targets.length === 0) return;
+        
+        const activeItems = document.querySelectorAll(targets.join(", "));
+        activeItems.forEach((el) => {
+            if (el && el.parentElement) {
+                const container = el.parentElement;
+                const elTop = el.offsetTop;
+                const elHeight = el.offsetHeight;
+                const containerHeight = container.clientHeight;
+
+                // Center the active item vertically in the scroll container
+                const targetScrollTop = elTop - (containerHeight / 2) + (elHeight / 2);
+
+                // Use instant scroll when triggered by click, smooth scroll when scrolling manually
+                const scrollBehavior = isClickScrollingRef.current ? "auto" : "smooth";
+
+                container.scrollTo({
+                    top: Math.max(0, targetScrollTop),
+                    behavior: scrollBehavior
+                });
+            }
+        });
+    }, [activeId]);
+
     const handleHeadingClick = (e, id) => {
         e.preventDefault();
         const element = document.getElementById(id);
         if (element) {
-            const headerOffset = 90; // offset for sticky header
+            // Temporarily disable IntersectionObserver while smooth scrolling to target section
+            isClickScrollingRef.current = true;
+            if (clickTimerRef.current) clearTimeout(clickTimerRef.current);
+
+            setActiveId(id);
+
+            const headerOffset = 140; // offset for sticky header + promo banner + breathing room
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
@@ -169,7 +239,21 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
             });
             
             window.history.pushState(null, "", `#${id}`);
-            setActiveId(id);
+
+            const unlockObserver = () => {
+                clickTimerRef.current = setTimeout(() => {
+                    isClickScrollingRef.current = false;
+                }, 100);
+            };
+
+            // Listen for native scrollend event or fallback to 800ms timer
+            if ("onscrollend" in window) {
+                window.addEventListener("scrollend", unlockObserver, { once: true });
+            } else {
+                clickTimerRef.current = setTimeout(() => {
+                    isClickScrollingRef.current = false;
+                }, 800);
+            }
         }
     };
 
@@ -241,28 +325,6 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                         )}
                     </div>
 
-                    {/* Mobile Expanded TOC (before heading H1) */}
-                    {headings.length > 0 && (
-                        <div className={styles.mobileExpandedTocContainer}>
-                            <div className={styles.mobileExpandedTocHeading}>Table of Contents</div>
-                            <ul className={styles.mobileExpandedTocList}>
-                                {headings.map((heading) => (
-                                    <li 
-                                        key={`exp-${heading.id}`} 
-                                        className={`${styles.mobileExpandedTocItem} ${heading.level === 3 ? styles.mobileExpandedTocItemH3 : ""} ${activeId === heading.id ? styles.mobileExpandedTocActive : ""}`}
-                                    >
-                                        <a 
-                                            href={`#${heading.id}`}
-                                            onClick={(e) => handleHeadingClick(e, heading.id)}
-                                        >
-                                            {heading.text}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
                     {/* H1 */}
                     <h1 className={styles.postTitle}>{post.title}</h1>
 
@@ -298,34 +360,36 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                         <p className={styles.lead}>{post.excerpt}</p>
                     )}
 
-                    {/* Mobile TOC Accordion */}
+                    {/* Inline Table of Contents Card (Expandable, Closed by Default, SEO-friendly <details>) */}
                     {headings.length > 0 && (
-                        <div className={styles.mobileTocContainer}>
-                            <button 
-                                className={styles.mobileTocButton}
-                                onClick={() => setIsMobileTocOpen(!isMobileTocOpen)}
-                                aria-expanded={isMobileTocOpen}
-                            >
-                                <span>Table of Contents</span>
-                                <span className={`${styles.chevron} ${isMobileTocOpen ? styles.chevronOpen : ""}`}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <details className={styles.inlineTocCard}>
+                            <summary className={styles.inlineTocSummary}>
+                                <div className={styles.inlineTocHeaderLeft}>
+                                    <svg className={styles.inlineTocIcon} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
                                     </svg>
-                                </span>
-                            </button>
-                            <div className={`${styles.mobileTocCollapse} ${isMobileTocOpen ? styles.mobileTocCollapseOpen : ""}`}>
-                                <ul className={styles.mobileTocList}>
+                                    <span className={styles.inlineTocTitle}>Table of Contents</span>
+                                    <span className={styles.inlineTocBadge}>{headings.length} sections</span>
+                                </div>
+                                <svg className={styles.inlineTocChevron} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div className={styles.inlineTocContent}>
+                                <ul className={styles.inlineTocList}>
                                     {headings.map((heading) => (
                                         <li 
-                                            key={heading.id} 
-                                            className={`${styles.mobileTocItem} ${heading.level === 3 ? styles.mobileTocItemH3 : ""} ${activeId === heading.id ? styles.mobileTocActive : ""}`}
+                                            key={`inline-${heading.id}`} 
+                                            className={`${styles.inlineTocItem} ${heading.level === 3 ? styles.inlineTocItemH3 : ""} ${activeId === heading.id ? styles.inlineTocActive : ""}`}
                                         >
                                             <a 
                                                 href={`#${heading.id}`}
-                                                onClick={(e) => {
-                                                    handleHeadingClick(e, heading.id);
-                                                    setIsMobileTocOpen(false);
-                                                }}
+                                                onClick={(e) => handleHeadingClick(e, heading.id)}
                                             >
                                                 {heading.text}
                                             </a>
@@ -333,7 +397,7 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                                     ))}
                                 </ul>
                             </div>
-                        </div>
+                        </details>
                     )}
 
                     {/* Rich Text Body */}
@@ -389,29 +453,7 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
 
                 {/* Sidebar */}
                 <aside className={styles.sidebar}>
-                    {/* Sidebar TOC Widget */}
-                    {headings.length > 0 && (
-                        <div className={`${styles.sideCard} ${styles.tocCard}`}>
-                            <div className={styles.tocHeading}>Table of Contents</div>
-                            <ul className={styles.tocList}>
-                                {headings.map((heading) => (
-                                    <li 
-                                        key={heading.id} 
-                                        className={`${styles.tocItem} ${heading.level === 3 ? styles.tocItemH3 : ""} ${activeId === heading.id ? styles.tocActive : ""}`}
-                                    >
-                                        <a 
-                                            href={`#${heading.id}`}
-                                            onClick={(e) => handleHeadingClick(e, heading.id)}
-                                        >
-                                            {heading.text}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {/* Author Card */}
+                    {/* 1. Author Card */}
                     {post.author && (
                         <div className={styles.sideCard}>
                             <div className={styles.authorHeader}>
@@ -435,18 +477,7 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                         </div>
                     )}
 
-                    {/* CTA Card */}
-                    <div className={`${styles.sideCard} ${styles.ctaSideCard}`}>
-                        <div className={styles.ctaSideHeading}>Perfect Mounting. Zero Stress.</div>
-                        <p className={styles.ctaSideText}>
-                            Skip the DIY risks. Our certified, fully insured technicians mount screens on any wall surface, conceal the clutter, and set up everything perfectly.
-                        </p>
-                        <QuoteButton size="big" modalName="BookNow">
-                            Get a Free Quote
-                        </QuoteButton>
-                    </div>
-
-                    {/* Locations Widget */}
+                    {/* 2. Locations / Cities Widget */}
                     {displayCities && displayCities.length > 0 && (
                         <div className={styles.sideCard}>
                             <div className={styles.tocHeading}>Our Service Locations</div>
@@ -467,6 +498,40 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                             </div>
                         </div>
                     )}
+
+                    {/* 3. Sticky Group: TOC Card + CTA Card (remains pinned on scroll) */}
+                    <div className={styles.stickyGroup}>
+                        {headings.length > 0 && (
+                            <div className={`${styles.sideCard} ${styles.tocCard}`}>
+                                <div className={styles.tocHeading}>Table of Contents</div>
+                                <ul className={styles.tocList}>
+                                    {headings.map((heading) => (
+                                        <li 
+                                            key={heading.id} 
+                                            className={`${styles.tocItem} ${heading.level === 3 ? styles.tocItemH3 : ""} ${activeId === heading.id ? styles.tocActive : ""}`}
+                                        >
+                                            <a 
+                                                href={`#${heading.id}`}
+                                                onClick={(e) => handleHeadingClick(e, heading.id)}
+                                            >
+                                                {heading.text}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        <div className={`${styles.sideCard} ${styles.ctaSideCard}`}>
+                            <div className={styles.ctaSideHeading}>Perfect Mounting. Zero Stress.</div>
+                            <p className={styles.ctaSideText}>
+                                Skip the DIY risks. Our certified, fully insured technicians mount screens on any wall surface, conceal the clutter, and set up everything perfectly.
+                            </p>
+                            <QuoteButton size="big" modalName="BookNow">
+                                Get a Free Quote
+                            </QuoteButton>
+                        </div>
+                    </div>
                 </aside>
             </div>
 

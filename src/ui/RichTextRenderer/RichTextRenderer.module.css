@@ -8,6 +8,12 @@
 }
 
 /* Headings */
+.h2,
+.h3,
+.h4 {
+    scroll-margin-top: 140px;
+}
+
 .h2 {
     font-size: 26px;
     font-weight: 700;

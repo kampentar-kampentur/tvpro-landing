@@ -68,7 +68,7 @@
     display: grid;
     grid-template-columns: 1fr 340px;
     gap: 48px;
-    align-items: start;
+    align-items: stretch;
 }
 
 @media (max-width: 1024px) {
@@ -181,17 +181,30 @@
 
 /* ─── Sidebar ─────────────────────────────── */
 .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        order: -1;
+        height: auto;
+    }
+}
+
+.stickyGroup {
     position: sticky;
-    top: 100px; /* below fixed header */
+    top: 145px; /* generous breathing room below fixed header */
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 @media (max-width: 1024px) {
-    .sidebar {
+    .stickyGroup {
         position: static;
-        order: -1; /* sidebar appears above content on mobile? No — keep below */
     }
 }
 
@@ -223,11 +236,41 @@
 
 .tocList {
     list-style: none;
-    padding: 0;
+    padding: 0 6px 0 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    max-height: 275px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray) rgba(14, 14, 19, 0.05);
+    mask-image: linear-gradient(to bottom, black calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 24px), transparent 100%);
+}
+
+.tocList::-webkit-scrollbar,
+.inlineTocList::-webkit-scrollbar {
+    width: 5px;
+}
+
+.tocList::-webkit-scrollbar-track,
+.inlineTocList::-webkit-scrollbar-track {
+    background: rgba(14, 14, 19, 0.05);
+    border-radius: 6px;
+}
+
+.tocList::-webkit-scrollbar-thumb,
+.inlineTocList::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.tocList::-webkit-scrollbar-thumb:hover,
+.inlineTocList::-webkit-scrollbar-thumb:hover {
+    background: var(--green);
 }
 
 .tocItem {
@@ -264,69 +307,156 @@
     color: var(--foreground);
 }
 
-/* Mobile TOC Accordion */
-.mobileTocContainer {
+/* ─── Inline Table of Contents Card (Expandable details/summary, TVPro Design DNA) ─────── */
+details.inlineTocCard {
     background-color: var(--white);
     border: 1px solid var(--gray-extra-light);
     border-radius: 20px;
-    margin-bottom: 28px;
+    padding: 0;
+    margin-bottom: 36px;
     overflow: hidden;
-    display: none; /* hidden by default on desktop */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.mobileTocButton {
-    width: 100%;
-    background: transparent;
-    border: none;
-    padding: 16px 20px;
+/* Hide inline TOC in main column on desktop — sidebar handles TOC on desktop */
+@media (min-width: 1025px) {
+    details.inlineTocCard {
+        display: none;
+    }
+}
+
+@media (hover: hover) {
+    details.inlineTocCard:hover {
+        border-color: #d8d8de;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    }
+}
+
+@media (max-width: 1024px) {
+    details.inlineTocCard {
+        margin-bottom: 28px;
+        border-radius: 16px;
+    }
+}
+
+summary.inlineTocSummary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--foreground);
+    padding: 20px 24px;
     cursor: pointer;
-    text-align: left;
+    user-select: none;
+    list-style: none;
+    transition: background-color 0.2s ease;
 }
 
-.chevron {
+summary.inlineTocSummary::-webkit-details-marker {
+    display: none;
+}
+
+@media (hover: hover) {
+    summary.inlineTocSummary:hover {
+        background-color: rgba(14, 14, 19, 0.015);
+    }
+}
+
+details[open] summary.inlineTocSummary {
+    border-bottom: 1px solid var(--gray-extra-light);
+}
+
+.inlineTocHeaderLeft {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
+    gap: 10px;
+}
+
+.inlineTocIcon {
+    color: var(--green);
+    flex-shrink: 0;
+}
+
+.inlineTocTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: -0.2px;
+}
+
+.inlineTocBadge {
+    background-color: rgba(14, 14, 19, 0.05);
+    border: 1px solid rgba(14, 14, 19, 0.08);
+    border-radius: 36px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-medium);
+}
+
+.inlineTocChevron {
     color: var(--gray);
+    flex-shrink: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.chevronOpen {
+details[open] .inlineTocChevron {
     transform: rotate(180deg);
+    color: var(--foreground);
 }
 
-.mobileTocCollapse {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+.inlineTocContent {
+    padding: 20px 24px 24px 24px;
 }
 
-.mobileTocCollapseOpen {
-    max-height: 1000px;
-    transition: max-height 0.3s ease-in-out;
-    border-top: 1px solid var(--gray-extra-light);
-}
-
-.mobileTocList {
+.inlineTocList {
     list-style: none;
-    padding: 16px 20px;
+    padding: 0 4px 0 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    max-height: 320px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-light) transparent;
 }
 
-.mobileTocItem {
-    font-size: 14px;
-    line-height: 1.4;
-    border-left: 2px solid transparent;
+.inlineTocItem {
+    font-size: 14.5px;
+    line-height: 1.45;
+    border-left: 2.5px solid transparent;
     padding-left: 12px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.inlineTocItem a {
+    color: var(--gray-medium);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+}
+
+@media (hover: hover) {
+    .inlineTocItem:hover {
+        border-left-color: var(--gray-light);
+    }
+    .inlineTocItem a:hover {
+        color: var(--foreground);
+    }
+}
+
+.inlineTocItemH3 {
+    margin-left: 14px;
+    font-size: 13.5px;
+}
+
+.inlineTocActive {
+    border-left-color: var(--green);
+}
+
+.inlineTocActive a {
+    color: var(--foreground);
+    font-weight: 600;
 }
 
 .mobileTocItem a {
