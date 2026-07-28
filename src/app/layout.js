@@ -330,10 +330,14 @@ export default async function RootLayout({ children }) {
                 setTimeout(enhanceWidget, 2000);
               }
 
-              timeoutId = setTimeout(loadScripts, 1000);
-              ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
-                window.addEventListener(e, loadScripts, { passive: true, once: true });
-              });
+              if (typeof window !== 'undefined' && (window.location.search.indexOf('gtm_debug') !== -1 || window.location.search.indexOf('gtm_preview') !== -1)) {
+                loadScripts();
+              } else {
+                timeoutId = setTimeout(loadScripts, 1000);
+                ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
+                  window.addEventListener(e, loadScripts, { passive: true, once: true });
+                });
+              }
             })();
           `}
         </Script>
