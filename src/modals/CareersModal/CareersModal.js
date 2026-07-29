@@ -17,6 +17,7 @@ import FileUploadField from "@/ui/Form/components/fields/FileUploadField";
 import styles from "./CareersModal.module.css";
 import Breadcrumbs from "@/ui/Breadcrumbs";
 import LogoSVG from "@/assets/logo.svg";
+import { getUtmParams } from "@/lib/utmTracker";
 
 const scheduleOptions = [
   { value: "Full-time", label: "Full-time" },
@@ -363,7 +364,10 @@ export default function CareersModal() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          data: postData
+          data: {
+            ...postData,
+            ...getUtmParams(),
+          }
         }),
       });
 
