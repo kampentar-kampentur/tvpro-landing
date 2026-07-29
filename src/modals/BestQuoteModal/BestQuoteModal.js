@@ -129,7 +129,7 @@ const BestQuoteScheme = {
           options: [
             {
               value: "alreadyThere",
-              label: "Already there",
+              label: "I have a mount",
               cost: 0,
               costLabel: "+$0",
               description:
@@ -962,7 +962,7 @@ const NewQuizScheme = {
           options: [
             {
               value: "alreadyThere",
-              label: "Already there",
+              label: "I have a mount",
               cost: 0,
               description:
                 "Already have your own mount? Perfect! We’ll safely install your TV on your existing bracket at no extra cost.",
