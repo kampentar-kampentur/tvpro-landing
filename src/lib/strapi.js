@@ -13,37 +13,61 @@ const flattenStrapiData = (data) => {
   };
 };
 
-export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
-  try {
-    const queryString = qs.stringify(urlParamsObject);
-    const requestUrl = `${process.env.NEXT_PUBLIC_SRTAPI_URL || "https://strapi-staging-bd62.up.railway.app"}/api${path}${queryString ? `?${queryString}` : ""}`;
+export async function fetchAPI(path, urlParamsObject = {}, options = {}, retries = 3) {
+  const queryString = qs.stringify(urlParamsObject);
+  const requestUrl = `${process.env.NEXT_PUBLIC_SRTAPI_URL || "https://strapi-staging-bd62.up.railway.app"}/api${path}${queryString ? `?${queryString}` : ""}`;
 
-    const response = await fetch(requestUrl, {
-      headers: { "Content-Type": "application/json" },
-      cache:
-        process.env.NODE_ENV === "development" ? "no-store" : "force-cache",
-      signal: AbortSignal.timeout(1000000), // 10 seconds timeout to prevent hanging the build
-      ...options,
-    });
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(requestUrl, {
+        headers: { "Content-Type": "application/json" },
+        cache:
+          process.env.NODE_ENV === "development" ? "no-store" : "force-cache",
+        signal: AbortSignal.timeout(15000), // 15s timeout
+        ...options,
+      });
 
-    if (!response.ok) {
-      let errorDetails = "";
-      try {
-        const errData = await response.json();
-        errorDetails = JSON.stringify(errData, null, 2);
-        console.error(`Strapi error details for ${path}:`, errorDetails);
-      } catch (e) {}
-      throw new Error(
-        `Error fetching ${path}: ${response.statusText} - ${errorDetails}`,
+      if (!response.ok) {
+        let errorDetails = "";
+        try {
+          const errData = await response.json();
+          errorDetails = JSON.stringify(errData, null, 2);
+          console.error(`Strapi error details for ${path}:`, errorDetails);
+        } catch (e) {}
+
+        if (response.status >= 500 && attempt < retries) {
+          console.warn(
+            `[Strapi] HTTP ${response.status} for ${path} (Attempt ${attempt}/${retries}). Retrying in ${attempt * 1500}ms...`,
+          );
+          await new Promise((r) => setTimeout(r, attempt * 1500));
+          continue;
+        }
+
+        throw new Error(
+          `Error fetching ${path}: ${response.statusText} - ${errorDetails}`,
+        );
+      }
+      return await response.json();
+    } catch (error) {
+      if (
+        attempt < retries &&
+        (error.name === "AbortError" ||
+          error.message?.includes("fetch failed") ||
+          error.message?.includes("502") ||
+          error.message?.includes("Bad Gateway"))
+      ) {
+        console.warn(
+          `[Strapi] fetchAPI error for ${path} (Attempt ${attempt}/${retries}): ${error.message}. Retrying in ${attempt * 1500}ms...`,
+        );
+        await new Promise((r) => setTimeout(r, attempt * 1500));
+        continue;
+      }
+      console.warn(
+        `[Strapi] fetchAPI failed for ${path}:`,
+        error.message || error,
       );
+      throw error;
     }
-    return await response.json();
-  } catch (error) {
-    console.warn(
-      `[Strapi] fetchAPI failed for ${path}:`,
-      error.message || error,
-    );
-    throw error;
   }
 }
 const componentPopulateRules = {
@@ -87,23 +111,28 @@ export async function getCity(slug, version = null) {
     filters.test_version = version;
   }
 
-  const data = await fetchAPI("/cities", {
-    filters: filters,
-    populate: {
-      page: {
-        on: pagePopulateObject
+  try {
+    const data = await fetchAPI("/cities", {
+      filters: filters,
+      populate: {
+        page: {
+          on: pagePopulateObject
+        },
+        seo: { populate: "*" },
+        cta_override: { populate: "*" },
       },
-      seo: { populate: "*" },
-      cta_override: { populate: "*" },
-    },
-  });
+    });
 
-  // Safety: If searching for a specific version, but none found, return null
-  if (version && (!data?.data || data.data.length === 0)) {
+    // Safety: If searching for a specific version, but none found, return null
+    if (version && (!data?.data || data.data.length === 0)) {
+      return null;
+    }
+
+    return flattenStrapiData(data?.data[0]);
+  } catch (error) {
+    console.error(`[Strapi] getCity failed for "${slug}":`, error.message);
     return null;
   }
-
-  return flattenStrapiData(data?.data[0]);
 }
 
 export async function getCityBySlug(slug) {
