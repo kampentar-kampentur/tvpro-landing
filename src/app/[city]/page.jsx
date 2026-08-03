@@ -181,6 +181,14 @@ export default async function CityPage({ params }) {
       ? `https://tvprousa.com/${metro_city_slug}/`
       : `https://tvprousa.com/${citySlug}/`,
     telephone: cityData.cta_override?.phone || "(877) 455-5535",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5.0",
+      bestRating: "5",
+      worstRating: "1",
+      ratingCount: "1601",
+      reviewCount: "1601",
+    },
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

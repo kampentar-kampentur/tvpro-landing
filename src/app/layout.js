@@ -390,6 +390,14 @@ export default async function RootLayout({ children }) {
                 addressRegion: "TX",
                 addressCountry: "US",
               },
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "5.0",
+                bestRating: "5",
+                worstRating: "1",
+                ratingCount: "1601",
+                reviewCount: "1601",
+              },
               openingHoursSpecification: [
                 {
                   "@type": "OpeningHoursSpecification",

@@ -109,6 +109,15 @@ export default async function VariantPage({ params }) {
             "@type": "PostalAddress",
             "addressLocality": variantData.city_name || "Houston",
             "addressRegion": variantData.state_code || "TX",
+            "addressCountry": "US",
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "1601",
+            "reviewCount": "1601"
         }
     };
 
