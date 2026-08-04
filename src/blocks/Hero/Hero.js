@@ -133,7 +133,7 @@ export default async function Hero({ data = {}, cityContext }) {
                   defaultAlt="badge"
                 />
               ))} */}
-          {/* <Image className={styles.twoYearsWarantyImg} src={TwoYearsWarantyImg} width={94} height={64} alt="One Year Warranty Badge" />
+          {/* <Image className={styles.twoYearsWarantyImg} src={TwoYearsWarantyImg} width={94} height={64} alt="Two Years Warranty Badge" />
             <Image className={styles.fiveStarImg} src={FiveStarImg} width={72} height={72} alt="Five Star Rating Badge" />
             <Image className={styles.sevenDaysImg} src={SevenDaysImg} width={158} height={56} alt="Seven Days Service Badge" />
             <Image className={styles.insuredImg} src={InsuredImg} width={72} height={72} alt="Insured Protection Guaranteed Badge" /> */}

@@ -23,7 +23,7 @@ const redHatDisplay = Red_Hat_Display({
 export const metadata = {
   title: "TV Mounting Services | TVPro Handy Services",
   description:
-    "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+    "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 2-year warranty & same-day service. Book your local TVPro handy pro!",
   robots: {
     index: true,
     follow: true,
@@ -93,7 +93,7 @@ export const metadata = {
   openGraph: {
     title: "TV Mounting Services | TVPro Handy Services",
     description:
-      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 2-year warranty & same-day service. Book your local TVPro handy pro!",
     url: "https://tvprousa.com/",
     images: [
       {
@@ -112,7 +112,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "TVPro Handy Services",
     description:
-      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 1-year warranty & same-day service. Book your local TVPro handy pro!",
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 2-year warranty & same-day service. Book your local TVPro handy pro!",
     images: ["https://tvprousa.com/og-image.png"],
   },
   verification: {
