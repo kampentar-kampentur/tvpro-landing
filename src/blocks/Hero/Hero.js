@@ -104,7 +104,7 @@ export default async function Hero({ data = {}, cityContext }) {
             "@type": "VideoObject",
             "name": "TV Wall Mounting Demo by TVPro Handy Services",
             "description": "Watch how TVPro installs a wall-mounted TV quickly and professionally.",
-            "uploadDate": "2025-07-25",
+            "uploadDate": "2025-07-25T08:00:00+00:00",
             "duration": "PT9.5S",
             "thumbnailUrl": [
               "https://tvprousa.com/videoplaceholder-800.webp"
