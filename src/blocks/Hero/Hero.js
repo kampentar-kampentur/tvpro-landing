@@ -109,8 +109,7 @@ export default async function Hero({ data = {}, cityContext }) {
             "thumbnailUrl": [
               "https://tvprousa.com/videoplaceholder-800.webp"
             ],
-            "contentUrl": "https://tvprousa.com/optimized/mainVideo2-720p.mp4",
-            "embedUrl": "https://tvprousa.com/",
+            "contentUrl": "https://tvprousa.com/optimized/mainVideo2-720p.mp4"
           }),
         }}
       />
