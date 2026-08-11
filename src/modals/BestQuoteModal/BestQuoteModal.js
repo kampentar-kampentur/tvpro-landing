@@ -1667,6 +1667,31 @@ const BestQuoteModal = () => {
               : formData.wall?.wires || "",
             utm_params: getUtmParams(),
           });
+          dataLayer.push({
+            event: "all_forms_send_ok",
+            name: submissionData.contactInfo?.name || "",
+            phone: submissionData.contactInfo?.phone?.replace(/\D/g, "") || "",
+            "user_data.phone_number":
+              submissionData.contactInfo?.phone?.replace(/\D/g, "") || "",
+            zip: submissionData.contactInfo?.zip || "",
+            apt: submissionData.contactInfo?.apt || "",
+            address: submissionData.contactInfo?.address || "",
+            totalPrice: totalPrice,
+            tvSelection:
+              formData["tv-size"]?.tvSelection ||
+              formData["tv-size"]?.tvSelectionMulti ||
+              "",
+            extraTechnicians: formData["tv-size"]?.extraTechnicans || "",
+            mountType: formData.mounting?.mountType || "",
+            wallType: wallTypeResolved,
+            fireplace: isNewQuiz
+              ? formData.fireplace?.fireplace || ""
+              : formData.wall?.fireplace || "",
+            wires: isNewQuiz
+              ? formData.wires?.wires || ""
+              : formData.wall?.wires || "",
+            utm_params: getUtmParams(),
+          });
         }
 
         close();

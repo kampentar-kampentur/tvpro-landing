@@ -99,10 +99,16 @@ const BookNowModal = () => {
         close();
         setFormData({ name: "", phone: "" });
 
-        dataLayer.push({
-          event: "form_send_ok",
-          "user_data.phone_number": formData.phone.replace(/\D/g, ""),
-        });
+        if (typeof dataLayer !== "undefined") {
+          dataLayer.push({
+            event: "form_send_ok",
+            "user_data.phone_number": formData.phone.replace(/\D/g, ""),
+          });
+          dataLayer.push({
+            event: "all_forms_send_ok",
+            "user_data.phone_number": formData.phone.replace(/\D/g, ""),
+          });
+        }
         if (typeof gtag !== "undefined") {
           gtag("event", "conversion", {
             send_to: "AW-17416148778/aAZCCNeF9vsaEKqu1fBA",

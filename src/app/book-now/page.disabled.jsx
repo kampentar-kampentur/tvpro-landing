@@ -79,11 +79,18 @@ export default function BookNowPage() {
             });
 
             if (response.ok) {
-                dataLayer.push({
-                    event: 'form_send_ok',
-                    'user_data.phone_number': formData.phone.replace(/\D/g, ''),
-                    'user_data.email': formData.email
-                });
+                if (typeof dataLayer !== "undefined") {
+                    dataLayer.push({
+                        event: 'form_send_ok',
+                        'user_data.phone_number': formData.phone.replace(/\D/g, ''),
+                        'user_data.email': formData.email
+                    });
+                    dataLayer.push({
+                        event: 'all_forms_send_ok',
+                        'user_data.phone_number': formData.phone.replace(/\D/g, ''),
+                        'user_data.email': formData.email
+                    });
+                }
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
                 }

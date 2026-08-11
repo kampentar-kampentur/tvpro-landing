@@ -372,6 +372,16 @@ export default function CareersModal() {
       });
 
       if (response.ok) {
+        if (typeof dataLayer !== "undefined") {
+          dataLayer.push({
+            event: "form_send_ok",
+            "user_data.phone_number": (formData.phone || "").replace(/\D/g, ""),
+          });
+          dataLayer.push({
+            event: "all_forms_send_ok",
+            "user_data.phone_number": (formData.phone || "").replace(/\D/g, ""),
+          });
+        }
         setIsSuccess(true);
       } else {
         setSubmitError("An error occurred. Please try again.");
