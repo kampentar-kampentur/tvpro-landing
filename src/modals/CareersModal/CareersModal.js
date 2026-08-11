@@ -373,14 +373,14 @@ export default function CareersModal() {
 
       if (response.ok) {
         if (typeof dataLayer !== "undefined") {
-          dataLayer.push({
-            event: "form_send_ok",
+          const utm = getUtmParams();
+          const payload = {
             "user_data.phone_number": (formData.phone || "").replace(/\D/g, ""),
-          });
-          dataLayer.push({
-            event: "all_forms_send_ok",
-            "user_data.phone_number": (formData.phone || "").replace(/\D/g, ""),
-          });
+            ...utm,
+            utm_params: utm,
+          };
+          dataLayer.push({ event: "form_send_ok", ...payload });
+          dataLayer.push({ event: "all_forms_send_ok", ...payload });
         }
         setIsSuccess(true);
       } else {

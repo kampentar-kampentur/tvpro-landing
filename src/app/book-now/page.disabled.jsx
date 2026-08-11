@@ -5,6 +5,7 @@ import styles from "./BookNowModal.module.css";
 import TextField from '@/ui/Form/components/fields/TextField';
 import Checkbox from '@/ui/Checkbox';
 import Button from '@/ui/Button';
+import { getUtmParams } from '@/lib/utmTracker';
 
 const nameField = {
     "name": "name",
@@ -74,22 +75,22 @@ export default function BookNowPage() {
                         zip: formData.zip,
                         address: formData.address,
                         email: formData.email,
+                        ...getUtmParams(),
                     }
                 }),
             });
 
             if (response.ok) {
                 if (typeof dataLayer !== "undefined") {
-                    dataLayer.push({
-                        event: 'form_send_ok',
+                    const utm = getUtmParams();
+                    const payload = {
                         'user_data.phone_number': formData.phone.replace(/\D/g, ''),
-                        'user_data.email': formData.email
-                    });
-                    dataLayer.push({
-                        event: 'all_forms_send_ok',
-                        'user_data.phone_number': formData.phone.replace(/\D/g, ''),
-                        'user_data.email': formData.email
-                    });
+                        'user_data.email': formData.email,
+                        ...utm,
+                        utm_params: utm,
+                    };
+                    dataLayer.push({ event: 'form_send_ok', ...payload });
+                    dataLayer.push({ event: 'all_forms_send_ok', ...payload });
                 }
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'conversion', {'send_to': 'AW-17416148778/aAZCCNeF9vsaEKqu1fBA'});
