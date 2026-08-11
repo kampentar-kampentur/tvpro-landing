@@ -37,12 +37,12 @@ export default function ContactsDetails({ cityContext }) {
             <div className={styles.detailItem}>
                 <h3 className={styles.detailTitle}>Email</h3>
                 <p className={styles.detailText}>
-                    <a href={`mailto:${cta?.email || 'tvprohandyservices@gmail.com'}`} className={styles.clickableLink}>
+                    <a href={`mailto:${cta?.email || 'install@tvprousa.com'}`} className={styles.clickableLink}>
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.detailIcon}>
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                             <polyline points="22,6 12,13 2,6"></polyline>
                         </svg>
-                        <span>{cta?.email || 'info@tvprousa.com'}</span>
+                        <span>{cta?.email || 'install@tvprousa.com'}</span>
                     </a>
                 </p>
             </div>

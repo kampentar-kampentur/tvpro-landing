@@ -73,12 +73,12 @@ const Footer = () => {
             <h3 className={styles.contactLabel}>Email</h3>
             <p className={styles.contactText}>
               <a
-                href={`mailto:${cta?.email || 'tvprohandyservices@gmail.com'}`}
+                href={`mailto:${cta?.email || 'install@tvprousa.com'}`}
                 className={styles.emailLink}
                 aria-label="Email TVPro Handy Services"
                 title="Send us an email"
               >
-                {cta?.email || 'tvprohandyservices@gmail.com'}
+                {cta?.email || 'install@tvprousa.com'}
               </a>
             </p>
           </div>

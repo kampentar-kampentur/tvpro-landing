@@ -187,7 +187,7 @@ export default function PrivacyPolicy() {
         <h2>Contact Us</h2>
         <p>If you have any questions about this Privacy Policy, You can contact us:</p>
         <ul>
-        <li>By email: tvprohandyservices@gmail.com</li>
+        <li>By email: install@tvprousa.com</li>
         </ul>
     </main>
   );

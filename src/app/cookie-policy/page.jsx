@@ -39,7 +39,7 @@ export default function CookiePolicy() {
       <p>We may update this Cookie Policy from time to time in order to reflect, for example, changes to the cookies we use or for other operational, legal, or regulatory reasons. Please therefore re-visit this Cookie Policy regularly to stay informed about our use of cookies and related technologies.</p>
 
       <h2>Contact Us</h2>
-      <p>If you have any questions about our use of cookies or other technologies, please email us at <a href="mailto:tvprohandyservices@gmail.com">tvprohandyservices@gmail.com</a>.</p>
+      <p>If you have any questions about our use of cookies or other technologies, please email us at <a href="mailto:install@tvprousa.com">install@tvprousa.com</a>.</p>
     </main>
   );
 }
