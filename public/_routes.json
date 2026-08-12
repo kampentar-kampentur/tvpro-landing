@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/_next/*",
+    "/images/*",
+    "/optimized/*",
+    "/subs/*",
+    "/*.css",
+    "/*.js",
+    "/*.woff2",
+    "/*.woff",
+    "/*.ttf",
+    "/*.webp",
+    "/*.png",
+    "/*.jpg",
+    "/*.jpeg",
+    "/*.gif",
+    "/*.svg",
+    "/*.ico",
+    "/sw.js",
+    "/favicon.ico",
+    "/robots.txt"
+  ]
+}
