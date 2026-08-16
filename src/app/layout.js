@@ -13,6 +13,8 @@ import EngagementTracker from "@/components/EngagementTracker/EngagementTracker"
 import UtmCapture from "@/components/UtmCapture/UtmCapture";
 import Modals from "@/app/components/Modals";
 import { CTAProvider } from "@/providers/CTAProvider";
+import GlobalErrorHandler from "@/components/GlobalErrorHandler/GlobalErrorHandler";
+import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -417,17 +419,20 @@ export default async function RootLayout({ children }) {
             }),
           }}
         />
+        <GlobalErrorHandler />
         <CTAProvider initialCTA={cta}>
           <ModalProvider>
             <EngagementTracker />
             <UtmCapture />
             <Modals />
             <Header cta={cta} />
-            <main
-              style={{ paddingTop: "var(--header-height, 80px)", flexGrow: 1 }}
-            >
-              {children}
-            </main>
+            <ErrorBoundary>
+              <main
+                style={{ paddingTop: "var(--header-height, 80px)", flexGrow: 1 }}
+              >
+                {children}
+              </main>
+            </ErrorBoundary>
             <Footer cta={cta} />
           </ModalProvider>
         </CTAProvider>
