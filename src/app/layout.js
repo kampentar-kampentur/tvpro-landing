@@ -199,60 +199,24 @@ export default async function RootLayout({ children }) {
         <Script id="delayed-marketing-scripts" strategy="afterInteractive">
           {`
             (function() {
-              console.log('Marketing scripts: Initialization started');
               var fired = false;
               var timeoutId;
 
-              function loadScripts() {
-                if (fired) return;
-                fired = true;
-                console.log('Marketing scripts: Loading triggered');
-
-                clearTimeout(timeoutId);
-                ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
-                  window.removeEventListener(e, loadScripts);
-                });
-
+              function initPriorityAnalytics() {
                 // 1. GTM
                 (function() {
                   const gtmId = '${process.env.NEXT_PUBLIC_GTM_ID}';
-                  if (!gtmId || gtmId === 'undefined') {
-                    console.log('Marketing scripts: GTM skipped (no ID)');
-                    return;
-                  }
+                  if (!gtmId || gtmId === 'undefined') return;
                   try {
                     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
                     })(window,document,'script','dataLayer',gtmId);
-                    console.log('Marketing scripts: GTM loaded (' + gtmId + ')');
                   } catch(e) { console.error('GTM Error:', e); }
                 })();
 
-                // 2. Meta Pixel (Facebook)
-                (function() {
-                  const pixelId = '${process.env.NEXT_PUBLIC_FB_PIXEL_ID}';
-                  if (!pixelId || pixelId === 'undefined') {
-                    console.log('Marketing scripts: Meta Pixel skipped (no ID)');
-                    return;
-                  }
-                  try {
-                    !function(f,b,e,v,n,t,s)
-                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                    n.queue=[];t=b.createElement(e);t.async=!0;
-                    t.src=v;s=b.getElementsByTagName(e)[0];
-                    s.parentNode.insertBefore(t,s)}(window, document,'script',
-                    'https://connect.facebook.net/en_US/fbevents.js');
-                    fbq('init', pixelId);
-                    fbq('track', 'PageView');
-                    console.log('Marketing scripts: Meta Pixel loaded (' + pixelId + ')');
-                  } catch(e) { console.error('Meta Pixel Error:', e); }
-                })();
-
-                // 2. WhatConverts Chat & Tracking
+                // 2. WhatConverts Chat & Tracking (DNI / phone swapping)
                 (function() {
                   try {
                     var workizLeads = {doc:{url:document.URL,ref:document.referrer,search:location.search,hash:location.hash}};
@@ -265,7 +229,26 @@ export default async function RootLayout({ children }) {
                     document.head.appendChild(workizScript);
                   } catch(e) { console.error('WhatConverts Error:', e); }
                 })();
+              }
 
+              function initSecondaryScripts() {
+                // 3. Meta Pixel (Facebook)
+                (function() {
+                  const pixelId = '${process.env.NEXT_PUBLIC_FB_PIXEL_ID}';
+                  if (!pixelId || pixelId === 'undefined') return;
+                  try {
+                    !function(f,b,e,v,n,t,s)
+                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                    n.queue=[];t=b.createElement(e);t.async=!0;
+                    t.src=v;s=b.getElementsByTagName(e)[0];
+                    s.parentNode.insertBefore(t,s)}(window, document,'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+                    fbq('init', pixelId);
+                    fbq('track', 'PageView');
+                  } catch(e) { console.error('Meta Pixel Error:', e); }
+                })();
 
                 // 4. LeadConnector Chat Widget
                 (function() {
@@ -275,69 +258,95 @@ export default async function RootLayout({ children }) {
                     lcScript.src = "https://beta.leadconnectorhq.com/loader.js";
                     lcScript.setAttribute('data-resources-url', 'https://beta.leadconnectorhq.com/chat-widget/loader.js');
                     lcScript.setAttribute('data-widget-id', '69a71eb8a27e8c3d964270ee');
+
+                    lcScript.onload = function() {
+                      if (window.customElements && window.customElements.whenDefined) {
+                        customElements.whenDefined('chat-widget').then(function() {
+                          setTimeout(enhanceWidget, 300);
+                        });
+                      }
+                    };
+
                     document.body.appendChild(lcScript);
-                    console.log('Marketing scripts: LeadConnector loaded');
                   } catch(e) { console.error('LeadConnector Error:', e); }
                 })();
 
                 // LeadConnector Enhancement Logic
                 function enhanceWidget() {
-                  const widget = document.querySelector('chat-widget');
-                  if (widget && widget.shadowRoot) {
-                    if (!widget.shadowRoot.querySelector('#tvpro-enhancements')) {
-                      const style = document.createElement('style');
-                      style.id = 'tvpro-enhancements';
-                      style.textContent = '@keyframes widget-sequence { \
-                          0%, 6% { transform: scale(1) rotate(0); } \
-                          1% { transform: scale(1.2) rotate(15deg); } \
-                          2% { transform: scale(1.2) rotate(-15deg); } \
-                          3% { transform: scale(1.2) rotate(15deg); } \
-                          4% { transform: scale(1.2) rotate(-15deg); } \
-                          5% { transform: scale(1.2) rotate(15deg); } \
-                          7%, 32% { transform: scale(1) rotate(0); } \
-                          33% { transform: scale(1); } \
-                          34%, 35% { transform: scale(0.9) rotate(-3deg); } \
-                          36%, 37%, 38% { transform: scale(1.3) rotate(3deg); } \
-                          36.5%, 37.5%, 38.5% { transform: scale(1.3) rotate(-3deg); } \
-                          43% { transform: scale(1) rotate(0); } \
-                          44%, 65% { transform: scale(1) rotate(0); } \
-                          66% { transform: translateY(0); } \
-                          68% { transform: translateY(-20px); } \
-                          71% { transform: translateY(0); } \
-                          73% { transform: translateY(-10px); } \
-                          76% { transform: translateY(0); } \
-                          77%, 100% { transform: scale(1) rotate(0) translateY(0); } \
-                        } \
-                        button, .chat-widget-button, .chip-button { \
-                          animation: widget-sequence 30s infinite !important; \
-                          transform-origin: center center !important; \
-                          transition: transform 0.3s ease-in-out !important; \
-                          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important; \
-                        }';
-                      widget.shadowRoot.appendChild(style);
+                  try {
+                    const widget = document.querySelector('chat-widget');
+                    if (widget && widget.shadowRoot) {
+                      if (!widget.shadowRoot.querySelector('#tvpro-enhancements')) {
+                        const style = document.createElement('style');
+                        style.id = 'tvpro-enhancements';
+                        style.textContent = '@keyframes widget-sequence { \\
+                            0%, 6% { transform: scale(1) rotate(0); } \\
+                            1% { transform: scale(1.2) rotate(15deg); } \\
+                            2% { transform: scale(1.2) rotate(-15deg); } \\
+                            3% { transform: scale(1.2) rotate(15deg); } \\
+                            4% { transform: scale(1.2) rotate(-15deg); } \\
+                            5% { transform: scale(1.2) rotate(15deg); } \\
+                            7%, 32% { transform: scale(1) rotate(0); } \\
+                            33% { transform: scale(1); } \\
+                            34%, 35% { transform: scale(0.9) rotate(-3deg); } \\
+                            36%, 37%, 38% { transform: scale(1.3) rotate(3deg); } \\
+                            36.5%, 37.5%, 38.5% { transform: scale(1.3) rotate(-3deg); } \\
+                            43% { transform: scale(1) rotate(0); } \\
+                            44%, 65% { transform: scale(1) rotate(0); } \\
+                            66% { transform: translateY(0); } \\
+                            68% { transform: translateY(-20px); } \\
+                            71% { transform: translateY(0); } \\
+                            73% { transform: translateY(-10px); } \\
+                            76% { transform: translateY(0); } \\
+                            77%, 100% { transform: scale(1) rotate(0) translateY(0); } \\
+                          } \\
+                          button, .chat-widget-button, .chip-button { \\
+                            animation: widget-sequence 30s infinite !important; \\
+                            transform-origin: center center !important; \\
+                            transition: transform 0.3s ease-in-out !important; \\
+                            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important; \\
+                          }';
+                        widget.shadowRoot.appendChild(style);
+                      }
                     }
-                  } else {
-                    setTimeout(enhanceWidget, 500);
-                  }
+                  } catch(e) {}
                 }
 
-                const observer = new MutationObserver((mutations, obs) => {
-                    const widget = document.querySelector('chat-widget');
-                    if (widget) {
-                        enhanceWidget();
-                        obs.disconnect();
-                    }
+                setTimeout(enhanceWidget, 2500);
+                setTimeout(enhanceWidget, 5000);
+              }
+
+              function loadScripts() {
+                if (fired) return;
+                fired = true;
+
+                clearTimeout(timeoutId);
+                ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
+                  window.removeEventListener(e, triggerLoad);
                 });
-                observer.observe(document.body, { childList: true, subtree: true });
-                setTimeout(enhanceWidget, 2000);
+
+                // 1. Immediate priority analytics & DNI phone replacement
+                initPriorityAnalytics();
+
+                // 2. Secondary non-critical scripts delayed by 150ms to yield main thread
+                setTimeout(initSecondaryScripts, 150);
+              }
+
+              // Yield to main thread so user touch/click visual feedback is rendered immediately (INP < 30ms)
+              function triggerLoad() {
+                if ('requestIdleCallback' in window) {
+                  requestIdleCallback(loadScripts, { timeout: 300 });
+                } else {
+                  setTimeout(loadScripts, 30);
+                }
               }
 
               if (typeof window !== 'undefined' && (window.location.search.indexOf('gtm_debug') !== -1 || window.location.search.indexOf('gtm_preview') !== -1)) {
                 loadScripts();
               } else {
-                timeoutId = setTimeout(loadScripts, 1000);
+                timeoutId = setTimeout(loadScripts, 1200);
                 ['scroll', 'touchstart', 'mousemove', 'mousedown', 'keydown', 'wheel'].forEach(function(e) {
-                  window.addEventListener(e, loadScripts, { passive: true, once: true });
+                  window.addEventListener(e, triggerLoad, { passive: true, once: true });
                 });
               }
             })();

@@ -70,9 +70,16 @@ A clean, modern landing page built with **Next.js**, powered by **Strapi CMS** a
 
 ---
 
+## 📚 Documentation
+- [City Clusters & Suburbs Guide](file:///Users/kampentar/dev/tvpro-landing/docs/cities-and-suburbs-guide.md) — Полное руководство по заведению городов-метрополий, пригородных кластеров, работе с медиа-файлами, генерации SEO-текстов и автоматическому деплою.
+- [Blog Specifications Index](file:///Users/kampentar/dev/tvpro-landing/docs/specs_index.md) — Спецификации и модули блога.
+- [Design DNA](file:///Users/kampentar/dev/tvpro-landing/docs/design-dna/README.md) — Дизайн-система и компоненты.
+
+---
+
 ## 🧠 Notes
 
-- This repo is focused on **frontend delivery** – see the [admin repo](hhttps://github.com/kampentar-kampentur/strapi) for backend configuration and API setup.
+- This repo is focused on **frontend delivery** – see the [admin repo](https://github.com/kampentar-kampentur/strapi) for backend configuration and API setup.
 - The entire stack is **serverless-friendly**, allowing smooth scaling.
 
 ---

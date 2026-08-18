@@ -91,22 +91,29 @@ const EngagementTracker = () => {
         const mountTime = Date.now();
 
         // --- 3. Scroll Depth & Behavior (Mobile) ---
+        let isScrollTicking = false;
         const handleScroll = () => {
             resetIdleTimer();
 
-            const scrollHeight = document.documentElement.scrollHeight;
-            const scrollTop = window.scrollY;
-            const clientHeight = document.documentElement.clientHeight;
-            const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            if (!isScrollTicking) {
+                isScrollTicking = true;
+                window.requestAnimationFrame(() => {
+                    const scrollHeight = document.documentElement.scrollHeight;
+                    const scrollTop = window.scrollY;
+                    const clientHeight = document.documentElement.clientHeight;
+                    const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
-            // Prevent triggering during the first 2 seconds of mount to avoid layout reflows/hash scrolling issues
-            const isInitialReflow = Date.now() - mountTime < 2000;
+                    // Prevent triggering during the first 2 seconds of mount to avoid layout reflows/hash scrolling issues
+                    const isInitialReflow = Date.now() - mountTime < 2000;
 
-            // Trigger if scrolled deep (>70%) and scrolls UP (searching for navigation/exit)
-            if (!isInitialReflow && scrollPercent > 70 && scrollTop < lastScrollPos.current) {
-                triggerPopup();
+                    // Trigger if scrolled deep (>70%) and scrolls UP (searching for navigation/exit)
+                    if (!isInitialReflow && scrollPercent > 70 && scrollTop < lastScrollPos.current) {
+                        triggerPopup();
+                    }
+                    lastScrollPos.current = scrollTop;
+                    isScrollTicking = false;
+                });
             }
-            lastScrollPos.current = scrollTop;
         };
 
         // --- 4. Visibility Change (Hybrid) ---
@@ -119,9 +126,9 @@ const EngagementTracker = () => {
         // Events for inactivity
         const activityEvents = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
 
-        document.addEventListener('mouseout', handleMouseOut);
+        document.addEventListener('mouseout', handleMouseOut, { passive: true });
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         activityEvents.forEach(event => {
             document.addEventListener(event, resetIdleTimer, { passive: true });
