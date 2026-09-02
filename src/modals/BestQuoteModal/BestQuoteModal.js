@@ -27,6 +27,8 @@ const BestQuoteScheme = {
           type: "radio",
           isRequired: true,
           label: "Choose TV size",
+          description:
+            "*Special Promo: $30 instant discount applied to all TV mounting packages.",
           options: [
             {
               value: "upTo31",
@@ -949,6 +951,8 @@ const NewQuizScheme = {
           type: "radio",
           isRequired: true,
           label: "What size TV do you have?",
+          description:
+            "*Special Promo: $30 instant discount applied to all TV mounting packages.",
           options: [
             {
               value: "under31",
