@@ -29,20 +29,32 @@ const RadioField = ({ field, value, onChange, isMobile, formData, stepId, step, 
   return (
     <div className={formStyles.optionsGrid}>
       {filteredOptions
-        .map(option => (
-          <SelectionCard
-            key={option.value}
-            selected={value === option.value}
-            onClick={() => handleClick(option.value)}
-            label={option.label}
-            price={option.cost !== undefined && option.cost !== null ? (option.costLabel ? option.costLabel : `$${option.cost}`) : null}
-            subtitle={option.subtitle}
-            description={option.description}
-            isInfoShow={isInfoShow === option.value}
-            onInfoClick={() => handleInfoClick(option.value)}
-            isShaking={isShaking}
-          />
-        ))}
+        .map(option => {
+          const price = option.cost !== undefined && option.cost !== null 
+            ? (option.costLabel ? option.costLabel : `$${option.cost}`) 
+            : null;
+          const oldPrice = option.oldCost !== undefined && option.oldCost !== null
+            ? (option.oldCostLabel ? option.oldCostLabel : `$${option.oldCost}`)
+            : null;
+          const discountBadge = option.discountBadge || null;
+
+          return (
+            <SelectionCard
+              key={option.value}
+              selected={value === option.value}
+              onClick={() => handleClick(option.value)}
+              label={option.label}
+              price={price}
+              oldPrice={oldPrice}
+              discountBadge={discountBadge}
+              subtitle={option.subtitle}
+              description={option.description}
+              isInfoShow={isInfoShow === option.value}
+              onInfoClick={() => handleInfoClick(option.value)}
+              isShaking={isShaking}
+            />
+          );
+        })}
     </div>
   );
 };
