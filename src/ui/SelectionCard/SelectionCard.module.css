@@ -105,11 +105,11 @@
     align-items: center;
     justify-content: center;
     font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: 0.4px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    color: var(--green);
-    background-color: rgba(13, 100, 160, 0.1);
+    color: #e00004;
+    background-color: rgba(250, 0, 4, 0.08);
     border-radius: 4px 0 0 4px;
     padding: 2.5px 8px;
     margin-right: 0;
@@ -118,8 +118,8 @@
 }
 
 .selected .discountBadge {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    background-color: rgba(250, 0, 4, 0.22);
+    color: #ff5252;
 }
 
 .priceBadge {
