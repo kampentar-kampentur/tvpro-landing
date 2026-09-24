@@ -51,7 +51,7 @@ const emailField = {
 };
 
 const BookNowModal = () => {
-  const { isOpen, close } = useModalState("BookNow");
+  const { isOpen, close, data } = useModalState("BookNow");
   const { openModal } = useModal();
   const router = useRouter();
   const [formData, setFormData] = useState({ name: "", phone: "" });
@@ -63,7 +63,6 @@ const BookNowModal = () => {
 
   const handleSubmit = async () => {
     if (!formData.name || !validatePhone(formData.phone)) {
-      alert("Please provide a valid name and phone number.");
       return;
     }
 
@@ -85,7 +84,8 @@ const BookNowModal = () => {
           data: {
             name: formData.name,
             phone: formData.phone,
-            source: "book-now-modal",
+            source: data?.props?.source || "book-now-modal",
+            tvCount: data?.props?.tvCount || null,
             city,
             ...getUtmParams(),
             submittedAt: new Date().toISOString(),

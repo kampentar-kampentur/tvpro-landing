@@ -14,6 +14,7 @@ export default function Header({ cta: parentCta }) {
   const { openModal } = useModal();
   const pathname = usePathname();
   const isBlog = pathname && pathname.startsWith("/blog");
+  const isVariantB = pathname === "/b" || pathname?.startsWith("/b/");
   const [hideAnnouncement, setHideAnnouncement] = useState(false);
   const containerRef = useRef(null);
 
@@ -117,6 +118,7 @@ export default function Header({ cta: parentCta }) {
               cta={cta}
               isBlog={isBlog}
               isHome={pathname === "/"}
+              isVariantB={isVariantB}
             />
           </div>
         </div>

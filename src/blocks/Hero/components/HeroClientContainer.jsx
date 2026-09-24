@@ -25,7 +25,7 @@ const PromoSlide = ({ data }) => (
                 <span style={{ fontSize: '12px', opacity: 0.8 }}>Trip Fee</span>
             </div>
             <div style={{ background: 'rgba(255,255,255,0.2)', padding: '15px 25px', borderRadius: '12px', backdropFilter: 'blur(5px)' }}>
-                <span style={{ display: 'block', fontSize: '24px', fontWeight: 'bold' }}>2YR</span>
+                <span style={{ display: 'block', fontSize: '24px', fontWeight: 'bold' }}>5YR</span>
                 <span style={{ fontSize: '12px', opacity: 0.8 }}>Warranty</span>
             </div>
         </div>

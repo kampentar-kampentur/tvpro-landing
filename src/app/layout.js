@@ -25,7 +25,7 @@ const redHatDisplay = Red_Hat_Display({
 export const metadata = {
   title: "TV Mounting Services | TVPro Handy Services",
   description:
-    "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 2-year warranty & same-day service. Book your local TVPro handy pro!",
+    "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 5-year warranty & same-day service. Book your local TVPro handy pro!",
   robots: {
     index: true,
     follow: true,
@@ -95,7 +95,7 @@ export const metadata = {
   openGraph: {
     title: "TV Mounting Services | TVPro Handy Services",
     description:
-      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 2-year warranty & same-day service. Book your local TVPro handy pro!",
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 5-year warranty & same-day service. Book your local TVPro handy pro!",
     url: "https://tvprousa.com/",
     images: [
       {
@@ -114,7 +114,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "TVPro Handy Services",
     description:
-      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 2-year warranty & same-day service. Book your local TVPro handy pro!",
+      "Expert TV mounting, home theater installation & video wall setups. Transparent pricing, 5-year warranty & same-day service. Book your local TVPro handy pro!",
     images: ["https://tvprousa.com/og-image.png"],
   },
   verification: {
@@ -253,21 +253,49 @@ export default async function RootLayout({ children }) {
                 // 4. LeadConnector Chat Widget
                 (function() {
                   try {
-                    var lcScript = document.createElement('script');
-                    lcScript.async = true;
-                    lcScript.src = "https://beta.leadconnectorhq.com/loader.js";
-                    lcScript.setAttribute('data-resources-url', 'https://beta.leadconnectorhq.com/chat-widget/loader.js');
-                    lcScript.setAttribute('data-widget-id', '69a71eb8a27e8c3d964270ee');
+                    var isBPage = typeof window !== 'undefined' && (
+                      window.location.pathname === '/b' || 
+                      window.location.pathname.indexOf('/b/') === 0
+                    );
 
-                    lcScript.onload = function() {
-                      if (window.customElements && window.customElements.whenDefined) {
-                        customElements.whenDefined('chat-widget').then(function() {
-                          setTimeout(enhanceWidget, 300);
-                        });
+                    function mountChatWidget() {
+                      if (document.querySelector('script[data-widget-id="69a71eb8a27e8c3d964270ee"]')) return;
+                      var lcScript = document.createElement('script');
+                      lcScript.async = true;
+                      lcScript.src = "https://beta.leadconnectorhq.com/loader.js";
+                      lcScript.setAttribute('data-resources-url', 'https://beta.leadconnectorhq.com/chat-widget/loader.js');
+                      lcScript.setAttribute('data-widget-id', '69a71eb8a27e8c3d964270ee');
+
+                      lcScript.onload = function() {
+                        if (!isBPage && window.customElements && window.customElements.whenDefined) {
+                          customElements.whenDefined('chat-widget').then(function() {
+                            setTimeout(enhanceWidget, 300);
+                          });
+                        }
+                      };
+
+                      document.body.appendChild(lcScript);
+                    }
+
+                    if (isBPage) {
+                      // On /b: delayed appearance by 15s or after user scrolls down (> 400px)
+                      var chatTriggered = false;
+                      function triggerChat() {
+                        if (chatTriggered) return;
+                        chatTriggered = true;
+                        window.removeEventListener('scroll', onScrollChat);
+                        mountChatWidget();
                       }
-                    };
-
-                    document.body.appendChild(lcScript);
+                      function onScrollChat() {
+                        if (window.scrollY > 400) {
+                          triggerChat();
+                        }
+                      }
+                      window.addEventListener('scroll', onScrollChat, { passive: true });
+                      setTimeout(triggerChat, 15000);
+                    } else {
+                      mountChatWidget();
+                    }
                   } catch(e) { console.error('LeadConnector Error:', e); }
                 })();
 
@@ -312,8 +340,10 @@ export default async function RootLayout({ children }) {
                   } catch(e) {}
                 }
 
-                setTimeout(enhanceWidget, 2500);
-                setTimeout(enhanceWidget, 5000);
+                if (typeof window !== 'undefined' && window.location.pathname !== '/b' && window.location.pathname.indexOf('/b/') !== 0) {
+                  setTimeout(enhanceWidget, 2500);
+                  setTimeout(enhanceWidget, 5000);
+                }
               }
 
               function loadScripts() {
@@ -406,8 +436,8 @@ export default async function RootLayout({ children }) {
                 ratingValue: "5.0",
                 bestRating: "5",
                 worstRating: "1",
-                ratingCount: "1601",
-                reviewCount: "1601",
+                ratingCount: "2000",
+                reviewCount: "2000",
               },
               openingHoursSpecification: [
                 {

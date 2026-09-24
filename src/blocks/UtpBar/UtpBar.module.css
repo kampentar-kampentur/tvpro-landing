@@ -7,7 +7,13 @@
 .utpContainer {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 6px;
+}
+
+@media (min-width: 768px) {
+    .utpContainer {
+        padding: 0 16px;
+    }
 }
 
 .utpCard {
@@ -53,6 +59,32 @@
     display: flex;
     gap: 2px;
     color: #ffb800; /* Gold color for stars */
+}
+
+.googleStarsHeader {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.googleIcon {
+    flex-shrink: 0;
+}
+
+.reviewsLink {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: inherit;
+    justify-content: inherit;
+    width: 100%;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.reviewsLink:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
 }
 
 .starIcon {
@@ -105,5 +137,164 @@
 
     .itemText {
         font-size: 16px;
+    }
+}
+
+/* ==========================================================================
+   Variant B - All 4 UTPs in a single horizontal row on all screen sizes
+   ========================================================================== */
+.utpCardVariantB.utpCardVariantB {
+    background-color: var(--white);
+    border: 1px solid var(--gray-extra-light);
+    border-radius: 20px;
+    padding: 18px 8px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    align-items: start;
+}
+
+.utpCardVariantB .utpItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 4px;
+}
+
+.utpCardVariantB .utpItem:not(:last-child) {
+    border-right: 1px solid var(--gray-extra-light);
+}
+
+.utpCardVariantB .standardWidget,
+.utpCardVariantB .reviewsWidget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.utpCardVariantB .iconWrapper {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green);
+}
+
+.utpCardVariantB .icon {
+    width: 26px;
+    height: 26px;
+}
+
+.utpCardVariantB .googleStarsHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 28px;
+}
+
+.utpCardVariantB .googleIcon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.utpCardVariantB .starsRow {
+    display: flex;
+    gap: 1.5px;
+    color: #ffb800;
+}
+
+.utpCardVariantB .starIcon {
+    width: 9px;
+    height: 9px;
+}
+
+.utpCardVariantB .itemText {
+    font-size: 11px;
+    line-height: 1.25;
+    color: var(--foreground);
+    text-align: center;
+}
+
+.utpCardVariantB .highlight {
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+}
+
+@media (min-width: 768px) {
+    .utpCardVariantB.utpCardVariantB {
+        padding: 24px 32px;
+        display: flex;
+        justify-content: space-around;
+        gap: 0;
+        align-items: center;
+    }
+
+    .utpCardVariantB .utpItem {
+        flex: 1;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        text-align: left;
+        padding: 0 16px;
+    }
+
+    .utpCardVariantB .standardWidget {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .utpCardVariantB .reviewsWidget {
+        align-items: flex-start;
+        text-align: left;
+        gap: 4px;
+    }
+
+    .utpCardVariantB .iconWrapper {
+        width: 32px;
+        height: 32px;
+    }
+
+    .utpCardVariantB .icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .utpCardVariantB .googleStarsHeader {
+        flex-direction: row;
+        gap: 6px;
+        min-height: auto;
+    }
+
+    .utpCardVariantB .googleIcon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .utpCardVariantB .starIcon {
+        width: 12px;
+        height: 12px;
+    }
+
+    .utpCardVariantB .itemText {
+        font-size: 14px;
+        line-height: 1.3;
+        text-align: left;
+    }
+
+    .utpCardVariantB .highlight {
+        font-size: 15px;
+        display: inline;
+        margin-bottom: 0;
     }
 }

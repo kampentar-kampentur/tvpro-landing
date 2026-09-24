@@ -50,7 +50,7 @@ async function getHeroRunningLines() {
 }
 
 // Default data to empty object to prevent crash when used without props (e.g. in Home page)
-export default async function Hero({ data = {}, cityContext }) {
+export default async function Hero({ data = {}, cityContext, isVariantB = false }) {
   // Always fetch default data
   const defaultHeroData = await getHero();
   const defaultLinesData = await getHeroRunningLines();
@@ -119,10 +119,86 @@ export default async function Hero({ data = {}, cityContext }) {
           <h1 className={styles.mainHeading}>
             <Text text={heroData.title} cityContext={cityContext} />
           </h1>
-          <p className="subText">
-            <Text text={heroData.subTitle} cityContext={cityContext} />
-          </p>
-          <HeroCTA className={styles.heroButton} />
+          {isVariantB ? (
+            <div className={styles.heroBadgesWrapper}>
+              <div className={styles.heroBadge}>
+                <div className={styles.heroBadgeIcon}>
+                  <svg
+                    width="36"
+                    height="36"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--green)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <line x1="2" y1="8" x2="5" y2="8" />
+                    <line x1="1" y1="12" x2="4" y2="12" />
+                    <line x1="2" y1="16" x2="5" y2="16" />
+                    <circle cx="14" cy="12" r="7" />
+                    <polyline points="14 9 14 12 16.5 13.5" />
+                  </svg>
+                </div>
+                <span className={styles.heroBadgeText}>
+                  Same Day<br />Service
+                </span>
+              </div>
+
+              <div className={styles.heroBadgeDivider} />
+
+              <div className={styles.heroBadge}>
+                <div className={styles.heroBadgeIcon}>
+                  <svg
+                    width="36"
+                    height="36"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--green)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                </div>
+                <span className={styles.heroBadgeText}>
+                  5 Year<br />Warranty
+                </span>
+              </div>
+
+              <div className={styles.heroBadgeDivider} />
+
+              <div className={styles.heroBadge}>
+                <div className={styles.heroBadgeIcon}>
+                  <svg
+                    width="36"
+                    height="36"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--green)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                </div>
+                <span className={styles.heroBadgeText}>
+                  Fully<br />Insured
+                </span>
+              </div>
+            </div>
+          ) : (
+            <p className="subText">
+              <Text text={heroData.subTitle} cityContext={cityContext} />
+            </p>
+          )}
+          <HeroCTA className={styles.heroButton} isVariantB={isVariantB} />
           {/* <div className={styles.badgesWrapper}> */}
           {/* {heroData.badges.map(badge => (
                 <ImageWrapper
