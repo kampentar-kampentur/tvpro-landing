@@ -22,7 +22,7 @@ async function getFAQ() {
 function interpolateVariables(str, cityContext) {
   if (!str) return '';
   let res = str;
-  const city = cityContext?.city_name || "your city";
+  const city = cityContext?.city_name || "USA";
   const state = cityContext?.state_code || "";
 
   res = res.replace(/\{\{city\}\}/g, city);

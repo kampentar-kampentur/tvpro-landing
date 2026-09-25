@@ -6,7 +6,7 @@ export default function Text({ text, cityContext }) {
 
   // Replace placeholders with city context values or defaults
   let processedText = text;
-  const city = cityContext?.city_name || "your city";
+  const city = cityContext?.city_name || "USA";
   const state = cityContext?.state_code || "";
 
   processedText = processedText.replace(/\{\{city\}\}/g, city);

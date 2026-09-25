@@ -1,10 +1,16 @@
+"use client";
+
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './SelectionCard.module.css';
 import CheckMark from '@/assets/icons/CheckmarkCircle.svg'
 import InfoCircle from '@/assets/icons/InfoCircle.svg'
 import InfoCircleActive from '@/assets/icons/InfoCircleActive.svg'
 
 const SelectionCard = ({ label, description, price, oldPrice, discountBadge, subtitle, selected, onClick, isInfoShow, onInfoClick, isShaking }) => {
+  const pathname = usePathname();
+  const isVariantB = pathname === '/b' || pathname?.startsWith('/b/');
+
   function handleInfoClick(e) {
     e.preventDefault()
     e.stopPropagation()
@@ -20,7 +26,7 @@ const SelectionCard = ({ label, description, price, oldPrice, discountBadge, sub
       {price !== null && (
         <div className={styles.priceContainer}>
           {discountBadge && (
-            <span className={styles.discountBadge}>{discountBadge}</span>
+            <span className={`${styles.discountBadge} ${isVariantB ? styles.discountBadgeB : ''}`}>{discountBadge}</span>
           )}
           <div className={`${styles.priceBadge} ${oldPrice ? styles.hasOldPrice : ''}`}>
             {oldPrice && <span className={styles.oldPrice}>{oldPrice}</span>}

@@ -59,12 +59,16 @@ export default async function Hero({ data = {}, cityContext, isVariantB = false 
     ? `${cityContext.city_name}${cityContext.state_code ? `, ${cityContext.state_code}` : ''}`
     : '';
 
+  const defaultTitle = isVariantB
+    ? "TV Mounting service in {{city}}"
+    : (defaultHeroData?.title || "TV Mounting service in {{city}}");
+
   // Merge: Use prop data if available, otherwise fallback to default
   const heroData = {
     ...defaultHeroData,
     ...data,
     // Explicitly handle nested or specific fields if needed
-    title: resolveSpintax(data?.title || defaultHeroData?.title || ''),
+    title: resolveSpintax(data?.title || defaultTitle),
     subTitle: resolveSpintax(data?.subTitle || defaultHeroData?.subTitle || ''),
   };
 
