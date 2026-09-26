@@ -21,24 +21,33 @@ const SelectionCard = ({ label, description, price, oldPrice, discountBadge, sub
       className={`${styles.card} ${selected ? styles.selected : ''} ${isInfoShow  ? styles.showInfo : ''} ${isShaking ? styles.shaking : ''}`}
       onClick={onClick}
     >
-      <div className={styles.label}>{label}</div>
-      {description && isInfoShow && <div className={styles.description}>{description}</div>}
-      {price !== null && (
-        <div className={styles.priceContainer}>
-          {discountBadge && (
-            <span className={`${styles.discountBadge} ${isVariantB ? styles.discountBadgeB : ''}`}>{discountBadge}</span>
-          )}
-          <div className={`${styles.priceBadge} ${oldPrice ? styles.hasOldPrice : ''}`}>
-            {oldPrice && <span className={styles.oldPrice}>{oldPrice}</span>}
-            <span className={styles.price}>{price}</span>
-          </div>
+      <div className={styles.topContent}>
+        <div className={styles.label}>{label}</div>
+        {description && isInfoShow && <div className={styles.description}>{description}</div>}
+        {subtitle && !isInfoShow && <span className={styles.subtitle}>{subtitle}</span>}
+      </div>
+
+      <div className={styles.cardFooter}>
+        <div className={styles.infoWrapper}>
+          {description && (!selected ? 
+            isInfoShow ? <InfoCircleActive onClick={handleInfoClick} className={styles.info}/> : <InfoCircle onClick={handleInfoClick} className={styles.info}/> :
+            <InfoCircleActive onClick={handleInfoClick} className={styles.info}/>)}
         </div>
-      )}
-      {subtitle && !isInfoShow && <span className={styles.subtitle}>{subtitle}</span>}
+
+        {price !== null && (
+          <div className={styles.priceContainer}>
+            {discountBadge && (
+              <span className={`${styles.discountBadge} ${isVariantB ? styles.discountBadgeB : ''}`}>{discountBadge}</span>
+            )}
+            <div className={`${styles.priceBadge} ${oldPrice ? styles.hasOldPrice : ''}`}>
+              {oldPrice && <span className={styles.oldPrice}>{oldPrice}</span>}
+              <span className={styles.price}>{price}</span>
+            </div>
+          </div>
+        )}
+      </div>
+
       <CheckMark className={styles.checkMark}/>
-      {description && (!selected ? 
-        isInfoShow ? <InfoCircleActive onClick={handleInfoClick} className={styles.info}/> : <InfoCircle onClick={handleInfoClick} className={styles.info}/> :
-        <InfoCircleActive onClick={handleInfoClick} className={styles.info}/>)}
     </div>
   );
 };
