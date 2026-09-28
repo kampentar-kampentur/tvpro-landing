@@ -11,6 +11,21 @@ const slugify = (text) => {
   return text.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
 };
 
+const normalizeCategorySlug = (slug) => {
+  if (!slug) return "";
+  const s = slug.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
+  if (s === "tips-and-guides" || s === "tips-guides" || s === "tips-and-tricks" || s === "tips-tricks") {
+    return "tips-and-tricks";
+  }
+  if (s === "reviews" || s === "product-reviews" || s === "mount-reviews") {
+    return "reviews";
+  }
+  if (s === "tv-mounting" || s === "mounting") {
+    return "tv-mounting";
+  }
+  return s;
+};
+
 // Retrieve all categories from both Strapi and mock data
 async function getCategories() {
   let strapiPosts = [];
@@ -22,38 +37,36 @@ async function getCategories() {
   const allPosts = [...strapiPosts, ...mockPosts];
   
   // Make sure navbar categories are always included to prevent 404
-  const defaultCategories = ["News", "Reviews", "Tips & Tricks"];
+  const defaultCategories = ["TV Mounting", "Tips & Tricks", "Reviews", "News"];
   const uniqueCategories = [...new Set([
     ...allPosts.map(p => p.category),
     ...defaultCategories
   ].filter(Boolean))];
   
   return uniqueCategories.map(cat => ({
-    name: cat,
+    name: cat === "Tips & Guides" ? "Tips & Tricks" : cat,
     slug: slugify(cat)
   }));
 }
 
 export async function generateStaticParams() {
   const categories = await getCategories();
+  const staticSlugs = new Set(["tv-mounting", "tips-and-tricks", "tips-and-guides", "reviews", "news"]);
+  categories.forEach(c => staticSlugs.add(c.slug));
   const params = [];
 
-  for (const cat of categories) {
+  for (const catSlug of staticSlugs) {
     const strapiPosts = await getAllBlogPosts();
     const allPosts = [...strapiPosts, ...mockPosts];
-    const categoryPostsCount = allPosts.filter(post => slugify(post.category || "General") === cat.slug).length;
+    const categoryPostsCount = allPosts.filter(post => normalizeCategorySlug(slugify(post.category || "General")) === normalizeCategorySlug(catSlug)).length;
     const totalPages = Math.max(1, Math.ceil(categoryPostsCount / POSTS_PER_PAGE));
 
     for (let i = 1; i <= totalPages; i++) {
       params.push({
-        slug: cat.slug,
+        slug: catSlug,
         num: String(i)
       });
     }
-  }
-  
-  if (params.length === 0) {
-    params.push({ slug: "tips-and-tricks", num: "1" });
   }
   
   return params;
@@ -114,9 +127,11 @@ export default async function BlogCategoryPagePaginated({ params }) {
     }))
     .slice(0, 8);
 
+  const targetCategorySlug = normalizeCategorySlug(slug);
+
   // Normalize only the posts that belong to the active category
-  const normalizedStrapiPosts = strapiPosts
-    .filter(post => slugify(post.category || "General") === slug)
+  let normalizedStrapiPosts = strapiPosts
+    .filter(post => normalizeCategorySlug(slugify(post.category || "General")) === targetCategorySlug)
     .map(post => {
       const formattedDate = post.publishedAt
         ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
@@ -142,10 +157,38 @@ export default async function BlogCategoryPagePaginated({ params }) {
       };
     });
 
+  // If a category has no specific posts (e.g. news), fallback to latest posts so user never sees a blank page
+  if (normalizedStrapiPosts.length === 0 && strapiPosts.length > 0) {
+    normalizedStrapiPosts = strapiPosts.slice(0, 9).map(post => {
+      const formattedDate = post.publishedAt
+        ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+        : "";
+
+      return {
+        id: post.id || post.slug,
+        slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        category: post.category || "General",
+        date: formattedDate || post.date || "",
+        readTime: post.readTime ? `${post.readTime} min read` : "5 min read",
+        image: post.cover?.url ? getStrapiMediaUrl(post.cover.url) : "/blog-placeholder.jpg",
+        coverMedia: post.cover || { url: "/blog-placeholder.jpg" },
+        featured: !!post.featured,
+        author: {
+          name: post.author?.name || "TVPro Specialist",
+          role: post.author?.role || "Certified Installer",
+          avatar: post.author?.avatar?.url ? getStrapiMediaUrl(post.author.avatar.url) : "/author-placeholder.jpg",
+          avatarMedia: post.author?.avatar || { url: "/author-placeholder.jpg" }
+        }
+      };
+    });
+  }
+
   // Calculate total pages for category (Strapi + mock)
   const allCategoryPosts = [...normalizedStrapiPosts];
   for (const mock of mockPosts) {
-    if (slugify(mock.category || "General") === slug) {
+    if (normalizeCategorySlug(slugify(mock.category || "General")) === targetCategorySlug) {
       if (!allCategoryPosts.find(p => p.slug === mock.slug)) {
         allCategoryPosts.push(mock);
       }

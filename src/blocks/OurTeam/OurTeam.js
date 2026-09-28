@@ -12,6 +12,7 @@ import {
 import Text from "@/ui/Text/Text";
 import { resolveSpintax } from "@/lib/spintax";
 import ScrollSnapSlider from "@/ui/ScrollSnapSlider/ScrollSnapSlider";
+import OurTeamVariantB from "./components/OurTeamVariantB";
 
 async function getOurTeamData() {
   try {
@@ -22,7 +23,7 @@ async function getOurTeamData() {
   }
 }
 
-export default async function OurTeam({ data = {}, cityContext }) {
+export default async function OurTeam({ data = {}, cityContext, isVariantB = false }) {
   const defaultTeamData = await getOurTeamData();
 
   // Аккуратно мержим данные, чтобы null из локального блока не затирал глобальные значения
@@ -179,6 +180,18 @@ export default async function OurTeam({ data = {}, cityContext }) {
     teamData?.footerText ||
       "Ready to mount your TV? Book your service with one of our local specialists.",
   );
+
+  if (isVariantB) {
+    return (
+      <OurTeamVariantB
+        allTechs={allTechs}
+        initialTechs={selectedTechs}
+        initialTitle={title}
+        subTitle={subTitle}
+        footerText={footerText}
+      />
+    );
+  }
 
   return (
     <section className={`block ${styles.ourTeam}`} id="team">
