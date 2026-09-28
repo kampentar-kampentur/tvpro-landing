@@ -100,26 +100,45 @@ export async function onRequest(context) {
     newRes.headers.set('x-debug-matched-slug', workingPath || 'root');
     newRes.headers.set('x-debug-version', version);
 
-    // 7. Dynamic City Replacement via HTMLRewriter
+    // 7. Dynamic City Replacement via HTMLRewriter & Geo Injection
     const queryCity = url.searchParams.get('city');
     const isUS = context.request.cf?.country?.toUpperCase() === 'US';
     const cfCity = context.request.cf?.city;
+    const cfRegion = context.request.cf?.regionCode || context.request.cf?.region;
 
     let targetCity = null;
+    let targetState = null;
 
     if (queryCity) {
         // 1. Query parameter takes top priority (e.g. ?city=Houston)
         targetCity = formatCityName(queryCity);
+        const parts = targetCity.split(',');
+        if (parts.length > 1) {
+            targetState = parts[1].trim().toUpperCase();
+        }
     } else if (!disableGeo && isUS && cfCity) {
         // 2. Automatic Geo-IP detection ONLY for visitors from USA
         targetCity = formatCityName(cfCity);
+        targetState = cfRegion ? cfRegion.toUpperCase() : null;
     }
 
     if (targetCity) {
+        const geoPayload = {
+            city: targetCity.split(',')[0].trim(),
+            fullCity: targetCity,
+            state: targetState,
+            country: isUS ? 'US' : (context.request.cf?.country || null),
+        };
+
         const rewriter = new HTMLRewriter()
             .on('[data-dynamic-city]', {
                 element(el) {
                     el.setInnerContent(targetCity);
+                }
+            })
+            .on('head', {
+                element(el) {
+                    el.append(`<script id="geo-city-data">window.__GEO_CITY__ = ${JSON.stringify(geoPayload)};</script>`, { html: true });
                 }
             });
         return rewriter.transform(newRes);

@@ -70,7 +70,7 @@ export default async function PageB() {
       <MountingTypes />
       <WhyCustomersTrustUs />
       <OurServices />
-      <OurTeam />
+      <OurTeam isVariantB={true} />
       <CareersCTA data={globalConfig?.["careers-cta"] || {}} />
       <AboutUs />
       <FAQ />

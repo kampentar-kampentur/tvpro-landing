@@ -18,7 +18,7 @@ const defaultItems = [
   {
     id: "tvs-mounted",
     iconName: "tv",
-    number: "20,000+",
+    number: "15,000+",
     text: "TVs Mounted",
   },
   {
@@ -46,7 +46,7 @@ const variantBItems = [
   {
     id: "tvs-mounted-b",
     iconName: "tv",
-    number: "20,000+",
+    number: "15,000+",
     text: "TVs Mounted",
   },
   {
