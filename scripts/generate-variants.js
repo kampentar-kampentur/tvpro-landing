@@ -21,11 +21,18 @@ try {
 
 // Use native fetch (Node 18+) instead of node-fetch
 async function fetchAllCities() {
-    const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL;
-    console.log(`Using Strapi URL for variants: ${strapiUrl}`);
-    const res = await fetch(`${strapiUrl}/api/cities?pagination[pageSize]=100`);
-    const json = await res.json();
-    return json.data || [];
+    try {
+        const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL;
+        console.log(`Using Strapi URL for variants: ${strapiUrl}`);
+        if (!strapiUrl) return [];
+        const res = await fetch(`${strapiUrl}/api/cities?pagination[pageSize]=100`);
+        if (!res.ok) return [];
+        const json = await res.json();
+        return json.data || [];
+    } catch (e) {
+        console.warn(`[Warning] Could not fetch cities from Strapi (${e.message}).`);
+        return [];
+    }
 }
 
 async function generateVariants() {
@@ -70,7 +77,28 @@ async function generateVariants() {
 
     fs.writeFileSync(outputPath, JSON.stringify(middlewareConfig, null, 2));
     console.log(`Generated middleware-config.json at ${outputPath}`);
-    console.log('Config:', JSON.stringify(middlewareConfig, null, 2));
+
+    // Generate static public/cities.json for instant CitySelector without live API dependency
+    const metroCities = cities
+        .map(city => {
+            const attrs = city.attributes || city;
+            return {
+                name: attrs.city_name,
+                state: attrs.state_code,
+                path: attrs.path,
+                metro_city_slug: attrs.metro_city_slug || null,
+                test_version: attrs.test_version || null
+            };
+        })
+        .filter(c => c.name && c.path && !c.metro_city_slug && !c.test_version)
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(({ name, state, path }) => ({ name, state, path }));
+
+    const citiesJsonPath = path.join(process.cwd(), 'public', 'cities.json');
+    if (metroCities.length > 0) {
+        fs.writeFileSync(citiesJsonPath, JSON.stringify(metroCities, null, 2));
+        console.log(`Generated public/cities.json with ${metroCities.length} metro cities`);
+    }
 }
 
 generateVariants();

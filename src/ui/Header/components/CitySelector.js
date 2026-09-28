@@ -35,10 +35,28 @@ export default function CitySelector() {
   useEffect(() => {
     let cancelled = false;
     async function loadCities() {
+      // 1. Try loading static cities.json (0ms, no CORS, works on all environments)
+      try {
+        const staticResponse = await fetch("/cities.json");
+        if (staticResponse.ok) {
+          const staticList = await staticResponse.json();
+          if (Array.isArray(staticList) && staticList.length > 0) {
+            if (!cancelled) {
+              setCities(staticList);
+              setLoading(false);
+            }
+            return;
+          }
+        }
+      } catch (e) {
+        // Fallback to Strapi if static file is not found
+      }
+
+      // 2. Fallback to Strapi API
       try {
         const strapiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL;
         if (!strapiUrl) {
-          setLoading(false);
+          if (!cancelled) setLoading(false);
           return;
         }
         const response = await fetch(
@@ -46,7 +64,7 @@ export default function CitySelector() {
           { headers: { "Content-Type": "application/json" } },
         );
         if (!response.ok) {
-          setLoading(false);
+          if (!cancelled) setLoading(false);
           return;
         }
         const json = await response.json();

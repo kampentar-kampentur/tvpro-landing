@@ -9,8 +9,6 @@ export default function Text({ text, cityContext }) {
   const city = cityContext?.city_name || "USA";
   const state = cityContext?.state_code || "";
 
-  processedText = processedText.replace(/\{\{city\}\}/g, city);
-
   if (!state) {
     // Remove trailing comma/space if state is empty, e.g. "in {{city}}, {{state}}" -> "in your city"
     processedText = processedText.replace(/,\s*\{\{state\}\}/g, "");
@@ -18,6 +16,23 @@ export default function Text({ text, cityContext }) {
   } else {
     processedText = processedText.replace(/\{\{state\}\}/g, state);
   }
+
+  const renderSegmentWithCity = (segment, keyPrefix) => {
+    if (!segment.includes("{{city}}")) {
+      return segment;
+    }
+    const subParts = segment.split(/(\{\{city\}\})/g);
+    return subParts.map((sub, j) => {
+      if (sub === "{{city}}") {
+        return (
+          <span key={`${keyPrefix}-city-${j}`} data-dynamic-city="" suppressHydrationWarning={true}>
+            {city}
+          </span>
+        );
+      }
+      return sub;
+    });
+  };
 
   return processedText.split('\n').map((line, index) => {
     // Process styling markers:
@@ -27,12 +42,14 @@ export default function Text({ text, cityContext }) {
     const parts = line.split(/(\*\*.*?\*\*|\[.*?\])/g);
     const processedLine = parts.map((part, i) => {
       if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={i}>{part.slice(2, -2)}</strong>;
+        const inner = part.slice(2, -2);
+        return <strong key={i}>{renderSegmentWithCity(inner, `b-${i}`)}</strong>;
       }
       if (part.startsWith('[') && part.endsWith(']')) {
-        return <span key={i} className={styles.accent}>{part.slice(1, -1)}</span>;
+        const inner = part.slice(1, -1);
+        return <span key={i} className={styles.accent}>{renderSegmentWithCity(inner, `a-${i}`)}</span>;
       }
-      return part;
+      return renderSegmentWithCity(part, `t-${i}`);
     });
 
     return (

@@ -100,5 +100,38 @@ export async function onRequest(context) {
     newRes.headers.set('x-debug-matched-slug', workingPath || 'root');
     newRes.headers.set('x-debug-version', version);
 
+    // 7. Dynamic City Replacement via HTMLRewriter (supports ?city= query param or Geo-IP)
+    const queryCity = url.searchParams.get('city');
+    const cfCity = context.request.cf?.city;
+    const cfRegion = context.request.cf?.regionCode || context.request.cf?.region;
+
+    let targetCity = null;
+    if (queryCity) {
+        targetCity = formatCityName(queryCity);
+    } else if (!disableGeo && cfCity) {
+        targetCity = `${cfCity}${cfRegion ? `, ${cfRegion}` : ''}`;
+    }
+
+    if (targetCity) {
+        const rewriter = new HTMLRewriter()
+            .on('[data-dynamic-city]', {
+                element(el) {
+                    el.setInnerContent(targetCity);
+                }
+            });
+        return rewriter.transform(newRes);
+    }
+
     return newRes;
+}
+
+function formatCityName(raw) {
+    if (!raw) return '';
+    let str = decodeURIComponent(raw).trim();
+    if (str.includes('-') && !str.includes(' ')) {
+        str = str.replace(/-/g, ' ');
+    }
+    str = str.replace(/\b[a-z]/g, (char) => char.toUpperCase());
+    str = str.replace(/,\s*([A-Za-z]{2})\b/g, (_, st) => `, ${st.toUpperCase()}`);
+    return str.replace(/[<>"']/g, '');
 }

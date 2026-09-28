@@ -39,6 +39,26 @@ export default async function PageB() {
 
   return (
     <div className={styles.tvproMain}>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                var p = new URLSearchParams(window.location.search);
+                var c = p.get('city');
+                if (c) {
+                  c = decodeURIComponent(c).trim();
+                  if (c.indexOf('-') !== -1 && c.indexOf(' ') === -1) c = c.replace(/-/g, ' ');
+                  c = c.replace(/\\b[a-z]/g, function(ch) { return ch.toUpperCase(); });
+                  c = c.replace(/,\\s*([A-Za-z]{2})\\b/g, function(m, st) { return ', ' + st.toUpperCase(); });
+                  var els = document.querySelectorAll('[data-dynamic-city]');
+                  els.forEach(function(el) { el.textContent = c; });
+                }
+              } catch(e) {}
+            })();
+          `,
+        }}
+      />
       <Hero isVariantB={true} />
       <UtpBar isVariantB={true} />
       <TvCountPicker isVariantB={true} />
