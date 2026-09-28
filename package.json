@@ -7,6 +7,7 @@
     "build:next": "node scripts/generate-variants.js && next build && node postbuild.mjs",
     "build:astro": "cd charlotte-landing && npm install && npm run build",
     "combine": "rm -rf out/chicago && mkdir -p out/chicago && cp -r charlotte-landing/dist/* out/chicago/",
+    "map": "node tools/coverage-map/server.js",
     "build": "npm run build:next",
     "start": "next start",
     "lint": "next lint"

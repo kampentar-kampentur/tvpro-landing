@@ -100,5 +100,32 @@ export async function onRequest(context) {
     newRes.headers.set('x-debug-matched-slug', workingPath || 'root');
     newRes.headers.set('x-debug-version', version);
 
+    // 7. Dynamic City Replacement via HTMLRewriter (only if ?city= query param is provided)
+    const queryCity = url.searchParams.get('city');
+
+    if (queryCity) {
+        const targetCity = formatCityName(queryCity);
+        if (targetCity) {
+            const rewriter = new HTMLRewriter()
+                .on('[data-dynamic-city]', {
+                    element(el) {
+                        el.setInnerContent(targetCity);
+                    }
+                });
+            return rewriter.transform(newRes);
+        }
+    }
+
     return newRes;
+}
+
+function formatCityName(raw) {
+    if (!raw) return '';
+    let str = decodeURIComponent(raw).trim();
+    if (str.includes('-') && !str.includes(' ')) {
+        str = str.replace(/-/g, ' ');
+    }
+    str = str.replace(/\b[a-z]/g, (char) => char.toUpperCase());
+    str = str.replace(/,\s*([A-Za-z]{2})\b/g, (_, st) => `, ${st.toUpperCase()}`);
+    return str.replace(/[<>"']/g, '');
 }

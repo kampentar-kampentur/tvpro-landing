@@ -186,8 +186,8 @@ export default async function CityPage({ params }) {
       ratingValue: "5.0",
       bestRating: "5",
       worstRating: "1",
-      ratingCount: "1601",
-      reviewCount: "1601",
+      ratingCount: "2000",
+      reviewCount: "2000",
     },
     openingHoursSpecification: [
       {

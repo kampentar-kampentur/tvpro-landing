@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Austin",
+    "state": "TX",
+    "path": "austin"
+  },
+  {
+    "name": "Charlotte",
+    "state": "NC",
+    "path": "charlotte"
+  },
+  {
+    "name": "Chicago",
+    "state": "IL",
+    "path": "chicago"
+  },
+  {
+    "name": "Dallas",
+    "state": "TX",
+    "path": "dallas"
+  },
+  {
+    "name": "Houston",
+    "state": "TX",
+    "path": "houston"
+  },
+  {
+    "name": "Jacksonville",
+    "state": "FL",
+    "path": "jacksonville"
+  },
+  {
+    "name": "Kansas City",
+    "state": "MO",
+    "path": "kansas-city"
+  },
+  {
+    "name": "Miami",
+    "state": "FL",
+    "path": "miami"
+  },
+  {
+    "name": "New Jersey",
+    "state": "NJ",
+    "path": "new-jersey"
+  },
+  {
+    "name": "New York",
+    "state": "NY",
+    "path": "new-york"
+  },
+  {
+    "name": "Philadelphia",
+    "state": "PA",
+    "path": "philadelphia"
+  }
+]

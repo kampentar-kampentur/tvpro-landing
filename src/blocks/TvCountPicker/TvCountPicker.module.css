@@ -46,3 +46,8 @@
         padding-top: 25px;
     }
 }
+
+.whiteCard {
+    background-color: var(--white) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}

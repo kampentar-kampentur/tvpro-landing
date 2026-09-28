@@ -46,7 +46,34 @@ const defaultCards = [
   },
 ];
 
-export default async function TvCountPicker({ data = {}, cityContext }) {
+const variantBCards = [
+  {
+    id: "tv-count-1",
+    title: "1 TV",
+    description: "Start at $59",
+    tvCount: "1",
+  },
+  {
+    id: "tv-count-2",
+    title: "2 TVs",
+    description: "Better Value",
+    tvCount: "2",
+  },
+  {
+    id: "tv-count-3",
+    title: "3 TVs",
+    description: "Bundle Savings",
+    tvCount: "3",
+  },
+  {
+    id: "tv-count-4",
+    title: "4+ TVs",
+    description: "Best Value",
+    tvCount: "4+",
+  },
+];
+
+export default async function TvCountPicker({ data = {}, cityContext, isVariantB = false }) {
   const globalTvCountData = (await getTvCountPickerData()) || {};
 
   const title = resolveSpintax(
@@ -54,14 +81,17 @@ export default async function TvCountPicker({ data = {}, cityContext }) {
       globalTvCountData?.title ||
       "How Many TVs Do You Need Mounted?",
   );
-  const subTitle = resolveSpintax(
-    data?.subTitle ||
-      globalTvCountData?.subTitle ||
-      "Select the number of screens to open the quote builder with pre-selected settings.",
-  );
+  const subTitle = isVariantB
+    ? "Select the number of TVs to get your price and save $30."
+    : resolveSpintax(
+        data?.subTitle ||
+          globalTvCountData?.subTitle ||
+          "Select the number of screens to open the quote builder with pre-selected settings.",
+      );
 
-  const rawCards =
-    data?.cards && data.cards.length > 0
+  const rawCards = isVariantB
+    ? variantBCards
+    : data?.cards && data.cards.length > 0
       ? data.cards
       : globalTvCountData?.cards && globalTvCountData.cards.length > 0
         ? globalTvCountData.cards
@@ -243,6 +273,7 @@ export default async function TvCountPicker({ data = {}, cityContext }) {
           return (
             <ServiceCard
               key={card.id}
+              className={isVariantB ? styles.whiteCard : ""}
               customIcon={
                 <div className={styles.iconContainer}>
                   {renderCardIcon(card.id)}
@@ -254,8 +285,15 @@ export default async function TvCountPicker({ data = {}, cityContext }) {
               modalName={isSingle ? "BestQuote" : "BookNow"}
               modalProps={
                 isSingle
-                  ? { tvCount: card.tvCount, isNewQuiz: true }
-                  : { tvCount: card.tvCount }
+                  ? {
+                      tvCount: card.tvCount,
+                      isNewQuiz: true,
+                      source: `tv-count-picker-${card.tvCount}-tv`,
+                    }
+                  : {
+                      tvCount: card.tvCount,
+                      source: `tv-count-picker-${card.tvCount}-tvs`,
+                    }
               }
               cityContext={cityContext}
             />

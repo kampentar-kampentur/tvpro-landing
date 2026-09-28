@@ -7,10 +7,10 @@ import ImageWrapper from "@/ui/ImageWrapper/ImageWrapper";
 import Text from "@/ui/Text/Text";
 import { useModal } from "@/providers/ModalProvider";
 
-export default function ServiceCard({ image, customIcon, title, description, buttonText, modalName, modalProps = {}, cityContext }) {
+export default function ServiceCard({ image, customIcon, title, description, buttonText, modalName, modalProps = {}, cityContext, className }) {
   const { openModal } = useModal();
   return (
-    <div className={styles.serviceCard}>
+    <div className={`${styles.serviceCard} ${className || ""}`}>
       <SendIcon className={styles.sendIcon} width="16" height="16" />
       <div className={styles.imageContainer}>
         {customIcon ? customIcon : (

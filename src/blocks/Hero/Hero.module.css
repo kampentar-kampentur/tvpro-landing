@@ -19,6 +19,83 @@
     color: var(--foreground);
 }
 
+.heroBadgesWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 440px;
+    margin: 28px auto 0 auto;
+    width: 100%;
+}
+
+.heroBadge {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.heroBadgeIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    color: var(--green);
+}
+
+.heroBadgeText {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--foreground);
+    white-space: nowrap;
+}
+
+.heroBadgeDivider {
+    width: 1px;
+    height: 48px;
+    background: var(--gray-light);
+    flex-shrink: 0;
+}
+
+.buttonWrapperB {
+    margin-top: 32px !important;
+}
+
+@media (max-width: 768px) {
+    .heroBadgesWrapper {
+        max-width: 340px;
+        margin-top: 20px;
+    }
+
+    .heroBadge {
+        padding: 0 6px;
+    }
+
+    .heroBadgeIcon svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .heroBadgeIcon {
+        margin-bottom: 6px;
+    }
+
+    .heroBadgeText {
+        font-size: 13px;
+    }
+
+    .heroBadgeDivider {
+        height: 40px;
+    }
+
+    .buttonWrapperB {
+        margin-top: 24px !important;
+    }
+}
+
 .buttonWrapper {
     display: flex;
     flex-direction: column;
