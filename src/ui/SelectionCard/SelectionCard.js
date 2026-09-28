@@ -18,7 +18,7 @@ const SelectionCard = ({ label, description, price, oldPrice, discountBadge, sub
   }
   return (
     <div
-      className={`${styles.card} ${selected ? styles.selected : ''} ${isInfoShow  ? styles.showInfo : ''} ${isShaking ? styles.shaking : ''}`}
+      className={`${styles.card} ${selected ? styles.selected : ''} ${isInfoShow ? styles.showInfo : ''} ${isShaking ? styles.shaking : ''}`}
       onClick={onClick}
     >
       <div className={styles.topContent}>
@@ -30,7 +30,7 @@ const SelectionCard = ({ label, description, price, oldPrice, discountBadge, sub
       <div className={styles.cardFooter}>
         <div className={styles.infoWrapper}>
           {description && (!selected ? 
-            isInfoShow ? <InfoCircleActive onClick={handleInfoClick} className={styles.info}/> : <InfoCircle onClick={handleInfoClick} className={styles.info}/> :
+            (isInfoShow ? <InfoCircleActive onClick={handleInfoClick} className={styles.info}/> : <InfoCircle onClick={handleInfoClick} className={styles.info}/>) :
             <InfoCircleActive onClick={handleInfoClick} className={styles.info}/>)}
         </div>
 
