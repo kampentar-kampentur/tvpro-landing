@@ -100,20 +100,29 @@ export async function onRequest(context) {
     newRes.headers.set('x-debug-matched-slug', workingPath || 'root');
     newRes.headers.set('x-debug-version', version);
 
-    // 7. Dynamic City Replacement via HTMLRewriter (only if ?city= query param is provided)
+    // 7. Dynamic City Replacement via HTMLRewriter
     const queryCity = url.searchParams.get('city');
+    const isUS = context.request.cf?.country?.toUpperCase() === 'US';
+    const cfCity = context.request.cf?.city;
+
+    let targetCity = null;
 
     if (queryCity) {
-        const targetCity = formatCityName(queryCity);
-        if (targetCity) {
-            const rewriter = new HTMLRewriter()
-                .on('[data-dynamic-city]', {
-                    element(el) {
-                        el.setInnerContent(targetCity);
-                    }
-                });
-            return rewriter.transform(newRes);
-        }
+        // 1. Query parameter takes top priority (e.g. ?city=Houston)
+        targetCity = formatCityName(queryCity);
+    } else if (!disableGeo && isUS && cfCity) {
+        // 2. Automatic Geo-IP detection ONLY for visitors from USA
+        targetCity = formatCityName(cfCity);
+    }
+
+    if (targetCity) {
+        const rewriter = new HTMLRewriter()
+            .on('[data-dynamic-city]', {
+                element(el) {
+                    el.setInnerContent(targetCity);
+                }
+            });
+        return rewriter.transform(newRes);
     }
 
     return newRes;
