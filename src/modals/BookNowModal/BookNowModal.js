@@ -11,6 +11,7 @@ import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
 import { getUtmParams } from "@/lib/utmTracker";
+import { trackOpenAIConversion } from "@/lib/openaiTracker";
 
 const nameField = {
   name: "name",
@@ -56,8 +57,10 @@ const BookNowModal = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({ name: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleChange = (fieldName) => (value) => {
+    setSubmitError("");
     setFormData((prev) => ({ ...prev, [fieldName]: value }));
   };
 
@@ -67,6 +70,7 @@ const BookNowModal = () => {
     }
 
     setIsSubmitting(true);
+    setSubmitError("");
     try {
       const apiUrl =
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
@@ -97,12 +101,15 @@ const BookNowModal = () => {
       if (response.ok) {
         sessionStorage.setItem("form_submitted", "true");
         close();
+        const submitName = formData.name || "";
+        const submitPhone = formData.phone || "";
         setFormData({ name: "", phone: "" });
 
         if (typeof dataLayer !== "undefined") {
           const utm = getUtmParams();
           const payload = {
-            "user_data.phone_number": formData.phone.replace(/\D/g, ""),
+            "user_data.phone_number": submitPhone.replace(/\D/g, ""),
+            "user_data.first_name": submitName,
             ...utm,
             utm_params: utm,
           };
@@ -114,15 +121,25 @@ const BookNowModal = () => {
             send_to: "AW-17416148778/aAZCCNeF9vsaEKqu1fBA",
           });
         }
+        trackOpenAIConversion("book_now_send_ok", {
+          userData: {
+            name: submitName,
+            phone: submitPhone,
+          },
+          customData: {
+            form_type: "bookNow",
+            source: "book-now-modal",
+          },
+        });
         router.push("/see-you-soon");
       } else {
         const errorData = await response.json();
         console.error("Form submission error:", errorData);
-        alert("An error occurred. Please try again.");
+        setSubmitError("An error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Failed to send form:", error);
-      alert("Failed to send request. Please check your connection.");
+      setSubmitError("Failed to send request. Please check your connection.");
     } finally {
       setIsSubmitting(false);
     }
@@ -192,6 +209,12 @@ const BookNowModal = () => {
             <span className={styles.discountPercent}>DISCOUNT</span>.
           </p>
         </div>
+
+        {submitError && (
+          <p style={{ color: "#ff4d4f", fontSize: "14px", margin: "8px 0 0", textAlign: "center" }}>
+            {submitError}
+          </p>
+        )}
 
         <div className={styles.btnWrap}>
           <Checkbox label={<TermsText />} />

@@ -250,7 +250,29 @@ export default async function RootLayout({ children }) {
                   } catch(e) { console.error('Meta Pixel Error:', e); }
                 })();
 
-                // 4. LeadConnector Chat Widget
+                // 4. OpenAI Measurement Pixel (ChatGPT Ads)
+                (function() {
+                  const openaiPixelId = '${process.env.NEXT_PUBLIC_OPENAI_PIXEL_ID || ''}';
+                  if (!openaiPixelId || openaiPixelId === 'undefined') return;
+                  try {
+                    (function (w, d, s, u) {
+                      if (w.oaiq) return;
+                      var q = function () { q.q.push(arguments); };
+                      q.q = [];
+                      w.oaiq = q;
+                      var js = d.createElement(s);
+                      js.async = true;
+                      js.src = u;
+                      var f = d.getElementsByTagName(s)[0];
+                      f.parentNode.insertBefore(js, f);
+                    })(window, document, 'script', 'https://bzrcdn.openai.com/sdk/oaiq.min.js');
+
+                    oaiq('init', { pixelId: openaiPixelId, debug: ${process.env.NODE_ENV !== 'production'} });
+                    oaiq('measure', 'page_viewed', { type: 'contents' });
+                  } catch(e) { console.error('OpenAI Pixel Error:', e); }
+                })();
+
+                // 5. LeadConnector Chat Widget
                 (function() {
                   try {
                     var isBPage = typeof window !== 'undefined' && (

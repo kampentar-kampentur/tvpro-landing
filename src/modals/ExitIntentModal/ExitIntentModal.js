@@ -11,6 +11,7 @@ import Button from "@/ui/Button";
 import Checkbox from "@/ui/Checkbox";
 import { useRouter } from 'next/navigation';
 import { getUtmParams } from "@/lib/utmTracker";
+import { trackOpenAIConversion } from "@/lib/openaiTracker";
 
 const nameField = {
     "name": "name",
@@ -96,6 +97,16 @@ const ExitIntentModal = () => {
                         send_to: "AW-17416148778/aAZCCNeF9vsaEKqu1fBA",
                     });
                 }
+                trackOpenAIConversion("exit_intent_send_ok", {
+                    userData: {
+                        name: formData.name || "",
+                        phone: formData.phone || "",
+                    },
+                    customData: {
+                        form_type: "exitIntent",
+                        source: "exit_intent_popup",
+                    },
+                });
                 sessionStorage.setItem('form_submitted', 'true');
                 close();
                 router.push('/see-you-soon');

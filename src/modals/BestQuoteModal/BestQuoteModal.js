@@ -14,6 +14,7 @@ import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import { getUtmParams } from "@/lib/utmTracker";
 import Link from "next/link";
 import quizTracker from "@/lib/quizTracker";
+import { trackOpenAIConversion } from "@/lib/openaiTracker";
 
 const BestQuoteScheme = {
   steps: [
@@ -1723,6 +1724,27 @@ const BestQuoteModal = () => {
             send_to: "AW-17416148778/aAZCCNeF9vsaEKqu1fBA",
           });
         }
+        trackOpenAIConversion("quiz_send_ok", {
+          userData: {
+            name: submissionData.contactInfo?.name || "",
+            phone: submissionData.contactInfo?.phone || "",
+            email: submissionData.contactInfo?.email || "",
+            address: submissionData.contactInfo?.address || "",
+            zip: submissionData.contactInfo?.zip || "",
+            city: data.city || "",
+          },
+          customData: {
+            form_type: "bestQuote",
+            total_price: totalPrice,
+            tv_selection: formData["tv-size"]?.tvSelection || formData["tv-size"]?.tvSelectionMulti || "",
+            extra_technicians: formData["tv-size"]?.extraTechnicans || "",
+            mount_type: formData.mounting?.mountType || "",
+            wall_type: wallTypeResolved || "",
+            fireplace: isNewQuiz ? (formData.fireplace?.fireplace || "") : (formData.wall?.fireplace || ""),
+            wires: isNewQuiz ? (formData.wires?.wires || "") : (formData.wall?.wires || ""),
+            currency: "USD",
+          },
+        });
         router.push("/booking-success");
       } else {
         const errorData = await response.json();
