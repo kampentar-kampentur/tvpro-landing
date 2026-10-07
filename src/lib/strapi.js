@@ -162,6 +162,41 @@ export async function getAllCities() {
 }
 
 /**
+ * Fetches and returns all active metro cities for navigation, sitemaps, and blog widgets.
+ * Excludes test versions and suburb pages (metro_city_slug != null).
+ * Ensures fallback/canonical cities like Chicago are present, sorted alphabetically.
+ */
+export async function getActiveMetroCities() {
+  let cities = [];
+  try {
+    cities = await getAllCities();
+  } catch (error) {
+    console.error("[Strapi] getActiveMetroCities error:", error);
+  }
+
+  const activeCities = (cities || [])
+    .filter((city) => !city.test_version && city.path && !city.metro_city_slug)
+    .map((city) => ({
+      name: city.city_name || city.name || city.path,
+      state: city.state_code || city.state || "US",
+      path: city.path,
+    }));
+
+  const hasChicago = activeCities.some((c) => c.path === "chicago");
+  if (!hasChicago) {
+    activeCities.push({
+      name: "Chicago",
+      state: "IL",
+      path: "chicago",
+    });
+  }
+
+  activeCities.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+  return activeCities;
+}
+
+/**
  * Fetches the page layout from a metro city.
  * Used when a suburb has no own page layout.
  * @param {string} metroSlug - slug of the parent metro city (e.g. "houston")
@@ -224,10 +259,11 @@ export async function getAllBlogPosts() {
         "category",
         "readTime",
         "publishedAt",
+        "createdAt",
         "featured",
       ],
       populate: ["cover", "author", "author.avatar"],
-      sort: ["publishedAt:desc"],
+      sort: ["createdAt:desc"],
     });
     return flattenStrapiData(data?.data) || [];
   } catch (error) {

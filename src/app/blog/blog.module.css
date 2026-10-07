@@ -907,3 +907,35 @@
     color: var(--green);
     flex-shrink: 0;
 }
+
+.showMoreLocationsBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    width: 100%;
+    border: none;
+    border-top: 1px solid var(--gray-extra-light);
+    background: transparent;
+    color: var(--green);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.showMoreLocationsBtn:hover {
+    color: var(--green-hover);
+    opacity: 0.85;
+}
+
+.showMoreIcon {
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.showMoreIconOpen {
+    transform: rotate(180deg);
+}

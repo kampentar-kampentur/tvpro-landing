@@ -150,7 +150,7 @@ export default function CitySelector() {
                 return (
                   <li key={city.path}>
                     <Link
-                      href={`/${city.path}/`}
+                      href={`/${city.path}/`} prefetch={false}
                       className={`${styles.item} ${isActive ? styles.itemActive : ""}`}
                       onClick={() => setOpen(false)}
                     >

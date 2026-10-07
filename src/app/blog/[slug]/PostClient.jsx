@@ -42,6 +42,9 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [hasVoted, setHasVoted] = useState(false);
+    const [showAllLocations, setShowAllLocations] = useState(false);
+
+    const visibleCities = showAllLocations ? displayCities : displayCities.slice(0, 8);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -330,10 +333,10 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
 
                     {/* Date + Read time + Author (below title) */}
                     <div className={styles.metaRow}>
-                        {(post.publishedAt || post.date) && (
+                        {(post.createdAt || post.publishedAt || post.date) && (
                             <span className={styles.metaItem}>
-                                {post.publishedAt
-                                    ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+                                {(post.createdAt || post.publishedAt)
+                                    ? new Date(post.createdAt || post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
                                     : post.date}
                             </span>
                         )}
@@ -482,10 +485,10 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                         <div className={styles.sideCard}>
                             <div className={styles.tocHeading}>Our Service Locations</div>
                             <div className={styles.locationsList}>
-                                {displayCities.map((city) => (
+                                {visibleCities.map((city) => (
                                     <Link
                                         key={city.path}
-                                        href={`/${city.path}/`}
+                                        href={`/${city.path}/`} prefetch={false}
                                         className={styles.locationLink}
                                     >
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.locationPinIcon}>
@@ -496,6 +499,29 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                                     </Link>
                                 ))}
                             </div>
+                            {displayCities.length > 8 && (
+                                <button
+                                    type="button"
+                                    onClick={() => setShowAllLocations((prev) => !prev)}
+                                    className={styles.showMoreLocationsBtn}
+                                    aria-expanded={showAllLocations}
+                                >
+                                    <span>{showAllLocations ? "Show less" : `Show all locations (${displayCities.length})`}</span>
+                                    <svg 
+                                        width="14" 
+                                        height="14" 
+                                        viewBox="0 0 24 24" 
+                                        fill="none" 
+                                        stroke="currentColor" 
+                                        strokeWidth="2.5" 
+                                        strokeLinecap="round" 
+                                        strokeLinejoin="round" 
+                                        className={`${styles.showMoreIcon} ${showAllLocations ? styles.showMoreIconOpen : ""}`}
+                                    >
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                            )}
                         </div>
                     )}
 
@@ -541,7 +567,7 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                     <h2 className={styles.relatedHeading}>Related Articles</h2>
                     <div className={styles.relatedGrid}>
                         {relatedPosts.map((related) => (
-                            <Link key={related.slug} href={`/blog/${related.slug}/`} className={styles.relatedCard}>
+                            <Link key={related.slug} href={`/blog/${related.slug}/`} prefetch={false} className={styles.relatedCard}>
                                 {related.coverMedia && (
                                     <div className={styles.relatedImageWrapper}>
                                         <ImageWrapper

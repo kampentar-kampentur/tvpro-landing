@@ -235,7 +235,7 @@ export default function Navbar() {
                 {cities.map((city) => (
                   <Link
                     key={city.path}
-                    href={`/${city.path}/`}
+                    href={`/${city.path}/`} prefetch={false}
                     className={styles.dropdownItem}
                   >
                     {city.name}

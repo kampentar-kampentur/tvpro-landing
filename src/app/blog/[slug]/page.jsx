@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getBlogPost, getAllBlogPosts, getAllCities, getStrapiMediaUrl } from "@/lib/strapi";
+import { getBlogPost, getAllBlogPosts, getActiveMetroCities, getStrapiMediaUrl } from "@/lib/strapi";
 import { blogPosts, mockBlogContent } from "@/lib/blog-data";
 import PostClient from "./PostClient";
 
@@ -60,8 +60,8 @@ export async function generateMetadata({ params }) {
             type: "article",
             url: `${SITE_URL}/blog/${slug}/`,
             images: [{ url: coverUrl, width: 1200, height: 630, alt: title }],
-            publishedTime: post.publishedAt || post.date,
-            modifiedTime: post.updatedAt || post.publishedAt || post.date,
+            publishedTime: post.createdAt || post.publishedAt || post.date,
+            modifiedTime: post.updatedAt || post.createdAt || post.publishedAt || post.date,
             section: post.category || "General",
             tags: Array.isArray(post.tags) ? post.tags : (post.keywords ? (Array.isArray(post.keywords) ? post.keywords : [post.keywords]) : []),
             authors: [post.author?.name || ORG_NAME],
@@ -176,8 +176,8 @@ export default async function BlogPostPage({ params }) {
         articleSection: post.category || "General",
         wordCount: wordCount || undefined,
         image: coverUrl ? [coverUrl] : undefined,
-        datePublished: post.publishedAt || post.date,
-        dateModified: post.updatedAt || post.publishedAt || post.date,
+        datePublished: post.createdAt || post.publishedAt || post.date,
+        dateModified: post.updatedAt || post.createdAt || post.publishedAt || post.date,
         keywords: post.keywords 
             ? (Array.isArray(post.keywords) ? post.keywords.join(", ") : post.keywords)
             : undefined,
@@ -250,21 +250,7 @@ export default async function BlogPostPage({ params }) {
     }
     const finalRelated = mergedRelated.slice(0, 3);
 
-    let cities = [];
-    try {
-        cities = await getAllCities();
-    } catch (error) {
-        console.error("[Blog Post Page] Failed to fetch cities:", error);
-    }
-
-    const activeCities = cities
-        .filter(city => !city.test_version && city.path && !city.metro_city_slug)
-        .map(city => ({
-            name: city.city_name,
-            state: city.state_code,
-            path: city.path
-        }))
-        .slice(0, 8);
+    const activeCities = await getActiveMetroCities();
 
     return (
         <>

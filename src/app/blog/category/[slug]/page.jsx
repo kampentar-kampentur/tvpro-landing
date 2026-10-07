@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getAllBlogPosts, getAllCities, getStrapiMediaUrl } from "@/lib/strapi";
+import { getAllBlogPosts, getActiveMetroCities, getStrapiMediaUrl } from "@/lib/strapi";
 import { blogPosts as mockPosts } from "@/lib/blog-data";
 import BlogClient from "../../BlogClient";
 import styles from "../../blog.module.css";
@@ -90,23 +90,10 @@ export default async function BlogCategoryPage({ params }) {
   const category = categories.find(c => c.slug === slug);
   const categoryName = category ? category.name : "General";
 
-  const strapiPosts = await getAllBlogPosts();
-
-  let cities = [];
-  try {
-    cities = await getAllCities();
-  } catch (error) {
-    console.error("[Blog Category Page] Failed to fetch cities:", error);
-  }
-
-  const activeCities = cities
-    .filter(city => !city.test_version && city.path && !city.metro_city_slug)
-    .map(city => ({
-      name: city.city_name,
-      state: city.state_code,
-      path: city.path
-    }))
-    .slice(0, 8);
+  const [strapiPosts, activeCities] = await Promise.all([
+    getAllBlogPosts(),
+    getActiveMetroCities(),
+  ]);
 
   const targetCategorySlug = normalizeCategorySlug(slug);
 
@@ -114,8 +101,9 @@ export default async function BlogCategoryPage({ params }) {
   let normalizedStrapiPosts = strapiPosts
     .filter(post => normalizeCategorySlug(slugify(post.category || "General")) === targetCategorySlug)
     .map(post => {
-      const formattedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      const rawDate = post.createdAt || post.publishedAt || post.date;
+      const formattedDate = rawDate
+        ? new Date(rawDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
         : "";
 
       return {
@@ -141,8 +129,9 @@ export default async function BlogCategoryPage({ params }) {
   // If a category has no specific posts (e.g. news), fallback to latest posts so user never sees a blank page
   if (normalizedStrapiPosts.length === 0 && strapiPosts.length > 0) {
     normalizedStrapiPosts = strapiPosts.slice(0, 9).map(post => {
-      const formattedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      const rawDate = post.createdAt || post.publishedAt || post.date;
+      const formattedDate = rawDate
+        ? new Date(rawDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
         : "";
 
       return {

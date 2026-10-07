@@ -77,6 +77,9 @@ export default function BlogClient({
   const [searchError, setSearchError] = useState(null);
   const [sortBy, setSortBy] = useState("latest");
   const [visibleCount, setVisibleCount] = useState(6);
+  const [showAllLocations, setShowAllLocations] = useState(false);
+
+  const visibleCities = showAllLocations ? displayCities : displayCities.slice(0, 8);
 
   const slugify = (text) => {
     if (!text) return "";
@@ -143,8 +146,9 @@ export default function BlogClient({
 
           const strapiPosts = flatten(resJson.data) || [];
           const normalized = strapiPosts.map(post => {
-            const formattedDate = post.publishedAt
-              ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+            const rawDate = post.createdAt || post.publishedAt || post.date;
+            const formattedDate = rawDate
+              ? new Date(rawDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
               : "";
             
             let imgUrl = "/blog-placeholder.jpg";
@@ -315,7 +319,7 @@ export default function BlogClient({
       {/* Featured Post */}
       {showFeatured && (
         <section className={`block ${styles.featuredSection}`}>
-          <Link href={`/blog/${featuredPost.slug}/`} className={styles.featuredCard}>
+          <Link href={`/blog/${featuredPost.slug}/`} prefetch={false} className={styles.featuredCard}>
             <div className={styles.featuredImageWrapper}>
               <ImageWrapper
                 media={featuredPost.coverMedia}
@@ -405,7 +409,7 @@ export default function BlogClient({
                     {displayedPosts.map((post) => (
                       <Link
                         key={post.id}
-                        href={`/blog/${post.slug}/`}
+                        href={`/blog/${post.slug}/`} prefetch={false}
                         className={styles.card}
                         aria-label={`Read article: ${post.title}`}
                       >
@@ -522,7 +526,7 @@ export default function BlogClient({
                     {recommendedPosts.map((post) => (
                       <Link 
                         key={post.slug} 
-                        href={`/blog/${post.slug}/`}
+                        href={`/blog/${post.slug}/`} prefetch={false}
                         className={styles.recommendedCard}
                       >
                         <ImageWrapper 
@@ -552,7 +556,7 @@ export default function BlogClient({
                 <h3 className={styles.widgetTitle}>Trending Articles</h3>
                 <div className={styles.trendingContainer}>
                   {/* Top 1 */}
-                  <Link href={`/blog/${trendingPosts[0].slug}/`} className={styles.trendingHeroCard}>
+                  <Link href={`/blog/${trendingPosts[0].slug}/`} prefetch={false} className={styles.trendingHeroCard}>
                     <div className={styles.trendingHeroImageWrapper}>
                       <ImageWrapper 
                         media={trendingPosts[0].coverMedia} 
@@ -571,7 +575,7 @@ export default function BlogClient({
                   {/* Top 2-5 */}
                   <div className={styles.trendingList}>
                     {trendingPosts.slice(1).map((tPost) => (
-                      <Link key={tPost.slug} href={`/blog/${tPost.slug}/`} className={styles.trendingListItem}>
+                      <Link key={tPost.slug} href={`/blog/${tPost.slug}/`} prefetch={false} className={styles.trendingListItem}>
                         <ImageWrapper 
                           media={tPost.coverMedia} 
                           defaultAlt={tPost.title} 
@@ -594,10 +598,10 @@ export default function BlogClient({
               <div className={styles.locationsWidget}>
                 <h3 className={styles.widgetTitle}>Our Service Locations</h3>
                 <div className={styles.locationsList}>
-                  {displayCities.map((city) => (
+                  {visibleCities.map((city) => (
                     <Link
                       key={city.path}
-                      href={`/${city.path}/`}
+                      href={`/${city.path}/`} prefetch={false}
                       className={styles.locationLink}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.locationPinIcon}>
@@ -608,6 +612,29 @@ export default function BlogClient({
                     </Link>
                   ))}
                 </div>
+                {displayCities.length > 8 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllLocations((prev) => !prev)}
+                    className={styles.showMoreLocationsBtn}
+                    aria-expanded={showAllLocations}
+                  >
+                    <span>{showAllLocations ? "Show less" : `Show all locations (${displayCities.length})`}</span>
+                    <svg 
+                      width="14" 
+                      height="14" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2.5" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      className={`${styles.showMoreIcon} ${showAllLocations ? styles.showMoreIconOpen : ""}`}
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                )}
               </div>
             )}
 

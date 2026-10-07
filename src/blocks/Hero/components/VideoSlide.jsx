@@ -69,6 +69,27 @@ export default function VideoSlide({ isActive, onEnd, data, index = 0 }) {
         };
     }, [isActive, hasStarted]);
 
+    // Release the media resource on unmount. Removing a <video> from the DOM does NOT
+    // stop its network download: on client-side navigation every hero left 3 big mp4
+    // requests running (3 -> 6 -> 9 ...), which saturated the connection and made the
+    // next page's index.txt (RSC payload) hang for many seconds.
+    // <source> children must be removed BEFORE load(), otherwise load() re-selects a
+    // source and restarts the download.
+    useEffect(() => {
+        const video = videoRef.current;
+        return () => {
+            if (!video) return;
+            try {
+                video.pause();
+                video.removeAttribute("src");
+                video.querySelectorAll("source").forEach((s) => s.remove());
+                video.load();
+            } catch (e) {
+                // ignore: element is being torn down anyway
+            }
+        };
+    }, []);
+
     const handleSlideClick = () => {
         if (videoRef.current && videoRef.current.paused) {
             videoRef.current.play().then(handlePlaying).catch(() => {});
@@ -96,7 +117,7 @@ export default function VideoSlide({ isActive, onEnd, data, index = 0 }) {
             {/* Video element is ALWAYS in DOM, fades in when playback begins and STAYS visible */}
             <video
                 ref={videoRef}
-                preload={index === 0 ? "auto" : "metadata"}
+                preload={index === 0 || isActive ? "auto" : "none"}
                 autoPlay={isActive}
                 muted
                 playsInline
