@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getAllBlogPosts, getAllCities, getStrapiMediaUrl } from "@/lib/strapi";
+import { getAllBlogPosts, getActiveMetroCities, getStrapiMediaUrl } from "@/lib/strapi";
 import { blogPosts } from "@/lib/blog-data";
 import BlogClient from "../../BlogClient";
 import styles from "../../blog.module.css";
@@ -58,23 +58,10 @@ export default async function BlogPagePaginated({ params }) {
     const { num } = await params;
     const pageNum = parseInt(num) || 1;
     
-    const strapiPosts = await getAllBlogPosts();
-
-    let cities = [];
-    try {
-        cities = await getAllCities();
-    } catch (error) {
-        console.error("[Blog Page Paginated] Failed to fetch cities:", error);
-    }
-
-    const activeCities = cities
-        .filter(city => !city.test_version && city.path && !city.metro_city_slug)
-        .map(city => ({
-            name: city.city_name,
-            state: city.state_code,
-            path: city.path
-        }))
-        .slice(0, 8);
+    const [strapiPosts, activeCities] = await Promise.all([
+        getAllBlogPosts(),
+        getActiveMetroCities(),
+    ]);
 
     const normalizedStrapiPosts = strapiPosts.map(post => {
         const formattedDate = post.publishedAt

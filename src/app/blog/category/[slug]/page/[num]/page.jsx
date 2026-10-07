@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getAllBlogPosts, getAllCities, getStrapiMediaUrl } from "@/lib/strapi";
+import { getAllBlogPosts, getActiveMetroCities, getStrapiMediaUrl } from "@/lib/strapi";
 import { blogPosts as mockPosts } from "@/lib/blog-data";
 import BlogClient from "../../../../BlogClient";
 import styles from "../../../../blog.module.css";
@@ -109,23 +109,10 @@ export default async function BlogCategoryPagePaginated({ params }) {
   const category = categories.find(c => c.slug === slug);
   const categoryName = category ? category.name : "General";
 
-  const strapiPosts = await getAllBlogPosts();
-
-  let cities = [];
-  try {
-    cities = await getAllCities();
-  } catch (error) {
-    console.error("[Blog Category Paginated] Failed to fetch cities:", error);
-  }
-
-  const activeCities = cities
-    .filter(city => !city.test_version && city.path && !city.metro_city_slug)
-    .map(city => ({
-      name: city.city_name,
-      state: city.state_code,
-      path: city.path
-    }))
-    .slice(0, 8);
+  const [strapiPosts, activeCities] = await Promise.all([
+    getAllBlogPosts(),
+    getActiveMetroCities(),
+  ]);
 
   const targetCategorySlug = normalizeCategorySlug(slug);
 
