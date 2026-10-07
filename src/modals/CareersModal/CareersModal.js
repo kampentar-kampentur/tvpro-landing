@@ -18,6 +18,7 @@ import styles from "./CareersModal.module.css";
 import Breadcrumbs from "@/ui/Breadcrumbs";
 import LogoSVG from "@/assets/logo.svg";
 import { getUtmParams } from "@/lib/utmTracker";
+import { trackOpenAIConversion } from "@/lib/openaiTracker";
 
 const scheduleOptions = [
   { value: "Full-time", label: "Full-time" },
@@ -382,6 +383,18 @@ export default function CareersModal() {
           dataLayer.push({ event: "form_send_ok", ...payload });
           dataLayer.push({ event: "all_forms_send_ok", ...payload });
         }
+        trackOpenAIConversion("careers_send_ok", {
+          userData: {
+            name: formData.name || "",
+            phone: formData.phone || "",
+            email: formData.email || "",
+            city: formData.city || "",
+          },
+          customData: {
+            form_type: "careers",
+            experience: formData.experience || "",
+          },
+        });
         setIsSuccess(true);
       } else {
         setSubmitError("An error occurred. Please try again.");

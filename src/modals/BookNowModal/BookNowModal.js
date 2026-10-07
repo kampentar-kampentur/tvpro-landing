@@ -11,6 +11,7 @@ import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
 import { getUtmParams } from "@/lib/utmTracker";
+import { trackOpenAIConversion } from "@/lib/openaiTracker";
 
 const nameField = {
   name: "name",
@@ -97,12 +98,15 @@ const BookNowModal = () => {
       if (response.ok) {
         sessionStorage.setItem("form_submitted", "true");
         close();
+        const submitName = formData.name || "";
+        const submitPhone = formData.phone || "";
         setFormData({ name: "", phone: "" });
 
         if (typeof dataLayer !== "undefined") {
           const utm = getUtmParams();
           const payload = {
-            "user_data.phone_number": formData.phone.replace(/\D/g, ""),
+            "user_data.phone_number": submitPhone.replace(/\D/g, ""),
+            "user_data.first_name": submitName,
             ...utm,
             utm_params: utm,
           };
@@ -114,6 +118,16 @@ const BookNowModal = () => {
             send_to: "AW-17416148778/aAZCCNeF9vsaEKqu1fBA",
           });
         }
+        trackOpenAIConversion("book_now_send_ok", {
+          userData: {
+            name: submitName,
+            phone: submitPhone,
+          },
+          customData: {
+            form_type: "bookNow",
+            source: "book-now-modal",
+          },
+        });
         router.push("/see-you-soon");
       } else {
         const errorData = await response.json();
