@@ -268,7 +268,7 @@ export default async function RootLayout({ children }) {
                     })(window, document, 'script', 'https://bzrcdn.openai.com/sdk/oaiq.min.js');
 
                     oaiq('init', { pixelId: openaiPixelId, debug: ${process.env.NODE_ENV !== 'production'} });
-                    oaiq('measure', 'page_viewed', { type: 'contents' });
+                    oaiq('measure', { event: 'page_view' });
                   } catch(e) { console.error('OpenAI Pixel Error:', e); }
                 })();
 
