@@ -319,7 +319,7 @@ export default function BlogClient({
       {/* Featured Post */}
       {showFeatured && (
         <section className={`block ${styles.featuredSection}`}>
-          <Link href={`/blog/${featuredPost.slug}/`} className={styles.featuredCard}>
+          <Link href={`/blog/${featuredPost.slug}/`} prefetch={false} className={styles.featuredCard}>
             <div className={styles.featuredImageWrapper}>
               <ImageWrapper
                 media={featuredPost.coverMedia}
@@ -409,7 +409,7 @@ export default function BlogClient({
                     {displayedPosts.map((post) => (
                       <Link
                         key={post.id}
-                        href={`/blog/${post.slug}/`}
+                        href={`/blog/${post.slug}/`} prefetch={false}
                         className={styles.card}
                         aria-label={`Read article: ${post.title}`}
                       >
@@ -526,7 +526,7 @@ export default function BlogClient({
                     {recommendedPosts.map((post) => (
                       <Link 
                         key={post.slug} 
-                        href={`/blog/${post.slug}/`}
+                        href={`/blog/${post.slug}/`} prefetch={false}
                         className={styles.recommendedCard}
                       >
                         <ImageWrapper 
@@ -556,7 +556,7 @@ export default function BlogClient({
                 <h3 className={styles.widgetTitle}>Trending Articles</h3>
                 <div className={styles.trendingContainer}>
                   {/* Top 1 */}
-                  <Link href={`/blog/${trendingPosts[0].slug}/`} className={styles.trendingHeroCard}>
+                  <Link href={`/blog/${trendingPosts[0].slug}/`} prefetch={false} className={styles.trendingHeroCard}>
                     <div className={styles.trendingHeroImageWrapper}>
                       <ImageWrapper 
                         media={trendingPosts[0].coverMedia} 
@@ -575,7 +575,7 @@ export default function BlogClient({
                   {/* Top 2-5 */}
                   <div className={styles.trendingList}>
                     {trendingPosts.slice(1).map((tPost) => (
-                      <Link key={tPost.slug} href={`/blog/${tPost.slug}/`} className={styles.trendingListItem}>
+                      <Link key={tPost.slug} href={`/blog/${tPost.slug}/`} prefetch={false} className={styles.trendingListItem}>
                         <ImageWrapper 
                           media={tPost.coverMedia} 
                           defaultAlt={tPost.title} 
@@ -601,7 +601,7 @@ export default function BlogClient({
                   {visibleCities.map((city) => (
                     <Link
                       key={city.path}
-                      href={`/${city.path}/`}
+                      href={`/${city.path}/`} prefetch={false}
                       className={styles.locationLink}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.locationPinIcon}>

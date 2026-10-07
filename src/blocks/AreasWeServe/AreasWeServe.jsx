@@ -31,7 +31,7 @@ export default async function AreasWeServe() {
                     {activeCities.map((city) => (
                         <Link 
                             key={city.id} 
-                            href={`/${city.path}/`} 
+                            href={`/${city.path}/`} prefetch={false} 
                             className={styles.cityLink}
                         >
                             {city.city_name}{city.state_code ? `, ${city.state_code}` : ''}

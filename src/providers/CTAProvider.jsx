@@ -8,6 +8,11 @@ export function CTAProvider({ children, initialCTA }) {
     const [cta, setCta] = useState(initialCTA || {});
 
     const prevInitialCtaRef = React.useRef(initialCTA);
+    // Remembers which tracked phone number was already registered with Google Ads (WCM)
+    const registeredPhoneRef = React.useRef(null);
+    // Latest label, read inside the tracking effect without making it a dependency
+    const phoneLabelRef = React.useRef(cta.phoneLabel);
+    phoneLabelRef.current = cta.phoneLabel;
 
     // Effect to handle dynamic updates when page transition updates initialCTA
     useEffect(() => {
@@ -59,9 +64,15 @@ export function CTAProvider({ children, initialCTA }) {
         
         if (tenDigits.length !== 10) return;
 
-        const primaryFormat = cta.phoneLabel || `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`;
+        // Register each tracked number with Google exactly once. Previously every re-run of
+        // this effect (and every 200ms poll tick) called gtag('config', ...) again, and each
+        // call makes Google fire another `wcm?cc=..&dn=..` XHR (the 200/302 spam in DevTools).
+        if (registeredPhoneRef.current === cleanCurrent) return;
+        registeredPhoneRef.current = cleanCurrent;
+
+        const primaryFormat = phoneLabelRef.current || `(${tenDigits.slice(0, 3)}) ${tenDigits.slice(3, 6)}-${tenDigits.slice(6)}`;
         
-        // 1. Immediately register ONLY this active page number & label with Google Ads
+        // 1. Register ONLY this active page number & label with Google Ads (once)
         if (typeof window.gtag === 'function') {
             window.gtag('config', configTarget, {
                 'phone_conversion_number': primaryFormat
@@ -71,13 +82,8 @@ export function CTAProvider({ children, initialCTA }) {
         let checkInterval;
         let attempts = 0;
 
+        // The poll only waits for the Google script to expose _googWcmGet.
         const trySwap = () => {
-            if (typeof window.gtag === 'function') {
-                window.gtag('config', configTarget, {
-                    'phone_conversion_number': primaryFormat
-                });
-            }
-
             if (window._googWcmGet) {
                 clearInterval(checkInterval);
 
@@ -94,10 +100,11 @@ export function CTAProvider({ children, initialCTA }) {
                 formats.forEach(formatStr => {
                     try {
                         window._googWcmGet((formattedNumber, rawNumber) => {
-                            console.log("[googWcmGet callback success] Format matched:", formatStr, { formattedNumber, rawNumber });
                             setCta(prev => {
                                 const cleanPrev = prev.phone ? prev.phone.replace(/[^0-9]/g, '') : '';
                                 if (!TRACKING_NUMBERS.includes(cleanPrev)) return prev;
+                                // Same values -> same reference, no re-render
+                                if (prev.phone === rawNumber && prev.phoneLabel === formattedNumber) return prev;
                                 return {
                                     ...prev,
                                     phone: rawNumber,
@@ -113,6 +120,8 @@ export function CTAProvider({ children, initialCTA }) {
                 attempts++;
                 if (attempts > 50) { // Stop checking after 10 seconds
                     clearInterval(checkInterval);
+                    // Google script never loaded: allow a later retry for this number
+                    registeredPhoneRef.current = null;
                 }
             }
         };
@@ -121,7 +130,7 @@ export function CTAProvider({ children, initialCTA }) {
         trySwap();
 
         return () => clearInterval(checkInterval);
-    }, [cta.phone, cta.phoneLabel]);
+    }, [cta.phone]);
 
     const overrideCTA = useCallback((newCTAData) => {
         if (!newCTAData) return;

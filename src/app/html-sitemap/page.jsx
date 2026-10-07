@@ -98,7 +98,7 @@ export default async function SitemapPage() {
               return (
                 <Link
                   key={city.id || city.path}
-                  href={`/${city.path}/`}
+                  href={`/${city.path}/`} prefetch={false}
                   title={`Go to ${displayName} page`}
                   className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}
                 >
@@ -117,7 +117,7 @@ export default async function SitemapPage() {
             {posts.map((post) => (
               <Link
                 key={post.slug}
-                href={`/blog/${post.slug}/`}
+                href={`/blog/${post.slug}/`} prefetch={false}
                 title={`Read article: ${post.title}`}
                 className={`${buttonStyles.button} ${buttonStyles.secondary} ${buttonStyles.small}`}
               >

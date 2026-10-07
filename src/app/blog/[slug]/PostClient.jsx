@@ -488,7 +488,7 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                                 {visibleCities.map((city) => (
                                     <Link
                                         key={city.path}
-                                        href={`/${city.path}/`}
+                                        href={`/${city.path}/`} prefetch={false}
                                         className={styles.locationLink}
                                     >
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.locationPinIcon}>
@@ -567,7 +567,7 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
                     <h2 className={styles.relatedHeading}>Related Articles</h2>
                     <div className={styles.relatedGrid}>
                         {relatedPosts.map((related) => (
-                            <Link key={related.slug} href={`/blog/${related.slug}/`} className={styles.relatedCard}>
+                            <Link key={related.slug} href={`/blog/${related.slug}/`} prefetch={false} className={styles.relatedCard}>
                                 {related.coverMedia && (
                                     <div className={styles.relatedImageWrapper}>
                                         <ImageWrapper
