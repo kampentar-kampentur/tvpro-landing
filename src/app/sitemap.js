@@ -44,7 +44,7 @@ export default async function sitemap() {
             postSlugs.add(post.slug);
             blogEntries.push({
                 url: `${baseUrl}/blog/${post.slug}/`,
-                lastModified: post.publishedAt ? new Date(post.publishedAt) : new Date(),
+                lastModified: (post.createdAt || post.publishedAt) ? new Date(post.createdAt || post.publishedAt) : new Date(),
                 changeFrequency: 'weekly',
                 priority: 0.7,
             });

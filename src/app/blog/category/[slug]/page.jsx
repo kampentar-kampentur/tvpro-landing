@@ -101,8 +101,9 @@ export default async function BlogCategoryPage({ params }) {
   let normalizedStrapiPosts = strapiPosts
     .filter(post => normalizeCategorySlug(slugify(post.category || "General")) === targetCategorySlug)
     .map(post => {
-      const formattedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      const rawDate = post.createdAt || post.publishedAt || post.date;
+      const formattedDate = rawDate
+        ? new Date(rawDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
         : "";
 
       return {
@@ -128,8 +129,9 @@ export default async function BlogCategoryPage({ params }) {
   // If a category has no specific posts (e.g. news), fallback to latest posts so user never sees a blank page
   if (normalizedStrapiPosts.length === 0 && strapiPosts.length > 0) {
     normalizedStrapiPosts = strapiPosts.slice(0, 9).map(post => {
-      const formattedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      const rawDate = post.createdAt || post.publishedAt || post.date;
+      const formattedDate = rawDate
+        ? new Date(rawDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
         : "";
 
       return {

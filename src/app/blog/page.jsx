@@ -32,8 +32,9 @@ export default async function BlogPage() {
   ]);
 
   const normalizedStrapiPosts = strapiPosts.map(post => {
-    const formattedDate = post.publishedAt
-      ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+    const rawDate = post.createdAt || post.publishedAt || post.date;
+    const formattedDate = rawDate
+      ? new Date(rawDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
       : "";
 
     return {

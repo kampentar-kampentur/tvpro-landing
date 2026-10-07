@@ -333,10 +333,10 @@ export default function PostClient({ post, coverUrl, coverMedia, avatarUrl, avat
 
                     {/* Date + Read time + Author (below title) */}
                     <div className={styles.metaRow}>
-                        {(post.publishedAt || post.date) && (
+                        {(post.createdAt || post.publishedAt || post.date) && (
                             <span className={styles.metaItem}>
-                                {post.publishedAt
-                                    ? new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+                                {(post.createdAt || post.publishedAt)
+                                    ? new Date(post.createdAt || post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
                                     : post.date}
                             </span>
                         )}

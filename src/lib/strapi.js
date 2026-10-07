@@ -259,10 +259,11 @@ export async function getAllBlogPosts() {
         "category",
         "readTime",
         "publishedAt",
+        "createdAt",
         "featured",
       ],
       populate: ["cover", "author", "author.avatar"],
-      sort: ["publishedAt:desc"],
+      sort: ["createdAt:desc"],
     });
     return flattenStrapiData(data?.data) || [];
   } catch (error) {
