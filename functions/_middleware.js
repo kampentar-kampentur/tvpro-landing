@@ -8,6 +8,74 @@ const BOT_AGENTS = [
     'slackbot', 'vkshare', 'redditbot', 'applebot', 'whatsapp', 'flipboard', 'tumblr'
 ];
 
+/**
+ * Dedicated OpenAI / ChatGPT ad campaign phones per city cluster
+ */
+const OPENAI_CITY_PHONES = {
+    // San Antonio, TX: +1 210-796-8856
+    'san-antonio': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'new-braunfels': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'schertz': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'cibolo': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'boerne': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'universal-city': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'converse': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'live-oak': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'selma': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'helotes': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'alamo-heights': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'leon-valley': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'fair-oaks-ranch': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'timberwood-park': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'bulverde': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'canyon-lake': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+
+    // Dallas, TX: +1 469-716-6501
+    'dallas': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'plano': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'frisco': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'mckinney': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'arlington': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'fort-worth': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'irving': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'garland': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'richardson': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'denton': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+
+    // Fort Lauderdale, FL: +1 754-345-4333
+    'fort-lauderdale': { phone: '+17543454333', phoneLabel: '(754) 345-4333' },
+
+    // Irvine, CA: +1 949-998-6321
+    'irvine': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'newport-beach': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'costa-mesa': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'lake-forest': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'tustin': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'mission-viejo': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'laguna-niguel': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'laguna-hills': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'aliso-viejo': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'huntington-beach': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'santa-ana': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'orange': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'anaheim': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'foothill-ranch': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'san-clemente': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'dana-point': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+
+    // Charlotte, NC: +1 980-455-8203
+    'charlotte': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'concord': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'gastonia': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'rock-hill': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'huntersville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'kannapolis': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'matthews': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'pineville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'mooresville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+    'waxhaw': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+};
+
 export async function onRequest(context) {
     const url = new URL(context.request.url);
     const userAgent = context.request.headers.get('User-Agent')?.toLowerCase() || '';
@@ -122,25 +190,94 @@ export async function onRequest(context) {
         targetState = cfRegion ? cfRegion.toUpperCase() : null;
     }
 
-    if (targetCity) {
-        const geoPayload = {
-            city: targetCity.split(',')[0].trim(),
-            fullCity: targetCity,
-            state: targetState,
-            country: isUS ? 'US' : (context.request.cf?.country || null),
-        };
+    // 8. OpenAI / ChatGPT Campaign Phone Substitution (Target Cities Only, No Cookies)
+    const utmSource = (url.searchParams.get('utm_source') || url.searchParams.get('source') || '').toLowerCase();
+    const isChatGPT = utmSource.includes('chatgpt') || 
+                      utmSource.includes('openai') || 
+                      (url.searchParams.get('utm_medium') || '').toLowerCase().includes('chatgpt') ||
+                      (url.searchParams.get('utm_campaign') || '').toLowerCase().includes('chatgpt');
 
-        const rewriter = new HTMLRewriter()
-            .on('[data-dynamic-city]', {
-                element(el) {
-                    el.setInnerContent(targetCity);
-                }
-            })
-            .on('head', {
-                element(el) {
-                    el.append(`<script id="geo-city-data">window.__GEO_CITY__ = ${JSON.stringify(geoPayload)};</script>`, { html: true });
+    const openaiPhone = isChatGPT ? OPENAI_CITY_PHONES[workingPath] : null;
+
+    if (targetCity || openaiPhone) {
+        const rewriter = new HTMLRewriter();
+
+        if (targetCity) {
+            const geoPayload = {
+                city: targetCity.split(',')[0].trim(),
+                fullCity: targetCity,
+                state: targetState,
+                country: isUS ? 'US' : (context.request.cf?.country || null),
+            };
+
+            rewriter
+                .on('[data-dynamic-city]', {
+                    element(el) {
+                        el.setInnerContent(targetCity);
+                    }
+                })
+                .on('head', {
+                    element(el) {
+                        el.append(`<script id="geo-city-data">window.__GEO_CITY__ = ${JSON.stringify(geoPayload)};</script>`, { html: true });
+                    }
+                });
+        }
+
+        if (openaiPhone) {
+            const phoneDataPayload = {
+                phone: openaiPhone.phone,
+                phoneLabel: openaiPhone.phoneLabel
+            };
+
+            rewriter
+                .on('a[href^="tel:"]', {
+                    element(el) {
+                        el.setAttribute('href', `tel:${openaiPhone.phone}`);
+                        const aria = el.getAttribute('aria-label');
+                        if (aria && /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/.test(aria)) {
+                            el.setAttribute('aria-label', aria.replace(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/, openaiPhone.phoneLabel));
+                        }
+                        const title = el.getAttribute('title');
+                        if (title && /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/.test(title)) {
+                            el.setAttribute('title', title.replace(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/, openaiPhone.phoneLabel));
+                        }
+                    }
+                })
+                .on('head', {
+                    element(el) {
+                        el.append(`<script id="openai-phone-override">
+window.__OPENAI_PHONE__ = ${JSON.stringify(phoneDataPayload)};
+(function() {
+    function swap() {
+        var label = ${JSON.stringify(openaiPhone.phoneLabel)};
+        var href = "tel:" + ${JSON.stringify(openaiPhone.phone)};
+        var btns = document.querySelectorAll('a[href^="tel:"]');
+        btns.forEach(function(b) {
+            b.href = href;
+            var spans = b.querySelectorAll('span:not(.visually-hidden)');
+            var updated = false;
+            spans.forEach(function(s) {
+                if (s.children.length === 0 && /\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}/.test(s.textContent)) {
+                    s.textContent = label;
+                    updated = true;
                 }
             });
+            if (!updated && !b.querySelector('svg') && /\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}/.test(b.textContent)) {
+                b.textContent = label;
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', swap);
+    } else {
+        swap();
+    }
+})();
+</script>`, { html: true });
+                    }
+                });
+        }
+
         return rewriter.transform(newRes);
     }
 

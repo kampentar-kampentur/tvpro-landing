@@ -4,8 +4,94 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 
 const CTAContext = createContext(null);
 
+function getOpenAIOverride(citySlug) {
+    if (typeof window === 'undefined') return null;
+    if (window.__OPENAI_PHONE__) return window.__OPENAI_PHONE__;
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const utmSource = (params.get('utm_source') || params.get('source') || '').toLowerCase();
+        const isChatGPT = utmSource.includes('chatgpt') || 
+                          utmSource.includes('openai') || 
+                          (params.get('utm_medium') || '').toLowerCase().includes('chatgpt') ||
+                          (params.get('utm_campaign') || '').toLowerCase().includes('chatgpt');
+
+        if (isChatGPT) {
+            const slug = (citySlug || window.location.pathname.replace(/^\/|\/$/g, '')).toLowerCase();
+            const OPENAI_MAP = {
+                // San Antonio
+                'san-antonio': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'new-braunfels': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'schertz': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'cibolo': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'boerne': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'universal-city': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'converse': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'live-oak': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'selma': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'helotes': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'alamo-heights': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'leon-valley': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'fair-oaks-ranch': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'timberwood-park': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'bulverde': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+                'canyon-lake': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+
+                // Dallas
+                'dallas': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'plano': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'frisco': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'mckinney': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'arlington': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'fort-worth': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'irving': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'garland': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'richardson': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+                'denton': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+
+                // Fort Lauderdale
+                'fort-lauderdale': { phone: '+17543454333', phoneLabel: '(754) 345-4333' },
+
+                // Irvine
+                'irvine': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'newport-beach': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'costa-mesa': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'lake-forest': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'tustin': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'mission-viejo': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'laguna-niguel': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'laguna-hills': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'aliso-viejo': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'huntington-beach': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'santa-ana': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'orange': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'anaheim': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'foothill-ranch': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'san-clemente': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+                'dana-point': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+
+                // Charlotte
+                'charlotte': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'concord': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'gastonia': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'rock-hill': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'huntersville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'kannapolis': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'matthews': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'pineville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'mooresville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+                'waxhaw': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+            };
+            if (OPENAI_MAP[slug]) return OPENAI_MAP[slug];
+        }
+    } catch (e) {}
+    return null;
+}
+
 export function CTAProvider({ children, initialCTA }) {
-    const [cta, setCta] = useState(initialCTA || {});
+    const [cta, setCta] = useState(() => {
+        const override = getOpenAIOverride();
+        return override ? { ...(initialCTA || {}), ...override } : (initialCTA || {});
+    });
 
     const prevInitialCtaRef = React.useRef(initialCTA);
     // Remembers which tracked phone number was already registered with Google Ads (WCM)
@@ -17,7 +103,8 @@ export function CTAProvider({ children, initialCTA }) {
     // Effect to handle dynamic updates when page transition updates initialCTA
     useEffect(() => {
         if (initialCTA && prevInitialCtaRef.current !== initialCTA) {
-            setCta(initialCTA);
+            const override = getOpenAIOverride();
+            setCta(override ? { ...initialCTA, ...override } : initialCTA);
             prevInitialCtaRef.current = initialCTA;
         }
     }, [initialCTA]);
@@ -136,14 +223,17 @@ export function CTAProvider({ children, initialCTA }) {
         if (!newCTAData) return;
 
         setCta((prevCta) => {
+            const openAIOverride = getOpenAIOverride(newCTAData?.citySlug || prevCta?.citySlug);
+            const dataToApply = openAIOverride ? { ...newCTAData, ...openAIOverride } : newCTAData;
+
             // Only override fields that are actually provided and not empty
             const updatedCta = { ...prevCta };
             let hasChanges = false;
 
-            Object.keys(newCTAData).forEach(key => {
-                if (newCTAData[key] !== null && newCTAData[key] !== undefined && newCTAData[key] !== '') {
-                    if (updatedCta[key] !== newCTAData[key]) {
-                        updatedCta[key] = newCTAData[key];
+            Object.keys(dataToApply).forEach(key => {
+                if (dataToApply[key] !== null && dataToApply[key] !== undefined && dataToApply[key] !== '') {
+                    if (updatedCta[key] !== dataToApply[key]) {
+                        updatedCta[key] = dataToApply[key];
                         hasChanges = true;
                     }
                 }
@@ -175,12 +265,15 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayou
 export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
     const { overrideCTA } = useContext(CTAContext) || {};
 
+    const openAIOverride = getOpenAIOverride(citySlug);
+    const effectiveCTAOverride = openAIOverride ? { ...(ctaOverride || {}), ...openAIOverride } : ctaOverride;
+
     const overridePayload = useMemo(() => ({
-        ...(ctaOverride || {}),
+        ...(effectiveCTAOverride || {}),
         cityName,
         stateCode,
         citySlug
-    }), [ctaOverride, citySlug, cityName, stateCode]);
+    }), [effectiveCTAOverride, citySlug, cityName, stateCode]);
 
     const ctaOverrideStr = JSON.stringify(overridePayload);
 
@@ -195,8 +288,8 @@ export function CityCTASetter({ ctaOverride, citySlug, cityName, stateCode }) {
         }
     }, [ctaOverrideStr, overrideCTA]);
 
-    const phoneLabel = ctaOverride?.phoneLabel || ctaOverride?.phone;
-    const phoneHref = ctaOverride?.phone ? `tel:${ctaOverride.phone}` : null;
+    const phoneLabel = effectiveCTAOverride?.phoneLabel || effectiveCTAOverride?.phone;
+    const phoneHref = effectiveCTAOverride?.phone ? `tel:${effectiveCTAOverride.phone}` : null;
 
     if (!phoneLabel) return null;
 
