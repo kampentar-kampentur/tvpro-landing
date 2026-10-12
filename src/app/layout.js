@@ -180,6 +180,17 @@ export default async function RootLayout({ children }) {
                 t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
             })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
+
+            (function() {
+              try {
+                const params = new URLSearchParams(window.location.search);
+                params.forEach((value, key) => {
+                  if (window.clarity) {
+                    window.clarity("set", key, value);
+                  }
+                });
+              } catch (e) {}
+            })();
           `}
         </Script>
         {/* Load Google Tag for Google Ads dynamic call forwarding */}
