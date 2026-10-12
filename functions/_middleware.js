@@ -191,7 +191,13 @@ export async function onRequest(context) {
     }
 
     // 8. OpenAI / ChatGPT Campaign Phone Substitution (Target Cities Only, No Cookies)
-    const utmSource = (url.searchParams.get('utm_source') || url.searchParams.get('source') || '').toLowerCase();
+    const utmSource = (
+        url.searchParams.get('utm_source') || 
+        url.searchParams.get('source') || 
+        url.searchParams.get('openAIsource') || 
+        url.searchParams.get('openaisource') || 
+        ''
+    ).toLowerCase();
     const isChatGPT = utmSource.includes('chatgpt') || 
                       utmSource.includes('openai') || 
                       (url.searchParams.get('utm_medium') || '').toLowerCase().includes('chatgpt') ||

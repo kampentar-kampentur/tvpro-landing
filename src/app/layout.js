@@ -184,11 +184,26 @@ export default async function RootLayout({ children }) {
             (function() {
               try {
                 const params = new URLSearchParams(window.location.search);
+
+                // 1. Send all query parameters to Clarity as custom tags
                 params.forEach((value, key) => {
                   if (window.clarity) {
                     window.clarity("set", key, value);
                   }
                 });
+
+                // 2. Explicit openAIsource handling + persistence across internal page navigation
+                let oaiSource = params.get("openAIsource") || params.get("openaisource") || params.get("openai_source");
+                if (oaiSource) {
+                  try { sessionStorage.setItem("clarity_openai_source", oaiSource); } catch(e) {}
+                } else {
+                  try { oaiSource = sessionStorage.getItem("clarity_openai_source"); } catch(e) {}
+                }
+
+                if (oaiSource && window.clarity) {
+                  window.clarity("set", "openAIsource", oaiSource);
+                  window.clarity("set", "source", oaiSource);
+                }
               } catch (e) {}
             })();
           `}

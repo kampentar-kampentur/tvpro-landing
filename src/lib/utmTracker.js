@@ -65,7 +65,7 @@ export function saveUtmParams() {
 
     // 2. Intelligent fallback mapping for non-standard alias parameters used by media buyers
     if (!captured.utm_source) {
-        const sourceAlias = captured.source || captured.src || captured.s || captured.oai_source;
+        const sourceAlias = captured.source || captured.src || captured.s || captured.oai_source || captured.openAIsource || captured.openaisource;
         if (sourceAlias) captured.utm_source = sourceAlias;
     }
     if (!captured.utm_medium) {
