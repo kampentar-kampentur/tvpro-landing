@@ -12,6 +12,7 @@ import Button from "@/ui/Button";
 import Checkbox from "@/ui/Checkbox";
 import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
+import { trackMetaLead } from "@/lib/fbTracker";
 
 const nameField = {
   name: "name",
@@ -130,6 +131,12 @@ const BookNowModal = () => {
             form_type: "bookNow",
             source: "book-now-modal",
           },
+        });
+        trackMetaLead({
+          content_name: "Book Now Modal",
+          form_type: "bookNow",
+          source: "book-now-modal",
+          city: city || "",
         });
         router.push("/see-you-soon");
       } else {

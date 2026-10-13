@@ -15,6 +15,7 @@ import { getUtmParams } from "@/lib/utmTracker";
 import Link from "next/link";
 import quizTracker from "@/lib/quizTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
+import { trackMetaLead } from "@/lib/fbTracker";
 
 const BestQuoteScheme = {
   steps: [
@@ -1744,6 +1745,13 @@ const BestQuoteModal = () => {
             wires: isNewQuiz ? (formData.wires?.wires || "") : (formData.wall?.wires || ""),
             currency: "USD",
           },
+        });
+        trackMetaLead({
+          content_name: "Best Quote Quiz",
+          form_type: "bestQuote",
+          value: totalPrice || undefined,
+          currency: "USD",
+          city: data.city || "",
         });
         router.push("/booking-success");
       } else {

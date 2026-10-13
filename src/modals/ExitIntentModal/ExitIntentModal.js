@@ -12,6 +12,7 @@ import Checkbox from "@/ui/Checkbox";
 import { useRouter } from 'next/navigation';
 import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
+import { trackMetaLead } from "@/lib/fbTracker";
 
 const nameField = {
     "name": "name",
@@ -106,6 +107,12 @@ const ExitIntentModal = () => {
                         form_type: "exitIntent",
                         source: "exit_intent_popup",
                     },
+                });
+                trackMetaLead({
+                    content_name: "Exit Intent Modal",
+                    form_type: "exitIntent",
+                    source: "exit_intent_popup",
+                    city: city || "",
                 });
                 sessionStorage.setItem('form_submitted', 'true');
                 close();
