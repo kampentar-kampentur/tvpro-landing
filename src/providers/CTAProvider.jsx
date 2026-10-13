@@ -236,63 +236,31 @@ export function getCampaignOverride(citySlug) {
 
     try {
         const params = new URLSearchParams(window.location.search);
-        
-        // Only inspect URL parameters and active session storage (never persistent localStorage)
-        let sessionUtm = {};
-        try {
-            const rawSession = sessionStorage.getItem('utm_params');
-            if (rawSession) sessionUtm = JSON.parse(rawSession);
-        } catch (e) {}
-
-        const hasUrlCampaign = Boolean(
-            params.get('utm_source') || 
-            params.get('usm_source') || 
-            params.get('source') || 
-            params.get('src') || 
-            params.get('utm_medium') || 
-            params.get('utm_campaign') || 
-            params.has('fbclid') || 
-            params.has('openAIsource') || 
-            params.has('openaisource') || 
-            params.has('oai_source')
-        );
-
-        // Only inherit sessionUtm if user navigated internally from within an existing campaign session
-        const isInternalNav = typeof document !== 'undefined' && 
-                              document.referrer && 
-                              document.referrer.includes(window.location.hostname);
-        const activeUtm = hasUrlCampaign ? {} : (isInternalNav ? sessionUtm : {});
 
         const utmSource = (
             params.get('utm_source') || 
             params.get('usm_source') || 
             params.get('source') || 
             params.get('src') || 
-            activeUtm.utm_source || 
-            activeUtm.usm_source || 
-            activeUtm.source || 
             ''
         ).toLowerCase();
 
         const utmMedium = (
             params.get('utm_medium') || 
             params.get('medium') || 
-            activeUtm.utm_medium || 
             ''
         ).toLowerCase();
 
         const utmCampaign = (
             params.get('utm_campaign') || 
             params.get('campaign') || 
-            activeUtm.utm_campaign || 
             ''
         ).toLowerCase();
 
-        const hasFbclid = params.has('fbclid') || Boolean(activeUtm.fbclid);
+        const hasFbclid = params.has('fbclid');
         const hasOpenAISource = params.has('openAIsource') || 
                                 params.has('openaisource') || 
-                                params.has('oai_source') || 
-                                Boolean(activeUtm.openAIsource || activeUtm.openaisource || activeUtm.oai_source);
+                                params.has('oai_source');
         const referrer = document.referrer || '';
 
         const isFB = isFacebookSource({ utmSource, utmMedium, utmCampaign, hasFbclid, referrer }) || 
@@ -307,8 +275,8 @@ export function getCampaignOverride(citySlug) {
         }
 
         // Resolve city/metro
-        const queryCity = params.get('city') || activeUtm.city || '';
-        const queryFrom = params.get('from') || activeUtm.from || '';
+        const queryCity = params.get('city') || '';
+        const queryFrom = params.get('from') || '';
         const path = window.location.pathname.replace(/^\/|\/$/g, '');
         const geoCity = window.__GEO_CITY__?.city || '';
         const geoState = window.__GEO_CITY__?.state || '';
