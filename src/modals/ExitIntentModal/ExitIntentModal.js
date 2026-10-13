@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ExitIntentModal.module.css";
 import Modal from "@/ui/Modal";
 import { useModalState } from "@/providers/ModalProvider";
@@ -9,10 +9,27 @@ import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
+
+const isExcludedPath = (pathname) => {
+    if (!pathname) return false;
+    const cleanPath = pathname.toLowerCase().replace(/\/+$/, '') || '/';
+    return (
+        cleanPath === '/book-now' ||
+        cleanPath.startsWith('/book-now/') ||
+        cleanPath === '/estimate' ||
+        cleanPath.startsWith('/estimate/') ||
+        cleanPath === '/quiz' ||
+        cleanPath.startsWith('/quiz/') ||
+        cleanPath === '/see-you-soon' ||
+        cleanPath.startsWith('/see-you-soon/') ||
+        cleanPath === '/booking-success' ||
+        cleanPath.startsWith('/booking-success/')
+    );
+};
 
 const nameField = {
     "name": "name",
@@ -45,6 +62,14 @@ const ExitIntentModal = () => {
     const [formData, setFormData] = useState({ name: '', phone: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
+    const isExcluded = isExcludedPath(pathname);
+
+    useEffect(() => {
+        if (isOpen && isExcluded) {
+            close();
+        }
+    }, [isOpen, isExcluded, close]);
 
     const handleChange = (fieldName) => (value) => {
         setFormData(prev => ({ ...prev, [fieldName]: value }));
@@ -124,6 +149,10 @@ const ExitIntentModal = () => {
             setIsSubmitting(false);
         }
     };
+
+    if (isExcluded) {
+        return null;
+    }
 
     return (
         <Modal isOpen={isOpen} onClose={close} className={styles.exitModal}>
