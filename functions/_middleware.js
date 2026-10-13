@@ -9,72 +9,291 @@ const BOT_AGENTS = [
 ];
 
 /**
- * Dedicated OpenAI / ChatGPT ad campaign phones per city cluster
+ * Campaign Phone Numbers & Mappings
+ * Supported Sources: Facebook (Meta, IG) & ChatGPT (OpenAI)
  */
-const OPENAI_CITY_PHONES = {
-    // San Antonio, TX: +1 210-796-8856
-    'san-antonio': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'new-braunfels': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'schertz': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'cibolo': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'boerne': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'universal-city': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'converse': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'live-oak': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'selma': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'helotes': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'alamo-heights': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'leon-valley': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'fair-oaks-ranch': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'timberwood-park': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'bulverde': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-    'canyon-lake': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
-
-    // Dallas, TX: +1 469-716-6501
-    'dallas': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'plano': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'frisco': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'mckinney': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'arlington': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'fort-worth': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'irving': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'garland': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'richardson': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-    'denton': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
-
-    // Fort Lauderdale, FL: +1 754-345-4333
-    'fort-lauderdale': { phone: '+17543454333', phoneLabel: '(754) 345-4333' },
-
-    // Irvine, CA: +1 949-998-6321
-    'irvine': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'newport-beach': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'costa-mesa': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'lake-forest': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'tustin': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'mission-viejo': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'laguna-niguel': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'laguna-hills': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'aliso-viejo': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'huntington-beach': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'santa-ana': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'orange': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'anaheim': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'foothill-ranch': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'san-clemente': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-    'dana-point': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
-
-    // Charlotte, NC: +1 980-455-8203
-    'charlotte': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'concord': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'gastonia': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'rock-hill': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'huntersville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'kannapolis': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'matthews': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'pineville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'mooresville': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
-    'waxhaw': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+const FB_PHONES = {
+    'san-antonio': { phone: '+12109425027', phoneLabel: '(210) 942-5027' },
+    'austin': { phone: '+17373833354', phoneLabel: '(737) 383-3354' },
+    'fort-lauderdale': { phone: '+17543353386', phoneLabel: '(754) 335-3386' },
+    'chicago': { phone: '+18723127556', phoneLabel: '(872) 312-7556' },
+    'irvine': { phone: '+19497769926', phoneLabel: '(949) 776-9926' },
 };
+const FB_DEFAULT_PHONE = { phone: '+12109425027', phoneLabel: '(210) 942-5027' };
+
+const OPENAI_PHONES = {
+    'san-antonio': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },
+    'dallas': { phone: '+14697166501', phoneLabel: '(469) 716-6501' },
+    'fort-lauderdale': { phone: '+17543454333', phoneLabel: '(754) 345-4333' },
+    'irvine': { phone: '+19499986321', phoneLabel: '(949) 998-6321' },
+    'charlotte': { phone: '+19804558203', phoneLabel: '(980) 455-8203' },
+};
+const OPENAI_DEFAULT_PHONE = { phone: '+12107968856', phoneLabel: '(210) 796-8856' };
+
+const STATE_TO_FB_METRO = {
+    'TX': 'san-antonio',
+    'FL': 'fort-lauderdale',
+    'IL': 'chicago',
+    'CA': 'irvine',
+};
+
+const STATE_TO_OPENAI_METRO = {
+    'TX': 'san-antonio',
+    'FL': 'fort-lauderdale',
+    'CA': 'irvine',
+    'NC': 'charlotte',
+};
+
+const METRO_MAP = {
+    // San Antonio, TX & suburbs
+    'san-antonio': 'san-antonio',
+    'san_antonio': 'san-antonio',
+    'sanantonio': 'san-antonio',
+    'satx': 'san-antonio',
+    'new-braunfels': 'san-antonio',
+    'schertz': 'san-antonio',
+    'cibolo': 'san-antonio',
+    'boerne': 'san-antonio',
+    'universal-city': 'san-antonio',
+    'converse': 'san-antonio',
+    'live-oak': 'san-antonio',
+    'selma': 'san-antonio',
+    'helotes': 'san-antonio',
+    'alamo-heights': 'san-antonio',
+    'leon-valley': 'san-antonio',
+    'fair-oaks-ranch': 'san-antonio',
+    'timberwood-park': 'san-antonio',
+    'bulverde': 'san-antonio',
+    'canyon-lake': 'san-antonio',
+
+    // Austin, TX & suburbs
+    'austin': 'austin',
+    'atx': 'austin',
+    'round-rock': 'austin',
+    'cedar-park': 'austin',
+    'georgetown': 'austin',
+    'san-marcos': 'austin',
+    'pflugerville': 'austin',
+    'buda': 'austin',
+    'kyle': 'austin',
+
+    // Fort Lauderdale / South Florida & suburbs
+    'fort-lauderdale': 'fort-lauderdale',
+    'fort_lauderdale': 'fort-lauderdale',
+    'fortlauderdale': 'fort-lauderdale',
+    'ft-lauderdale': 'fort-lauderdale',
+    'ft_lauderdale': 'fort-lauderdale',
+    'ftl': 'fort-lauderdale',
+    'miami': 'fort-lauderdale',
+    'south-florida': 'fort-lauderdale',
+    'south_florida': 'fort-lauderdale',
+    's-fl': 'fort-lauderdale',
+    's_fl': 'fort-lauderdale',
+    'sfl': 'fort-lauderdale',
+    'boca-raton': 'fort-lauderdale',
+    'hollywood': 'fort-lauderdale',
+    'pembroke-pines': 'fort-lauderdale',
+    'miramar': 'fort-lauderdale',
+    'coral-gables': 'fort-lauderdale',
+    'aventura': 'fort-lauderdale',
+    'kendall': 'fort-lauderdale',
+    'homestead': 'fort-lauderdale',
+    'hialeah': 'fort-lauderdale',
+    'miami-beach': 'fort-lauderdale',
+    'doral': 'fort-lauderdale',
+    'pompano-beach': 'fort-lauderdale',
+    'davie': 'fort-lauderdale',
+    'sunrise': 'fort-lauderdale',
+    'plantation': 'fort-lauderdale',
+    'deerfield-beach': 'fort-lauderdale',
+    'boynton-beach': 'fort-lauderdale',
+    'delray-beach': 'fort-lauderdale',
+    'west-palm-beach': 'fort-lauderdale',
+
+    // Chicago, IL & suburbs
+    'chicago': 'chicago',
+    'chi': 'chicago',
+    'naperville': 'chicago',
+    'aurora': 'chicago',
+    'joliet': 'chicago',
+    'arlington-heights': 'chicago',
+    'evanston': 'chicago',
+    'schaumburg': 'chicago',
+    'oak-brook': 'chicago',
+    'orland-park': 'chicago',
+    'palatine': 'chicago',
+    'elgin': 'chicago',
+    'waukegan': 'chicago',
+    'cicero': 'chicago',
+    'des-plaines': 'chicago',
+
+    // Irvine, CA / Orange County & suburbs
+    'irvine': 'irvine',
+    'orange-county': 'irvine',
+    'oc': 'irvine',
+    'newport-beach': 'irvine',
+    'costa-mesa': 'irvine',
+    'lake-forest': 'irvine',
+    'tustin': 'irvine',
+    'mission-viejo': 'irvine',
+    'laguna-niguel': 'irvine',
+    'laguna-hills': 'irvine',
+    'aliso-viejo': 'irvine',
+    'huntington-beach': 'irvine',
+    'santa-ana': 'irvine',
+    'orange': 'irvine',
+    'anaheim': 'irvine',
+    'foothill-ranch': 'irvine',
+    'san-clemente': 'irvine',
+    'dana-point': 'irvine',
+    'fullerton': 'irvine',
+    'garden-grove': 'irvine',
+
+    // Dallas, TX & suburbs (ChatGPT)
+    'dallas': 'dallas',
+    'dfw': 'dallas',
+    'plano': 'dallas',
+    'frisco': 'dallas',
+    'mckinney': 'dallas',
+    'arlington': 'dallas',
+    'fort-worth': 'dallas',
+    'irving': 'dallas',
+    'garland': 'dallas',
+    'richardson': 'dallas',
+    'denton': 'dallas',
+
+    // Charlotte, NC & suburbs (ChatGPT)
+    'charlotte': 'charlotte',
+    'concord': 'charlotte',
+    'gastonia': 'charlotte',
+    'rock-hill': 'charlotte',
+    'huntersville': 'charlotte',
+    'kannapolis': 'charlotte',
+    'matthews': 'charlotte',
+    'pineville': 'charlotte',
+    'mooresville': 'charlotte',
+    'waxhaw': 'charlotte',
+};
+
+function normalizeSlug(str) {
+    if (!str) return '';
+    return decodeURIComponent(str)
+        .toLowerCase()
+        .trim()
+        .replace(/^\/+|\/+$/g, '')
+        .replace(/[,\s_]+/g, '-');
+}
+
+function findMetroInText(text) {
+    if (!text) return null;
+    const clean = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    for (const [key, metro] of Object.entries(METRO_MAP)) {
+        if (clean.includes(key)) {
+            return metro;
+        }
+    }
+    return null;
+}
+
+function isFacebookSource({ utmSource, utmMedium, utmCampaign, hasFbclid, referrer }) {
+    if (hasFbclid) return true;
+    const src = (utmSource || '').toLowerCase().trim();
+    if (
+        src === 'fb' ||
+        src === 'facebook' ||
+        src === 'meta' ||
+        src === 'instagram' ||
+        src === 'ig' ||
+        src.startsWith('fb_') ||
+        src.startsWith('fb-') ||
+        src.startsWith('meta_') ||
+        src.startsWith('meta-') ||
+        src.startsWith('ig_') ||
+        src.startsWith('ig-') ||
+        src.includes('facebook') ||
+        src.includes('fbads') ||
+        src.includes('fb_ads')
+    ) {
+        return true;
+    }
+    const med = (utmMedium || '').toLowerCase().trim();
+    if (med.includes('facebook') || med.includes('meta') || med.includes('instagram')) return true;
+    const cmp = (utmCampaign || '').toLowerCase().trim();
+    if (cmp.includes('facebook') || cmp.startsWith('fb_') || cmp.startsWith('fb-') || cmp.includes('_fb_')) return true;
+    const ref = (referrer || '').toLowerCase().trim();
+    if (ref.includes('facebook.com') || ref.includes('instagram.com') || ref.includes('fb.me') || ref.includes('meta.com')) return true;
+    return false;
+}
+
+function isOpenAISource({ utmSource, utmMedium, utmCampaign, hasOpenAISource, referrer }) {
+    if (hasOpenAISource) return true;
+    const src = (utmSource || '').toLowerCase().trim();
+    if (src.includes('chatgpt') || src.includes('openai')) return true;
+    const med = (utmMedium || '').toLowerCase().trim();
+    if (med.includes('chatgpt') || med.includes('openai')) return true;
+    const cmp = (utmCampaign || '').toLowerCase().trim();
+    if (cmp.includes('chatgpt') || cmp.includes('openai')) return true;
+    const ref = (referrer || '').toLowerCase().trim();
+    if (ref.includes('chatgpt.com') || ref.includes('openai.com')) return true;
+    return false;
+}
+
+function resolveCampaignPhone(params, context = {}) {
+    const utmSource = params.get('utm_source') || params.get('source') || params.get('usm_source') || params.get('src') || '';
+    const utmMedium = params.get('utm_medium') || params.get('medium') || '';
+    const utmCampaign = params.get('utm_campaign') || params.get('campaign') || '';
+    const hasFbclid = params.has('fbclid');
+    const hasOpenAISource = params.has('openAIsource') || params.has('openaisource') || params.has('oai_source');
+    const referrer = context.referrer || '';
+
+    const isFB = isFacebookSource({ utmSource, utmMedium, utmCampaign, hasFbclid, referrer });
+    const isOAI = isOpenAISource({ utmSource, utmMedium, utmCampaign, hasOpenAISource, referrer });
+
+    if (!isFB && !isOAI) return null;
+
+    const queryCity = params.get('city');
+    const queryFrom = params.get('from');
+    const pathname = context.pathname || '';
+    const cfCity = context.cfCity || '';
+    const cfRegion = context.cfRegion || '';
+
+    let metro = null;
+
+    if (queryCity) {
+        metro = METRO_MAP[normalizeSlug(queryCity)] || findMetroInText(queryCity);
+    }
+    if (!metro && queryFrom) {
+        metro = METRO_MAP[normalizeSlug(queryFrom)] || findMetroInText(queryFrom);
+    }
+    if (!metro && context.workingPath && context.workingPath !== 'book-now' && context.workingPath !== 'index') {
+        metro = METRO_MAP[normalizeSlug(context.workingPath)] || findMetroInText(context.workingPath);
+    }
+    if (!metro && pathname && pathname !== '/' && pathname !== '/book-now') {
+        metro = METRO_MAP[normalizeSlug(pathname)] || findMetroInText(pathname);
+    }
+    if (!metro && utmCampaign) {
+        metro = findMetroInText(utmCampaign);
+    }
+    if (!metro && cfCity) {
+        metro = METRO_MAP[normalizeSlug(cfCity)] || findMetroInText(cfCity);
+    }
+    if (!metro && cfRegion) {
+        const stateUpper = cfRegion.trim().toUpperCase();
+        metro = isFB ? STATE_TO_FB_METRO[stateUpper] : STATE_TO_OPENAI_METRO[stateUpper];
+    }
+
+    if (isFB) {
+        const phoneData = (metro && FB_PHONES[metro]) ? FB_PHONES[metro] : FB_DEFAULT_PHONE;
+        return { ...phoneData, source: 'facebook', metro: metro || 'default-fallback' };
+    }
+
+    if (isOAI) {
+        const phoneData = (metro && OPENAI_PHONES[metro]) ? OPENAI_PHONES[metro] : OPENAI_DEFAULT_PHONE;
+        return { ...phoneData, source: 'chatgpt', metro: metro || 'default-fallback' };
+    }
+
+    return null;
+}
 
 export async function onRequest(context) {
     const url = new URL(context.request.url);
@@ -192,22 +411,16 @@ export async function onRequest(context) {
         targetState = cfRegion ? cfRegion.toUpperCase() : null;
     }
 
-    // 8. OpenAI / ChatGPT Campaign Phone Substitution (Target Cities Only, No Cookies)
-    const utmSource = (
-        url.searchParams.get('utm_source') || 
-        url.searchParams.get('source') || 
-        url.searchParams.get('openAIsource') || 
-        url.searchParams.get('openaisource') || 
-        ''
-    ).toLowerCase();
-    const isChatGPT = utmSource.includes('chatgpt') || 
-                      utmSource.includes('openai') || 
-                      (url.searchParams.get('utm_medium') || '').toLowerCase().includes('chatgpt') ||
-                      (url.searchParams.get('utm_campaign') || '').toLowerCase().includes('chatgpt');
+    // 8. Dynamic Campaign Phone Substitution (Facebook & OpenAI / ChatGPT)
+    const campaignPhone = resolveCampaignPhone(url.searchParams, {
+        pathname: url.pathname,
+        workingPath: workingPath,
+        cfCity: context.request.cf?.city,
+        cfRegion: context.request.cf?.regionCode || context.request.cf?.region,
+        referrer: context.request.headers.get('Referer') || '',
+    });
 
-    const openaiPhone = isChatGPT ? OPENAI_CITY_PHONES[workingPath] : null;
-
-    if (targetCity || openaiPhone) {
+    if (targetCity || campaignPhone) {
         const rewriter = new HTMLRewriter();
 
         if (targetCity) {
@@ -231,34 +444,37 @@ export async function onRequest(context) {
                 });
         }
 
-        if (openaiPhone) {
+        if (campaignPhone) {
             const phoneDataPayload = {
-                phone: openaiPhone.phone,
-                phoneLabel: openaiPhone.phoneLabel
+                phone: campaignPhone.phone,
+                phoneLabel: campaignPhone.phoneLabel,
+                source: campaignPhone.source,
+                metro: campaignPhone.metro
             };
 
             rewriter
                 .on('a[href^="tel:"]', {
                     element(el) {
-                        el.setAttribute('href', `tel:${openaiPhone.phone}`);
+                        el.setAttribute('href', `tel:${campaignPhone.phone}`);
                         const aria = el.getAttribute('aria-label');
                         if (aria && /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/.test(aria)) {
-                            el.setAttribute('aria-label', aria.replace(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/, openaiPhone.phoneLabel));
+                            el.setAttribute('aria-label', aria.replace(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/, campaignPhone.phoneLabel));
                         }
                         const title = el.getAttribute('title');
                         if (title && /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/.test(title)) {
-                            el.setAttribute('title', title.replace(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/, openaiPhone.phoneLabel));
+                            el.setAttribute('title', title.replace(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/, campaignPhone.phoneLabel));
                         }
                     }
                 })
                 .on('head', {
                     element(el) {
-                        el.append(`<script id="openai-phone-override">
+                        el.append(`<script id="campaign-phone-override">
+window.__CAMPAIGN_PHONE__ = ${JSON.stringify(phoneDataPayload)};
 window.__OPENAI_PHONE__ = ${JSON.stringify(phoneDataPayload)};
 (function() {
     function swap() {
-        var label = ${JSON.stringify(openaiPhone.phoneLabel)};
-        var href = "tel:" + ${JSON.stringify(openaiPhone.phone)};
+        var label = ${JSON.stringify(campaignPhone.phoneLabel)};
+        var href = "tel:" + ${JSON.stringify(campaignPhone.phone)};
         var btns = document.querySelectorAll('a[href^="tel:"]');
         btns.forEach(function(b) {
             b.href = href;

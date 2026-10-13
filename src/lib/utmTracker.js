@@ -5,6 +5,7 @@ const STORAGE_KEY = 'utm_params';
  */
 const KNOWN_TRACKING_KEYS = [
     'utm_source',
+    'usm_source',
     'utm_medium',
     'utm_campaign',
     'utm_content',
@@ -65,7 +66,7 @@ export function saveUtmParams() {
 
     // 2. Intelligent fallback mapping for non-standard alias parameters used by media buyers
     if (!captured.utm_source) {
-        const sourceAlias = captured.source || captured.src || captured.s || captured.oai_source || captured.openAIsource || captured.openaisource;
+        const sourceAlias = captured.source || captured.src || captured.s || captured.oai_source || captured.openAIsource || captured.openaisource || captured.usm_source;
         if (sourceAlias) captured.utm_source = sourceAlias;
     }
     if (!captured.utm_medium) {
