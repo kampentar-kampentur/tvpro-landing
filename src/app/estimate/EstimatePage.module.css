@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  padding: 40px 16px;
   background-color: var(--background);
   box-sizing: border-box;
 }
@@ -162,15 +162,15 @@
 
 .btnWrap {
   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  margin-top: 4px;
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: 8px;
   gap: 16px;
 }
 
 .button {
+  width: 100%;
   height: 52px;
-  flex-shrink: 0;
 }
 
 
@@ -232,7 +232,7 @@
   }
 
   .btnWrap {
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 16px;
     align-items: stretch;
   }
