@@ -236,42 +236,64 @@ export function getCampaignOverride(citySlug) {
 
     try {
         const params = new URLSearchParams(window.location.search);
-        let storedUtm = {};
+        
+        // Only inspect URL parameters and active session storage (never persistent localStorage)
+        let sessionUtm = {};
         try {
-            storedUtm = getUtmParams() || {};
+            const rawSession = sessionStorage.getItem('utm_params');
+            if (rawSession) sessionUtm = JSON.parse(rawSession);
         } catch (e) {}
+
+        const hasUrlCampaign = Boolean(
+            params.get('utm_source') || 
+            params.get('usm_source') || 
+            params.get('source') || 
+            params.get('src') || 
+            params.get('utm_medium') || 
+            params.get('utm_campaign') || 
+            params.has('fbclid') || 
+            params.has('openAIsource') || 
+            params.has('openaisource') || 
+            params.has('oai_source')
+        );
+
+        // Only inherit sessionUtm if user navigated internally from within an existing campaign session
+        const isInternalNav = typeof document !== 'undefined' && 
+                              document.referrer && 
+                              document.referrer.includes(window.location.hostname);
+        const activeUtm = hasUrlCampaign ? {} : (isInternalNav ? sessionUtm : {});
 
         const utmSource = (
             params.get('utm_source') || 
             params.get('usm_source') || 
             params.get('source') || 
             params.get('src') || 
-            storedUtm.utm_source || 
-            storedUtm.usm_source || 
-            storedUtm.source || 
+            activeUtm.utm_source || 
+            activeUtm.usm_source || 
+            activeUtm.source || 
             ''
         ).toLowerCase();
 
         const utmMedium = (
             params.get('utm_medium') || 
             params.get('medium') || 
-            storedUtm.utm_medium || 
+            activeUtm.utm_medium || 
             ''
         ).toLowerCase();
 
         const utmCampaign = (
             params.get('utm_campaign') || 
             params.get('campaign') || 
-            storedUtm.utm_campaign || 
+            activeUtm.utm_campaign || 
             ''
         ).toLowerCase();
 
-        const hasFbclid = params.has('fbclid') || Boolean(storedUtm.fbclid);
+        const hasFbclid = params.has('fbclid') || Boolean(activeUtm.fbclid);
         const hasOpenAISource = params.has('openAIsource') || 
                                 params.has('openaisource') || 
                                 params.has('oai_source') || 
-                                Boolean(storedUtm.openAIsource || storedUtm.openaisource || storedUtm.oai_source);
-        const referrer = document.referrer || storedUtm.referrer || '';
+                                Boolean(activeUtm.openAIsource || activeUtm.openaisource || activeUtm.oai_source);
+        const referrer = document.referrer || '';
 
         const isFB = isFacebookSource({ utmSource, utmMedium, utmCampaign, hasFbclid, referrer }) || 
                      window.__CAMPAIGN_PHONE__?.source === 'facebook';
@@ -285,8 +307,8 @@ export function getCampaignOverride(citySlug) {
         }
 
         // Resolve city/metro
-        const queryCity = params.get('city') || storedUtm.city || '';
-        const queryFrom = params.get('from') || storedUtm.from || '';
+        const queryCity = params.get('city') || activeUtm.city || '';
+        const queryFrom = params.get('from') || activeUtm.from || '';
         const path = window.location.pathname.replace(/^\/|\/$/g, '');
         const geoCity = window.__GEO_CITY__?.city || '';
         const geoState = window.__GEO_CITY__?.state || '';
@@ -302,7 +324,7 @@ export function getCampaignOverride(citySlug) {
         if (!metro && queryFrom) {
             metro = METRO_MAP[normalizeSlug(queryFrom)] || findMetroInText(queryFrom);
         }
-        if (!metro && path && path !== 'book-now' && path !== 'index') {
+        if (!metro && path && path !== 'book-now' && path !== 'estimate' && path !== 'index') {
             metro = METRO_MAP[normalizeSlug(path)] || findMetroInText(path);
         }
         if (!metro && utmCampaign) {
