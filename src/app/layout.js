@@ -306,6 +306,11 @@ export default async function RootLayout({ children }) {
                       window.location.pathname === '/b' ||
                       window.location.pathname.indexOf('/b/') === 0
                     );
+                    var isBookNow = typeof window !== 'undefined' && (
+                      window.location.pathname === '/book-now' ||
+                      window.location.pathname.indexOf('/book-now/') === 0
+                    );
+                    if (isBookNow) return;
 
                     function mountChatWidget() {
                       if (document.querySelector('script[data-widget-id="69a71eb8a27e8c3d964270ee"]')) return;

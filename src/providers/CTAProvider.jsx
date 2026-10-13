@@ -16,7 +16,8 @@ function getOpenAIOverride(citySlug) {
                           (params.get('utm_campaign') || '').toLowerCase().includes('chatgpt');
 
         if (isChatGPT) {
-            const slug = (citySlug || window.location.pathname.replace(/^\/|\/$/g, '')).toLowerCase();
+            const queryCity = (params.get('city') || params.get('from') || '').toLowerCase().replace(/^\/|\/$/g, '');
+            const slug = (citySlug || queryCity || window.location.pathname.replace(/^\/|\/$/g, '')).toLowerCase();
             const OPENAI_MAP = {
                 // San Antonio
                 'san-antonio': { phone: '+12107968856', phoneLabel: '(210) 796-8856' },

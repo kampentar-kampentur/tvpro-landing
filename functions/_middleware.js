@@ -101,11 +101,13 @@ export async function onRequest(context) {
     // 3. Determine working path (Actual path or Geo-mapped path)
     let workingPath = (path === 'index' ? '' : path);
 
-    if (isRoot) {
+    if (isRoot || path === 'book-now') {
         if (!disableGeo) {
-            // Fallback to Geo-IP detection
+            // Check query params first, then fallback to Geo-IP detection
+            const queryFrom = url.searchParams.get('from')?.replace(/^\/|\/$/g, '').toLowerCase();
+            const queryCity = url.searchParams.get('city')?.toLowerCase();
             const userCity = context.request.cf?.city?.toLowerCase();
-            const matchedSlug = userCity ? config.geo[userCity] : null;
+            const matchedSlug = queryFrom || (queryCity ? config.geo[queryCity] : null) || (userCity ? config.geo[userCity] : null);
 
             if (matchedSlug) {
                 workingPath = matchedSlug;

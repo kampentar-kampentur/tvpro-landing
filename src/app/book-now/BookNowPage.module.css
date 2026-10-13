@@ -1,0 +1,161 @@
+.container {
+  min-height: calc(100vh - var(--header-height, 80px) - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: var(--background);
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  max-width: 584px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-extra-light);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow:
+    0px 5px 11px 0px rgba(0, 0, 0, 0.05),
+    0px 19px 19px 0px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: start;
+  box-sizing: border-box;
+}
+
+.card form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: start;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 60px;
+  letter-spacing: 0%;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  color: var(--foreground);
+}
+
+.bookNowInput {
+  margin-bottom: 20px;
+}
+
+.btnWrap {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.discountBanner {
+  border: 1px solid var(--gray-extra-light);
+  background-color: var(--gray-extra-light);
+  border-radius: 12px;
+  padding: 24px;
+  align-items: flex-start;
+  text-align: start;
+}
+
+.discountLabel {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--foreground);
+}
+
+.discountText {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.discountWord {
+  font-weight: bold;
+}
+
+.discountPercent {
+  font-weight: bold;
+  color: #ea580c;
+}
+
+.submitError {
+  color: #ff4d4f;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+.button {
+  height: 52px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .discountText {
+    max-width: 365px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 24px 16px;
+    border-radius: 16px;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .discountBanner {
+    padding: 16px;
+  }
+
+  .discountLabel {
+    font-size: 16px;
+    line-height: 20px;
+    margin: 0 0 6px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 21px;
+  }
+
+  .title {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  .btnWrap {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 21px;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

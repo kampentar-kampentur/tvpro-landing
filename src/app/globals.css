@@ -31,6 +31,19 @@ chat-widget {
     transition: transform 0.3s ease-in-out;
 }
 
+/* Hide Chat Widget and Jumping Phone FAB on /book-now */
+body.book-now-page chat-widget,
+body.book-now-page .chat-widget-animated,
+body.book-now-page [id*="chat-widget"],
+body.book-now-page .chat-widget-button,
+body.book-now-page .phoneButton,
+body.book-now-page [class*="phoneButton"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 /* Attention Animations (Reusable) */
 @keyframes widget-sequence {
     /* cycle is 30s total */
