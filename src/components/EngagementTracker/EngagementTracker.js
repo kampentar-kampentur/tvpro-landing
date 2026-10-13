@@ -4,6 +4,23 @@ import { useEffect, useRef, useCallback } from 'react';
 import { useModal } from "@/providers/ModalProvider";
 import { usePathname } from 'next/navigation';
 
+const isExcludedPath = (pathname) => {
+    if (!pathname) return false;
+    const cleanPath = pathname.toLowerCase().replace(/\/+$/, '') || '/';
+    return (
+        cleanPath === '/book-now' ||
+        cleanPath.startsWith('/book-now/') ||
+        cleanPath === '/estimate' ||
+        cleanPath.startsWith('/estimate/') ||
+        cleanPath === '/quiz' ||
+        cleanPath.startsWith('/quiz/') ||
+        cleanPath === '/see-you-soon' ||
+        cleanPath.startsWith('/see-you-soon/') ||
+        cleanPath === '/booking-success' ||
+        cleanPath.startsWith('/booking-success/')
+    );
+};
+
 const EngagementTracker = () => {
     const { openModal, modals } = useModal();
     const pathname = usePathname();
@@ -13,17 +30,25 @@ const EngagementTracker = () => {
     const lastScrollPos = useRef(0);
     const isAnyModalOpen = useRef(false);
 
+    const isExcluded = isExcludedPath(pathname);
+
     // Update ref when modals change
     useEffect(() => {
         isAnyModalOpen.current = modals && modals.length > 0;
     }, [modals]);
 
     const triggerPopup = useCallback(() => {
+        // Prevent triggering on dedicated form and funnel pages (book-now, estimate, quiz, etc.)
+        if (isExcluded) {
+            return;
+        }
+
         // Prevent triggering on main blog index, pagination, and category pages, but keep on blog posts
         if (pathname) {
-            const isBlogMain = pathname === '/blog' || pathname === '/blog/';
-            const isBlogPage = pathname.startsWith('/blog/page/');
-            const isBlogCategory = pathname.startsWith('/blog/category/');
+            const cleanPath = pathname.toLowerCase().replace(/\/+$/, '') || '/';
+            const isBlogMain = cleanPath === '/blog';
+            const isBlogPage = cleanPath.startsWith('/blog/page/');
+            const isBlogCategory = cleanPath.startsWith('/blog/category/');
             if (isBlogMain || isBlogPage || isBlogCategory) {
                 return;
             }
@@ -57,9 +82,14 @@ const EngagementTracker = () => {
         openModal('ExitIntentModal');
         hasTriggered.current = true;
         sessionStorage.setItem('exit_popup_triggered', 'true');
-    }, [openModal, pathname]);
+    }, [openModal, pathname, isExcluded]);
 
     useEffect(() => {
+        if (isExcluded) {
+            if (idleTimer.current) clearTimeout(idleTimer.current);
+            return;
+        }
+
         // Mark real human interaction on first physical action
         const markInteraction = () => {
             hasRealInteraction.current = true;
@@ -148,7 +178,7 @@ const EngagementTracker = () => {
                 document.removeEventListener(event, resetIdleTimer);
             });
         };
-    }, [triggerPopup]);
+    }, [triggerPopup, isExcluded]);
 
     return null; // Side-effect only component
 };
