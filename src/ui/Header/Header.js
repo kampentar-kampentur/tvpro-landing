@@ -16,6 +16,7 @@ export default function Header({ cta: parentCta }) {
   const isBlog = pathname && pathname.startsWith("/blog");
   const isVariantB = pathname === "/b" || pathname?.startsWith("/b/");
   const isBookNow = pathname === "/book-now" || pathname?.startsWith("/book-now");
+  const isEstimate = pathname === "/estimate" || pathname?.startsWith("/estimate");
   const [hideAnnouncement, setHideAnnouncement] = useState(false);
   const containerRef = useRef(null);
 
@@ -120,7 +121,7 @@ export default function Header({ cta: parentCta }) {
               isBlog={isBlog}
               isHome={pathname === "/"}
               isVariantB={isVariantB}
-              isBookNow={isBookNow}
+              isBookNow={isBookNow || isEstimate}
             />
           </div>
         </div>

@@ -265,10 +265,10 @@ function resolveCampaignPhone(params, context = {}) {
     if (!metro && queryFrom) {
         metro = METRO_MAP[normalizeSlug(queryFrom)] || findMetroInText(queryFrom);
     }
-    if (!metro && context.workingPath && context.workingPath !== 'book-now' && context.workingPath !== 'index') {
+    if (!metro && context.workingPath && context.workingPath !== 'book-now' && context.workingPath !== 'estimate' && context.workingPath !== 'index') {
         metro = METRO_MAP[normalizeSlug(context.workingPath)] || findMetroInText(context.workingPath);
     }
-    if (!metro && pathname && pathname !== '/' && pathname !== '/book-now') {
+    if (!metro && pathname && pathname !== '/' && pathname !== '/book-now' && pathname !== '/estimate') {
         metro = METRO_MAP[normalizeSlug(pathname)] || findMetroInText(pathname);
     }
     if (!metro && utmCampaign) {
@@ -320,7 +320,7 @@ export async function onRequest(context) {
     // 3. Determine working path (Actual path or Geo-mapped path)
     let workingPath = (path === 'index' ? '' : path);
 
-    if (isRoot || path === 'book-now') {
+    if (isRoot || path === 'book-now' || path === 'estimate') {
         if (!disableGeo) {
             // Check query params first, then fallback to Geo-IP detection
             const queryFrom = url.searchParams.get('from')?.replace(/^\/|\/$/g, '').toLowerCase();

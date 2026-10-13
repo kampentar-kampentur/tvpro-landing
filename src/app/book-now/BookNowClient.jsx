@@ -9,6 +9,7 @@ import Button from "@/ui/Button";
 import Checkbox from "@/ui/Checkbox";
 import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
+import { trackMetaLead } from "@/lib/fbTracker";
 import { useCTA } from "@/providers/CTAProvider";
 
 const nameField = {
@@ -144,6 +145,12 @@ export default function BookNowClient() {
             form_type: "bookNow",
             source: "book-now-page",
           },
+        });
+        trackMetaLead({
+          content_name: "Book Now Page",
+          form_type: "bookNow",
+          source: "book-now-page",
+          city: city || "",
         });
         router.push("/see-you-soon");
       } else {

@@ -19,6 +19,7 @@ import Breadcrumbs from "@/ui/Breadcrumbs";
 import LogoSVG from "@/assets/logo.svg";
 import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
+import { trackMetaLead } from "@/lib/fbTracker";
 
 const scheduleOptions = [
   { value: "Full-time", label: "Full-time" },
@@ -394,6 +395,11 @@ export default function CareersModal() {
             form_type: "careers",
             experience: formData.experience || "",
           },
+        });
+        trackMetaLead({
+          content_name: "Technician Application",
+          form_type: "careers",
+          city: formData.city || "",
         });
         setIsSuccess(true);
       } else {

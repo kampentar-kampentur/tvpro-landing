@@ -1,0 +1,271 @@
+.container {
+  min-height: calc(100vh - var(--header-height, 80px) - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: var(--background);
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  max-width: 584px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-extra-light);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow:
+    0px 5px 11px 0px rgba(0, 0, 0, 0.05),
+    0px 19px 19px 0px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: start;
+  box-sizing: border-box;
+}
+
+.card form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: start;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 60px;
+  letter-spacing: 0%;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  color: var(--foreground);
+}
+
+.questionBlock {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.questionLabel {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--foreground);
+  margin-bottom: 10px;
+  text-align: start;
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.optionChip {
+  min-height: 48px;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--gray-extra-light);
+  background-color: var(--white);
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  text-align: center;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+
+.optionChip:hover {
+  border-color: var(--gray);
+  background-color: var(--background);
+}
+
+.optionChipSelected {
+  background-color: var(--foreground);
+  color: var(--white);
+  border-color: var(--foreground);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(14, 14, 19, 0.15);
+}
+
+.optionChipSelected:hover {
+  background-color: var(--foreground);
+  color: var(--white);
+  border-color: var(--foreground);
+}
+
+.bookNowInput {
+  margin-bottom: 20px;
+}
+
+.discountBanner {
+  border: 1px solid var(--gray-extra-light);
+  background-color: var(--gray-extra-light);
+  border-radius: 12px;
+  padding: 24px;
+  align-items: flex-start;
+  text-align: start;
+  margin-bottom: 20px;
+}
+
+.discountLabel {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--foreground);
+}
+
+.discountText {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.discountPercent {
+  font-weight: bold;
+  color: #ea580c;
+}
+
+.submitError {
+  color: #ff4d4f;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.btnWrap {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-top: 4px;
+  gap: 16px;
+}
+
+.button {
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.successCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.successIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--green);
+}
+
+.successTitle {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+  color: var(--foreground);
+  margin: 0 0 12px;
+}
+
+.successText {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--gray-medium);
+  margin: 0;
+  max-width: 440px;
+}
+
+@media (min-width: 1024px) {
+  .discountText {
+    max-width: 365px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 24px 16px;
+    border-radius: 16px;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .title {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 21px;
+  }
+
+  .questionLabel {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .optionsGrid {
+    gap: 8px;
+  }
+
+  .optionChip {
+    min-height: 44px;
+    font-size: 13px;
+    padding: 8px 4px;
+  }
+
+  .discountBanner {
+    padding: 16px;
+  }
+
+  .discountLabel {
+    font-size: 16px;
+    line-height: 20px;
+    margin: 0 0 6px;
+  }
+
+  .btnWrap {
+    flex-direction: column-reverse;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
