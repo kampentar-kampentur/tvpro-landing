@@ -236,32 +236,42 @@ export function getCampaignOverride(citySlug) {
 
     try {
         const params = new URLSearchParams(window.location.search);
+        let storedUtm = {};
+        try {
+            storedUtm = getUtmParams() || {};
+        } catch (e) {}
 
         const utmSource = (
             params.get('utm_source') || 
             params.get('usm_source') || 
             params.get('source') || 
             params.get('src') || 
+            storedUtm.utm_source || 
+            storedUtm.usm_source || 
+            storedUtm.source || 
             ''
         ).toLowerCase();
 
         const utmMedium = (
             params.get('utm_medium') || 
             params.get('medium') || 
+            storedUtm.utm_medium || 
             ''
         ).toLowerCase();
 
         const utmCampaign = (
             params.get('utm_campaign') || 
             params.get('campaign') || 
+            storedUtm.utm_campaign || 
             ''
         ).toLowerCase();
 
-        const hasFbclid = params.has('fbclid');
+        const hasFbclid = params.has('fbclid') || Boolean(storedUtm.fbclid);
         const hasOpenAISource = params.has('openAIsource') || 
                                 params.has('openaisource') || 
-                                params.has('oai_source');
-        const referrer = document.referrer || '';
+                                params.has('oai_source') || 
+                                Boolean(storedUtm.openAIsource || storedUtm.openaisource || storedUtm.oai_source);
+        const referrer = document.referrer || storedUtm.referrer || '';
 
         const isFB = isFacebookSource({ utmSource, utmMedium, utmCampaign, hasFbclid, referrer }) || 
                      window.__CAMPAIGN_PHONE__?.source === 'facebook';
@@ -275,8 +285,8 @@ export function getCampaignOverride(citySlug) {
         }
 
         // Resolve city/metro
-        const queryCity = params.get('city') || '';
-        const queryFrom = params.get('from') || '';
+        const queryCity = params.get('city') || storedUtm.city || '';
+        const queryFrom = params.get('from') || storedUtm.from || '';
         const path = window.location.pathname.replace(/^\/|\/$/g, '');
         const geoCity = window.__GEO_CITY__?.city || '';
         const geoState = window.__GEO_CITY__?.state || '';
@@ -292,7 +302,7 @@ export function getCampaignOverride(citySlug) {
         if (!metro && queryFrom) {
             metro = METRO_MAP[normalizeSlug(queryFrom)] || findMetroInText(queryFrom);
         }
-        if (!metro && path && path !== 'book-now' && path !== 'estimate' && path !== 'index') {
+        if (!metro && path && path !== 'book-now' && path !== 'index') {
             metro = METRO_MAP[normalizeSlug(path)] || findMetroInText(path);
         }
         if (!metro && utmCampaign) {
