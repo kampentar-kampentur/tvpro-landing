@@ -25,7 +25,8 @@
   box-sizing: border-box;
 }
 
-.card form {
+.card form,
+.formWrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -146,12 +147,17 @@
   color: #ea580c;
 }
 
-.submitError {
+.submitErrorContainer {
+  min-height: 20px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.submitErrorText {
   color: #ff4d4f;
   font-size: 14px;
   line-height: 20px;
-  margin: 0 0 16px;
-  text-align: center;
+  display: block;
 }
 
 .btnWrap {
@@ -167,41 +173,7 @@
   flex-shrink: 0;
 }
 
-.successCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 20px 0;
-}
 
-.successIcon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background-color: var(--background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  color: var(--green);
-}
-
-.successTitle {
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 40px;
-  color: var(--foreground);
-  margin: 0 0 12px;
-}
-
-.successText {
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--gray-medium);
-  margin: 0;
-  max-width: 440px;
-}
 
 @media (min-width: 1024px) {
   .discountText {
