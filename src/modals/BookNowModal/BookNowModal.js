@@ -78,6 +78,12 @@ const BookNowModal = () => {
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
 
       const location = getLeadLocation();
+      const utm = getUtmParams() || {};
+      const trueSource =
+        utm.utm_source ||
+        (utm.fbclid ? "facebook" : null) ||
+        (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
+        "direct";
 
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
@@ -88,14 +94,15 @@ const BookNowModal = () => {
           data: {
             name: formData.name,
             phone: formData.phone,
-            source: data?.props?.source || "book-now-modal",
+            source: trueSource,
+            formType: "bookNowModal",
             tvCount: data?.props?.tvCount || null,
             city: location.city,
             state: location.state,
             page: location.page,
             lat: location.lat,
             lng: location.lng,
-            ...getUtmParams(),
+            ...utm,
             submittedAt: new Date().toISOString(),
             timestamp: Date.now(),
           },
@@ -139,7 +146,7 @@ const BookNowModal = () => {
           content_name: "Book Now Modal",
           form_type: "bookNow",
           source: "book-now-modal",
-          city: city || "",
+          city: location.city || "",
         });
         router.push("/see-you-soon");
       } else {
@@ -195,7 +202,7 @@ const BookNowModal = () => {
 
   return (
     <Modal isOpen={isOpen} onClose={close} className={styles.bookNow}>
-      <form>
+      <div className={styles.formWrapper}>
         <h3 className={styles.title}>Get a Quick Quote</h3>
         <p className={styles.subtitle}>
           Leave your number — we’ll call and give you the exact price
@@ -220,11 +227,17 @@ const BookNowModal = () => {
           </p>
         </div>
 
-        {submitError && (
-          <p style={{ color: "#ff4d4f", fontSize: "14px", margin: "8px 0 0", textAlign: "center" }}>
-            {submitError}
-          </p>
-        )}
+        <p
+          style={{
+            color: "#ff4d4f",
+            fontSize: "14px",
+            margin: "8px 0 0",
+            textAlign: "center",
+            display: submitError ? "block" : "none",
+          }}
+        >
+          {submitError}
+        </p>
 
         <div className={styles.btnWrap}>
           <Checkbox label={<TermsText />} />
@@ -236,7 +249,7 @@ const BookNowModal = () => {
             {isSubmitting ? "Sending..." : "Send"}
           </Button>
         </div>
-      </form>
+      </div>
     </Modal>
   );
 };

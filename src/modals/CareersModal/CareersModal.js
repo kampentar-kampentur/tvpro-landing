@@ -360,6 +360,26 @@ export default function CareersModal() {
       // Remove file and otherCity fields as they are not needed in Strapi
       const { file, otherCity, ...postData } = submissionData;
 
+      // Filter UTM params strictly to keys defined in Strapi technician-application schema
+      // to prevent Strapi v5 strict validation errors (e.g. unknown landing_url, landing_path, etc.)
+      const rawUtm = getUtmParams() || {};
+      const allowedUtmKeys = [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_term",
+        "utm_content",
+        "gclid",
+        "msclkid",
+        "fbclid"
+      ];
+      const utmData = {};
+      for (const key of allowedUtmKeys) {
+        if (rawUtm[key] !== undefined && rawUtm[key] !== null && rawUtm[key] !== "") {
+          utmData[key] = String(rawUtm[key]);
+        }
+      }
+
       const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
 
       const response = await fetch(`${apiUrl}/api/technician-applications`, {
@@ -368,7 +388,7 @@ export default function CareersModal() {
         body: JSON.stringify({
           data: {
             ...postData,
-            ...getUtmParams(),
+            ...utmData,
           }
         }),
       });

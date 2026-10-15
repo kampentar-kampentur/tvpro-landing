@@ -71,6 +71,10 @@ button.closeButton:hover {
     display: block;
     overflow-y: auto;
   }
+
+  .modalInner {
+    display: block;
+  }
 }
 
 .modalWrapper {
@@ -79,4 +83,11 @@ button.closeButton:hover {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+}
+
+.modalInner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }

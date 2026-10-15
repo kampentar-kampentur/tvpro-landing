@@ -87,6 +87,12 @@ const ExitIntentModal = () => {
         try {
             const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
             const location = getLeadLocation();
+            const utm = getUtmParams() || {};
+            const trueSource =
+                utm.utm_source ||
+                (utm.fbclid ? "facebook" : null) ||
+                (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
+                "direct";
 
             const response = await fetch(`${apiUrl}/api/book-now`, {
                 method: 'POST',
@@ -95,13 +101,14 @@ const ExitIntentModal = () => {
                     data: {
                         name: formData.name,
                         phone: formData.phone,
-                        source: 'exit_intent_popup',
+                        source: trueSource,
+                        formType: "exitIntent",
                         city: location.city,
                         state: location.state,
                         page: location.page,
                         lat: location.lat,
                         lng: location.lng,
-                        ...getUtmParams(),
+                        ...utm,
                         submittedAt: new Date().toISOString(),
                         timestamp: Date.now(),
                     }
@@ -138,7 +145,7 @@ const ExitIntentModal = () => {
                     content_name: "Exit Intent Modal",
                     form_type: "exitIntent",
                     source: "exit_intent_popup",
-                    city: city || "",
+                    city: location.city || "",
                 });
                 sessionStorage.setItem('form_submitted', 'true');
                 close();

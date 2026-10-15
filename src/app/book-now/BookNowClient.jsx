@@ -93,6 +93,12 @@ export default function BookNowClient() {
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
 
       const location = getLeadLocation(cta);
+      const utm = getUtmParams() || {};
+      const trueSource =
+        utm.utm_source ||
+        (utm.fbclid ? "facebook" : null) ||
+        (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
+        "direct";
 
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
@@ -103,14 +109,15 @@ export default function BookNowClient() {
           data: {
             name: formData.name,
             phone: formData.phone,
-            source: "book-now-page",
+            source: trueSource,
+            formType: "bookNow",
             tvCount: null,
             city: location.city,
             state: location.state,
             page: location.page,
             lat: location.lat,
             lng: location.lng,
-            ...getUtmParams(),
+            ...utm,
             submittedAt: new Date().toISOString(),
             timestamp: Date.now(),
           },
@@ -153,7 +160,7 @@ export default function BookNowClient() {
           content_name: "Book Now Page",
           form_type: "bookNow",
           source: "book-now-page",
-          city: city || "",
+          city: location.city || "",
         });
         router.push("/see-you-soon");
       } else {
@@ -210,7 +217,7 @@ export default function BookNowClient() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <form onSubmit={handleSubmit}>
+        <div className={styles.formWrapper}>
           <h1 className={styles.title}>Get a Quick Quote</h1>
           <p className={styles.subtitle}>
             Leave your number — we’ll call and give you the exact price
@@ -235,11 +242,12 @@ export default function BookNowClient() {
             </p>
           </div>
 
-          {submitError && (
-            <p className={styles.submitError}>
-              {submitError}
-            </p>
-          )}
+          <p
+            className={styles.submitError}
+            style={{ display: submitError ? "block" : "none" }}
+          >
+            {submitError}
+          </p>
 
           <div className={styles.btnWrap}>
             <Checkbox label={<TermsText />} />
@@ -251,7 +259,7 @@ export default function BookNowClient() {
               {isSubmitting ? "Sending..." : "Send"}
             </Button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -25,7 +25,8 @@
   box-sizing: border-box;
 }
 
-.card form {
+.card form,
+.formWrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
