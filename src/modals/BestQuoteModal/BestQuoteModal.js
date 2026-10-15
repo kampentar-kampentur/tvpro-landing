@@ -1748,7 +1748,7 @@ const BestQuoteModal = () => {
             email: submissionData.contactInfo?.email || "",
             address: submissionData.contactInfo?.address || "",
             zip: submissionData.contactInfo?.zip || "",
-            city: data.city || "",
+            city: leadLoc.city || "",
           },
           customData: {
             form_type: "bestQuote",
@@ -1767,7 +1767,7 @@ const BestQuoteModal = () => {
           form_type: "bestQuote",
           value: totalPrice || undefined,
           currency: "USD",
-          city: data.city || "",
+          city: leadLoc.city || "",
         });
         router.push("/booking-success");
       } else {

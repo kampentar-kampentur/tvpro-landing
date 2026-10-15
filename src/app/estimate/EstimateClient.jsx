@@ -351,13 +351,15 @@ export default function EstimateClient() {
             </p>
           </div>
 
-          {submitError && (
-            <div className={styles.submitErrorContainer} aria-live="polite">
-              <span className={styles.submitErrorText}>
-                {submitError}
-              </span>
-            </div>
-          )}
+          <div
+            className={styles.submitErrorContainer}
+            aria-live="polite"
+            style={{ display: submitError ? "block" : "none" }}
+          >
+            <span className={styles.submitErrorText}>
+              {submitError}
+            </span>
+          </div>
 
           {/* Submit Button & Compliance Checkbox */}
           <div className={styles.btnWrap}>

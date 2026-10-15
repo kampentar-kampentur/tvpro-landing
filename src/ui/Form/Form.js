@@ -322,7 +322,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
     : 100;
 
   return (
-    <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+    <div className={styles.form}>
       {/* <h2 className={styles.bestQuoteTitle}>{stepToRender?.title}</h2> */}
       {showProgress && (
         <Breadcrumbs
@@ -353,8 +353,11 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
           });
         }}
       />
-      {showProgress && !isContactStep && (
-        <div className={styles.progressWrapper}>
+      {showProgress && (
+        <div
+          className={styles.progressWrapper}
+          style={{ display: isContactStep ? "none" : undefined }}
+        >
           <div className={styles.progressFill} style={{ width: `${progressPercent}%` }}>
             <span className={styles.progressPercent}>{progressPercent}%</span>
           </div>
@@ -370,7 +373,7 @@ const Form = ({ scheme, value, onChange, onSubmit, onStepChange, showProgress = 
         isLastStep={isLastOverallStep}
         disableSubmitBtn={disableSubmitBtn}
       /> */}
-    </form>
+    </div>
   );
 };
 

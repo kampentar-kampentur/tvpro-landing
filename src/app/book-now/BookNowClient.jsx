@@ -160,7 +160,7 @@ export default function BookNowClient() {
           content_name: "Book Now Page",
           form_type: "bookNow",
           source: "book-now-page",
-          city: city || "",
+          city: location.city || "",
         });
         router.push("/see-you-soon");
       } else {
@@ -217,7 +217,7 @@ export default function BookNowClient() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <form onSubmit={handleSubmit}>
+        <div className={styles.formWrapper}>
           <h1 className={styles.title}>Get a Quick Quote</h1>
           <p className={styles.subtitle}>
             Leave your number — we’ll call and give you the exact price
@@ -242,11 +242,12 @@ export default function BookNowClient() {
             </p>
           </div>
 
-          {submitError && (
-            <p className={styles.submitError}>
-              {submitError}
-            </p>
-          )}
+          <p
+            className={styles.submitError}
+            style={{ display: submitError ? "block" : "none" }}
+          >
+            {submitError}
+          </p>
 
           <div className={styles.btnWrap}>
             <Checkbox label={<TermsText />} />
@@ -258,7 +259,7 @@ export default function BookNowClient() {
               {isSubmitting ? "Sending..." : "Send"}
             </Button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

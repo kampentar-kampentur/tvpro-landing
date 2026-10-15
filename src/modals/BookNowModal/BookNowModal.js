@@ -146,7 +146,7 @@ const BookNowModal = () => {
           content_name: "Book Now Modal",
           form_type: "bookNow",
           source: "book-now-modal",
-          city: city || "",
+          city: location.city || "",
         });
         router.push("/see-you-soon");
       } else {
@@ -202,7 +202,7 @@ const BookNowModal = () => {
 
   return (
     <Modal isOpen={isOpen} onClose={close} className={styles.bookNow}>
-      <form>
+      <div className={styles.formWrapper}>
         <h3 className={styles.title}>Get a Quick Quote</h3>
         <p className={styles.subtitle}>
           Leave your number — we’ll call and give you the exact price
@@ -227,11 +227,17 @@ const BookNowModal = () => {
           </p>
         </div>
 
-        {submitError && (
-          <p style={{ color: "#ff4d4f", fontSize: "14px", margin: "8px 0 0", textAlign: "center" }}>
-            {submitError}
-          </p>
-        )}
+        <p
+          style={{
+            color: "#ff4d4f",
+            fontSize: "14px",
+            margin: "8px 0 0",
+            textAlign: "center",
+            display: submitError ? "block" : "none",
+          }}
+        >
+          {submitError}
+        </p>
 
         <div className={styles.btnWrap}>
           <Checkbox label={<TermsText />} />
@@ -243,7 +249,7 @@ const BookNowModal = () => {
             {isSubmitting ? "Sending..." : "Send"}
           </Button>
         </div>
-      </form>
+      </div>
     </Modal>
   );
 };

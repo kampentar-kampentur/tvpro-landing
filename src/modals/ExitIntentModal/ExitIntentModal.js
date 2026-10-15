@@ -145,7 +145,7 @@ const ExitIntentModal = () => {
                     content_name: "Exit Intent Modal",
                     form_type: "exitIntent",
                     source: "exit_intent_popup",
-                    city: city || "",
+                    city: location.city || "",
                 });
                 sessionStorage.setItem('form_submitted', 'true');
                 close();

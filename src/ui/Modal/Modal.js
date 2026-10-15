@@ -21,7 +21,9 @@ const Modal = ({ isOpen, onClose, children, className, closeButtonClassName }) =
             <CloseIcon width="10" height="10" />
           </Button>
           <div className={styles.modalWrapper} ref={modalRef}>
-            {children}
+            <div className={styles.modalInner}>
+              {children}
+            </div>
           </div>
         </div>
       </div>
