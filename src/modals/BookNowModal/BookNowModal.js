@@ -78,6 +78,12 @@ const BookNowModal = () => {
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
 
       const location = getLeadLocation();
+      const utm = getUtmParams() || {};
+      const trueSource =
+        utm.utm_source ||
+        (utm.fbclid ? "facebook" : null) ||
+        (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
+        "direct";
 
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
@@ -88,14 +94,15 @@ const BookNowModal = () => {
           data: {
             name: formData.name,
             phone: formData.phone,
-            source: data?.props?.source || "book-now-modal",
+            source: trueSource,
+            formType: "bookNowModal",
             tvCount: data?.props?.tvCount || null,
             city: location.city,
             state: location.state,
             page: location.page,
             lat: location.lat,
             lng: location.lng,
-            ...getUtmParams(),
+            ...utm,
             submittedAt: new Date().toISOString(),
             timestamp: Date.now(),
           },

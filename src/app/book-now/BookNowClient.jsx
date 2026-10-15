@@ -93,6 +93,12 @@ export default function BookNowClient() {
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
 
       const location = getLeadLocation(cta);
+      const utm = getUtmParams() || {};
+      const trueSource =
+        utm.utm_source ||
+        (utm.fbclid ? "facebook" : null) ||
+        (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
+        "direct";
 
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
@@ -103,14 +109,15 @@ export default function BookNowClient() {
           data: {
             name: formData.name,
             phone: formData.phone,
-            source: "book-now-page",
+            source: trueSource,
+            formType: "bookNow",
             tvCount: null,
             city: location.city,
             state: location.state,
             page: location.page,
             lat: location.lat,
             lng: location.lng,
-            ...getUtmParams(),
+            ...utm,
             submittedAt: new Date().toISOString(),
             timestamp: Date.now(),
           },

@@ -116,6 +116,12 @@ export default function EstimateClient() {
         utm = getUtmParams() || {};
       } catch (e) {}
 
+      const trueSource =
+        utm.utm_source ||
+        (utm.fbclid ? "facebook" : null) ||
+        (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
+        "direct";
+
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
         headers: {
@@ -125,7 +131,7 @@ export default function EstimateClient() {
           data: {
             name: submitName,
             phone: submitPhone,
-            source: "fb-estimate-page",
+            source: trueSource,
             formType: "estimate",
             tvCount,
             timing,
@@ -199,7 +205,7 @@ export default function EstimateClient() {
             },
             customData: {
               form_type: "estimate",
-              source: "fb-estimate-page",
+              source: trueSource,
               num_tvs: tvCount,
               timing: timing,
               city: resolvedCity,

@@ -1628,6 +1628,12 @@ const BestQuoteModal = () => {
         };
 
     const leadLoc = getLeadLocation();
+    const utm = getUtmParams() || {};
+    const trueSource =
+      utm.utm_source ||
+      (utm.fbclid ? "facebook" : null) ||
+      (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
+      "direct";
 
     const submissionData = {
       ...formData,
@@ -1643,12 +1649,14 @@ const BestQuoteModal = () => {
             wallType: wallTypeResolved,
           },
       contactInfo: contactInfoResolved,
+      source: trueSource,
+      formType: "bestQuote",
       page: leadLoc.page,
       city: leadLoc.city,
       state: leadLoc.state,
       lat: leadLoc.lat,
       lng: leadLoc.lng,
-      ...getUtmParams(),
+      ...utm,
       submittedAt: new Date().toISOString(),
       timestamp: Date.now(),
     };
