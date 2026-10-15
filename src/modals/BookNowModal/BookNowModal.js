@@ -13,6 +13,7 @@ import Checkbox from "@/ui/Checkbox";
 import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
+import { getLeadLocation } from "@/lib/locationTracker";
 
 const nameField = {
   name: "name",
@@ -76,10 +77,8 @@ const BookNowModal = () => {
       const apiUrl =
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
 
-      const path = window.location.pathname;
-      const pathParts = path.split("/").filter((part) => part !== "");
+      const location = getLeadLocation();
 
-      const city = pathParts[0];
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
         headers: {
@@ -91,7 +90,11 @@ const BookNowModal = () => {
             phone: formData.phone,
             source: data?.props?.source || "book-now-modal",
             tvCount: data?.props?.tvCount || null,
-            city,
+            city: location.city,
+            state: location.state,
+            page: location.page,
+            lat: location.lat,
+            lng: location.lng,
             ...getUtmParams(),
             submittedAt: new Date().toISOString(),
             timestamp: Date.now(),

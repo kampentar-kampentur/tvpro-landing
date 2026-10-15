@@ -16,6 +16,7 @@ import Link from "next/link";
 import quizTracker from "@/lib/quizTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
+import { getLeadLocation } from "@/lib/locationTracker";
 
 const BestQuoteScheme = {
   steps: [
@@ -1626,6 +1627,8 @@ const BestQuoteModal = () => {
           apt: formData.contactInfo?.zipApt?.apt || "",
         };
 
+    const leadLoc = getLeadLocation();
+
     const submissionData = {
       ...formData,
       tvCount: tvCountResolved,
@@ -1640,6 +1643,11 @@ const BestQuoteModal = () => {
             wallType: wallTypeResolved,
           },
       contactInfo: contactInfoResolved,
+      page: leadLoc.page,
+      city: leadLoc.city,
+      state: leadLoc.state,
+      lat: leadLoc.lat,
+      lng: leadLoc.lng,
       ...getUtmParams(),
       submittedAt: new Date().toISOString(),
       timestamp: Date.now(),
