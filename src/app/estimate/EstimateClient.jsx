@@ -11,6 +11,7 @@ import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead, trackMetaPageView } from "@/lib/fbTracker";
 import { useRouter } from "next/navigation";
 import { useCTA } from "@/providers/CTAProvider";
+import { getLeadLocation } from "@/lib/locationTracker";
 
 const TV_OPTIONS = [
   { id: "1 TV", label: "1 TV" },
@@ -104,17 +105,9 @@ export default function EstimateClient() {
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
       const apiUrl = rawApiUrl.replace(/\/$/, "");
 
-      // Resolve city from query parameters or Geo-IP
-      let resolvedCity = "";
-      if (typeof window !== "undefined") {
-        const params = new URLSearchParams(window.location.search);
-        resolvedCity =
-          params.get("city") ||
-          params.get("from") ||
-          window.__GEO_CITY__?.city ||
-          cta?.citySlug ||
-          "";
-      }
+      // Resolve location and page context
+      const location = getLeadLocation(cta);
+      const resolvedCity = location.city;
 
       const submitName = nameValue;
       const submitPhone = phoneValue;
@@ -136,7 +129,11 @@ export default function EstimateClient() {
             formType: "estimate",
             tvCount,
             timing,
-            city: resolvedCity,
+            city: location.city,
+            state: location.state,
+            page: location.page,
+            lat: location.lat,
+            lng: location.lng,
             ...utm,
             submittedAt: new Date().toISOString(),
             timestamp: Date.now(),
@@ -348,14 +345,13 @@ export default function EstimateClient() {
             </p>
           </div>
 
-          <div className={styles.submitErrorContainer} aria-live="polite">
-            <span
-              className={styles.submitErrorText}
-              style={{ display: submitError ? "block" : "none" }}
-            >
-              {submitError}
-            </span>
-          </div>
+          {submitError && (
+            <div className={styles.submitErrorContainer} aria-live="polite">
+              <span className={styles.submitErrorText}>
+                {submitError}
+              </span>
+            </div>
+          )}
 
           {/* Submit Button & Compliance Checkbox */}
           <div className={styles.btnWrap}>
