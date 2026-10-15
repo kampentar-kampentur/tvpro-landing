@@ -11,6 +11,7 @@ import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
 import { useCTA } from "@/providers/CTAProvider";
+import { getLeadLocation } from "@/lib/locationTracker";
 
 const nameField = {
   name: "name",
@@ -91,10 +92,8 @@ export default function BookNowClient() {
       const apiUrl =
         process.env.NEXT_PUBLIC_SRTAPI_URL || "http://localhost:1337";
 
-      const path = window.location.pathname;
-      const pathParts = path.split("/").filter((part) => part !== "");
+      const location = getLeadLocation(cta);
 
-      const city = pathParts[0] === "book-now" ? "" : pathParts[0];
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
         headers: {
@@ -106,7 +105,11 @@ export default function BookNowClient() {
             phone: formData.phone,
             source: "book-now-page",
             tvCount: null,
-            city,
+            city: location.city,
+            state: location.state,
+            page: location.page,
+            lat: location.lat,
+            lng: location.lng,
             ...getUtmParams(),
             submittedAt: new Date().toISOString(),
             timestamp: Date.now(),

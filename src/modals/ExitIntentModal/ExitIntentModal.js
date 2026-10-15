@@ -13,6 +13,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { getUtmParams } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
+import { getLeadLocation } from "@/lib/locationTracker";
 
 const isExcludedPath = (pathname) => {
     if (!pathname) return false;
@@ -85,11 +86,7 @@ const ExitIntentModal = () => {
         setIsSubmitting(true);
         try {
             const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
-            const path = window.location.pathname;
-
-            const pathParts = path.split('/').filter(part => part !== "");
-
-            const city = pathParts[0];
+            const location = getLeadLocation();
 
             const response = await fetch(`${apiUrl}/api/book-now`, {
                 method: 'POST',
@@ -99,8 +96,12 @@ const ExitIntentModal = () => {
                         name: formData.name,
                         phone: formData.phone,
                         source: 'exit_intent_popup',
+                        city: location.city,
+                        state: location.state,
+                        page: location.page,
+                        lat: location.lat,
+                        lng: location.lng,
                         ...getUtmParams(),
-                        city,
                         submittedAt: new Date().toISOString(),
                         timestamp: Date.now(),
                     }

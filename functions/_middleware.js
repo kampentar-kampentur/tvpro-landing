@@ -429,6 +429,9 @@ export async function onRequest(context) {
                 fullCity: targetCity,
                 state: targetState,
                 country: isUS ? 'US' : (context.request.cf?.country || null),
+                lat: context.request.cf?.latitude ? parseFloat(context.request.cf.latitude) : null,
+                lng: context.request.cf?.longitude ? parseFloat(context.request.cf.longitude) : null,
+                postalCode: context.request.cf?.postalCode || null,
             };
 
             rewriter
