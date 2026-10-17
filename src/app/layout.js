@@ -515,22 +515,24 @@ export default async function RootLayout({ children }) {
           }}
         />
         <GlobalErrorHandler />
-        <CTAProvider initialCTA={cta}>
-          <ModalProvider>
-            <EngagementTracker />
-            <UtmCapture />
-            <Modals />
-            <Header cta={cta} />
-            <ErrorBoundary>
-              <main
-                style={{ paddingTop: "var(--header-height, 80px)", flexGrow: 1 }}
-              >
-                {children}
-              </main>
-            </ErrorBoundary>
-            <Footer cta={cta} />
-          </ModalProvider>
-        </CTAProvider>
+        <ErrorBoundary>
+          <CTAProvider initialCTA={cta}>
+            <ModalProvider>
+              <EngagementTracker />
+              <UtmCapture />
+              <Modals />
+              <Header cta={cta} />
+              <ErrorBoundary>
+                <main
+                  style={{ paddingTop: "var(--header-height, 80px)", flexGrow: 1 }}
+                >
+                  {children}
+                </main>
+              </ErrorBoundary>
+              <Footer cta={cta} />
+            </ModalProvider>
+          </CTAProvider>
+        </ErrorBoundary>
         <ScrollToTop />
       </body>
     </html>

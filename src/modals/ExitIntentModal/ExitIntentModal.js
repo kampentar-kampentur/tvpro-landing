@@ -10,7 +10,7 @@ import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
 import { useRouter, usePathname } from 'next/navigation';
-import { getUtmParams } from "@/lib/utmTracker";
+import { getUtmParams, resolveAttributionSource } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
 import { getLeadLocation } from "@/lib/locationTracker";
@@ -88,11 +88,7 @@ const ExitIntentModal = () => {
             const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
             const location = getLeadLocation();
             const utm = getUtmParams() || {};
-            const trueSource =
-                utm.utm_source ||
-                (utm.fbclid ? "facebook" : null) ||
-                (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
-                "direct";
+            const trueSource = resolveAttributionSource(utm);
 
             const response = await fetch(`${apiUrl}/api/book-now`, {
                 method: 'POST',
@@ -150,6 +146,9 @@ const ExitIntentModal = () => {
                 sessionStorage.setItem('form_submitted', 'true');
                 close();
                 router.push('/see-you-soon');
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                console.error("Exit Intent form submission error:", response.status, errorData);
             }
         } catch (error) {
             console.error("Exit Intent form error:", error);

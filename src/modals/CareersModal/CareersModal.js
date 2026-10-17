@@ -123,7 +123,8 @@ export default function CareersModal() {
   useEffect(() => {
     async function loadCities() {
       try {
-        const response = await fetch("https://strapi-staging-bd62.up.railway.app/api/cities?filters[metro_city_slug][$null]=true&pagination[pageSize]=100");
+        const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || "https://strapi-production-20d6.up.railway.app";
+        const response = await fetch(`${apiUrl}/api/cities?filters[metro_city_slug][$null]=true&pagination[pageSize]=100`);
         const json = await response.json();
         if (json?.data && Array.isArray(json.data)) {
           const names = json.data
@@ -423,9 +424,12 @@ export default function CareersModal() {
         });
         setIsSuccess(true);
       } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Careers form submission error:", response.status, errorData);
         setSubmitError("An error occurred. Please try again.");
       }
     } catch (error) {
+      console.error("Careers form network error:", error);
       setSubmitError("Failed to send request. Please check your connection.");
     } finally {
       setIsSubmitting(false);

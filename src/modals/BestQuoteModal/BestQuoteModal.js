@@ -11,7 +11,7 @@ import LogoSVG from "@/assets/logo.svg";
 import ChevronIcon from "@/assets/icons/chevron.svg";
 import Button from "@/ui/Button";
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
-import { getUtmParams } from "@/lib/utmTracker";
+import { getUtmParams, resolveAttributionSource } from "@/lib/utmTracker";
 import Link from "next/link";
 import quizTracker from "@/lib/quizTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
@@ -1629,11 +1629,7 @@ const BestQuoteModal = () => {
 
     const leadLoc = getLeadLocation();
     const utm = getUtmParams() || {};
-    const trueSource =
-      utm.utm_source ||
-      (utm.fbclid ? "facebook" : null) ||
-      (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
-      "direct";
+    const trueSource = resolveAttributionSource(utm);
 
     const submissionData = {
       ...formData,

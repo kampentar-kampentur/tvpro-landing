@@ -14,12 +14,26 @@ export class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    const message = error?.message || 'React ErrorBoundary caught an error';
     reportError({
-      message: error?.message || 'React ErrorBoundary caught an error',
+      message,
       stack: error?.stack || '',
       source: 'ErrorBoundary',
       errorInfo: errorInfo?.componentStack || errorInfo,
     });
+
+    if (
+      typeof window !== 'undefined' &&
+      (message.includes('ChunkLoadError') || message.includes('Loading chunk'))
+    ) {
+      try {
+        const reloaded = sessionStorage.getItem('chunk_error_reloaded');
+        if (!reloaded) {
+          sessionStorage.setItem('chunk_error_reloaded', '1');
+          window.location.reload();
+        }
+      } catch (e) {}
+    }
   }
 
   handleReset = () => {

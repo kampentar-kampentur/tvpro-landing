@@ -10,7 +10,7 @@ import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
-import { getUtmParams } from "@/lib/utmTracker";
+import { getUtmParams, resolveAttributionSource } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
 import { getLeadLocation } from "@/lib/locationTracker";
@@ -79,11 +79,7 @@ const BookNowModal = () => {
 
       const location = getLeadLocation();
       const utm = getUtmParams() || {};
-      const trueSource =
-        utm.utm_source ||
-        (utm.fbclid ? "facebook" : null) ||
-        (utm.gclid || utm.gbraid || utm.wbraid ? "google" : null) ||
-        "direct";
+      const trueSource = resolveAttributionSource(utm);
 
       const response = await fetch(`${apiUrl}/api/book-now`, {
         method: "POST",
