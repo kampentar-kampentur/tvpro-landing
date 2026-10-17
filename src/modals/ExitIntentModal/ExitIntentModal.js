@@ -10,7 +10,7 @@ import Button from "@/ui/Button";
 
 import Checkbox from "@/ui/Checkbox";
 import { useRouter, usePathname } from 'next/navigation';
-import { getUtmParams, resolveAttributionSource } from "@/lib/utmTracker";
+import { getUtmParams, resolveAttributionSource, trackFormInteract } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
 import { getLeadLocation } from "@/lib/locationTracker";
@@ -82,7 +82,7 @@ const ExitIntentModal = () => {
         e.nativeEvent.stopImmediatePropagation();
         if (!formData.name || !validatePhone(formData.phone)) return;
 
-
+        trackFormInteract("exit_intent_modal", "submit_click");
         setIsSubmitting(true);
         try {
             const apiUrl = process.env.NEXT_PUBLIC_SRTAPI_URL || 'http://localhost:1337';
@@ -163,7 +163,7 @@ const ExitIntentModal = () => {
 
     return (
         <Modal isOpen={isOpen} onClose={close} className={styles.exitModal}>
-            <div className={styles.container}>
+            <div className={styles.container} data-form-name="exit_intent_modal">
                 <h2 className={styles.title}>Wait! Get $30 OFF</h2>
                 <p className={styles.subtitle}>
                     Don&apos;t leave yet! Claim your discount for your first professional TV installation.

@@ -6,7 +6,7 @@ import TextField from "@/ui/Form/components/fields/TextField";
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import Button from "@/ui/Button";
 import Checkbox from "@/ui/Checkbox";
-import { getUtmParams, resolveAttributionSource } from "@/lib/utmTracker";
+import { getUtmParams, resolveAttributionSource, trackFormInteract } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead, trackMetaPageView } from "@/lib/fbTracker";
 import { useRouter } from "next/navigation";
@@ -97,6 +97,10 @@ export default function EstimateClient() {
     if (e && e.preventDefault) e.preventDefault();
     if (!isFormValid || isSubmitting) return;
 
+    trackFormInteract("estimate_page_form", "submit_click", {
+      tvCount,
+      timing,
+    });
     setIsSubmitting(true);
     setSubmitError("");
 
@@ -271,6 +275,7 @@ export default function EstimateClient() {
       <div className={styles.card}>
         <div
           className={styles.formWrapper}
+          data-form-name="estimate_page_form"
           onKeyDown={handleKeyDown}
         >
           <h1 className={styles.title}>Get Your FREE TV Mounting Estimate</h1>
@@ -291,7 +296,13 @@ export default function EstimateClient() {
                   className={`${styles.optionChip} ${
                     tvCount === opt.id ? styles.optionChipSelected : ""
                   }`}
-                  onClick={() => setTvCount(opt.id)}
+                  onClick={() => {
+                    setTvCount(opt.id);
+                    trackFormInteract("estimate_page_form", "option_select", {
+                      field: "tvCount",
+                      value: opt.id,
+                    });
+                  }}
                   aria-pressed={tvCount === opt.id}
                 >
                   {opt.label}
@@ -313,7 +324,13 @@ export default function EstimateClient() {
                   className={`${styles.optionChip} ${
                     timing === opt.id ? styles.optionChipSelected : ""
                   }`}
-                  onClick={() => setTiming(opt.id)}
+                  onClick={() => {
+                    setTiming(opt.id);
+                    trackFormInteract("estimate_page_form", "option_select", {
+                      field: "timing",
+                      value: opt.id,
+                    });
+                  }}
                   aria-pressed={timing === opt.id}
                 >
                   {opt.label}

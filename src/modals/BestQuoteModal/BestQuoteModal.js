@@ -11,7 +11,7 @@ import LogoSVG from "@/assets/logo.svg";
 import ChevronIcon from "@/assets/icons/chevron.svg";
 import Button from "@/ui/Button";
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
-import { getUtmParams, resolveAttributionSource } from "@/lib/utmTracker";
+import { getUtmParams, resolveAttributionSource, trackFormInteract } from "@/lib/utmTracker";
 import Link from "next/link";
 import quizTracker from "@/lib/quizTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
@@ -1605,6 +1605,7 @@ const BestQuoteModal = () => {
   }, [isOpen]);
   async function onSubmit(e) {
     e?.preventDefault?.();
+    trackFormInteract("best_quote_modal", "submit_click", { totalPrice });
     setIsSubmitting(true);
     console.log("formData", formData);
 
@@ -1815,7 +1816,7 @@ const BestQuoteModal = () => {
           style={{ cursor: "pointer" }}
         />
       </header>
-      <div className={styles.bestQuote}>
+      <div className={styles.bestQuote} data-form-name="best_quote_modal">
         <main className={styles.bestQuoteMain}>
           <Form
             key={isOpen ? `open-${isNewQuiz}` : "closed"}
@@ -1827,6 +1828,10 @@ const BestQuoteModal = () => {
             onStepChange={(stepIdx, subStepIdx, total) => {
               setCurrentStepIndex(stepIdx);
               setTotalSteps(total || 5);
+              trackFormInteract("best_quote_modal", "step_change", {
+                step: stepIdx + 1,
+                stepId: currentScheme?.steps?.[stepIdx]?.id || "",
+              });
             }}
             disableSubmitBtn={isSubmitting}
             isMobile={isMobile}

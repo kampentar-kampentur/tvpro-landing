@@ -7,7 +7,7 @@ import TextField from "@/ui/Form/components/fields/TextField";
 import { validatePhone } from "@/ui/Form/utils/phoneValidation";
 import Button from "@/ui/Button";
 import Checkbox from "@/ui/Checkbox";
-import { getUtmParams, resolveAttributionSource } from "@/lib/utmTracker";
+import { getUtmParams, resolveAttributionSource, trackFormInteract } from "@/lib/utmTracker";
 import { trackOpenAIConversion } from "@/lib/openaiTracker";
 import { trackMetaLead } from "@/lib/fbTracker";
 import { useCTA } from "@/providers/CTAProvider";
@@ -86,6 +86,7 @@ export default function BookNowClient() {
       return;
     }
 
+    trackFormInteract("book_now_page_form", "submit_click");
     setIsSubmitting(true);
     setSubmitError("");
     try {
@@ -213,7 +214,7 @@ export default function BookNowClient() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <div className={styles.formWrapper}>
+        <div className={styles.formWrapper} data-form-name="book_now_page_form">
           <h1 className={styles.title}>Get a Quick Quote</h1>
           <p className={styles.subtitle}>
             Leave your number — we’ll call and give you the exact price

@@ -15,6 +15,7 @@ import Modals from "@/app/components/Modals";
 import { CTAProvider } from "@/providers/CTAProvider";
 import GlobalErrorHandler from "@/components/GlobalErrorHandler/GlobalErrorHandler";
 import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
+import { getVisitorTrackerScript } from "@/lib/visitorTrackerScript";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -148,6 +149,12 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <head>
         <script
+          id="tvp-visitor-tracker"
+          dangerouslySetInnerHTML={{
+            __html: getVisitorTrackerScript(process.env.NEXT_PUBLIC_SRTAPI_URL),
+          }}
+        />
+        <script
           async
           src="https://ob.sornavellon.com/i/525465f0a01f5537af7992a76b9c7bf2.js"
           className="ct_clicktrue"
@@ -191,6 +198,11 @@ export default async function RootLayout({ children }) {
                     window.clarity("set", key, value);
                   }
                 });
+
+                // Tag our internal visitorId in Clarity for instant cross-lookup
+                if (window.clarity && window.TVPTracker && typeof window.TVPTracker.getVisitorId === "function") {
+                  window.clarity("set", "visitorId", window.TVPTracker.getVisitorId());
+                }
 
                 // 2. Explicit openAIsource handling + persistence across internal page navigation
                 let oaiSource = params.get("openAIsource") || params.get("openaisource") || params.get("openai_source");

@@ -1,5 +1,16 @@
 "use client"
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import { trackFormInteract } from '@/lib/utmTracker';
+
+const MODAL_FORM_NAME_MAP = {
+  BookNow: 'book_now_modal',
+  BookNowModal: 'book_now_modal',
+  BestQuote: 'best_quote_modal',
+  BestQuoteModal: 'best_quote_modal',
+  ExitIntentModal: 'exit_intent_modal',
+  CareersForm: 'careers_modal',
+  CareersModal: 'careers_modal',
+};
 
 // Создаем контекст для модалки
 const ModalContext = createContext();
@@ -13,6 +24,8 @@ export const ModalProvider = ({ children }) => {
   const openModal = useCallback((name, props = {}) => {
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden'; 
+    const formName = MODAL_FORM_NAME_MAP[name] || name;
+    trackFormInteract(formName, 'modal_open');
     setModals(prev => [
       ...prev,
       { name, props, id: modalIdCounter }

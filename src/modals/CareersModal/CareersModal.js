@@ -493,7 +493,7 @@ export default function CareersModal() {
           <header className={styles.header}>
             <LogoSVG width="82" height="40" role="img" />
           </header>
-          <div className={styles.container}>
+          <div className={styles.container} data-form-name="careers_modal">
             <main className={styles.main}>
               <div className={styles.form}>
                 <Breadcrumbs
